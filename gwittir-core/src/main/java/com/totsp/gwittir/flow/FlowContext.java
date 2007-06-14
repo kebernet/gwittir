@@ -9,14 +9,27 @@
 
 package com.totsp.gwittir.flow;
 
+import com.totsp.gwittir.ui.BoundWidget;
+import java.util.HashMap;
+
 /**
  *
  * @author cooper
  */
-public class FlowContext {
+public abstract class  FlowContext {
+    
+    private final HashMap destinations = new HashMap();
     
     /** Creates a new instance of FlowContext */
     public FlowContext() {
+        super();
     }
+    
+    public FlowContext add( String name, BoundWidget widget ){
+        destinations.put( name, widget );
+        return this;
+    }
+    
+    
     
 }
