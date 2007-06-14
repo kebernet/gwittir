@@ -38,10 +38,13 @@ public class FlowController {
             contextRoot = contextRoot.getParent();
             context = (FlowContext) contexts.get( contextRoot );
         }
+        if( context == null ){
+            throw new RuntimeException( "Unknown destination name for this elements context.");
+        }
         Panel panel = (Panel) contextRoot;
         BoundWidget widget = context.get(name);
         if( widget == null ){
-            throw new RuntimeException( "Unknown destination name for this elements context.");
+            call( contextRoot.getParent(), name, model );
         }
         widget.setModel( model );
         panel.clear();
