@@ -9,9 +9,12 @@
 
 package com.totsp.gwittir.ui;
 
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.Composite;
 import com.totsp.gwittir.Action;
 import com.totsp.gwittir.BindingAction;
+import java.util.Comparator;
 
 /**
  *
@@ -19,20 +22,22 @@ import com.totsp.gwittir.BindingAction;
  */
 public abstract class AbstractBoundWidget extends Composite implements BoundWidget{
     
-    private Renderer rendered;
+    private Renderer renderer;
     private Object model;
     private Action action;
+    private Comparator comparator;
+    private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     
     /** Creates a new instance of AbstractBoundWidget */
     public AbstractBoundWidget() {
     }
 
-    public Renderer getRendered() {
-        return rendered;
+    public Renderer getRenderer() {
+        return renderer;
     }
 
-    public void setRendered(Renderer rendered) {
-        this.rendered = rendered;
+    public void setRenderer(Renderer renderer) {
+        this.renderer = renderer;
     }
 
     public Object getModel() {
@@ -40,10 +45,16 @@ public abstract class AbstractBoundWidget extends Composite implements BoundWidg
     }
 
     public void setModel(Object model) {
-        this.model = model;
-        if( this.action instanceof BindingAction ){
-            ((BindingAction)action).set( this );
+        if( this.getAction() instanceof BindingAction && this.getModel() != null ){
+            ((BindingAction)getAction()).unbind( this );
         }
+        this.model = model;
+        if( this.getAction() instanceof BindingAction ){
+            ((BindingAction)getAction()).set( this );
+            if(this.isAttached() && this.getModel() != null)
+                ((BindingAction)getAction()).bind( this );
+        }
+        
     }
 
     public Action getAction() {
@@ -56,16 +67,36 @@ public abstract class AbstractBoundWidget extends Composite implements BoundWidg
 
     protected void onDetach() {
         super.onDetach();
-        if( this.action instanceof BindingAction ){
-            ((BindingAction)action).unbind( this );
+        if( this.getAction() instanceof BindingAction && this.getModel() != null ){
+            ((BindingAction)getAction()).unbind( this );
         }
+        
     }
 
     protected void onAttach() {
         super.onAttach();
-        if( this.action instanceof BindingAction ){
-            ((BindingAction)action).bind( this );
+        if( this.getAction() instanceof BindingAction ){
+            ((BindingAction)getAction()).bind( this );
         }
     }
+
+    public Comparator getComparator() {
+        return comparator;
+    }
+
+    public void setComparator(Comparator comparator) {
+        this.comparator = comparator;
+    }
+
+    public void addChangeListener(ChangeListener listener) {
+        changeListeners.add( listener );
+    }
+
+    public void removeChangeListener(ChangeListener listener) {
+        changeListeners.remove( listener );
+    }
     
+    protected void fireChange(){
+        changeListeners.fireChange( this );
+    }
 }

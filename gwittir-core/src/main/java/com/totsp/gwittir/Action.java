@@ -9,12 +9,14 @@
 
 package com.totsp.gwittir;
 
+import com.totsp.gwittir.ui.BoundWidget;
+
 /**
  *
  * @author cooper
  */
 public interface Action {
- 
-    public void execute(Object model);
+    
+    public void execute(BoundWidget model);
     
 }

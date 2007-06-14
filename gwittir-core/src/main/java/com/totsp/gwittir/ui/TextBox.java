@@ -29,9 +29,10 @@ public class TextBox extends com.google.gwt.user.client.ui.TextBox implements Bo
     /** Creates a new instance of TextBox */
     public TextBox() {
         super();
+        final BoundWidget bound = this;
         this.addChangeListener( new ChangeListener(){
             public void onChange(Widget sender) {
-                action.execute( model );
+                action.execute( bound );
             }
             
         });

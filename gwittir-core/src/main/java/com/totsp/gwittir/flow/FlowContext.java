@@ -16,10 +16,10 @@ import java.util.HashMap;
  *
  * @author cooper
  */
-public abstract class  FlowContext {
+public class  FlowContext {
     
     private final HashMap destinations = new HashMap();
-    
+        
     /** Creates a new instance of FlowContext */
     public FlowContext() {
         super();
@@ -30,6 +30,9 @@ public abstract class  FlowContext {
         return this;
     }
     
+    public BoundWidget get( String name ){
+        return (BoundWidget) destinations.get(name);
+    }
     
     
 }

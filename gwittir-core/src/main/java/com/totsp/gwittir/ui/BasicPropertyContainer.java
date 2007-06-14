@@ -108,7 +108,7 @@ public class BasicPropertyContainer extends PropertyContainer {
                 l = new PropertyChangeListener() {
                     public void propertyChange(
                             PropertyChangeEvent propertyChangeEvent) {
-                       w.setValue( getter.getProperty(w.getModel() ) );
+                        w.setValue( getter.getProperty(w.getModel() ) );
                     }
                 };
             }
@@ -123,7 +123,7 @@ public class BasicPropertyContainer extends PropertyContainer {
             widget.removeChangeListener(c);
         }
         
-        public void execute(Object model) {
+        public void execute(BoundWidget model) {
         }
         
         public void set(BoundWidget widget) {
@@ -131,11 +131,11 @@ public class BasicPropertyContainer extends PropertyContainer {
         }
         
     }
-
+    
     public String getProperyName() {
         return properyName;
     }
-
+    
     public void setProperyName(String properyName) {
         this.properyName = properyName;
     }
