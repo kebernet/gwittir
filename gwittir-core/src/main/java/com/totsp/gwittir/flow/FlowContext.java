@@ -18,11 +18,10 @@ import java.util.HashMap;
  *
  * @author cooper
  */
-public class  FlowContext {
+public class FlowContext {
     
     private final HashMap destinations = new HashMap();
     private final HashMap actions = new HashMap();
-    
     /** Creates a new instance of FlowContext */
     public FlowContext() {
         super();

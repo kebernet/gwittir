@@ -59,8 +59,18 @@ public class TextBox extends com.google.gwt.user.client.ui.TextBox implements Bo
     }
     
     public void setModel(Object model) {
+        if( this.getAction() instanceof BindingAction && this.getModel() != null ){
+            ((BindingAction)getAction()).unbind( this );
+        }
         this.model = model;
+        if( this.getAction() instanceof BindingAction ){
+            ((BindingAction)getAction()).set( this );
+            if(this.isAttached() && this.getModel() != null)
+                ((BindingAction)getAction()).bind( this );
+        }
+        
     }
+
     
     public Action getAction() {
         return action;
