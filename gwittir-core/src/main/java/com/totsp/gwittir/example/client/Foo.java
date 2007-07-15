@@ -10,6 +10,7 @@
 package com.totsp.gwittir.example.client;
 
 import com.totsp.gwittir.SourcesPropertyChangeEvents;
+import com.totsp.gwittir.beans.Introspectable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -17,7 +18,7 @@ import java.beans.PropertyChangeSupport;
  *
  * @author cooper
  */
-public class Foo implements SourcesPropertyChangeEvents {
+public class Foo implements SourcesPropertyChangeEvents, Introspectable {
     private String stringProperty;
     private int intProperty;
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);

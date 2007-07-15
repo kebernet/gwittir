@@ -8,6 +8,6 @@
     <inherits name='com.googlecode.gwtx.Java'/>
     <inherits name='com.totsp.Gwittir' />
     <!-- Specify the app entry point class.                   -->
-    <entry-point class='com.totsp.gwails.example.client.ExampleEntryPoint'/>
+    <entry-point class='com.totsp.gwittir.example.client.ExampleEntryPoint'/>
     
 </module>

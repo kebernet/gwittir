@@ -4,4 +4,9 @@
     <!-- Inherit the core Web Toolkit stuff.                  -->
     <inherits name='com.google.gwt.user.User'/>
     <source path="gwittir" />
+    <generate-with
+        class="com.totsp.rebind.beans.IntrospectorGenerator" >
+        <when-type-assignable
+        class="com.totsp.gwittir.beans.Introspector" />
+    </generate-with>
 </module>

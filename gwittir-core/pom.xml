@@ -7,6 +7,12 @@
     <version>1.0-SNAPSHOT</version>
     <name>Google Web ToolkIt Rails</name>
     <url>http://maven.apache.org</url>
+    <repositories>
+        <repository>
+            <id>gwt-maven</id>
+            <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -17,7 +23,7 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>1.3.3</version>
+            <version>1.4.10</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -42,9 +48,9 @@
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
                 <configuration>
                     <logLevel>INFO</logLevel>
-                    <runTarget>com.totsp.gwails.example.Example/</runTarget>
+                    <runTarget>com.totsp.gwittir.example.Example/</runTarget>
                     <compileTarget>
-                        <param>com.totsp.gwails.example.Example</param>
+                        <param>com.totsp.gwittir.example.Example</param>
                     </compileTarget>
                 </configuration>
             </plugin>
@@ -111,5 +117,15 @@
                     </dependency>
                 </dependencies>
             </profile>
+            <profile>
+            <id>netbeans-public</id>
+            <activation>
+                <property>
+                    <name>netbeans.execution</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build />
+        </profile>
         </profiles>
 </project>
