@@ -14,8 +14,19 @@ package com.totsp.gwittir;
  * @author cooper
  */
 public class ValidationException extends Exception {
+    
+    private Class validatorClass = null;
     /** Creates a new instance of ValidationException */
     public ValidationException(String message) {
         super(message);
+    }
+    
+    public ValidationException(String message, Class validatorClass ){
+        super(message);
+        this.validatorClass = validatorClass;
+    }
+
+    public Class getValidatorClass() {
+        return validatorClass;
     }
 }

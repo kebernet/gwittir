@@ -43,6 +43,43 @@ public class Binding {
         this.right.property = INTROSPECTOR.getDescriptor(right)
                                           .getProperty(rightProperty);
     }
+    
+    public Binding(Bindable left, String leftProperty, Validator leftValidator, ValidationFeedback leftFeedback,
+            Bindable right, String rightProperty, Validator rightValidator, ValidationFeedback rightFeedback ){
+     
+        this.left = new BindingInstance();
+        this.left.object = left;
+        this.left.property = INTROSPECTOR.getDescriptor(left)
+                                         .getProperty(leftProperty);
+        this.left.validator = leftValidator;
+        this.left.feedback = leftFeedback;
+        
+        this.right = new BindingInstance();
+        this.right.object = right;
+        this.right.property = INTROSPECTOR.getDescriptor(right)
+                                          .getProperty(rightProperty);
+        this.right.validator = rightValidator;
+        this.right.feedback = rightFeedback;
+    }
+    
+    public Binding(Bindable left, String leftProperty, Converter leftConverter, Bindable right,
+        String rightProperty, Converter rightConverter ) {
+        this.left = new BindingInstance();
+        this.left.object = left;
+        this.left.property = INTROSPECTOR.getDescriptor(left)
+                                         .getProperty(leftProperty);
+        this.left.converter = leftConverter;
+        this.right = new BindingInstance();
+        this.right.object = right;
+        this.right.property = INTROSPECTOR.getDescriptor(right)
+                                          .getProperty(rightProperty);
+        this.right.converter = rightConverter;
+    }
+    
+    public Binding(BindingInstance left, BindingInstance right){
+        this.left = left;
+        this.right = right;
+    }
 
     public void bind() {
         left.listener = new DefaultPropertyChangeListener(left, right);
