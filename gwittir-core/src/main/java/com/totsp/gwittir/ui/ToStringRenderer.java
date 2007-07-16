@@ -20,7 +20,7 @@ public class ToStringRenderer implements Renderer {
     }
 
     public String render(Object o) {
-        return o.toString();
+        return o == null ? "" : o.toString();
     }
     
 }
