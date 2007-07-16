@@ -24,12 +24,12 @@ import java.util.Iterator;
 public class FlowController {
     
     static final HashMap/*<Widget, FlowContext>*/ contexts = new HashMap();
-    //static HistoryManager manager = null;
+    static HistoryManager manager = null;
     static final HistoryListener hl = new HistoryListener(){
         public void onHistoryChanged(String historyToken) {
-            //if( manager != null ){
-            //    manager.apply( historyToken );
-            //}
+            if( manager != null ){
+                manager.apply( historyToken );
+            }
         }
     };
     static {
@@ -72,9 +72,9 @@ public class FlowController {
         }
         panel.clear();
         panel.add( (Widget) widget );
-        //if( FlowController.manager != null ){
-        //    manager.transition( name, old, widget );
-        //}
+        if( FlowController.manager != null ){
+            manager.transition( name, old, widget );
+        }
         return true;
     }
     
@@ -88,11 +88,11 @@ public class FlowController {
         return contextRoot;
     }
     
-    /*public static void setHistoryManager( HistoryManager manager ){
+    public static void setHistoryManager( HistoryManager manager ){
         FlowController.manager = manager;
     }
     
     public static HistoryManager getHistoryManager(){
         return FlowController.manager;
-    }*/
+    }
 }
