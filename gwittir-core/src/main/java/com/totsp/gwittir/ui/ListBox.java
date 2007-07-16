@@ -51,6 +51,7 @@ public class ListBox extends AbstractBoundWidget {
             public void onChange(Widget sender) {
                 update();
             }
+            // foo!
             
         });
     }
