@@ -32,12 +32,7 @@ public class FlowContext {
         return this;
     }
     
-    public FlowContext add( String name, Class boundWidgetClass ){
-        destinations.put( name, boundWidgetClass );
-        return this;
-    }
-    
-     public FlowContext add( String name, BoundWidgetProvider provider ){
+    public FlowContext add( String name, BoundWidgetProvider provider ){
         destinations.put( name, provider );
         return this;
     }
@@ -48,11 +43,6 @@ public class FlowContext {
         return this;
     }
     
-    public FlowContext add( String name, Class boundWidgetClass, Action action ){
-        add( name, boundWidgetClass );
-        actions.put( name, action );
-        return this;
-    }
     
      public FlowContext add( String name, BoundWidgetProvider provider, Action action ){
         add( name, provider );
@@ -63,9 +53,7 @@ public class FlowContext {
     public BoundWidget get( String name ){
         Object value =  destinations.get(name);
         BoundWidget ret = null;
-        if( value instanceof Class ){
-            ret = (BoundWidget) GWT.create( (Class) value );
-        } else if( value instanceof BoundWidgetProvider ){
+        if( value instanceof BoundWidgetProvider ){
             ret = ((BoundWidgetProvider) value).get();
         } else {
             ret =  (BoundWidget) destinations.get(name);
