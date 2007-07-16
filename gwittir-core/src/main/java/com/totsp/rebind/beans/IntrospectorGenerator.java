@@ -77,6 +77,9 @@ public class IntrospectorGenerator extends Generator {
             logger.branch( logger.DEBUG, "Introspecting: "+ type.getQualifiedSourceName(), null );
             try{
                 BeanInfo info = java.beans.Introspector.getBeanInfo( Class.forName( type.getQualifiedSourceName() ) );
+                if( info.getPropertyDescriptors() == null || info.getPropertyDescriptors().length == 1 ){
+                    continue;
+                }
                 writer.print( "LOOKUPS.put( "+ type.getQualifiedSourceName()+".class, ");
                 this.writeBeanDescriptor( logger, info, writer );
                 writer.println( " );");
@@ -118,7 +121,7 @@ public class IntrospectorGenerator extends Generator {
                     writer.print( "Method writeMethod = ");
                     Method writeMethod = pds[i].getWriteMethod();
                     this.writeMethod( logger, writeMethod, writer );
-                    writer.println( "this.properties["+(foundClass ? i-1: i)+"] = new Property( \""+pds[i].getName()+"\", readMethod, writeMethod );");
+                    writer.println( "this.properties["+(foundClass ? i-1: i)+"] = new Property( \""+pds[i].getName()+"\", "+pds[i].getPropertyType().getCanonicalName()+".class,  readMethod, writeMethod );");
                     writer.outdent();
                     writer.println( "}");
                 }
