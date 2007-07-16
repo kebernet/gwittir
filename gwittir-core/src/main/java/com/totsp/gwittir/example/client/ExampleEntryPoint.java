@@ -11,11 +11,12 @@ package com.totsp.gwittir.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.totsp.gwittir.beans.BeanDescriptor;
+import com.totsp.gwittir.beans.Binding;
 import com.totsp.gwittir.beans.Introspector;
 import com.totsp.gwittir.beans.Property;
+import com.totsp.gwittir.ui.TextBox;
 
 /**
  *
@@ -36,7 +37,7 @@ public class ExampleEntryPoint implements EntryPoint{
         RootPanel.get().add( edit );
         
         Introspector is = (Introspector) GWT.create( Introspector.class );
-        BeanDescriptor bd = is.getDescriptor(Foo.class );
+        BeanDescriptor bd = is.getDescriptor( model );
         Object[] newValue = { new Integer(-255) };
         try{
             bd.getProperty("intProperty").getMutatorMethod().invoke( model, newValue );
@@ -48,6 +49,11 @@ public class ExampleEntryPoint implements EntryPoint{
         for( int i=0; i < props.length; i++ ){
             GWT.log( ""+ props[i].getName(), null  );
         }
+        
+        TextBox box = new TextBox();
+        Binding b = new Binding( box, "value", model, "stringProperty" );
+        b.bind();
+        RootPanel.get().add( box );
         
         
     }

@@ -58,15 +58,34 @@ public class IntrospectorGenerator extends Generator {
         SourceWriter writer = cfcf.createSourceWriter( context, printWriter );
         writer.println( "public static final HashMap LOOKUPS = new HashMap();");
         this.writeIntrospectables( logger, introspectables, writer );
+        this.writeResolver( logger, introspectables, writer );
         writer.println( "public BeanDescriptor getDescriptor( Class clazz ){ ");
         writer.indent();
         writer.println( "return (BeanDescriptor) LOOKUPS.get( clazz ); ");
         writer.outdent();
         writer.println( "}");
+        writer.println( "public BeanDescriptor getDescriptor( Object object ){ ");
+        writer.indent();
+        writer.println( "return (BeanDescriptor) LOOKUPS.get( this.resolveClass( object) ); ");
+        writer.outdent();
+        writer.println( "}");
         writer.outdent();
         writer.println("}");
+        
         context.commit( logger, printWriter );
         return packageName+"."+implementationName;
+    }
+    
+    private void writeResolver( TreeLogger logger, List introspectables, SourceWriter writer ){
+        writer.println( "public Class resolveClass(Object object){" );
+        writer.indent();
+        for( Iterator it = introspectables.iterator(); it.hasNext(); ){
+            JClassType type = (JClassType) it.next();
+            writer.println( "if( object instanceof "+ type.getQualifiedSourceName()+" ) return "+type.getQualifiedSourceName()+".class;");
+        }
+        writer.println( "throw new RuntimeException( \"Object \"+object+\"could not be resolved.\" );");
+        writer.outdent();
+        writer.println("}");
     }
     
     private void writeIntrospectables(TreeLogger logger, List introspectables, SourceWriter writer){
@@ -74,7 +93,7 @@ public class IntrospectorGenerator extends Generator {
         writer.indent();
         for( Iterator it = introspectables.iterator(); it.hasNext(); ){
             JClassType type = (JClassType) it.next();
-            logger.branch( logger.DEBUG, "Introspecting: "+ type.getQualifiedSourceName(), null );
+            logger.branch( logger.INFO, "Introspecting: "+ type.getQualifiedSourceName(), null );
             try{
                 BeanInfo info = java.beans.Introspector.getBeanInfo( Class.forName( type.getQualifiedSourceName() ) );
                 if( info.getPropertyDescriptors() == null || info.getPropertyDescriptors().length == 1 ){
@@ -88,10 +107,11 @@ public class IntrospectorGenerator extends Generator {
             } catch( IntrospectionException ine ){
                 logger.log( logger.ERROR, "Unable to introspect class. Is class a bean?", ine );
             }
+            
         }
         writer.outdent();
         writer.println("}");
-       
+        
     }
     
     private void writeBeanDescriptor( TreeLogger logger, BeanInfo info, SourceWriter writer ){
@@ -107,6 +127,7 @@ public class IntrospectorGenerator extends Generator {
                 writer.indentln( "return this.properties;" );
                 writer.println( "this.properties = new Property["+ (info.getPropertyDescriptors().length -1 )+"];");
                 PropertyDescriptor[] pds = info.getPropertyDescriptors();
+                logger.log( logger.INFO, ""+(pds == null), null );
                 boolean foundClass = false;
                 for( int i=0; i < pds.length; i++){
                     if( pds[i].getName().equals("class") ){
@@ -121,7 +142,10 @@ public class IntrospectorGenerator extends Generator {
                     writer.print( "Method writeMethod = ");
                     Method writeMethod = pds[i].getWriteMethod();
                     this.writeMethod( logger, writeMethod, writer );
-                    writer.println( "this.properties["+(foundClass ? i-1: i)+"] = new Property( \""+pds[i].getName()+"\", "+pds[i].getPropertyType().getCanonicalName()+".class,  readMethod, writeMethod );");
+                    logger.log( logger.INFO, pds[i].getName()+" "+ pds[i].getPropertyType(), null );
+                    writer.println( "this.properties["+(foundClass ? i-1: i)+"] = new Property( \""+pds[i].getName()+"\", "+
+                            ( pds[i].getPropertyType() != null ? pds[i].getPropertyType().getCanonicalName() : "Object") +
+                            ".class,  readMethod, writeMethod );");
                     writer.outdent();
                     writer.println( "}");
                 }
@@ -170,8 +194,8 @@ public class IntrospectorGenerator extends Generator {
             writer.print( "casted."+method.getName()+"(");
             for( int j=0; method.getParameterTypes() != null && j < method.getParameterTypes().length; j++ ){
                 
-                this.unbox( method.getParameterTypes()[j], 
-                         "args["+j+"]",
+                this.unbox( method.getParameterTypes()[j],
+                        "args["+j+"]",
                         writer );
                 if( j != method.getParameterTypes().length -1 ){
                     writer.print( ", ");
@@ -198,7 +222,8 @@ public class IntrospectorGenerator extends Generator {
             JClassType[] types = oracle.getTypes();
             JClassType introspectable = oracle.getType("com.totsp.gwittir.beans.Introspectable");
             for( int i=0; i < types.length; i++ ){
-                if( types[i].isAssignableTo( introspectable ) ){
+                logger.log( logger.INFO, types[i]+" is assignable to "+introspectable+" "+types[i].isAssignableTo( introspectable ) +" isInterface = "+ types[i].isInterface() , null );
+                if( types[i].isAssignableTo( introspectable ) && types[i].isInterface() == null ){
                     results.add( types[i] );
                 }
             }
@@ -258,7 +283,7 @@ public class IntrospectorGenerator extends Generator {
             return true;
         }
         if( type == Character.TYPE ){
-            writer.print( "((Character) "+reference+").caarValue()");
+            writer.print( "((Character) "+reference+").charValue()");
             return true;
         }
         if( type == Byte.TYPE ){

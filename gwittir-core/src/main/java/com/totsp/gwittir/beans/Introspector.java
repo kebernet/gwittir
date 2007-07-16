@@ -16,5 +16,6 @@ package com.totsp.gwittir.beans;
 public interface Introspector {
     
     public BeanDescriptor getDescriptor( Class clazz );
-    
+    public BeanDescriptor getDescriptor( Object object );
+    public Class resolveClass( Object instance );
 }

@@ -6,39 +6,38 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir.ui;
 
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
+
 import com.totsp.gwittir.Action;
-import com.totsp.gwittir.BindingAction;
+import com.totsp.gwittir.beans.Bindable;
+
 import java.util.Comparator;
+
 
 /**
  *
  * @author cooper
  */
-public interface BoundWidget extends SourcesChangeEvents {
-    
-    public Object getModel();
-    
-    public void setModel(Object model);
-    
+public interface BoundWidget extends Bindable, SourcesChangeEvents {
     public Action getAction();
-    
-    public void setAction(Action action);
-    
-    public Renderer getRenderer();
-    
-    public void setRenderer(Renderer renderer);
-    
+
     public Comparator getComparator();
-    
-    public void setComparator(Comparator comparator);
-    
+
+    public Object getModel();
+
+    public Renderer getRenderer();
+
     public Object getValue();
-    
+
+    public void setAction(Action action);
+
+    public void setComparator(Comparator comparator);
+
+    public void setModel(Object model);
+
+    public void setRenderer(Renderer renderer);
+
     public void setValue(Object value);
-    
-    
 }

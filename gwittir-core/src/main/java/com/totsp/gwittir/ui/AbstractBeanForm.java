@@ -20,7 +20,7 @@ import java.util.Comparator;
  *
  * @author cooper
  */
-public abstract class AbstractBeanForm extends Composite implements BoundWidget {
+public abstract class AbstractBeanForm extends AbstractBoundWidget {
     
     private Object model;
     private Action action;

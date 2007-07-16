@@ -34,7 +34,7 @@ public class ListBox extends AbstractBoundWidget {
     private Collection options = new ArrayList();
     private ArrayList selected = new ArrayList();
     private Vector changeListeners = new Vector();
-    private PropertyChangeSupport changes = new PropertyChangeSupport( this );
+    
     
     /** Creates a new instance of ListBox */
     public ListBox() {
