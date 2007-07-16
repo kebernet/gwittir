@@ -18,13 +18,14 @@ public class Property {
     private String name;
     private Method accessMethod;
     private Method mutatorMethod;
-    
+    private Class type;
     
     /** Creates a new instance of Property */
-    public Property(String name, Method accessMethod, Method mutatorMethod ) {
+    public Property(String name, Class type, Method accessMethod, Method mutatorMethod ) {
         this.name = name;
         this.accessMethod = accessMethod;
         this.mutatorMethod = mutatorMethod;
+        
     }
 
     public String getName() {
@@ -41,6 +42,10 @@ public class Property {
     
     public String toString(){
         return "Property[ name="+name+" ]";
+    }
+
+    public Class getType() {
+        return type;
     }
     
 }
