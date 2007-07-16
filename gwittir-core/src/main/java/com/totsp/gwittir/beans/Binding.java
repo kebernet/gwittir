@@ -6,114 +6,128 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir.beans;
 
 import com.google.gwt.core.client.GWT;
+
 import com.totsp.gwittir.ValidationException;
 import com.totsp.gwittir.ValidationFeedback;
 import com.totsp.gwittir.Validator;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  *
  * @author cooper
  */
 public class Binding {
-    private static final Introspector INTROSPECTOR = (Introspector) GWT.create( Introspector.class );
-    private List children;
+    private static final Introspector INTROSPECTOR = (Introspector) GWT.create(Introspector.class);
     private BindingInstance left;
     private BindingInstance right;
-    
-    
+    private List children;
+
     /** Creates a new instance of Binding */
-    public Binding(Bindable left, String leftProperty, Bindable right, String rightProperty){
+    public Binding(Bindable left, String leftProperty, Bindable right,
+        String rightProperty) {
         this.left = new BindingInstance();
         this.left.object = left;
-        this.left.property = INTROSPECTOR.getDescriptor( left ).getProperty( leftProperty );
+        this.left.property = INTROSPECTOR.getDescriptor(left)
+                                         .getProperty(leftProperty);
         this.right = new BindingInstance();
         this.right.object = right;
-        this.right.property = INTROSPECTOR.getDescriptor( right ).getProperty( rightProperty );
+        this.right.property = INTROSPECTOR.getDescriptor(right)
+                                          .getProperty(rightProperty);
     }
-    
-    public void bind(){
-        left.listener = new DefaultPropertyChangeListener( left, right );
-        left.object.addPropertyChangeListener( left.property.getName(), left.listener );
-        
-        right.listener = new DefaultPropertyChangeListener( right, left );
-        right.object.addPropertyChangeListener( right.property.getName(), right.listener );
-        for( int i=0; children != null && i < children.size(); i++ ){
+
+    public void bind() {
+        left.listener = new DefaultPropertyChangeListener(left, right);
+        left.object.addPropertyChangeListener(left.property.getName(),
+            left.listener);
+
+        right.listener = new DefaultPropertyChangeListener(right, left);
+        right.object.addPropertyChangeListener(right.property.getName(),
+            right.listener);
+
+        for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);
             child.bind();
         }
     }
-    
-    public void unbind(){
-        left.object.removePropertyChangeListener( left.listener );
+
+    public List getChildren() {
+        return children = (children == null) ? new ArrayList() : children;
+    }
+
+    public void unbind() {
+        left.object.removePropertyChangeListener(left.listener);
         left.listener = null;
-        
-        right.object.removePropertyChangeListener( right.listener );
+
+        right.object.removePropertyChangeListener(right.listener);
         right.listener = null;
-        for( int i=0; children != null && i < children.size(); i++ ){
+
+        for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);
             child.unbind();
         }
     }
-    
-    
-    
-    public List getChildren() {
-        return children = children == null ? new ArrayList() : children;
-    }
-    
-    
+
     public static class BindingInstance {
         public Bindable object;
-        private PropertyChangeListener listener;
         public Converter converter;
         public Property property;
-        public Validator validator;
+        private PropertyChangeListener listener;
         public ValidationFeedback feedback;
+        public Validator validator;
     }
-    
-    private static class DefaultPropertyChangeListener implements PropertyChangeListener {
-        
+
+    private static class DefaultPropertyChangeListener
+        implements PropertyChangeListener {
         private BindingInstance instance;
         private BindingInstance target;
-        
-        DefaultPropertyChangeListener( BindingInstance instance, BindingInstance target ){
+
+        DefaultPropertyChangeListener(BindingInstance instance,
+            BindingInstance target) {
             this.instance = instance;
             this.target = target;
         }
-        
+
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            GWT.log( "PropertyChange: ["+propertyChangeEvent.getPropertyName() +" old: "+propertyChangeEvent.getOldValue() +" new: "+ propertyChangeEvent.getNewValue()+"]",null);
+            GWT.log("PropertyChange: [" +
+                propertyChangeEvent.getPropertyName() + " old: " +
+                propertyChangeEvent.getOldValue() + " new: " +
+                propertyChangeEvent.getNewValue() + "]", null);
+
             Object value = propertyChangeEvent.getNewValue();
-            if( instance.validator != null ){
-                try{
-                    value = instance.validator.validate( value );
-                } catch( ValidationException ve ){
-                    if( instance.feedback != null ){
-                        instance.feedback.handleException( propertyChangeEvent.getSource(), ve );
+
+            if(instance.validator != null) {
+                try {
+                    value = instance.validator.validate(value);
+                } catch(ValidationException ve) {
+                    if(instance.feedback != null) {
+                        instance.feedback.handleException(propertyChangeEvent.getSource(),
+                            ve);
                     } else {
-                        throw new RuntimeException( ve );
+                        throw new RuntimeException(ve);
                     }
                 }
             }
-            if( instance.converter != null ){
-                value = instance.converter.convert( value );
+
+            if(instance.converter != null) {
+                value = instance.converter.convert(value);
             }
+
             Object[] args = { value };
-            try{
-                target.property.getMutatorMethod().invoke( target.object, args );
-            } catch( Exception e){
-                throw new RuntimeException( e );
+
+            try {
+                target.property.getMutatorMethod().invoke(target.object, args);
+            } catch(Exception e) {
+                throw new RuntimeException(e);
             }
         }
-        
-        
     }
 }

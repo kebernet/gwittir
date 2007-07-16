@@ -6,17 +6,15 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir;
 
 import com.totsp.gwittir.ui.BoundWidget;
+
 
 /**
  *
  * @author cooper
  */
 public interface Action {
-    
     public void execute(BoundWidget model);
-    
 }

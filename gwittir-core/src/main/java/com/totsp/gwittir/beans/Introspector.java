@@ -6,16 +6,17 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir.beans;
+
 
 /**
  *
  * @author cooper
  */
 public interface Introspector {
-    
-    public BeanDescriptor getDescriptor( Class clazz );
-    public BeanDescriptor getDescriptor( Object object );
-    public Class resolveClass( Object instance );
+    public BeanDescriptor getDescriptor(Class clazz);
+
+    public BeanDescriptor getDescriptor(Object object);
+
+    public Class resolveClass(Object instance);
 }

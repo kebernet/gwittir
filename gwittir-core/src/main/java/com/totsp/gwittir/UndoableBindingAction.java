@@ -6,15 +6,15 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir;
+
 
 /**
  *
  * @author cooper
  */
 public interface UndoableBindingAction {
-    
-    public void undo();
     public void redo();
+
+    public void undo();
 }

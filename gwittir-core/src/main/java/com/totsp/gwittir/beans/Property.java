@@ -6,30 +6,25 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir.beans;
+
 
 /**
  *
  * @author cooper
  */
 public class Property {
-    
-    private String name;
+    private Class type;
     private Method accessMethod;
     private Method mutatorMethod;
-    private Class type;
-    
+    private String name;
+
     /** Creates a new instance of Property */
-    public Property(String name, Class type, Method accessMethod, Method mutatorMethod ) {
+    public Property(String name, Class type, Method accessMethod,
+        Method mutatorMethod) {
         this.name = name;
         this.accessMethod = accessMethod;
         this.mutatorMethod = mutatorMethod;
-        
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Method getAccessMethod() {
@@ -39,13 +34,16 @@ public class Property {
     public Method getMutatorMethod() {
         return mutatorMethod;
     }
-    
-    public String toString(){
-        return "Property[ name="+name+" ]";
+
+    public String getName() {
+        return name;
     }
 
     public Class getType() {
         return type;
     }
-    
+
+    public String toString() {
+        return "Property[ name=" + name + " ]";
+    }
 }

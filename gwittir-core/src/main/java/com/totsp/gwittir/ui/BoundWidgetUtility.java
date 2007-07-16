@@ -6,19 +6,15 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir.ui;
+
 
 /**
  *
  * @author rcooper
  */
 public class BoundWidgetUtility {
-    
     /** Creates a new instance of BoundWidgetUtility */
     private BoundWidgetUtility() {
     }
-    
-    
-    
 }

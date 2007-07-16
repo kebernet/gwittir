@@ -6,15 +6,15 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir;
+
 
 /**
  *
  * @author cooper
  */
 public interface ServiceAction {
-    
     public KeyBinding getKeyBinding();
-    public void setKeyBinding( KeyBinding binding );
+
+    public void setKeyBinding(KeyBinding binding);
 }

@@ -6,16 +6,15 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package com.totsp.gwittir.beans;
+
 
 /**
  *
  * @author cooper
  */
 public interface BeanDescriptor {
-    
     public Property[] getProperties();
-    public Property getProperty( String name );
-    
+
+    public Property getProperty(String name);
 }
