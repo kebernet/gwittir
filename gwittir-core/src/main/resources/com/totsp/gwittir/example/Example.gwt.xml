@@ -6,7 +6,7 @@
     <inherits name="com.google.gwt.i18n.I18N"/>
     <!-- Inherit the java.beans.* classes from GWTx           -->
     <inherits name='com.googlecode.gwtx.Java'/>
-    <inherits name='com.totsp.Gwittir' />
+    <inherits name='com.totsp.gwittir.Gwittir' />
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.totsp.gwittir.example.client.ExampleEntryPoint'/>
     

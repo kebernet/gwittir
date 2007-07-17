@@ -3,10 +3,10 @@
 <module>
     <!-- Inherit the core Web Toolkit stuff.                  -->
     <inherits name='com.google.gwt.user.User'/>
-    <source path="gwittir" />
+    <source path="client" />
     <generate-with
-        class="com.totsp.rebind.beans.IntrospectorGenerator" >
+        class="com.totsp.gwittir.rebind.beans.IntrospectorGenerator" >
         <when-type-assignable
-            class="com.totsp.gwittir.beans.Introspector" />
+            class="com.totsp.gwittir.client.beans.Introspector" />
     </generate-with>
 </module>
