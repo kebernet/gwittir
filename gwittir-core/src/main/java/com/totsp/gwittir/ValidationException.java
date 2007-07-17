@@ -15,7 +15,7 @@ import com.totsp.gwittir.beans.Introspectable;
  *
  * @author cooper
  */
-public class ValidationException extends Exception implements Introspectable{
+public class ValidationException extends Exception {
     
     private Class validatorClass = null;
     /** Creates a new instance of ValidationException */

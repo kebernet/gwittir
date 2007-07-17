@@ -43,17 +43,17 @@ public class Binding {
         this.right.property = INTROSPECTOR.getDescriptor(right)
                                           .getProperty(rightProperty);
     }
-    
-    public Binding(Bindable left, String leftProperty, Validator leftValidator, ValidationFeedback leftFeedback,
-            Bindable right, String rightProperty, Validator rightValidator, ValidationFeedback rightFeedback ){
-     
+
+    public Binding(Bindable left, String leftProperty, Validator leftValidator,
+        ValidationFeedback leftFeedback, Bindable right, String rightProperty,
+        Validator rightValidator, ValidationFeedback rightFeedback) {
         this.left = new BindingInstance();
         this.left.object = left;
         this.left.property = INTROSPECTOR.getDescriptor(left)
                                          .getProperty(leftProperty);
         this.left.validator = leftValidator;
         this.left.feedback = leftFeedback;
-        
+
         this.right = new BindingInstance();
         this.right.object = right;
         this.right.property = INTROSPECTOR.getDescriptor(right)
@@ -61,9 +61,9 @@ public class Binding {
         this.right.validator = rightValidator;
         this.right.feedback = rightFeedback;
     }
-    
-    public Binding(Bindable left, String leftProperty, Converter leftConverter, Bindable right,
-        String rightProperty, Converter rightConverter ) {
+
+    public Binding(Bindable left, String leftProperty, Converter leftConverter,
+        Bindable right, String rightProperty, Converter rightConverter) {
         this.left = new BindingInstance();
         this.left.object = left;
         this.left.property = INTROSPECTOR.getDescriptor(left)
@@ -75,8 +75,8 @@ public class Binding {
                                           .getProperty(rightProperty);
         this.right.converter = rightConverter;
     }
-    
-    public Binding(BindingInstance left, BindingInstance right){
+
+    public Binding(BindingInstance left, BindingInstance right) {
         this.left = left;
         this.right = right;
     }
@@ -126,6 +126,7 @@ public class Binding {
         implements PropertyChangeListener {
         private BindingInstance instance;
         private BindingInstance target;
+        private ValidationException lastException = null;
 
         DefaultPropertyChangeListener(BindingInstance instance,
             BindingInstance target) {
@@ -144,21 +145,36 @@ public class Binding {
             if(instance.validator != null) {
                 try {
                     value = instance.validator.validate(value);
+                    GWT.log("Validation OK.", null);
                 } catch(ValidationException ve) {
                     if(instance.feedback != null) {
+                        if(this.lastException != null) {
+                            instance.feedback.resolve();
+                        }
+
                         instance.feedback.handleException(propertyChangeEvent.getSource(),
                             ve);
+                        this.lastException = ve;
+                        return;
                     } else {
+                        this.lastException = ve;
                         throw new RuntimeException(ve);
                     }
                 }
             }
+
+            if(this.instance.feedback != null) {
+                this.instance.feedback.resolve();
+            }
+
+            this.lastException = null;
 
             if(instance.converter != null) {
                 value = instance.converter.convert(value);
             }
 
             Object[] args = { value };
+            GWT.log("Invocation value = " + value, null);
 
             try {
                 target.property.getMutatorMethod().invoke(target.object, args);

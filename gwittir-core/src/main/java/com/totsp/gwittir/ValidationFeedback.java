@@ -10,9 +10,10 @@ package com.totsp.gwittir;
 
 
 /**
- *
+ * TODO this needs a .resolve() method
  * @author cooper
  */
 public interface ValidationFeedback {
     public void handleException(Object source, ValidationException exception);
+    public void resolve();
 }

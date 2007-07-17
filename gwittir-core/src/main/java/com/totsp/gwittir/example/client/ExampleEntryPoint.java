@@ -59,10 +59,10 @@ public class ExampleEntryPoint implements EntryPoint {
             GWT.log("" + props[i].getName(), null);
         }
         
-        TextBox box = new TextBox();
-        TextBox intBox = new TextBox();
+        TextBox box = new TextBox(true);
+        TextBox intBox = new TextBox(true);
         
-        ValidationFeedback pvf = new PopupValidationFeedback()
+        ValidationFeedback pvf = new PopupValidationFeedback(PopupValidationFeedback.BOTTOM)
             .addMessage( IntegerValidator.class, "Enter an integer fuckwad ");
         
         Binding b = new Binding(box, "value", model, "stringProperty");
