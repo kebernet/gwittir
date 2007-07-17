@@ -140,7 +140,7 @@ public class IntrospectorGenerator extends Generator {
         try {
             JClassType[] types = oracle.getTypes();
             JClassType introspectable = oracle.getType(
-                    "com.totsp.gwittir.beans.Introspectable");
+                    com.totsp.gwittir.client.beans.Introspectable.class.getCanonicalName() );
 
             for(int i = 0; i < types.length; i++) {
                 logger.log(logger.INFO,

@@ -21,7 +21,6 @@ package com.totsp.gwittir.client.validator;
 
 import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.ui.*;
 
 
 /**
