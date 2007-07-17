@@ -17,17 +17,20 @@ import com.totsp.gwittir.Validator;
  * @author cooper
  */
 public class StringLengthValidator implements Validator {
+    int max;
     int min;
 
     /** Creates a new instance of StringLengthValidator */
-    public StringLengthValidator(int minCharacters) {
+    public StringLengthValidator(int minCharacters, int maxCharacters) {
         this.min = minCharacters;
+        this.max = maxCharacters;
     }
 
     public Object validate(Object value) throws ValidationException {
         if((value == null) || (value.toString().length() < min)) {
             throw new ValidationException("Value must be at least " + min +
-                " characters.", StringLengthValidator.class);
+                "and no more than " + max + " characters.",
+                StringLengthValidator.class);
         }
 
         return value;

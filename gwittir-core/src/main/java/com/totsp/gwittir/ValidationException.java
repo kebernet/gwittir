@@ -8,12 +8,14 @@
  */
 package com.totsp.gwittir;
 
+import com.totsp.gwittir.beans.Introspectable;
+
 
 /**
  *
  * @author cooper
  */
-public class ValidationException extends Exception {
+public class ValidationException extends Exception implements Introspectable{
     
     private Class validatorClass = null;
     /** Creates a new instance of ValidationException */
