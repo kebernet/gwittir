@@ -57,7 +57,7 @@ public class ExampleEntryPoint implements EntryPoint {
             GWT.log((String) bd.getProperty("stringProperty").getAccessMethod()
                                .invoke(model, null), null);
         } catch(Exception e) {
-            GWT.log("AAAH!", e);
+            GWT.log("AAAH!  ", e);
         }
 
         Property[] props = bd.getProperties();

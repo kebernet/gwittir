@@ -10,6 +10,7 @@ package com.totsp.gwittir.client.flow;
 
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -47,16 +48,16 @@ public class FlowController {
             context = (FlowContext) contexts.get(contextRoot);
         }
 
-        if(context == null) {
+        if(context == null || !(contextRoot instanceof HasWidgets)) {
             throw new RuntimeException(
                 "Unknown destination name for this elements context.");
         }
 
-        Panel panel = (Panel) contextRoot;
+        HasWidgets panel = (HasWidgets) contextRoot;
         BoundWidget widget = context.get(name);
 
         if(widget == null) {
-            call(contextRoot.getParent(), name, model);
+            return call(contextRoot.getParent(), name, model);
         }
 
         widget.setModel(model);

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 
@@ -29,13 +30,12 @@ public abstract class AbstractHistoryManager implements HistoryManager {
     public String generateHistoryToken(HashMap values) {
         StringBuffer sb = new StringBuffer();
 
-        for(Iterator it = values.keySet().iterator(); it.hasNext();) {
-            String key = (String) it.next();
-            Object value = values.get(key);
+        for(Iterator it = values.entrySet().iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
 
-            if(value instanceof List) {
-                for(Iterator vit = ((List) value).iterator(); vit.hasNext();) {
-                    sb.append(key);
+            if(entry.getValue() instanceof List) {
+                for(Iterator vit = ((List) entry.getValue()).iterator(); vit.hasNext();) {
+                    sb.append(entry.getKey());
                     sb.append("=");
                     sb.append(vit.next().toString().replaceAll(";", "@~"));
 
@@ -44,9 +44,9 @@ public abstract class AbstractHistoryManager implements HistoryManager {
                     }
                 }
             } else {
-                sb.append(key);
+                sb.append(entry.getKey());
                 sb.append("=");
-                sb.append(value);
+                sb.append(entry.getValue());
             }
 
             if(it.hasNext()) {
@@ -83,8 +83,8 @@ public abstract class AbstractHistoryManager implements HistoryManager {
             if(map.containsKey(key)) {
                 Object current = map.get(key);
 
-                if(current instanceof List) {
-                    ((ArrayList) current).add(value);
+                if(current instanceof List ) {
+                    ((List) current).add(value);
                 } else {
                     ArrayList newVals = new ArrayList();
                     newVals.add(current);

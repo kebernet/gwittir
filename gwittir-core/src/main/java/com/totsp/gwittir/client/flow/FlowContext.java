@@ -58,7 +58,7 @@ public class FlowContext {
 
     public BoundWidget get(String name) {
         Object value = destinations.get(name);
-        BoundWidget ret = null;
+        BoundWidget ret;
 
         if(value instanceof BoundWidgetProvider) {
             ret = ((BoundWidgetProvider) value).get();

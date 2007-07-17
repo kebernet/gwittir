@@ -50,7 +50,7 @@ public abstract class AbstractFooEdit extends TableBeanForm {
                 public Object getProperty(Object target) {
                     GWT.log("GETTING " + ((Foo) target).getIntProperty(), null);
 
-                    return new Integer(((Foo) target).getIntProperty());
+                    return Integer.valueOf(((Foo) target).getIntProperty());
                 }
             });
     BasicPropertyContainer stringProperty = new BasicPropertyContainer("stringProperty",

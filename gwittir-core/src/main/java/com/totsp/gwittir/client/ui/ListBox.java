@@ -44,7 +44,6 @@ public class ListBox extends AbstractBoundWidget {
     private com.google.gwt.user.client.ui.ListBox base = new com.google.gwt.user.client.ui.ListBox();
     private ArrayList selected = new ArrayList();
     private Collection options = new ArrayList();
-    private Object value;
     private Vector changeListeners = new Vector();
 
     /** Creates a new instance of ListBox */

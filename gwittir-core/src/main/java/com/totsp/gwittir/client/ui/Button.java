@@ -35,8 +35,7 @@ import java.beans.PropertyChangeSupport;
 public class Button extends AbstractBoundWidget {
     private final com.google.gwt.user.client.ui.Button base = new com.google.gwt.user.client.ui.Button();
     private Object value;
-    private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
-
+    
     /** Creates a new instance of Button */
     public Button() {
         this.init();
