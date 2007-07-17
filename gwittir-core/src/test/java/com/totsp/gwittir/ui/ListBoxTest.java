@@ -7,6 +7,7 @@
 
 package com.totsp.gwittir.ui;
 
+import com.totsp.gwittir.client.ui.ListBox;
 import java.util.ArrayList;
 import java.util.Iterator;
 import junit.framework.TestCase;

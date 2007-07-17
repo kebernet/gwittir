@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.totsp.gwittir.BindingAction;
-import com.totsp.gwittir.ValidationException;
-import com.totsp.gwittir.ui.BasicPropertyContainer;
-import com.totsp.gwittir.ui.PropertyContainer;
-import com.totsp.gwittir.ui.TableBeanForm;
-import com.totsp.gwittir.ui.TextBox;
-import com.totsp.gwittir.validator.IntegerValidator;
+import com.totsp.gwittir.client.action.BindingAction;
+import com.totsp.gwittir.client.validator.ValidationException;
+import com.totsp.gwittir.client.ui.BasicPropertyContainer;
+import com.totsp.gwittir.client.ui.PropertyContainer;
+import com.totsp.gwittir.client.ui.TableBeanForm;
+import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.client.validator.IntegerValidator;
 
 
 /**

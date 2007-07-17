@@ -8,7 +8,7 @@
  */
 package com.totsp.gwittir.example.client;
 
-import com.totsp.gwittir.beans.Bindable;
+import com.totsp.gwittir.client.beans.Bindable;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

@@ -8,7 +8,7 @@
  */
 package com.totsp.gwittir.example.client;
 
-import com.totsp.gwittir.ui.PropertyContainer;
+import com.totsp.gwittir.client.ui.PropertyContainer;
 
 
 /**
