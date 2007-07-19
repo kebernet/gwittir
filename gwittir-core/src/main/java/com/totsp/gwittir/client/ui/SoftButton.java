@@ -27,9 +27,12 @@ import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
+import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -41,6 +44,7 @@ public class SoftButton extends Button {
     private Widget content;
     private ClickListener listener;
     private boolean enabled;
+    private ArrayList styleNames = new ArrayList();
     
     public SoftButton(){
         super();
@@ -68,7 +72,7 @@ public class SoftButton extends Button {
             public void onLostFocus(Widget sender) {
                 removeStyleName("focussed");
             }
-
+            
             public void onFocus(Widget sender) {
                 addStyleName("focussed");
             }
@@ -80,12 +84,32 @@ public class SoftButton extends Button {
                 GWT.log( "Up", null);
                 removeStyleName("pressed");
             }
-
+            
             public void onMouseDown(Widget sender, int x, int y) {
                 GWT.log("Press", null);
                 addStyleName("pressed");
             }
- 
+            
+        });
+        this.softBase.addKeyboardListener( new KeyboardListenerAdapter(){
+            public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+                if( keyCode == ' ' || keyCode == KeyboardListener.KEY_ENTER ){
+                    if(enabled && getAction() != null) {
+                        getAction().execute(instance);
+                    }
+                }
+                removeStyleName("pressed");
+            }
+
+            public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+                removeStyleName("pressed");
+            }
+
+            public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+                addStyleName("pressed");
+            }
+            
+            
         });
         this.setRenderer(new ToStringRenderer());
         this.initWidget(this.softBase);
@@ -98,7 +122,7 @@ public class SoftButton extends Button {
     }
     
     public void setTitle(String title) {
-        this.softBase.setTitle(title);  
+        this.softBase.setTitle(title);
     }
     
     public void setText(String text) {
@@ -109,7 +133,7 @@ public class SoftButton extends Button {
         } else {
             GWT.log( "New Label text "+text, null);
             this.softBase.clear();
-            this.content = new Label( text );
+            this.setContent(new Label( text ));
             GWT.log( ""+ this.softBase, null);
             this.softBase.setWidget(this.content);
         }
@@ -121,7 +145,7 @@ public class SoftButton extends Button {
             ((HTML) this.content).setHTML( html );
         } else {
             this.softBase.clear();
-            this.content = new HTML( html );
+            this.setContent(new HTML( html ));
             this.softBase.setWidget( this.content );
         }
     }
@@ -155,7 +179,7 @@ public class SoftButton extends Button {
         if( !this.enabled ){
             this.content.addStyleName("disabled");
         } else {
-           this.content.removeStyleName("disabled");
+            this.content.removeStyleName("disabled");
         }
     }
     
@@ -219,24 +243,38 @@ public class SoftButton extends Button {
     public boolean isEnabled() {
         return this.enabled;
     }
-
+    
     public void removeStyleName(String style) {
+        this.styleNames.remove( style );
         this.content.removeStyleName(style);
     }
-
+    
     public void setStyleName(String style) {
+        this.styleNames = new ArrayList();
+        styleNames.add( style );
         this.content.setStyleName(style);
     }
-
+    
     public String getStyleName() {
         String retValue;
-        
         retValue = this.content.getStyleName();
         return retValue;
     }
-
+    
     public void addStyleName(String style) {
+        this.styleNames.add( style );
         this.content.addStyleName(style);
+    }
+    
+    public Widget getContent(){
+        return this.content;
+    }
+    
+    public void setContent(Widget w){
+        for(Iterator it = this.styleNames.iterator(); it.hasNext(); ){
+            w.addStyleName( (String) it.next() );
+        }
+        this.content = w;
     }
     
 }
