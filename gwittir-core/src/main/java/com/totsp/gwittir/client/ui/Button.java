@@ -20,9 +20,14 @@
 package com.totsp.gwittir.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
+import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.KeyboardListener;
+import com.google.gwt.user.client.ui.MouseListener;
+import com.google.gwt.user.client.ui.SourcesClickEvents;
+import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
 
 import java.beans.PropertyChangeListener;
@@ -31,7 +36,7 @@ import java.beans.PropertyChangeListener;
  *
  * @author cooper
  */
-public class Button extends AbstractBoundWidget {
+public class Button extends AbstractBoundWidget implements SourcesClickEvents, HasFocus {
     private final com.google.gwt.user.client.ui.Button base = new com.google.gwt.user.client.ui.Button();
     private Object value;
     
@@ -191,4 +196,9 @@ public class Button extends AbstractBoundWidget {
     public boolean isEnabled() {
         return this.base.isEnabled();
     }
+
+    public void setAccessKey(char key) {
+        this.base.setAccessKey( key );
+    }
+    
 }

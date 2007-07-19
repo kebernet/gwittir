@@ -11,7 +11,11 @@ package com.totsp.gwittir.example.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
 
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
@@ -38,47 +42,47 @@ public class ExampleEntryPoint implements EntryPoint {
     /** Creates a new instance of ExampleEntryPoint */
     public ExampleEntryPoint() {
     }
-
+    
     public void onModuleLoad() {
         Foo model = new Foo();
         model.setIntProperty(3);
         model.setStringProperty("Foo bar baz");
-
+        
         FooEdit edit = new FooEdit(model);
         edit.setModel(model);
         RootPanel.get().add(edit);
-
+        
         Introspector is = (Introspector) GWT.create(Introspector.class);
         BeanDescriptor bd = is.getDescriptor(model);
         Object[] newValue = { new Integer(-255) };
-
+        
         try {
             bd.getProperty("intProperty").getMutatorMethod()
-              .invoke(model, newValue);
+            .invoke(model, newValue);
             GWT.log((String) bd.getProperty("stringProperty").getAccessMethod()
-                               .invoke(model, null), null);
+            .invoke(model, null), null);
         } catch(Exception e) {
             GWT.log("AAAH!  ", e);
         }
-
+        
         Property[] props = bd.getProperties();
-
+        
         for(int i = 0; i < props.length; i++) {
             GWT.log("" + props[i].getName(), null);
         }
-
+        
         TextBox box = new TextBox(true);
         TextBox intBox = new TextBox(true);
-
+        
         CompositeValidator cv = new CompositeValidator()
-                .add(new NotNullValidator())
-                .add(new IntegerValidator())
-                .add(new IntegerRangeValidator(1,5));
+        .add(new NotNullValidator())
+        .add(new IntegerValidator())
+        .add(new IntegerRangeValidator(1,5));
         ValidationFeedback pvf = new PopupValidationFeedback(PopupValidationFeedback.BOTTOM)
-                .addMessage(NotNullValidator.class, "You must provide a value")
-                .addMessage(IntegerValidator.class, "Enter an integer")
-                .addMessage(IntegerRangeValidator.class, "Value must be 1..5");
-
+        .addMessage(NotNullValidator.class, "You must provide a value")
+        .addMessage(IntegerValidator.class, "Enter an integer")
+        .addMessage(IntegerRangeValidator.class, "Value must be 1..5");
+        
         final Binding b = new Binding(box, "value", model, "stringProperty");
         Binding b2 = new Binding(intBox, "value", cv, pvf, model,
                 "intProperty", null, null);
@@ -86,11 +90,19 @@ public class ExampleEntryPoint implements EntryPoint {
         b.getChildren().add( b2 );
         b.bind();
         b.setLeft();
-        Button button = new SoftButton("Validate");
+        SoftButton button = new SoftButton("Validate");
+        
         button.setAction( new Action(){
             public void execute(BoundWidget model) {
                 GWT.log("Action Fired", null);
                 Window.alert( ""+b.isValid() );
+            }
+            
+        });
+        button.setSize( "200px", "200px");
+        button.addClickListener( new ClickListener(){
+            public void onClick(Widget sender) {
+                GWT.log( "CLICKED", null);
             }
             
         });

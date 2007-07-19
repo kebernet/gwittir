@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui;
 
 import com.google.gwt.core.client.GWT;
@@ -30,279 +29,374 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
+import com.google.gwt.user.client.ui.MouseWheelListener;
+import com.google.gwt.user.client.ui.SourcesMouseEvents;
+import com.google.gwt.user.client.ui.SourcesMouseWheelEvents;
 import com.google.gwt.user.client.ui.Widget;
+
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 /**
- *
- * @author cooper
+ * This is a button widget implemented entirely without the native 
+ * button widget. This avoids Z-index overlay problems, and provides
+ * enhanced functionality.
+ * 
+ * <p>Base CSS class: gwittir-SoftButton</p>
+ * <p>Extended CSS Classes:
+ *    <ul>
+ *        <li>disabled</li>
+ *        <li>focussed</li>
+ *        <li>pressed</li>
+ *        <li>hover</li>
+ *    </ul>
+ * </p>
+ * <p>Example styling:
+ *    <code><pre> 
+ * .gwittir-SoftButton.disabled {
+ *    border-style: inset;
+ *    border-width: 2px;
+ *    color: gray;
+ *    background-color: white;
+ * }
+ * </pre></code></p>
+ * <p>This is implemented with a base CSS style of table, so table based
+ * CSS attributes like <code>vertical-align</code> may be applied.</p>
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class SoftButton extends Button {
-    
+public class SoftButton extends Button implements SourcesMouseEvents,
+    SourcesMouseWheelEvents {
+    private ArrayList styleNames = new ArrayList();
+    private ClickListener listener;
+    private FocusListener focus;
     private FocusPanel softBase;
     private Grid grid;
+    private MouseListener hover;
     private Widget content;
-    private ClickListener listener;
     private boolean enabled;
-    private ArrayList styleNames = new ArrayList();
-    
-    public SoftButton(){
+
+    /**
+     * Creates a new instance with an empty text value.
+     */
+    public SoftButton() {
         super();
     }
-    
-    public SoftButton(String label){
+
+    /**
+     * Creates a new instance.
+     * @param label String value containing the text to apply in Label format.
+     */
+    public SoftButton(String label) {
         super(label);
     }
-    
-    protected void init() {
-        this.softBase = new FocusPanel();
-        this.grid = new Grid(1,1);
-        DOM.setStyleAttribute( this.softBase.getElement(), "display", "inline");
-        this.setContent( new Label() );
-        this.softBase.setWidget( grid );
-        final SoftButton instance = this;
-        listener = new ClickListener() {
-            public void onClick(Widget sender) {
-                GWT.log( "Clicked "+getAction(), null);
-                if(enabled && getAction() != null) {
-                    getAction().execute(instance);
-                }
-            }
-        };
-        this.addFocusListener( new FocusListener(){
-            public void onLostFocus(Widget sender) {
-                removeStyleName("focussed");
-            }
-            
-            public void onFocus(Widget sender) {
-                addStyleName("focussed");
-            }
-            
-        });
-        this.softBase.addClickListener(listener);
-        this.softBase.addMouseListener( new MouseListenerAdapter() {
-            public void onMouseUp(Widget sender, int x, int y) {
-                GWT.log( "Up", null);
-                removeStyleName("pressed");
-            }
-            
-            public void onMouseDown(Widget sender, int x, int y) {
-                GWT.log("Press", null);
-                addStyleName("pressed");
-            }
-            
-        });
-        this.softBase.addKeyboardListener( new KeyboardListenerAdapter(){
-            public void onKeyPress(Widget sender, char keyCode, int modifiers) {
-                if( keyCode == ' ' || keyCode == KeyboardListener.KEY_ENTER ){
-                    if(enabled && getAction() != null) {
-                        getAction().execute(instance);
-                    }
-                }
-                removeStyleName("pressed");
-            }
 
-            public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-                removeStyleName("pressed");
-            }
-
-            public void onKeyDown(Widget sender, char keyCode, int modifiers) {
-                addStyleName("pressed");
-            }
-            
-            
-        });
-        this.setRenderer(new ToStringRenderer());
-        this.initWidget(this.softBase);
-        this.setStyleName( "gwittir-SoftButton");
-        this.setEnabled( true );
-    }
-    
-    public void setWidth(String width) {
-        this.softBase.setWidth(width);
-    }
-    
-    public void setTitle(String title) {
-        this.softBase.setTitle(title);
-    }
-    
-    public void setText(String text) {
-        GWT.log( "Setting text "+text, null);
-        if( this.content instanceof Label ){
-            GWT.log( "Label text "+text, null);
-            ((Label) this.content).setText( text );
-        } else {
-            GWT.log( "New Label text "+text, null);
-            this.setContent(new Label( text ));
-        }
-        
-    }
-    
-    public void setHTML(String html) {
-        if( this.content instanceof HTML ){
-            ((HTML) this.content).setHTML( html );
-        } else {
-            this.setContent(new HTML( html ));
-        }
-    }
-    
-    public void addKeyboardListener(KeyboardListener listener) {
-        this.softBase.addKeyboardListener(listener);
-    }
-    
-    public void removeKeyboardListener(KeyboardListener listener) {
-        this.softBase.removeKeyboardListener(listener);
-    }
-    
+    /**
+     * 
+     */
     public void addClickListener(ClickListener listener) {
         this.softBase.addClickListener(listener);
     }
-    
+
+    public void addFocusListener(FocusListener listener) {
+        this.softBase.addFocusListener(listener);
+    }
+
+    public void addKeyboardListener(KeyboardListener listener) {
+        this.softBase.addKeyboardListener(listener);
+    }
+
+    public void addMouseListener(MouseListener listener) {
+        this.softBase.addMouseListener(listener);
+    }
+
+    public void addMouseWheelListener(MouseWheelListener listener) {
+        this.softBase.addMouseWheelListener(listener);
+    }
+
+    public void addStyleName(String style) {
+        this.styleNames.add(style);
+        this.grid.addStyleName(style);
+    }
+
+    public int getAbsoluteLeft() {
+        int retValue;
+
+        retValue = this.grid.getAbsoluteLeft();
+
+        return retValue;
+    }
+
+    /**
+     * 
+     */
+    public int getAbsoluteTop() {
+        int retValue;
+
+        retValue = this.grid.getAbsoluteTop();
+
+        return retValue;
+    }
+
+    /**
+     * Returns the widget that composes the internals of the button.
+     * @return 
+     */
+    public Widget getContent() {
+        return this.content;
+    }
+
+    public String getHTML() {
+        if(this.content instanceof HTML) {
+            return ((HTML) this.content).getHTML();
+        } else {
+            return ((Label) this.content).getText();
+        }
+    }
+
+    public int getOffsetHeight() {
+        int retValue;
+
+        retValue = this.grid.getOffsetHeight();
+
+        return retValue;
+    }
+
+    public int getOffsetWidth() {
+        int retValue;
+
+        retValue = this.grid.getOffsetWidth();
+
+        return retValue;
+    }
+
+    public String getStyleName() {
+        String retValue;
+        retValue = this.grid.getStyleName();
+
+        return retValue;
+    }
+
+    public int getTabIndex() {
+        int retValue;
+
+        retValue = this.softBase.getTabIndex();
+
+        return retValue;
+    }
+
+    public String getText() {
+        if(this.content instanceof HTML) {
+            return ((HTML) this.content).getHTML();
+        } else if(this.content instanceof Label) {
+            return ((Label) this.content).getText();
+        } else {
+            return this.content.toString();
+        }
+    }
+
+    public String getTitle() {
+        String retValue;
+
+        retValue = this.softBase.getTitle();
+
+        return retValue;
+    }
+
+    public int hashCode() {
+        int retValue;
+
+        retValue = this.softBase.hashCode();
+
+        return retValue;
+    }
+
+    protected void init() {
+        this.softBase = new FocusPanel();
+        this.grid = new Grid(1, 1);
+        DOM.setStyleAttribute(this.softBase.getElement(), "display", "inline");
+        this.setContent(new Label());
+        this.softBase.setWidget(grid);
+
+        final SoftButton instance = this;
+        listener = new ClickListener() {
+                    public void onClick(Widget sender) {
+                        //GWT.log("Clicked " + getAction(), null);
+
+                        if(enabled && (getAction() != null)) {
+                            getAction().execute(instance);
+                        }
+                    }
+                };
+        this.softBase.addClickListener(listener);
+        this.focus = new FocusListener() {
+                    public void onLostFocus(Widget sender) {
+                        removeStyleName("focussed");
+                    }
+
+                    public void onFocus(Widget sender) {
+                        addStyleName("focussed");
+                    }
+                };
+        this.addFocusListener(this.focus);
+        this.hover = new MouseListenerAdapter() {
+                    public void onMouseUp(Widget sender, int x, int y) {
+                        //GWT.log("Up", null);
+                        removeStyleName("pressed");
+                    }
+
+                    public void onMouseDown(Widget sender, int x, int y) {
+                        //GWT.log("Press", null);
+                        addStyleName("pressed");
+                    }
+
+                    public void onMouseLeave(Widget sender) {
+                        removeStyleName("hover");
+                    }
+
+                    public void onMouseEnter(Widget sender) {
+                        addStyleName("hover");
+                    }
+                };
+        this.softBase.addMouseListener(hover);
+        this.softBase.addKeyboardListener(new KeyboardListenerAdapter() {
+                public void onKeyPress(Widget sender, char keyCode,
+                    int modifiers) {
+                    if((keyCode == ' ')
+                            || (keyCode == KeyboardListener.KEY_ENTER)) {
+                        if(enabled && (getAction() != null)) {
+                            getAction().execute(instance);
+                        }
+                    }
+
+                    removeStyleName("pressed");
+                }
+
+                public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+                    removeStyleName("pressed");
+                }
+
+                public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+                    addStyleName("pressed");
+                }
+            });
+        this.setRenderer(new ToStringRenderer());
+        this.initWidget(this.softBase);
+        this.setStyleName("gwittir-SoftButton");
+        this.setEnabled(true);
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
     public void removeClickListener(ClickListener listener) {
         this.softBase.removeClickListener(listener);
     }
-    
-    public void setTabIndex(int index) {
-        this.softBase.setTabIndex(index);
+
+    public void removeFocusListener(FocusListener listener) {
+        this.softBase.removeFocusListener(listener);
     }
-    
-    public void setFocus(boolean focused) {
-        this.softBase.setFocus(focused);
+
+    public void removeKeyboardListener(KeyboardListener listener) {
+        this.softBase.removeKeyboardListener(listener);
     }
-    
+
+    public void removeMouseListener(MouseListener listener) {
+        this.softBase.removeMouseListener(listener);
+    }
+
+    public void removeMouseWheelListener(MouseWheelListener listener) {
+        this.softBase.removeMouseWheelListener(listener);
+    }
+
+    public void removeStyleName(String style) {
+        this.styleNames.remove(style);
+        this.grid.removeStyleName(style);
+    }
+
+    public void setAccessKey(char key) {
+        this.softBase.setAccessKey(key);
+    }
+
+    /**
+     * Sets the internals of the button to the specified widget.
+     * 
+     * <p>This can be used to provide icons or other non-standard elements
+     * for the button.</p>
+     * @param w Widget to place inside the button.
+     */
+    public void setContent(Widget w) {
+        //for(Iterator it = this.styleNames.iterator(); it.hasNext(); ){
+        //    w.addStyleName( (String) it.next() );
+        //}
+        this.content = w;
+        //GWT.log("Setting Content: " + w.toString(), null);
+        this.grid.setWidget(0, 0, this.content);
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-        if( !this.enabled ){
+
+        if(!this.enabled) {
             this.content.addStyleName("disabled");
         } else {
             this.content.removeStyleName("disabled");
         }
     }
-    
-    public void setAccessKey(char key) {
-        this.softBase.setAccessKey(key);
+
+    public void setFocus(boolean focused) {
+        this.softBase.setFocus(focused);
     }
-    
-    public void addFocusListener(FocusListener listener) {
-        this.softBase.addFocusListener(listener);
+
+    public void setHTML(String html) {
+        if(this.content instanceof HTML) {
+            ((HTML) this.content).setHTML(html);
+        } else {
+            this.setContent(new HTML(html));
+        }
+
+        Object old = this.getValue();
+        this.setText((this.getRenderer() != null)
+            ? this.getRenderer().render(html) : ("" + html));
     }
-    
-    public void removeFocusListener(FocusListener listener) {
-        this.softBase.removeFocusListener(listener);
-    }
-    
+
     public void setPixelSize(int width, int height) {
         this.grid.setPixelSize(width, height);
     }
-    
+
     public void setSize(String width, String height) {
         this.grid.setSize(width, height);
     }
-    
-    public String getHTML() {
-        if( this.content instanceof HTML ){
-            return ((HTML) this.content).getHTML();
-        } else {
-            return ((Label) this.content).getText();
-        }
-    }
-    
-    public int getTabIndex() {
-        int retValue;
-        
-        retValue = this.softBase.getTabIndex();
-        return retValue;
-    }
-    
-    public String getText() {
-        if( this.content instanceof HTML ){
-            return ((HTML) this.content).getHTML();
-        } else {
-            return ((Label) this.content).getText();
-        }
-    }
-    
-    public String getTitle() {
-        String retValue;
-        
-        retValue = this.softBase.getTitle();
-        return retValue;
-    }
-    
-    public int hashCode() {
-        int retValue;
-        
-        retValue = this.softBase.hashCode();
-        return retValue;
-    }
-    
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-    
-    public void removeStyleName(String style) {
-        this.styleNames.remove( style );
-        this.grid.removeStyleName(style);
-    }
-    
+
     public void setStyleName(String style) {
         this.styleNames = new ArrayList();
-        styleNames.add( style );
+        styleNames.add(style);
         this.grid.setStyleName(style);
     }
-    
-    public String getStyleName() {
-        String retValue;
-        retValue = this.grid.getStyleName();
-        return retValue;
-    }
-    
-    public void addStyleName(String style) {
-        this.styleNames.add( style );
-        this.grid.addStyleName(style);
-    }
-    
-    public Widget getContent(){
-        return this.content;
-    }
-    
-    public void setContent(Widget w){
-        //for(Iterator it = this.styleNames.iterator(); it.hasNext(); ){
-        //    w.addStyleName( (String) it.next() );
-        //}
-        this.content = w;
-        GWT.log( "Setting Content: "+w.toString(), null );
-        this.grid.setWidget(0,0, this.content );
+
+    public void setTabIndex(int index) {
+        this.softBase.setTabIndex(index);
     }
 
-    public int getOffsetWidth() {
-        int retValue;
-        
-        retValue = this.grid.getOffsetWidth();
-        return retValue;
+    public void setText(String text) {
+        //GWT.log("Setting text " + text, null);
+
+        if(this.content instanceof Label) {
+            //GWT.log("Label text " + text, null);
+            ((Label) this.content).setText(text);
+        } else {
+            //GWT.log("New Label text " + text, null);
+            this.setContent(new Label(text));
+        }
     }
 
-    public int getOffsetHeight() {
-        int retValue;
-        
-        retValue = this.grid.getOffsetHeight();
-        return retValue;
+    public void setTitle(String title) {
+        this.softBase.setTitle(title);
     }
 
-    public int getAbsoluteTop() {
-        int retValue;
-        
-        retValue = this.grid.getAbsoluteTop();
-        return retValue;
+    public void setWidth(String width) {
+        this.softBase.setWidth(width);
     }
-
-    public int getAbsoluteLeft() {
-        int retValue;
-        
-        retValue = this.grid.getAbsoluteLeft();
-        return retValue;
-    }
-    
 }

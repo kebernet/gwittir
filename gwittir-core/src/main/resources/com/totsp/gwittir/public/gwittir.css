@@ -6,6 +6,8 @@
     color: black;
     background-color: silver;
     padding: 5px;
+    vertical-align: middle;
+    text-align: center;
 }
 .gwittir-SoftButton.disabled {
     border-style: inset;
@@ -21,6 +23,9 @@
     border-width: 2px;
     color: gray;
     background-color: darkgray;
+}
+.gwittir-SoftButton.hover {
+    background-color: lightgray;
 }
 
 
