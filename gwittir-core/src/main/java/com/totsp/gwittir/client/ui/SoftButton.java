@@ -132,10 +132,7 @@ public class SoftButton extends Button {
             ((Label) this.content).setText( text );
         } else {
             GWT.log( "New Label text "+text, null);
-            this.softBase.clear();
             this.setContent(new Label( text ));
-            GWT.log( ""+ this.softBase, null);
-            this.softBase.setWidget(this.content);
         }
         
     }
@@ -144,9 +141,7 @@ public class SoftButton extends Button {
         if( this.content instanceof HTML ){
             ((HTML) this.content).setHTML( html );
         } else {
-            this.softBase.clear();
             this.setContent(new HTML( html ));
-            this.softBase.setWidget( this.content );
         }
     }
     
@@ -275,6 +270,8 @@ public class SoftButton extends Button {
             w.addStyleName( (String) it.next() );
         }
         this.content = w;
+        this.softBase.clear();
+        this.softBase.setWidget( this.content );
     }
     
 }
