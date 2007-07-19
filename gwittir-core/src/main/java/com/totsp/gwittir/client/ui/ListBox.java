@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ChangeListener;
@@ -27,8 +26,6 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Widget;
-
-import java.beans.PropertyChangeSupport;
 
 import java.util.ArrayList;
 import java.util.Collection;

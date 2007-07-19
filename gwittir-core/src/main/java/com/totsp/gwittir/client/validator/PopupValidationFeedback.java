@@ -19,17 +19,9 @@
  */
 package com.totsp.gwittir.client.validator;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.validator.AbstractValidationFeedback;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 
 /**
  *
@@ -52,6 +44,7 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
         Widget w = (Widget) source;
         p.setStyleName("gwittir-ValidationPopup");
         p.setWidget(new Label(this.getMessage(exception)));
+        p.setPopupPosition( -5000, -5000 );
         p.show();
         if(this.position == BOTTOM) {
             p.setPopupPosition(w.getAbsoluteLeft(),
@@ -66,9 +59,6 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
             p.setPopupPosition(w.getAbsoluteLeft(),
                 w.getAbsoluteTop() - p.getOffsetHeight());
         }
-        
-
-        
     }
 
     public void resolve() {

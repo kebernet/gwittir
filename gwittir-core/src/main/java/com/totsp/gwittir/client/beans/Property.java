@@ -36,6 +36,7 @@ public class Property {
         this.name = name;
         this.accessMethod = accessMethod;
         this.mutatorMethod = mutatorMethod;
+        this.type = type;
     }
 
     public Method getAccessMethod() {

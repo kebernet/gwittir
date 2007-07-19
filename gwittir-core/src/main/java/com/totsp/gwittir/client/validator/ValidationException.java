@@ -19,9 +19,6 @@
  */
 package com.totsp.gwittir.client.validator;
 
-import com.totsp.gwittir.client.beans.Introspectable;
-
-
 /**
  *
  * @author cooper

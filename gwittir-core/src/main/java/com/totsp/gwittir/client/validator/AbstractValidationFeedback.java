@@ -20,10 +20,6 @@
  */
 package com.totsp.gwittir.client.validator;
 
-import com.google.gwt.core.client.GWT;
-
-import com.totsp.gwittir.client.beans.Introspector;
-
 import java.util.HashMap;
 
 
@@ -47,7 +43,12 @@ public abstract class AbstractValidationFeedback implements ValidationFeedback {
 
     protected String getMessage(ValidationException validationException) {
         Class clazz = validationException.getValidatorClass();
-        String message =  (String) mappings.get(clazz);
-        return message == null ? "Unknown error." : message;
+        String message = null;
+
+        if(validationException.getValidatorClass() != null) {
+            message = (String) mappings.get(clazz);
+        }
+
+        return (message == null) ? validationException.getMessage() : message;
     }
 }

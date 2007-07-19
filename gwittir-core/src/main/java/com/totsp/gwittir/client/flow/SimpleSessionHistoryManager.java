@@ -81,7 +81,7 @@ public class SimpleSessionHistoryManager extends AbstractHistoryManager {
             states.size(), null);
 
         HashMap values = this.parseHistoryToken(History.getToken());
-        values.put("s", Integer.valueOf(currentState));
+        values.put("s", Integer.toString(currentState));
         History.newItem(this.generateHistoryToken(values));
     }
 

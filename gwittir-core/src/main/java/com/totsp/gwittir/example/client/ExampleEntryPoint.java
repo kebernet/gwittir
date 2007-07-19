@@ -22,6 +22,7 @@ import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Property;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.ui.SoftButton;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.validator.CompositeValidator;
 import com.totsp.gwittir.client.validator.IntegerRangeValidator;
@@ -85,9 +86,10 @@ public class ExampleEntryPoint implements EntryPoint {
         b.getChildren().add( b2 );
         b.bind();
         b.setLeft();
-        Button button = new Button("Validate");
+        Button button = new SoftButton("Validate");
         button.setAction( new Action(){
             public void execute(BoundWidget model) {
+                GWT.log("Action Fired", null);
                 Window.alert( ""+b.isValid() );
             }
             

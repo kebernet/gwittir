@@ -19,14 +19,13 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.Widget;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 
 /**
  *
@@ -42,8 +41,8 @@ public class Button extends AbstractBoundWidget {
     }
 
     public Button(String label) {
-        this.setValue(label);
         this.init();
+        this.setValue(label);
     }
 
     public void addClickListener(ClickListener listener) {
@@ -115,7 +114,7 @@ public class Button extends AbstractBoundWidget {
         return this.value;
     }
 
-    private void init() {
+    protected void init() {
         final Button instance = this;
         ClickListener listener = new ClickListener() {
                 public void onClick(Widget sender) {
@@ -181,9 +180,15 @@ public class Button extends AbstractBoundWidget {
     }
 
     public void setValue(Object value) {
+        GWT.log("Setting value "+ value, null );
+        
         Object old = this.value;
         this.value = value;
-        this.base.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
+        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
         this.changes.firePropertyChange("value", old, value);
+    }
+
+    public boolean isEnabled() {
+        return this.base.isEnabled();
     }
 }

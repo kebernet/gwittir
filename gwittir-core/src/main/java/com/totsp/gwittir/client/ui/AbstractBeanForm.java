@@ -9,12 +9,8 @@
 package com.totsp.gwittir.client.ui;
 
 import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.Composite;
 
 import com.totsp.gwittir.client.action.Action;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import java.util.Comparator;
 

@@ -1,0 +1,32 @@
+.gwittir-SoftButton {
+    border-style: outset;
+    border-width: 2px;
+    display: inline;
+    cursor: default;
+    color: black;
+    background-color: silver;
+    padding: 5px;
+}
+.gwittir-SoftButton.disabled {
+    border-style: inset;
+    border-width: 2px;
+    color: gray;
+    background-color: white;
+}
+.gwittir-SoftButton.focussed {
+    background-color: lightgray;
+}
+.gwittir-SoftButton.pressed {
+    border-style: inset;
+    border-width: 2px;
+    color: gray;
+    background-color: darkgray;
+}
+
+
+
+
+
+
+
+

@@ -8,7 +8,6 @@
  */
 package com.totsp.gwittir.client.flow;
 
-import com.google.gwt.user.client.ui.Panel;
 
 import com.totsp.gwittir.client.ui.BoundWidget;
 
