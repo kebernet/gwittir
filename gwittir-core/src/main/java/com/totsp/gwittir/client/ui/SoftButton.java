@@ -25,6 +25,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
@@ -41,6 +42,7 @@ import java.util.Iterator;
 public class SoftButton extends Button {
     
     private FocusPanel softBase;
+    private Grid grid;
     private Widget content;
     private ClickListener listener;
     private boolean enabled;
@@ -56,9 +58,10 @@ public class SoftButton extends Button {
     
     protected void init() {
         this.softBase = new FocusPanel();
+        this.grid = new Grid(1,1);
         DOM.setStyleAttribute( this.softBase.getElement(), "display", "inline");
         this.content = new Label();
-        this.softBase.setWidget( content );
+        this.softBase.setWidget( grid );
         final SoftButton instance = this;
         listener = new ClickListener() {
             public void onClick(Widget sender) {
@@ -270,8 +273,7 @@ public class SoftButton extends Button {
             w.addStyleName( (String) it.next() );
         }
         this.content = w;
-        this.softBase.clear();
-        this.softBase.setWidget( this.content );
+        this.grid.setWidget(0,0, w );
     }
     
 }
