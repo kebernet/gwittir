@@ -276,5 +276,33 @@ public class SoftButton extends Button {
         GWT.log( "Setting Content: "+w.toString(), null );
         this.grid.setWidget(0,0, this.content );
     }
+
+    public int getOffsetWidth() {
+        int retValue;
+        
+        retValue = this.grid.getOffsetWidth();
+        return retValue;
+    }
+
+    public int getOffsetHeight() {
+        int retValue;
+        
+        retValue = this.grid.getOffsetHeight();
+        return retValue;
+    }
+
+    public int getAbsoluteTop() {
+        int retValue;
+        
+        retValue = this.grid.getAbsoluteTop();
+        return retValue;
+    }
+
+    public int getAbsoluteLeft() {
+        int retValue;
+        
+        retValue = this.grid.getAbsoluteLeft();
+        return retValue;
+    }
     
 }
