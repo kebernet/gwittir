@@ -60,7 +60,7 @@ public class SoftButton extends Button {
         this.softBase = new FocusPanel();
         this.grid = new Grid(1,1);
         DOM.setStyleAttribute( this.softBase.getElement(), "display", "inline");
-        this.content = new Label();
+        this.setContent( new Label() );
         this.softBase.setWidget( grid );
         final SoftButton instance = this;
         listener = new ClickListener() {
@@ -194,11 +194,11 @@ public class SoftButton extends Button {
     }
     
     public void setPixelSize(int width, int height) {
-        this.softBase.setPixelSize(width, height);
+        this.grid.setPixelSize(width, height);
     }
     
     public void setSize(String width, String height) {
-        this.softBase.setSize(width, height);
+        this.grid.setSize(width, height);
     }
     
     public String getHTML() {
@@ -244,24 +244,24 @@ public class SoftButton extends Button {
     
     public void removeStyleName(String style) {
         this.styleNames.remove( style );
-        this.content.removeStyleName(style);
+        this.grid.removeStyleName(style);
     }
     
     public void setStyleName(String style) {
         this.styleNames = new ArrayList();
         styleNames.add( style );
-        this.content.setStyleName(style);
+        this.grid.setStyleName(style);
     }
     
     public String getStyleName() {
         String retValue;
-        retValue = this.content.getStyleName();
+        retValue = this.grid.getStyleName();
         return retValue;
     }
     
     public void addStyleName(String style) {
         this.styleNames.add( style );
-        this.content.addStyleName(style);
+        this.grid.addStyleName(style);
     }
     
     public Widget getContent(){
@@ -269,11 +269,12 @@ public class SoftButton extends Button {
     }
     
     public void setContent(Widget w){
-        for(Iterator it = this.styleNames.iterator(); it.hasNext(); ){
-            w.addStyleName( (String) it.next() );
-        }
+        //for(Iterator it = this.styleNames.iterator(); it.hasNext(); ){
+        //    w.addStyleName( (String) it.next() );
+        //}
         this.content = w;
-        this.grid.setWidget(0,0, w );
+        GWT.log( "Setting Content: "+w.toString(), null );
+        this.grid.setWidget(0,0, this.content );
     }
     
 }
