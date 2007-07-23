@@ -212,7 +212,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
     
     protected void init() {
-        this.setBaseStyleName("gwittir-SoftButton");
+        this.baseStyleName = "gwittir-SoftButton";
         this.clickers = new ClickListenerCollection();
         this.softBase = new FocusPanel();
         this.grid = new Grid(1, 1);
@@ -313,7 +313,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         });
         this.setRenderer(new ToStringRenderer());
         this.initWidget(this.softBase);
-        this.setStyleName(getBaseStyleName());
+        this.setStyleName(this.baseStyleName);
         this.setEnabled(true);
     }
     
