@@ -439,6 +439,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
 
     public void setBaseStyleName(String baseStyleName) {
         this.baseStyleName = baseStyleName;
+        this.setStyleName( baseStyleName );
     }
     
 }
