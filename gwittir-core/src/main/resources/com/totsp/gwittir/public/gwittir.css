@@ -1,28 +1,58 @@
 .gwittir-SoftButton {
     border-style: outset;
     border-width: 2px;
-    display: inline;
-    cursor: default;
     color: black;
     background-color: silver;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+    
+}
+.gwittir-SoftButton-disabled {
+    border-style: inset;
+    border-width: 2px;
+    color: gray;
+    background-color: white;
+    display: inline;
+    cursor: default;
     padding: 5px;
     vertical-align: middle;
     text-align: center;
 }
-.gwittir-SoftButton.disabled {
-    border-style: inset;
-    color: gray;
-    background-color: white;
-}
-.gwittir-SoftButton.hover {
+.gwittir-SoftButton-hover {
+    border-style: outset;
+    border-width: 2px;
     background-color: silver;
+    color: black;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
 }
-.gwittir-SoftButton.focussed {
+.gwittir-SoftButton-focused {
+    border-style: outset;
+    border-width: 2px;
+    color: black;
     background-color: silver;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
 }
-.gwittir-SoftButton.pressed {
+.gwittir-SoftButton-pressed {
+    border-width: 2px;
     border-style: inset;
     background-color: gray;
+    color: black;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
 }
 
 
