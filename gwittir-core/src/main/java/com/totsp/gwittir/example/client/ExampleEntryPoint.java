@@ -56,6 +56,25 @@ public class ExampleEntryPoint implements EntryPoint {
         BeanDescriptor bd = is.getDescriptor(model);
         Object[] newValue = { new Integer(-255) };
         
+        SoftButton button = new SoftButton("Validate");
+        
+        button.setAction( new Action(){
+            public void execute(BoundWidget model) {
+                GWT.log("Action Fired", null);
+                //Window.alert( ""+b.isValid() );
+            }
+            
+        });
+        button.setSize( "200px", "200px");
+        button.addClickListener( new ClickListener(){
+            public void onClick(Widget sender) {
+                GWT.log( "CLICKED", null);
+            }
+            
+        });
+        
+        RootPanel.get().add( button );
+        
         try {
             bd.getProperty("intProperty").getMutatorMethod()
             .invoke(model, newValue);
@@ -90,7 +109,7 @@ public class ExampleEntryPoint implements EntryPoint {
         b.getChildren().add( b2 );
         b.bind();
         b.setLeft();
-        SoftButton button = new SoftButton("Validate");
+
         
         button.setAction( new Action(){
             public void execute(BoundWidget model) {
@@ -106,8 +125,8 @@ public class ExampleEntryPoint implements EntryPoint {
             }
             
         });
+        
         RootPanel.get().add(box);
         RootPanel.get().add(intBox);
-        RootPanel.get().add( button );
     }
 }

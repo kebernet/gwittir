@@ -68,7 +68,6 @@ import java.util.ArrayList;
  */
 public class SoftButton extends Button implements SourcesMouseEvents,
     SourcesMouseWheelEvents {
-    private ArrayList styleNames = new ArrayList();
     private ClickListener listener;
     private FocusListener focus;
     private FocusPanel softBase;
@@ -116,7 +115,6 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
 
     public void addStyleName(String style) {
-        this.styleNames.add(style);
         this.grid.addStyleName(style);
     }
 
@@ -232,23 +230,26 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         this.softBase.addClickListener(listener);
         this.focus = new FocusListener() {
                     public void onLostFocus(Widget sender) {
-                        removeStyleName("focussed");
+                        
+                            removeStyleName("focussed");
                     }
 
                     public void onFocus(Widget sender) {
-                        addStyleName("focussed");
+                        if(enabled)
+                            addStyleName("focussed");
                     }
                 };
         this.addFocusListener(this.focus);
         this.hover = new MouseListenerAdapter() {
                     public void onMouseUp(Widget sender, int x, int y) {
                         //GWT.log("Up", null);
-                        removeStyleName("pressed");
+                            removeStyleName("pressed");
                     }
 
                     public void onMouseDown(Widget sender, int x, int y) {
                         //GWT.log("Press", null);
-                        addStyleName("pressed");
+                        if(enabled)
+                            addStyleName("pressed");
                     }
 
                     public void onMouseLeave(Widget sender) {
@@ -256,7 +257,8 @@ public class SoftButton extends Button implements SourcesMouseEvents,
                     }
 
                     public void onMouseEnter(Widget sender) {
-                        addStyleName("hover");
+                        if(enabled)
+                            addStyleName("hover");
                     }
                 };
         this.softBase.addMouseListener(hover);
@@ -278,7 +280,8 @@ public class SoftButton extends Button implements SourcesMouseEvents,
                 }
 
                 public void onKeyDown(Widget sender, char keyCode, int modifiers) {
-                    addStyleName("pressed");
+                    if(enabled)
+                        addStyleName("pressed");
                 }
             });
         this.setRenderer(new ToStringRenderer());
@@ -312,7 +315,6 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
 
     public void removeStyleName(String style) {
-        this.styleNames.remove(style);
         this.grid.removeStyleName(style);
     }
 
@@ -340,9 +342,9 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         this.enabled = enabled;
 
         if(!this.enabled) {
-            this.content.addStyleName("disabled");
+            this.addStyleName("disabled");
         } else {
-            this.content.removeStyleName("disabled");
+            this.removeStyleName("disabled");
         }
     }
 
@@ -371,8 +373,6 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
 
     public void setStyleName(String style) {
-        this.styleNames = new ArrayList();
-        styleNames.add(style);
         this.grid.setStyleName(style);
     }
 
@@ -397,6 +397,10 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
 
     public void setWidth(String width) {
-        this.softBase.setWidth(width);
+        this.grid.setWidth(width);
+    }
+
+    public void setHeight(String height) {
+        this.grid.setHeight(height);
     }
 }

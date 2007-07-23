@@ -11,21 +11,18 @@
 }
 .gwittir-SoftButton.disabled {
     border-style: inset;
-    border-width: 2px;
     color: gray;
     background-color: white;
 }
+.gwittir-SoftButton.hover {
+    background-color: silver;
+}
 .gwittir-SoftButton.focussed {
-    background-color: lightgray;
+    background-color: silver;
 }
 .gwittir-SoftButton.pressed {
     border-style: inset;
-    border-width: 2px;
-    color: gray;
-    background-color: darkgray;
-}
-.gwittir-SoftButton.hover {
-    background-color: lightgray;
+    background-color: gray;
 }
 
 
