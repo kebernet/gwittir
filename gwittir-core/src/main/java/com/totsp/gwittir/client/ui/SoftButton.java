@@ -212,7 +212,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
     
     protected void init() {
-        this.baseStyleName = "gwittir-SoftButton";
+        this.setBaseStyleName("gwittir-SoftButton");
         this.clickers = new ClickListenerCollection();
         this.softBase = new FocusPanel();
         this.grid = new Grid(1, 1);
@@ -239,15 +239,15 @@ public class SoftButton extends Button implements SourcesMouseEvents,
             public void onLostFocus(Widget sender) {
                 focused = false;
                 if( enabled ){
-                    setStyleName( baseStyleName );
+                    setStyleName( getBaseStyleName());
                 }
                 
             }
             
             public void onFocus(Widget sender) {
                 focused = true;
-                if(enabled && !getStyleName().equals( baseStyleName+"-pressed")){
-                    setStyleName(baseStyleName+"-focused");
+                if(enabled && !getStyleName().equals( getBaseStyleName()+"-pressed")){
+                    setStyleName(getBaseStyleName()+"-focused");
                     
                 }
             }
@@ -256,30 +256,30 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         this.hover = new MouseListenerAdapter() {
             public void onMouseUp(Widget sender, int x, int y) {
                 if( enabled ){
-                    setStyleName( baseStyleName+"-focused" );
+                    setStyleName( getBaseStyleName()+"-focused" );
                 }
             }
             
             public void onMouseDown(Widget sender, int x, int y) {
                 //GWT.log("Press", null);
                 if(enabled){
-                    setStyleName( baseStyleName+"-pressed");
+                    setStyleName( getBaseStyleName()+"-pressed");
                 }
             }
             
             public void onMouseLeave(Widget sender) {
                 if(enabled){
                     if( focused ){
-                        setStyleName( baseStyleName+"-focused" );
+                        setStyleName( getBaseStyleName()+"-focused" );
                     } else {
-                        setStyleName( baseStyleName );
+                        setStyleName( getBaseStyleName());
                     }
                 }
             }
             
             public void onMouseEnter(Widget sender) {
                 if(enabled){
-                    setStyleName(baseStyleName+"-hover");
+                    setStyleName(getBaseStyleName()+"-hover");
                 }
             }
         };
@@ -291,7 +291,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
                 || (keyCode == KeyboardListener.KEY_ENTER)) {
                     if(enabled && (getAction() != null)) {
                         listener.onClick( instance );
-                        setStyleName( baseStyleName+"-focused" );
+                        setStyleName( getBaseStyleName()+"-focused" );
                
                     }
                 }
@@ -301,19 +301,19 @@ public class SoftButton extends Button implements SourcesMouseEvents,
             
             public void onKeyUp(Widget sender, char keyCode, int modifiers) {
                 if( enabled ){
-                    setStyleName( baseStyleName+"-focused" );
+                    setStyleName( getBaseStyleName()+"-focused" );
                 }
             }
             
             public void onKeyDown(Widget sender, char keyCode, int modifiers) {
                 if(enabled){
-                    setStyleName(baseStyleName+"-pressed");
+                    setStyleName(getBaseStyleName()+"-pressed");
                 }
             }
         });
         this.setRenderer(new ToStringRenderer());
         this.initWidget(this.softBase);
-        this.setStyleName(baseStyleName);
+        this.setStyleName(getBaseStyleName());
         this.setEnabled(true);
     }
     
@@ -369,12 +369,13 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         this.enabled = enabled;
         
         if(!this.enabled) {
-            this.setStyleName(this.baseStyleName+"-disabled");
+            this.setStyleName(this.getBaseStyleName()+"-disabled");
         } else {
-            this.setStyleName(this.baseStyleName);
+            this.setStyleName(this.getBaseStyleName());
         }
     }
     
+   
     public void setFocus(boolean focused) {
         this.softBase.setFocus(focused);
     }
@@ -430,6 +431,14 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     
     public void setHeight(String height) {
         this.grid.setHeight(height);
+    }
+
+    public String getBaseStyleName() {
+        return baseStyleName;
+    }
+
+    public void setBaseStyleName(String baseStyleName) {
+        this.baseStyleName = baseStyleName;
     }
     
 }
