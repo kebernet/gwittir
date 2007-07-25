@@ -57,13 +57,39 @@
 
 .gwittir-BoundTable {
     width: 100%;
+    border: 1px solid gray;
+}
+.gwittir-BoundTable table {
+    width: 100%;
+}
+
+
+.gwittir-BoundTable td {
+    border-bottom: 1px solid gray;
 }
 
 .gwittir-BoundTable tr td * {
     width: 100%;
 }
 
+.gwittir-BoundTable tr td input[type="text"] {
+    border-width: 0px;
+}
+.gwittir-BoundTable tr td input {
+    background-color: transparent;
+}
 
+.gwittir-BoundTable tr.selected {
+    background-color: #CCCCFF;
+}
+
+.gwittir-BoundTable colgroup col.selected {
+    background-color: #CCCCFF;
+}
+
+.gwittir-BoundTable td.selected {
+    background-color: #EEEEFF;
+}
 
 
 

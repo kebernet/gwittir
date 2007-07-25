@@ -19,11 +19,15 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
+import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.KeyboardListener;
+import com.google.gwt.user.client.ui.SourcesClickEvents;
+import com.google.gwt.user.client.ui.SourcesKeyboardEvents;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
@@ -34,7 +38,7 @@ import java.util.Comparator;
  *
  * @author cooper
  */
-public class TextBox extends AbstractBoundWidget {
+public class TextBox extends AbstractBoundWidget implements HasFocus, SourcesKeyboardEvents, SourcesClickEvents {
     private com.google.gwt.user.client.ui.TextBox base = new com.google.gwt.user.client.ui.TextBox();
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private String old;
@@ -54,10 +58,10 @@ public class TextBox extends AbstractBoundWidget {
                 public void onKeyPress(Widget sender, char keyCode,
                         int modifiers) {
                     
-                        changes.firePropertyChange("value", old,
-                                getValue() );
-                        old = (String) getValue();
-                     
+                    changes.firePropertyChange("value", old,
+                            getValue() );
+                    old = (String) getValue();
+                    
                 }
                 
                 public void onKeyDown(Widget sender, char keyCode,
@@ -72,11 +76,11 @@ public class TextBox extends AbstractBoundWidget {
         
         this.base.addChangeListener(new ChangeListener() {
             public void onChange(Widget sender) {
-               
-                    changes.firePropertyChange("value", old, getValue() );
-                    old = (String) getValue();
-                    changeListeners.fireChange(instance);
-               
+                
+                changes.firePropertyChange("value", old, getValue() );
+                old = (String) getValue();
+                changeListeners.fireChange(instance);
+                
             }
         });
         super.initWidget(this.base);
@@ -294,7 +298,12 @@ public class TextBox extends AbstractBoundWidget {
     }
     
     public void setValue(Object value) {
-        this.base.setText(this.getRenderer().render(value));
+        GWT.log("Setting value "+ value, null );
+        Object old = this.getValue();
+        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
+        if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
+            this.changes.firePropertyChange("value", old, this.getValue());
+        }
     }
     
     public void setVisibleLength(int length) {
@@ -312,37 +321,38 @@ public class TextBox extends AbstractBoundWidget {
     public void unsinkEvents(int eventBitsToRemove) {
         this.base.unsinkEvents(eventBitsToRemove);
     }
-
+    
     public void setModel(Object model) {
         super.setModel(model);
     }
-
+    
     public void setRenderer(Renderer renderer) {
         super.setRenderer(renderer);
     }
-
+    
     public void setAction(Action action) {
         super.setAction(action);
     }
-
+    
     public Comparator getComparator() {
         Comparator retValue;
         
         retValue = super.getComparator();
         return retValue;
     }
-
+    
     public Object getModel() {
         Object retValue;
         
         retValue = super.getModel();
         return retValue;
     }
-
+    
     public Action getAction() {
         Action retValue;
         
         retValue = super.getAction();
         return retValue;
     }
+    
 }

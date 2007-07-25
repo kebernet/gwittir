@@ -20,9 +20,15 @@
 
 package com.totsp.gwittir.client.ui.table;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusListener;
+import com.google.gwt.user.client.ui.HTMLTable;
+import com.google.gwt.user.client.ui.HasFocus;
+import com.google.gwt.user.client.ui.ScrollListener;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.UIObject;
+import com.google.gwt.user.client.ui.SourcesTableEvents;
+import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.beans.Bindable;
 import com.totsp.gwittir.client.beans.Binding;
@@ -32,6 +38,7 @@ import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.TextBox;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -49,13 +56,28 @@ public class BoundTable extends AbstractBoundWidget {
     int currentScrollPosition;
     private int nextChunk = 0;
     private ArrayList bindingRows = new ArrayList();
+    private String selectedRowLastStyle = "";
+    private int selectedRowLastIndex = -1;
+    private String selectedColLastStyle = "";
+    private int selectedColLastIndex = -1;
+    private String selectedCellLastStyle;
+    private HashMap focusListeners = new HashMap() /*<HasFocus, FocusListener>*/;
     
     /** Creates a new instance of BoundTable */
     public BoundTable() {
         super();
         table = new FlexTable();
+        table.addTableListener( new TableListener(){
+            public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+                setSelectedCell(row, cell);
+                setSelectedRow( row );
+                setSelectedCol( cell );
+            }
+            
+        });
         super.initWidget( table );
         this.base = table;
+        this.table.setCellSpacing(0);
         this.setWidth( "100%" );
         this.setStyleName("gwittir-BoundTable");
     }
@@ -70,6 +92,15 @@ public class BoundTable extends AbstractBoundWidget {
         } else {
             super.initWidget( table );
         }
+        this.table.setCellSpacing(0);
+        table.addTableListener( new TableListener(){
+            public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+                setSelectedCell(row, cell);
+                setSelectedRow( row );
+                setSelectedCol( cell );
+            }
+            
+        });
         this.base = (this.scroll == null ? (Widget) this.table : (Widget) this.scroll );
         this.setStyleName("gwittir-BoundTable");
     }
@@ -80,12 +111,29 @@ public class BoundTable extends AbstractBoundWidget {
         if(scrolling){
             scroll = new ScrollPanel();
             scroll.setWidget( table );
+            scroll.addScrollListener( new ScrollListener(){
+                public void onScroll(Widget widget, int scrollLeft, int scrollTop) {
+                    GWT.log( "Scroll: "+ scrollTop, null );
+                    GWT.log( ""+table.getOffsetHeight(), null );
+                    GWT.log( table.getOffsetHeight() - scroll.getOffsetHeight() + "", null );
+                }
+                
+            });
             super.initWidget( scroll );
         } else {
             super.initWidget( table );
         }
         this.columns = cols;
         this.value = value;
+        this.table.setCellSpacing(0);
+        table.addTableListener( new TableListener(){
+            public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+                setSelectedCell(row, cell);
+                setSelectedRow( row );
+                setSelectedCol( cell );
+            }
+            
+        });
         this.base = (this.scroll == null ? (Widget) this.table : (Widget) this.scroll );
         this.setStyleName("gwittir-BoundTable");
         renderAll();
@@ -98,7 +146,6 @@ public class BoundTable extends AbstractBoundWidget {
     }
     
     private void renderAll(){
-        
         this.unbindAll();
         this.table.clear();
         for(Iterator it = this.value.iterator(); it.hasNext(); ){
@@ -120,15 +167,73 @@ public class BoundTable extends AbstractBoundWidget {
     }
     
     private void addRow(Bindable o){
-        int row = table.getRowCount();
+        final int row = table.getRowCount();
         Binding bindingRow = new Binding();
         bindingRows.add( bindingRow );
         for( int col=0; col < getColumns().length; col++ ){
-            table.setWidget( row, col, (Widget) createCellWidget( bindingRow, getColumns()[col],  o) );
+            final int colF = col;
+            Widget widget = (Widget) createCellWidget( row, col, bindingRow, getColumns()[col],  o);
+            table.setWidget( row, col,widget );
+            if( widget instanceof HasFocus ){
+                addSelectedFocusListener( (HasFocus) widget, row, col );
+            }
         }
     }
+    private void addSelectedFocusListener(final HasFocus widget, final int row, final int col ){
+        FocusListener l = new FocusListener() {
+            public void onLostFocus(Widget sender) {
+            }
+            
+            public void onFocus(Widget sender) {
+                setSelectedCell( row, col);
+                setSelectedRow( row );
+                setSelectedCol( col );
+            }
+            
+        };
+        widget.addFocusListener( l );
+        focusListeners.put( widget, l );
+    }
     
-    private BoundWidget createCellWidget( Binding rowBinding, Column col,  Bindable target ){
+    private void setSelectedRow( int row ){
+        if( this.selectedRowLastIndex != -1 ){
+            this.getRowFormatter().setStyleName( this.selectedRowLastIndex, this.selectedRowLastStyle );
+        }
+        this.selectedRowLastIndex = row;
+        this.selectedRowLastStyle = table.getRowFormatter().getStyleName( row );
+        if( this.selectedRowLastStyle == null || this.selectedRowLastStyle.length() == 0 ){
+            this.selectedRowLastStyle = "default";
+        }
+        table.getRowFormatter().setStyleName( row, "selected");
+    }
+    
+    private void setSelectedCol( int col ){
+        if( this.selectedColLastIndex != -1 ){
+            this.getColumnFormatter().setStyleName( this.selectedColLastIndex, this.selectedRowLastStyle );
+        }
+        this.selectedColLastIndex = col;
+        this.selectedColLastStyle = table.getRowFormatter().getStyleName( col );
+        if( this.selectedColLastStyle == null || this.selectedColLastStyle.length() == 0 ){
+            this.selectedColLastStyle = "default";
+        }
+        table.getColumnFormatter().setStyleName( col, "selected");
+    }
+    
+    private void setSelectedCell( int row, int col ){
+        if( this.selectedColLastIndex != -1 && this.selectedRowLastIndex != -1 ){
+            this.getCellFormatter().setStyleName( this.selectedRowLastIndex,
+                    this.selectedColLastIndex,
+                    this.selectedCellLastStyle );
+        }
+        this.selectedCellLastStyle = table.getCellFormatter().getStyleName( row,  col );
+        if( this.selectedCellLastStyle == null || this.selectedCellLastStyle.length() == 0 ){
+            this.selectedCellLastStyle = "default";
+        }
+        table.getCellFormatter().setStyleName( row, col, "selected");
+    }
+    
+    private BoundWidget createCellWidget( final int row, final int column,
+            Binding rowBinding, Column col,  Bindable target ){
         BoundWidget widget = null;
         Binding binding = null;
         if( col.getCellProvider() != null ){
@@ -195,11 +300,11 @@ public class BoundTable extends AbstractBoundWidget {
     }
     
     public void setStyleName(String style) {
-        this.table.setStyleName(style);
+        this.base.setStyleName(style);
     }
     
     public void addStyleName(String style) {
-        this.table.addStyleName(style);
+        this.base.addStyleName(style);
     }
     
     public void setSize(String width, String height) {
@@ -207,10 +312,70 @@ public class BoundTable extends AbstractBoundWidget {
     }
     
     public String getStyleName() {
-        return this.table.getStyleName();
+        return this.base.getStyleName();
     }
     
-   
+    public void addTableListener(TableListener listener) {
+        this.table.addTableListener(listener);
+    }
     
+    public void setBorderWidth(int width) {
+        this.table.setBorderWidth(width);
+    }
     
+    public int getCellCount(int row) {
+        return this.table.getCellCount(row);
+    }
+    
+    public void setCellPadding(int padding) {
+        this.table.setCellPadding(padding);
+    }
+    
+    public void setCellSpacing(int spacing) {
+        this.table.setCellSpacing(spacing);
+    }
+    
+    public void setPixelSize(int width, int height) {
+        this.table.setPixelSize(width, height);
+    }
+    
+    public int getCellSpacing() {
+        return this.table.getCellSpacing();
+    }
+    
+    public int getCellPadding() {
+        return this.table.getCellPadding();
+    }
+    
+    public HTMLTable.CellFormatter getCellFormatter() {
+        return this.table.getCellFormatter();
+    }
+    
+    public HTMLTable.ColumnFormatter getColumnFormatter() {
+        return this.table.getColumnFormatter();
+    }
+    
+    public FlexTable.FlexCellFormatter getFlexCellFormatter() {
+        return this.table.getFlexCellFormatter();
+    }
+    
+    public String getHTML(int row, int column) {
+        return this.table.getHTML(row, column);
+    }
+    
+    public int getRowCount() {
+        return this.table.getRowCount();
+    }
+    
+    public HTMLTable.RowFormatter getRowFormatter() {
+        return this.table.getRowFormatter();
+    }
+    
+    public String getTitle() {
+        return this.table.getTitle();
+    }
+    
+    public BoundWidget getWidget( int row, int col ){
+        return (BoundWidget) this.table.getWidget(row, col);
+    }
 }

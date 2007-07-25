@@ -33,7 +33,6 @@ import com.google.gwt.user.client.ui.MouseWheelListener;
  */
 public class Label extends AbstractBoundWidget {
     private com.google.gwt.user.client.ui.Label base;
-    private Object value;
     
     /** Creates a new instance of Label */
     public Label() {
@@ -198,15 +197,17 @@ public class Label extends AbstractBoundWidget {
 
      public void setValue(Object value) {
         GWT.log("Setting value "+ value, null );
+        Object old = this.getValue();
+        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) :
+            value == null ? "" : value.toString() );
+        if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
+            this.changes.firePropertyChange("value", old, this.getValue());
+        }
         
-        Object old = this.value;
-        this.value = value;
-        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
-        this.changes.firePropertyChange("value", old, value);
     }
 
     public Object getValue() {
-        return this.value;
+        return this.base.getText().length() == 0 ? null : this.base.getText();
     }
     
 }
