@@ -12,8 +12,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
@@ -25,13 +23,15 @@ import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Property;
 import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.SoftButton;
 import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.client.ui.table.BoundTable;
+import com.totsp.gwittir.client.ui.table.Column;
 import com.totsp.gwittir.client.validator.CompositeValidator;
 import com.totsp.gwittir.client.validator.IntegerRangeValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.NotNullValidator;
+import java.util.ArrayList;
 
 
 /**
@@ -48,9 +48,7 @@ public class ExampleEntryPoint implements EntryPoint {
         model.setIntProperty(3);
         model.setStringProperty("Foo bar baz");
         
-        FooEdit edit = new FooEdit(model);
-        edit.setModel(model);
-        RootPanel.get().add(edit);
+        
         
         Introspector is = (Introspector) GWT.create(Introspector.class);
         BeanDescriptor bd = is.getDescriptor(model);
@@ -109,7 +107,7 @@ public class ExampleEntryPoint implements EntryPoint {
         b.getChildren().add( b2 );
         b.bind();
         b.setLeft();
-
+        
         
         button.setAction( new Action(){
             public void execute(BoundWidget model) {
@@ -128,5 +126,30 @@ public class ExampleEntryPoint implements EntryPoint {
         
         RootPanel.get().add(box);
         RootPanel.get().add(intBox);
+        
+        ArrayList foos = new ArrayList();
+        foos.add( model );
+        foos.add( new Foo( "String1", 1) );
+        foos.add( new Foo( "String2", 2) );
+        foos.add( new Foo( "String3", 3) );
+        foos.add( new Foo( "String4", 4) );
+        
+        foos.add( new Foo( "String1", 1) );
+        foos.add( new Foo( "String2", 2) );
+        foos.add( new Foo( "String3", 3) );
+        foos.add( new Foo( "String4", 4) );
+        foos.add( new Foo( "String1", 1) );
+        foos.add( new Foo( "String2", 2) );
+        foos.add( new Foo( "String3", 3) );
+        foos.add( new Foo( "String4", 4) );
+        
+        
+        Column[] c = new Column[2];
+        c[0] = new Column("stringProperty", "String Property" );
+        c[1] = new Column("intProperty", "Integer Property", "int-cell", null, cv, pvf );
+        
+        BoundTable t = new BoundTable( true, c, foos );
+        t.setHeight( "200px");
+        RootPanel.get().add( t );
     }
 }

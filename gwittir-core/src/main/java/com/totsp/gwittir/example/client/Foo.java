@@ -23,6 +23,11 @@ public class Foo implements Bindable {
     private String stringProperty;
     private int intProperty;
 
+    public Foo( String stringProperty, int intProperty ){
+        this.stringProperty = stringProperty;
+        this.intProperty = intProperty;
+    }
+    
     /** Creates a new instance of Foo */
     public Foo() {
     }

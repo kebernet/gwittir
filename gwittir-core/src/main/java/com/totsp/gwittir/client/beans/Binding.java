@@ -42,6 +42,10 @@ public class Binding {
     private BindingInstance right;
     private List children;
     
+    public Binding(){
+        super();
+    }
+    
     /** Creates a new instance of Binding */
     public Binding(Bindable left, String leftProperty, Bindable right,
             String rightProperty) {
@@ -53,6 +57,9 @@ public class Binding {
         this.right.object = right;
         this.right.property = INTROSPECTOR.getDescriptor(right)
         .getProperty(rightProperty);
+        
+        this.left.listener = new DefaultPropertyChangeListener(this.left, this.right);
+        this.right.listener = new DefaultPropertyChangeListener(this.right, this.left);
     }
     
     public Binding(Bindable left, String leftProperty, Validator leftValidator,
@@ -71,6 +78,10 @@ public class Binding {
         .getProperty(rightProperty);
         this.right.validator = rightValidator;
         this.right.feedback = rightFeedback;
+        
+        this.left.listener = new DefaultPropertyChangeListener(this.left, this.right);
+        this.right.listener = new DefaultPropertyChangeListener(this.right, this.left);
+            
     }
     
     public Binding(Bindable left, String leftProperty, Converter leftConverter,
@@ -85,6 +96,9 @@ public class Binding {
         this.right.property = INTROSPECTOR.getDescriptor(right)
         .getProperty(rightProperty);
         this.right.converter = rightConverter;
+        
+        this.left.listener = new DefaultPropertyChangeListener(this.left, this.right);
+        this.right.listener = new DefaultPropertyChangeListener(this.right, this.left);
     }
     
     public Binding(BindingInstance left, BindingInstance right) {
@@ -93,15 +107,17 @@ public class Binding {
     }
     
     public void setRight(){
-        try{
-            left.listener.propertyChange( new PropertyChangeEvent( left.object,
-                    left.property.getName(),
-                    null,
-                    left.property
-                    .getAccessMethod()
-                    .invoke( left.object, null ) ) );
-        } catch(Exception e){
-            throw new RuntimeException(e);
+        if( left != null && right != null ){
+            try{
+                left.listener.propertyChange( new PropertyChangeEvent( left.object,
+                        left.property.getName(),
+                        null,
+                        left.property
+                        .getAccessMethod()
+                        .invoke( left.object, null ) ) );
+            } catch(Exception e){
+                throw new RuntimeException(e);
+            }
         }
         for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);
@@ -110,15 +126,17 @@ public class Binding {
     }
     
     public void setLeft(){
-        try{
-            right.listener.propertyChange( new PropertyChangeEvent( right.object,
-                    right.property.getName(),
-                    null,
-                    right.property
-                    .getAccessMethod()
-                    .invoke( right.object, null ) ) );
-        } catch(Exception e){
-            throw new RuntimeException(e);
+        if( left != null && right != null ){
+            try{
+                right.listener.propertyChange( new PropertyChangeEvent( right.object,
+                        right.property.getName(),
+                        null,
+                        right.property
+                        .getAccessMethod()
+                        .invoke( right.object, null ) ) );
+            } catch(Exception e){
+                throw new RuntimeException(e);
+            }
         }
         for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);
@@ -127,14 +145,13 @@ public class Binding {
     }
     
     public void bind() {
-        left.listener = new DefaultPropertyChangeListener(left, right);
-        left.object.addPropertyChangeListener(left.property.getName(),
-                left.listener);
-        
-        right.listener = new DefaultPropertyChangeListener(right, left);
-        right.object.addPropertyChangeListener(right.property.getName(),
-                right.listener);
-        
+        if( left != null && right != null ){
+            left.object.addPropertyChangeListener(left.property.getName(),
+                    left.listener);
+            
+            right.object.addPropertyChangeListener(right.property.getName(),
+                    right.listener);
+        }
         for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);
             child.bind();
@@ -146,12 +163,15 @@ public class Binding {
     }
     
     public boolean isValid(){
+        
         try{
-            if( left.validator != null ){
-                left.validator.validate( left.property.getAccessMethod().invoke(left.object, null) );
-            }
-            if( right.validator != null ){
-                right.validator.validate( right.property.getAccessMethod().invoke(right.object, null ) );
+            if( left != null && right != null ){
+                if( left.validator != null ){
+                    left.validator.validate( left.property.getAccessMethod().invoke(left.object, null) );
+                }
+                if( right.validator != null ){
+                    right.validator.validate( right.property.getAccessMethod().invoke(right.object, null ) );
+                }
             }
             boolean valid = true;
             for(int i = 0; (children != null) && (i < children.size()); i++) {
@@ -168,12 +188,13 @@ public class Binding {
     }
     
     public void unbind() {
-        left.object.removePropertyChangeListener(left.listener);
-        left.listener = null;
-        
-        right.object.removePropertyChangeListener(right.listener);
-        right.listener = null;
-        
+        if( left != null && right != null ){
+            left.object.removePropertyChangeListener(left.listener);
+            left.listener = null;
+            
+            right.object.removePropertyChangeListener(right.listener);
+            right.listener = null;
+        }
         for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);
             child.unbind();

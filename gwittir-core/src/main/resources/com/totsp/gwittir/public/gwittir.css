@@ -55,6 +55,14 @@
     text-align: center;
 }
 
+.gwittir-BoundTable {
+    width: 100%;
+}
+
+.gwittir-BoundTable tr td * {
+    width: 100%;
+}
+
 
 
 
