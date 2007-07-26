@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.table;
 
 import com.totsp.gwittir.client.flow.BoundWidgetProvider;
@@ -25,84 +24,82 @@ import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
 import com.totsp.gwittir.client.validator.Validator;
 
+
 /**
  *
  * @author cooper
  */
 public class Column {
-    
-    private String propertyName;
-    private String label;
-    private Validator validator;
-    private ValidationFeedback feedback;
-    private Renderer renderer;
     private BoundWidgetProvider cellProvider;
+    private Renderer renderer;
+    private String label;
+    private String propertyName;
     private String styleName;
-    
+    private ValidationFeedback feedback;
+    private Validator validator;
+
     /** Creates a new instance of Column */
     public Column(String propertyName) {
         this.propertyName = propertyName;
     }
-    
-    public Column(String propertyName, String label){
+
+    public Column(String propertyName, String label) {
         this.propertyName = propertyName;
         this.label = label;
     }
-    
-    public Column(String propertyName, String label, String styleName){
+
+    public Column(String propertyName, String label, String styleName) {
         this.propertyName = propertyName;
         this.label = label;
     }
-    
-    
-    public Column(String propertyName, String label, String styleName, Renderer renderer){
+
+    public Column(String propertyName, String label, String styleName,
+        Renderer renderer) {
         this.propertyName = propertyName;
         this.label = label;
         this.renderer = renderer;
     }
-    
-    public Column(String propertyName, String label, String styleName, Renderer renderer, 
-            Validator validator, ValidationFeedback feedback){
+
+    public Column(String propertyName, String label, String styleName,
+        Renderer renderer, Validator validator, ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
         this.validator = validator;
         this.feedback = feedback;
         this.renderer = renderer;
     }
-    
-    
-    public Column( String label, String styleName, BoundWidgetProvider cellProvider ){
+
+    public Column(String label, String styleName,
+        BoundWidgetProvider cellProvider) {
         this.label = label;
         this.cellProvider = cellProvider;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public Validator getValidator() {
-        return validator;
-    }
-
-    public ValidationFeedback getFeedback() {
-        return feedback;
-    }
-
-    public Renderer getRenderer() {
-        return renderer;
     }
 
     public BoundWidgetProvider getCellProvider() {
         return cellProvider;
     }
 
+    public ValidationFeedback getFeedback() {
+        return feedback;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
+    }
+
     public String getStyleName() {
         return styleName;
     }
-    
-    
+
+    public Validator getValidator() {
+        return validator;
+    }
 }

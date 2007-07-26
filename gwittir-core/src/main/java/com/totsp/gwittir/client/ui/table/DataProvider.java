@@ -17,16 +17,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.table;
 
 import java.util.Collection;
+
 
 /**
  *
  * @author cooper
  */
 public interface DataProvider {
-    
-    public Collection getChunk(BoundTable table, int chunkNumber );
+    public void getChunk(final BoundTable table, final int chunkNumber);
 }

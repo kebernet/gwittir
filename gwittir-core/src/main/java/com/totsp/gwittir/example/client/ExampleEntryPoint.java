@@ -12,7 +12,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
 
@@ -27,12 +29,15 @@ import com.totsp.gwittir.client.ui.SoftButton;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Column;
+import com.totsp.gwittir.client.ui.table.DataProvider;
+import com.totsp.gwittir.client.validator.CompositeValidationFeedback;
 import com.totsp.gwittir.client.validator.CompositeValidator;
 import com.totsp.gwittir.client.validator.IntegerRangeValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.NotNullValidator;
+import com.totsp.gwittir.client.validator.PanelValidationFeedback;
+import com.totsp.gwittir.client.validator.StyleValidationFeedback;
 import java.util.ArrayList;
-
 
 /**
  *
@@ -127,7 +132,7 @@ public class ExampleEntryPoint implements EntryPoint {
         RootPanel.get().add(box);
         RootPanel.get().add(intBox);
         
-        ArrayList foos = new ArrayList();
+        final ArrayList foos = new ArrayList();
         foos.add( model );
         foos.add( new Foo( "String1", 1) );
         foos.add( new Foo( "String2", 2) );
@@ -143,13 +148,47 @@ public class ExampleEntryPoint implements EntryPoint {
         foos.add( new Foo( "String3", 3) );
         foos.add( new Foo( "String4", 4) );
         
+        Panel errors = new SimplePanel();
+        RootPanel.get().add( errors );
+        CompositeValidationFeedback cvf = new CompositeValidationFeedback();
+        cvf.add(new PanelValidationFeedback(errors) )
+            .add( new StyleValidationFeedback( "example-error") );
+        
         
         Column[] c = new Column[2];
         c[0] = new Column("stringProperty", "String Property" );
-        c[1] = new Column("intProperty", "Integer Property", "int-cell", null, cv, pvf );
+        c[1] = new Column("intProperty", "Integer Property", "int-cell", null, cv, cvf );
         
-        BoundTable t = new BoundTable( true, c, foos );
+       
+        
+        
+        BoundTable t = new BoundTable( BoundTable.SCROLL_MASK + BoundTable.HEADER_MASK,  c, foos );
         t.setHeight( "200px");
-        RootPanel.get().add( t );
+        
+        BoundTable t2 = new BoundTable(  BoundTable.HEADER_MASK,  c, new DataProvider(){
+            public void getChunk(final BoundTable table, final int chunkNumber) {
+                ArrayList foos = new ArrayList();
+                foos.add( new Foo( "String1", 1) );
+                foos.add( new Foo( "String2", 2) );
+                foos.add( new Foo( "String3", 3) );
+                foos.add( new Foo( "String4", 4) );
+                
+                foos.add( new Foo( "String1", 1) );
+                foos.add( new Foo( "String2", 2) );
+                foos.add( new Foo( "String3", 3) );
+                foos.add( new Foo( "String4", 4) );
+                foos.add( new Foo( "String1", 1) );
+                foos.add( new Foo( "String2", 2) );
+                foos.add( new Foo( "String3", 3) );
+                foos.add( new Foo( "String4", 4) );
+                table.add( foos );
+            }
+        });
+        t2.setHeight( "200px");
+        
+        
+        //RootPanel.get().add( t );
+        RootPanel.get().add( t2 );
+        
     }
 }
