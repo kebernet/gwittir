@@ -231,7 +231,7 @@ public class Binding {
                 } catch(ValidationException ve) {
                     if(instance.feedback != null) {
                         if(this.lastException != null) {
-                            instance.feedback.resolve();
+                            instance.feedback.resolve(propertyChangeEvent.getSource());
                         }
                         
                         instance.feedback.handleException(propertyChangeEvent.getSource(),
@@ -246,7 +246,7 @@ public class Binding {
             }
             
             if(this.instance.feedback != null) {
-                this.instance.feedback.resolve();
+                this.instance.feedback.resolve( propertyChangeEvent.getSource());
             }
             
             this.lastException = null;

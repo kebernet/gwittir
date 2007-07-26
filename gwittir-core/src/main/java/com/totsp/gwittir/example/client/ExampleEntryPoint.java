@@ -12,9 +12,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
 
@@ -148,7 +148,7 @@ public class ExampleEntryPoint implements EntryPoint {
         foos.add( new Foo( "String3", 3) );
         foos.add( new Foo( "String4", 4) );
         
-        Panel errors = new SimplePanel();
+        Panel errors = new HorizontalPanel();
         RootPanel.get().add( errors );
         CompositeValidationFeedback cvf = new CompositeValidationFeedback();
         cvf.add(new PanelValidationFeedback(errors) )

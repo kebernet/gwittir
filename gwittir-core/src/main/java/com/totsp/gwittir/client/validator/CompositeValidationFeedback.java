@@ -40,9 +40,9 @@ public class CompositeValidationFeedback extends AbstractValidationFeedback {
         }
     }
     
-    public void resolve() {
+    public void resolve(Object source) {
         for(Iterator it = feedbacks.iterator(); it.hasNext(); ){
-            ((ValidationFeedback) it.next() ).resolve();
+            ((ValidationFeedback) it.next() ).resolve(source);
         }
     }
     

@@ -9,5 +9,6 @@
     <inherits name='com.totsp.gwittir.Gwittir' />
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.totsp.gwittir.example.client.ExampleEntryPoint'/>
+    <stylesheet src="example.css"/>
     
 </module>

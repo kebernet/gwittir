@@ -22,6 +22,7 @@ package com.totsp.gwittir.client.validator;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
+import java.util.HashMap;
 
 /**
  *
@@ -32,7 +33,7 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
     public static final int TOP = 2;
     public static final int RIGHT = 3;
     public static final int BOTTOM =4;
-    final PopupPanel p = new PopupPanel(false);
+    final HashMap popups = new HashMap();
     private int position;
 
     /** Creates a new instance of PopupValidationFeedback */
@@ -42,6 +43,8 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
 
     public void handleException(Object source, ValidationException exception) {
         Widget w = (Widget) source;
+        PopupPanel p = new PopupPanel(false);
+        popups.put( source, p );
         p.setStyleName("gwittir-ValidationPopup");
         p.setWidget(new Label(this.getMessage(exception)));
         p.setPopupPosition( -5000, -5000 );
@@ -61,8 +64,10 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
         }
     }
 
-    public void resolve() {
+    public void resolve(Object source) {
+        PopupPanel p = (PopupPanel) popups.get( source );
         p.hide();
+        popups.remove( source );
     }
 
     

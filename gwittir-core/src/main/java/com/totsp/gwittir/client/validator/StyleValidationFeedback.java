@@ -22,6 +22,7 @@ package com.totsp.gwittir.client.validator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.UIObject;
+import java.util.HashMap;
 
 /**
  *
@@ -29,27 +30,34 @@ import com.google.gwt.user.client.ui.UIObject;
  */
 public class StyleValidationFeedback extends AbstractValidationFeedback {
     
-    private String previousStyle;
     private String styleName;
-    private UIObject object;
+    private HashMap previousStyles = new HashMap();
     /** Creates a new instance of StyleValidationFeedback */
     public StyleValidationFeedback(String styleName) {
         this.styleName = styleName;
     }
     
     public void handleException(Object source, ValidationException exception) {
-        this.object = (UIObject) source;
-        this.previousStyle =  this.object.getStyleName() == null ||
-                this.object.getStyleName().length() == 0 ?
+        UIObject object = (UIObject) source;
+        String previousStyle =  object.getStyleName() == null ||
+                object.getStyleName().length() == 0 ?
                     "default" :
-                    this.object.getStyleName();
-        GWT.log( "Previous style: "+ this.previousStyle, null );
-        this.object.setStyleName( this.styleName );
-        GWT.log( "Current style: "+ this.object.getStyleName(), null );
+                    object.getStyleName();
+        if( !this.previousStyles.containsKey(source) )
+            this.previousStyles.put( source, previousStyle );
+        GWT.log( "Previous style: "+ previousStyle, null );
+        object.setStyleName( this.styleName );
+        GWT.log( "Current style: "+ object.getStyleName(), null );
     }
     
-    public void resolve() {
-        this.object.setStyleName( previousStyle );
+    public void resolve(Object source) {
+        UIObject object = (UIObject) source;
+        String previousStyle = (String) this.previousStyles.get(source);
+        GWT.log( "Reverting to style:" + previousStyle, null  );
+        object.setStyleName( previousStyle );
+        GWT.log( object.toString(), null  );
+        
+        this.previousStyles.remove( source );
     }
     
     

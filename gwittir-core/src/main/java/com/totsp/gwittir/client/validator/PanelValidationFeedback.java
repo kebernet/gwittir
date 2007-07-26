@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.flow.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Label;
+import java.util.HashMap;
 
 /**
  *
@@ -33,15 +34,13 @@ import com.totsp.gwittir.client.ui.Label;
 public class PanelValidationFeedback extends AbstractValidationFeedback {
     
     private Panel panel;
-    private BoundWidget widget;
     private BoundWidgetProvider provider;
+    private HashMap widgets = new HashMap();
     
     /** Creates a new instance of PanelValidationFeedback */
     public PanelValidationFeedback(Panel panel) {
         this.panel = panel;
-        Label l = new Label();
-        l.setStyleName( "gwittir-ValidationPanel");
-        this.widget = l;
+        
         
     }
     
@@ -51,18 +50,28 @@ public class PanelValidationFeedback extends AbstractValidationFeedback {
     }
     
     public void handleException(Object source, ValidationException exception) {
+        BoundWidget widget = (BoundWidget) this.widgets.get( source );
         if( this.provider != null ){
-            if( this.widget != null ){
-                panel.remove( (Widget) this.widget );
+            if( widget != null ){
+                panel.remove( (Widget) widget );
             }
-            this.widget = provider.get();
+            widget = provider.get();
+        } else {
+            Label l = new Label();
+            l.setStyleName( "gwittir-ValidationPanel");
+            widget = l;
         }
-        this.panel.add( (Widget) this.widget );
-        this.widget.setValue( this.getMessage( exception ) );
+        this.panel.add( (Widget) widget );
+        widget.setValue( this.getMessage( exception ) );
+        this.widgets.put( source, widget );
     }
     
-    public void resolve() {
-        this.panel.remove( (Widget) this.widget );
+    public void resolve(Object source) {
+        Widget widget = (Widget) this.widgets.get(source);
+        if( widget != null ){
+            this.panel.remove( (Widget) widget );
+        }
+        this.widgets.remove( source );
     }
     
     
