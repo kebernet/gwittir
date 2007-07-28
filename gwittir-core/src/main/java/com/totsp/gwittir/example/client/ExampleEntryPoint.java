@@ -25,6 +25,7 @@ import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Property;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.SoftButton;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.table.BoundTable;
@@ -41,6 +42,8 @@ import com.totsp.gwittir.client.validator.StyleValidationFeedback;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -164,8 +167,13 @@ public class ExampleEntryPoint implements EntryPoint {
                 + BoundTable.HEADER_MASK, c, foos);
         t.setHeight("200px");
         
-        final BoundTable t2 = new BoundTable(BoundTable.SPACER_ROW_MASK  
-                + BoundTable.SCROLL_MASK
+        final BoundTable t2 = new BoundTable(
+                BoundTable.NONE_MASK
+                + BoundTable.HEADER_MASK
+                + BoundTable.SPACER_ROW_MASK  
+                + BoundTable.NO_SELECT_COL_MASK 
+                + BoundTable.NO_SELECT_CELL_MASK
+                //+ BoundTable.SCROLL_MASK
                 + BoundTable.MULTIROWSELECT_MASK 
                 // + BoundTable.HEADER_MASK
                 , c,
@@ -219,5 +227,23 @@ public class ExampleEntryPoint implements EntryPoint {
         
         // RootPanel.get().add( t );
         RootPanel.get().add(t2);
+        Button selected = new Button("Selected", new ClickListener(){
+            public void onClick(Widget sender) {
+                for( Iterator it = t2.getSelected().iterator(); it.hasNext(); ){
+                    RootPanel.get().add( new Label( ((Foo) it.next()).getStringProperty() ));
+                }
+            }
+            
+        });
+        Button removeSelected = new Button("Remove Selected", new ClickListener(){
+            public void onClick(Widget sender) {
+                List selections = t2.getSelected();
+                selections.remove( 1 );
+                t2.setSelected( selections );
+            }
+            
+        });
+        RootPanel.get().add( selected );
+        RootPanel.get().add( removeSelected );
     }
 }
