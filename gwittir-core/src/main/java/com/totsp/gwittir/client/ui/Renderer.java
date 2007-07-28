@@ -25,5 +25,5 @@ package com.totsp.gwittir.client.ui;
  * @author cooper
  */
 public interface Renderer {
-    public String render(Object o);
+    public Object render(Object o);
 }

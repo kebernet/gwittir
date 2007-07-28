@@ -389,7 +389,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         
         Object old = this.getValue();
         this.setText((this.getRenderer() != null)
-        ? this.getRenderer().render(html) : ("" + html));
+        ? (String) this.getRenderer().render(html) : ("" + html));
     }
     
     public void setPixelSize(int width, int height) {
@@ -401,7 +401,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
     
     public void setStyleName(String style) {
-        GWT.log( style, null );
+        //GWT.log( style, null );
         this.grid.setStyleName(style);
     }
     

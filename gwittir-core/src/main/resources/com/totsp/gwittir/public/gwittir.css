@@ -63,6 +63,17 @@
     width: 100%;
 }
 
+.gwittir-BoundTable table.nav-grid {
+    width: 200px;
+}
+
+.gwittir-BoundTable table.nav-grid td {
+    border-width: 0px;
+    width: 50px;
+}
+.gwittir-BoundTable table.nav-grid td *{
+    width: 50px;
+}  
 
 .gwittir-BoundTable td {
     border-bottom: 1px solid gray;
@@ -83,6 +94,15 @@
     background-color: #CCCCFF;
 }
 
+.gwittir-BoundTable tr.spacer {
+    background-color: #DFDFDF;
+}
+
+.gwittir-BoundTable tr.spacer td{
+    background-color: #DFDFDF;
+    height: 10px;
+}
+
 .gwittir-BoundTable colgroup col.selected {
     background-color: #CCCCFF;
 }
@@ -95,5 +115,8 @@
     background-color: silver;
     border-right: 1px solid black;
 }
+
+
+
 
 

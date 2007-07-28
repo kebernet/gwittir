@@ -1,7 +1,8 @@
+package com.totsp.gwittir.client.ui;
 /*
- * ToStringRenderer.java
+ * ToBooleanRenderer.java
  *
- * Created on April 12, 2007, 12:57 PM
+ * Created on July 27, 2007, 7:56 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,19 +18,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.ui;
-
 
 /**
  *
  * @author cooper
  */
-public class ToStringRenderer implements Renderer {
-    /** Creates a new instance of ToStringRenderer */
-    public ToStringRenderer() {
+public class ToBooleanRenderer implements Renderer {
+    
+    /** Creates a new instance of ToBooleanRenderer */
+    public ToBooleanRenderer() {
     }
 
     public Object render(Object o) {
-        return (o == null) ? "" : o.toString();
+        if( o == null ){
+            return null;
+        }
+        if( o instanceof Boolean ){
+            return o;
+        }
+        return Boolean.valueOf( o.toString() );
     }
+    
 }

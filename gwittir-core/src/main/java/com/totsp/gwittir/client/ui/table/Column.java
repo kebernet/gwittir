@@ -51,12 +51,14 @@ public class Column {
     public Column(String propertyName, String label, String styleName) {
         this.propertyName = propertyName;
         this.label = label;
+        this.styleName = styleName;
     }
 
     public Column(String propertyName, String label, String styleName,
         Renderer renderer) {
         this.propertyName = propertyName;
         this.label = label;
+        this.styleName = styleName;
         this.renderer = renderer;
     }
 
@@ -64,6 +66,7 @@ public class Column {
         Renderer renderer, Validator validator, ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
+        this.styleName = styleName;
         this.validator = validator;
         this.feedback = feedback;
         this.renderer = renderer;
@@ -72,6 +75,7 @@ public class Column {
     public Column(String label, String styleName,
         BoundWidgetProvider cellProvider) {
         this.label = label;
+        this.styleName = styleName;
         this.cellProvider = cellProvider;
     }
 

@@ -264,4 +264,12 @@ public class Binding {
             }
         }
     }
+    
+    public BindingInstance getLeft(){
+        return this.left;
+    }
+    
+    public BindingInstance getRight(){
+        return this.right;
+    }
 }

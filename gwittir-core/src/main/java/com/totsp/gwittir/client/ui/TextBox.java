@@ -298,9 +298,9 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, SourcesKey
     }
     
     public void setValue(Object value) {
-        GWT.log("Setting value "+ value, null );
+        //GWT.log("Setting value "+ value, null );
         Object old = this.getValue();
-        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
+        this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) : ""+value);
         if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
             this.changes.firePropertyChange("value", old, this.getValue());
         }

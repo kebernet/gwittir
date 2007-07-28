@@ -76,7 +76,7 @@ public class ListBox extends AbstractBoundWidget {
 
     public void addItem(Object o) {
         options.add(o);
-        this.base.addItem(this.getRenderer().render(o));
+        this.base.addItem((String) this.getRenderer().render(o));
     }
 
     public void addKeyboardListener(KeyboardListener listener) {
@@ -389,7 +389,7 @@ public class ListBox extends AbstractBoundWidget {
         //GWT.log("Setting options", null );
         for(Iterator it = options.iterator(); it.hasNext();) {
             Object item = it.next();
-            this.base.addItem(this.getRenderer().render(item));
+            this.base.addItem((String) this.getRenderer().render(item));
 
             if(contains(this.selected, item)) {
                 //GWT.log( "Was previously selected: "+ this.getRenderer().render( item ), null );

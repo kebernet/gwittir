@@ -49,6 +49,11 @@ public class Button extends AbstractBoundWidget implements SourcesClickEvents, H
         this.init();
         this.setValue(label);
     }
+    public Button(String label, ClickListener listener) {
+        this.init();
+        this.setValue(label);
+        this.addClickListener( listener );
+    }
 
     public void addClickListener(ClickListener listener) {
         this.base.addClickListener(listener);
@@ -185,11 +190,11 @@ public class Button extends AbstractBoundWidget implements SourcesClickEvents, H
     }
 
     public void setValue(Object value) {
-        GWT.log("Setting value "+ value, null );
+        //GWT.log("Setting value "+ value, null );
         
         Object old = this.value;
         this.value = value;
-        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
+        this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) : ""+value);
         this.changes.firePropertyChange("value", old, value);
     }
 

@@ -1,7 +1,7 @@
 /*
- * ToStringRenderer.java
+ * SortableDataProvider.java
  *
- * Created on April 12, 2007, 12:57 PM
+ * Created on July 27, 2007, 2:48 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,19 +17,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.ui;
 
+package com.totsp.gwittir.client.ui.table;
 
 /**
  *
  * @author cooper
  */
-public class ToStringRenderer implements Renderer {
-    /** Creates a new instance of ToStringRenderer */
-    public ToStringRenderer() {
-    }
-
-    public Object render(Object o) {
-        return (o == null) ? "" : o.toString();
-    }
+public interface SortableDataProvider extends DataProvider {
+    
+     public void sortOnProperty( HasChunks table, String propertyName );
+     
+     public String[] getSortableProperties();
+     
 }
