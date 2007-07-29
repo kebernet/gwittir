@@ -83,8 +83,8 @@
     width: 100%;
 }
 
-.gwittir-BoundTable tr td input[type="text"] {
-    border-width: 0px;
+.gwittir-BoundTable tr td input {
+    border: 0px solid black;
 }
 .gwittir-BoundTable tr td input {
     background-color: transparent;

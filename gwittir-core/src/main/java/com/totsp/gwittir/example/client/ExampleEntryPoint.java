@@ -32,6 +32,7 @@ import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Column;
 import com.totsp.gwittir.client.ui.table.DataProvider;
 import com.totsp.gwittir.client.ui.table.HasChunks;
+import com.totsp.gwittir.client.util.ListSorter;
 import com.totsp.gwittir.client.validator.CompositeValidationFeedback;
 import com.totsp.gwittir.client.validator.CompositeValidator;
 import com.totsp.gwittir.client.validator.IntegerRangeValidator;
@@ -137,19 +138,19 @@ public class ExampleEntryPoint implements EntryPoint {
         
         final ArrayList foos = new ArrayList();
         foos.add(model);
-        foos.add(new Foo("String1", 1));
-        foos.add(new Foo("String2", 2));
-        foos.add(new Foo("String3", 3));
-        foos.add(new Foo("String4", 4));
+        foos.add(new Foo("Bacon", 1));
+        foos.add(new Foo("Egss", 2));
+        foos.add(new Foo("Hashbrowns", 3));
+        foos.add(new Foo("Toash", 4));
         
-        foos.add(new Foo("String1", 1));
-        foos.add(new Foo("String2", 2));
-        foos.add(new Foo("String3", 3));
-        foos.add(new Foo("String4", 4));
-        foos.add(new Foo("String1", 1));
-        foos.add(new Foo("String2", 2));
-        foos.add(new Foo("String3", 3));
-        foos.add(new Foo("String4", 4));
+        foos.add(new Foo("Sausage", 1));
+        foos.add(new Foo("Cereal", 2));
+        foos.add(new Foo("Melon", 3));
+        foos.add(new Foo("Biscuit", 4));
+        foos.add(new Foo("Waffle", 1));
+        foos.add(new Foo("Pancake", 2));
+        foos.add(new Foo("Ham", 3));
+        foos.add(new Foo("Bagel", 4));
         
         Panel errors = new HorizontalPanel();
         RootPanel.get().add(errors);
@@ -163,69 +164,25 @@ public class ExampleEntryPoint implements EntryPoint {
         c[1] = new Column("intProperty", "Integer Property", "int-cell", null,
                 cv, cvf);
         
-        BoundTable t = new BoundTable(BoundTable.SCROLL_MASK
-                + BoundTable.HEADER_MASK, c, foos);
+        BoundTable t = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK , c, foos);
         t.setHeight("200px");
         
         final BoundTable t2 = new BoundTable(
                 BoundTable.NONE_MASK
                 + BoundTable.HEADER_MASK
-                + BoundTable.SPACER_ROW_MASK  
-                + BoundTable.NO_SELECT_COL_MASK 
-                + BoundTable.NO_SELECT_CELL_MASK
-                //+ BoundTable.SCROLL_MASK
-                + BoundTable.MULTIROWSELECT_MASK 
+                + BoundTable.SORT_MASK
+                //+ BoundTable.SPACER_ROW_MASK
+                //+ BoundTable.NO_SELECT_COL_MASK
+                //+ BoundTable.NO_SELECT_CELL_MASK
+                + BoundTable.SCROLL_MASK
+                //+ BoundTable.MULTIROWSELECT_MASK
                 // + BoundTable.HEADER_MASK
                 , c,
-                new DataProvider() {
-            public void getChunk(final HasChunks table,
-                    final int chunkNumber) {
-               Timer timer = new Timer(){
-                    public void run(){
-                        ArrayList foos = new ArrayList();
-                        foos.add(new Foo( chunkNumber + " String1", 1));
-                        foos.add(new Foo(chunkNumber + "String2", 2));
-                        foos.add(new Foo(chunkNumber + "String3", 3));
-                        foos.add(new Foo(chunkNumber + "String4", 4));
-                        
-                        foos.add(new Foo(chunkNumber + "String1", 1));
-                        foos.add(new Foo(chunkNumber + "String2", 2));
-                        foos.add(new Foo(chunkNumber + "String3", 3));
-                        foos.add(new Foo(chunkNumber + "String4", 4));
-                        foos.add(new Foo(chunkNumber + "String1", 1));
-                        foos.add(new Foo(chunkNumber + "String2", 2));
-                        foos.add(new Foo(chunkNumber + "String3", 3));
-                        foos.add(new Foo(chunkNumber + "String4", 4));
-                        table.setChunk(foos);
-                    }
-                };
-                timer.schedule( 1 );
-                
-            }
-            
-            public void init(HasChunks table) {
-                int chunkNumber = 0;
-                ArrayList foos = new ArrayList();
-                foos.add(new Foo( chunkNumber + " init String1", 1));
-                foos.add(new Foo(chunkNumber + " init String2", 2));
-                foos.add(new Foo(chunkNumber + " init String3", 3));
-                foos.add(new Foo(chunkNumber + " init String4", 4));
-                foos.add(new Foo( chunkNumber + " init  String1", 1));
-                foos.add(new Foo(chunkNumber + " init String2", 2));
-                foos.add(new Foo(chunkNumber + " init String3", 3));
-                foos.add(new Foo(chunkNumber + " init String4", 4));
-                foos.add(new Foo(chunkNumber + " init String2", 2));
-                foos.add(new Foo(chunkNumber + " init String3", 3));
-                foos.add(new Foo(chunkNumber + " init String4", 4));
-                table.init( foos, 5 );
-                
-            }
-            
-        });
+                new TestSortableDataProvider() );
         t2.setHeight("200px");
         
         
-        // RootPanel.get().add( t );
+        //RootPanel.get().add( t );
         RootPanel.get().add(t2);
         Button selected = new Button("Selected", new ClickListener(){
             public void onClick(Widget sender) {

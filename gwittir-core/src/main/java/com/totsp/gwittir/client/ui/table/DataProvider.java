@@ -28,7 +28,7 @@ import java.util.Collection;
  */
 public interface DataProvider {
     
-    public void init(HasChunks table );
+    public void init(final HasChunks table );
     
     public void getChunk(final HasChunks table, final int chunkNumber);
 }
