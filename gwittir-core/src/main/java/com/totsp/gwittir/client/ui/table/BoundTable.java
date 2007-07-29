@@ -103,6 +103,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * If this table has a DataProvider, it must be a SortableDataProvider for this to work.
      */
     public static final int SORT_MASK = 256;
+    private static final String DEFAULT_STYLE = "default";
+    private static final String NAV_STYLE = "nav";
     private Binding topBinding;
     private Collection value;
     private DataProvider provider;
@@ -202,8 +204,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         topBinding.getChildren().add(bindingRow);
 
         for(int col = 0; col < getColumns().length; col++) {
-            final int colF = col;
-            Widget widget = (Widget) createCellWidget(row, col, bindingRow,
+            Widget widget = (Widget) createCellWidget(bindingRow,
                     getColumns()[col], o);
             table.setWidget(row, col, widget);
 
@@ -242,8 +243,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     private int calculateObjectToRowOffset(int row) {
-        GWT.log("Offsetting from object: " + row, null);
-
         if((masks & BoundTable.SPACER_ROW_MASK) > 0) {
             row = row + row;
         }
@@ -251,9 +250,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         if((masks & BoundTable.HEADER_MASK) > 0) {
             row = row + 1;
         }
-
-        GWT.log("Offsetting to row: " + row, null);
-
         return row;
     }
 
@@ -296,13 +292,11 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         }
 
         this.clearSelectedCol();
-        this.selectedCellLastStyle = "default";
+        this.selectedCellLastStyle = BoundTable.DEFAULT_STYLE;
         this.selectedColLastIndex = -1;
-        this.selectedColLastStyle = "default";
+        this.selectedColLastStyle = BoundTable.DEFAULT_STYLE;
         this.selectedRowLastIndex = -1;
-        this.selectedRowLastStyle = "default";
-
-        GWT.log("Number of rows after clear: " + table.getRowCount(), null);
+        this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
     }
 
     private void clearSelectedCol() {
@@ -332,15 +326,14 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                     .setStyleName(this.selectedRowLastIndex,
                     this.selectedRowLastStyle);
                 this.selectedRowLastIndex = -1;
-                this.selectedRowLastStyle = "default";
+                this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
             }
         }
 
         this.changes.firePropertyChange("selected", old, this.getSelected());
     }
 
-    private BoundWidget createCellWidget(final int row, final int column,
-        Binding rowBinding, Column col, Bindable target) {
+    private BoundWidget createCellWidget(Binding rowBinding, Column col, Bindable target) {
         BoundWidget widget;
         Binding binding = null;
 
@@ -368,8 +361,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private Widget createNavWidget() {
         Grid p = new Grid(1, 5);
-
-        p.setStyleName("nav-grid");
+        p.setStyleName(BoundTable.NAV_STYLE);
 
         Button b = new Button("<<",
                 new ClickListener() {
@@ -377,7 +369,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                         first();
                     }
                 });
-        b.setStyleName("nav");
+        b.setStyleName(BoundTable.NAV_STYLE);
 
         if(this.getCurrentChunk() == 0) {
             b.setEnabled(false);
@@ -390,7 +382,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                         previous();
                     }
                 });
-        b.setStyleName("nav");
+        b.setStyleName(BoundTable.NAV_STYLE);
 
         if(this.getCurrentChunk() == 0) {
             b.setEnabled(false);
@@ -404,7 +396,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                         next();
                     }
                 });
-        b.setStyleName("nav");
+        b.setStyleName(BoundTable.NAV_STYLE);
 
         if(this.getCurrentChunk() == (this.getNumberOfChunks() - 1)) {
             b.setEnabled(false);
@@ -423,7 +415,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                         last();
                     }
                 });
-        b.setStyleName("nav");
+        b.setStyleName(BoundTable.NAV_STYLE);
 
         if(this.getCurrentChunk() == (this.getNumberOfChunks() - 1)) {
             b.setEnabled(false);
@@ -519,7 +511,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         ArrayList selected = new ArrayList();
         HashSet realIndexes = new HashSet();
 
-        //GWT.log( "Number of selected rows: "+this.selectedRowStyles.size(), null );
         if(this.selectedRowStyles != null) {
             for(Iterator it = this.selectedRowStyles.keySet().iterator();
                     it.hasNext();) {
@@ -527,7 +518,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             }
         } else if(this.selectedRowLastIndex != -1) {
             realIndexes.add(calculateRowToObjectOffset(
-                    new Integer(this.selectedColLastIndex)));
+                    new Integer(this.selectedRowLastIndex)));
         }
 
         int i = 0;
@@ -582,7 +573,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     private void init(int masksValue) {
-        final BoundTable instance = this;
         this.topBinding = new Binding();
         this.masks = masksValue;
 
@@ -605,7 +595,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 scroll.addScrollListener(new ScrollListener() {
                         public void onScroll(Widget widget, int scrollLeft,
                             int scrollTop) {
-                            GWT.log("" + inChunk, null);
+                            //GWT.log("" + inChunk, null);
 
                             if((inChunk == false)
                                     && (
@@ -657,7 +647,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param numberOfChunks The total number of available chunks of data.
      */
     public void init(Collection c, int numberOfChunks) {
-        GWT.log("Chunk init", null);
+        //GWT.log("Chunk init", null);
         this.numberOfChunks = numberOfChunks;
         this.currentChunk = 0;
         this.setValue(c);
@@ -684,12 +674,12 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             this.inChunk = true;
         }
 
-        GWT.log("Next fired", null);
+        //GWT.log("Next fired", null);
     }
 
     protected void onAttach() {
         super.onAttach();
-        GWT.log("onAttach", null);
+       //GWT.log("onAttach", null);
         this.renderAll();
     }
 
@@ -717,8 +707,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 this.table.getCellFormatter().setStyleName(0, i, "header");
             }
         }
-
-        GWT.log("Number of entries: " + this.value.size(), null);
 
         for(Iterator it = this.value.iterator(); it.hasNext();) {
             this.addRow((Bindable) it.next());
@@ -755,8 +743,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param c The next requested chunk of Bindable objects.
      */
     public void setChunk(Collection c) {
-        GWT.log("SetChunk Firing : " + c.size() + " " + this.inChunk, null);
-
+        
         if(!this.inChunk) {
             throw new RuntimeException(
                 "This method MUST becalled asyncronously!");
@@ -765,7 +752,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         if((masks & this.SCROLL_MASK) > 0) {
             this.add(c);
         } else {
-            GWT.log("Setting value " + c.size(), null);
             this.setValue(c);
         }
 
@@ -834,7 +820,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
         if((this.selectedCellLastStyle == null)
                 || (this.selectedCellLastStyle.length() == 0)) {
-            this.selectedCellLastStyle = "default";
+            this.selectedCellLastStyle = BoundTable.DEFAULT_STYLE;
         }
 
         table.getCellFormatter().setStyleName(row, col, "selected");
@@ -849,7 +835,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
             if((this.selectedColLastStyle == null)
                     || (this.selectedColLastStyle.length() == 0)) {
-                this.selectedColLastStyle = "default";
+                this.selectedColLastStyle = BoundTable.DEFAULT_STYLE;
             }
 
             table.getColumnFormatter().setStyleName(col, "selected");
@@ -862,7 +848,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         }
 
         List old = this.getSelected();
-
+        
         if((this.masks & BoundTable.MULTIROWSELECT_MASK) > 0) {
             if(this.selectedRowStyles.containsKey(new Integer(row))) {
                 this.getRowFormatter()
@@ -871,7 +857,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             } else {
                 String lastStyle = table.getRowFormatter().getStyleName(row);
                 lastStyle = ((lastStyle == null) || (lastStyle.length() == 0))
-                    ? "default" : lastStyle;
+                    ? BoundTable.DEFAULT_STYLE : lastStyle;
                 this.selectedRowStyles.put(new Integer(row), lastStyle);
                 this.getRowFormatter().setStyleName(row, "selected");
             }
@@ -887,7 +873,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
             if((this.selectedRowLastStyle == null)
                     || (this.selectedRowLastStyle.length() == 0)) {
-                this.selectedRowLastStyle = "default";
+                this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
             }
 
             table.getRowFormatter().setStyleName(row, "selected");
