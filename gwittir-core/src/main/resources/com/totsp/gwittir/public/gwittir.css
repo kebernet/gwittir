@@ -63,15 +63,15 @@
     width: 100%;
 }
 
-.gwittir-BoundTable table.nav-grid {
+.gwittir-BoundTable table.nav{
     width: 200px;
 }
 
-.gwittir-BoundTable table.nav-grid td {
+.gwittir-BoundTable table.nav td {
     border-width: 0px;
     width: 50px;
 }
-.gwittir-BoundTable table.nav-grid td *{
+.gwittir-BoundTable table.nav td *{
     width: 50px;
 }  
 

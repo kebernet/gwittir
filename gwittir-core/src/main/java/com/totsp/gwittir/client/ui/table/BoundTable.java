@@ -61,45 +61,54 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * A placholder for no mask options (0)
      */
     public static final int NONE_MASK = 0;
+
     /**
      * Renderer the table inside a scroll panel.
-     * 
+     *
      * <p>If the table has a DataProvider, it will use the "Google Reader"
      * get-next-chunk-on-max-scroll operation.</p>
      */
     public static final int SCROLL_MASK = 1;
+
     /**
      * Renderers a heading row on the table using the labels on the Column objects.
      */
     public static final int HEADER_MASK = 2;
+
     /**
      * Lets the user have multiple rows in the "selected" state at a time.
      */
     public static final int MULTIROWSELECT_MASK = 4;
+
     /**
      * Turns off row selection and styling.
      */
     public static final int NO_SELECT_ROW_MASK = 8;
+
     /**
      * Turns off selected column stying.
      */
     public static final int NO_SELECT_COL_MASK = 16;
+
     /**
      * Turns off cell selection stying.
      */
     public static final int NO_SELECT_CELL_MASK = 32;
+
     /**
      * Tells the table to render a spacing row in between bound rows.
      */
     public static final int SPACER_ROW_MASK = 64;
+
     /**
-     * If this table has a DataProvider AND it is not scrolling, this supresses the 
+     * If this table has a DataProvider AND it is not scrolling, this supresses the
      * first, previous, next and last buttons at the bottom of the table.
      */
     public static final int NO_NAV_ROW_MASK = 128;
+
     /**
      * Enables sorting on the table when a header row is clicked.
-     * 
+     *
      * If this table has a DataProvider, it must be a SortableDataProvider for this to work.
      */
     public static final int SORT_MASK = 256;
@@ -155,7 +164,20 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     /**
-     * Creates a new instance of BoundTable using an DataProvider as a data source.
+     * Creates a new instance of a table using a Collection as a data set.
+     * @param masks int value containing the sum of the *_MASK options for the table.
+     * @param cols The Column objects for the table.
+     * @param value A collection containing Bindable objects to render in the table.
+     */
+    public BoundTable(int masks, Column[] cols) {
+        super();
+        this.columns = cols;
+        this.value = value;
+        this.init(masks);
+    }
+
+    /**
+     * Creates a new instance of BoundTable
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      * @param provider Instance of DataProvider to get chunked data from.
@@ -163,7 +185,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     public BoundTable(int masks, Column[] cols, DataProvider provider) {
         super();
         this.columns = cols;
-        this.provider = provider;
         this.init(masks);
     }
 
@@ -250,6 +271,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         if((masks & BoundTable.HEADER_MASK) > 0) {
             row = row + 1;
         }
+
         return row;
     }
 
@@ -333,7 +355,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         this.changes.firePropertyChange("selected", old, this.getSelected());
     }
 
-    private BoundWidget createCellWidget(Binding rowBinding, Column col, Bindable target) {
+    private BoundWidget createCellWidget(Binding rowBinding, Column col,
+        Bindable target) {
         BoundWidget widget;
         Binding binding = null;
 
@@ -596,7 +619,6 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                         public void onScroll(Widget widget, int scrollLeft,
                             int scrollTop) {
                             //GWT.log("" + inChunk, null);
-
                             if((inChunk == false)
                                     && (
                                         scrollTop >= (
@@ -641,7 +663,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     /**
-     * Method called by the DataProvider to initialize the first chunk and pass 
+     * Method called by the DataProvider to initialize the first chunk and pass
      * in the to total number of chunks available.
      * @param c Data for Chunk index 0
      * @param numberOfChunks The total number of available chunks of data.
@@ -679,7 +701,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     protected void onAttach() {
         super.onAttach();
-       //GWT.log("onAttach", null);
+        //GWT.log("onAttach", null);
         this.renderAll();
     }
 
@@ -738,12 +760,11 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     /**
-     * Called by the DataProvider to pass in a requested chunk of data. 
+     * Called by the DataProvider to pass in a requested chunk of data.
      * THIS METHOD MUST BE CALLED ASYNCRONOUSLY.
      * @param c The next requested chunk of Bindable objects.
      */
     public void setChunk(Collection c) {
-        
         if(!this.inChunk) {
             throw new RuntimeException(
                 "This method MUST becalled asyncronously!");
@@ -766,13 +787,19 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     /**
-     * Sets Column[] object for use on the table. 
+     * Sets Column[] object for use on the table.
      * Note, this will foce a re-init of the table.
      * @param columns Column[] to use to render the table.
      */
     public void setColumns(Column[] columns) {
         this.columns = columns;
         this.renderAll();
+    }
+
+    public void setDataProvider(DataProvider provider) {
+        this.provider = provider;
+        this.provider.init(this);
+        this.inChunk = true;
     }
 
     public void setHeight(String height) {
@@ -785,7 +812,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Sets the indicated items in the list to "selected" state.
-     * @param selected A List of Bindables to set as the Selected value.   
+     * @param selected A List of Bindables to set as the Selected value.
      */
     public void setSelected(List selected) {
         int i = 0;
@@ -848,7 +875,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         }
 
         List old = this.getSelected();
-        
+
         if((this.masks & BoundTable.MULTIROWSELECT_MASK) > 0) {
             if(this.selectedRowStyles.containsKey(new Integer(row))) {
                 this.getRowFormatter()
@@ -906,9 +933,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     /**
-     * Sorts the table based on the value of the property in the specified column 
+     * Sorts the table based on the value of the property in the specified column
      * index.
-     * 
+     *
      * If using a SortableDataProvider, this will throw a runtime exception if the
      * column denoted by the index is not a supported sortable column.
      * @param index index of the column to sort the table on.

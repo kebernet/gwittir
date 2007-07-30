@@ -172,11 +172,10 @@ public class ExampleEntryPoint implements EntryPoint {
                 + BoundTable.HEADER_MASK
                 + BoundTable.SORT_MASK
                 //+ BoundTable.SPACER_ROW_MASK
-                //+ BoundTable.NO_SELECT_COL_MASK
-                //+ BoundTable.NO_SELECT_CELL_MASK
-                + BoundTable.SCROLL_MASK
+                + BoundTable.NO_SELECT_COL_MASK
+                + BoundTable.NO_SELECT_CELL_MASK
+                //+ BoundTable.SCROLL_MASK
                 //+ BoundTable.MULTIROWSELECT_MASK
-                // + BoundTable.HEADER_MASK
                 , c,
                 new TestSortableDataProvider() );
         t2.setHeight("200px");
