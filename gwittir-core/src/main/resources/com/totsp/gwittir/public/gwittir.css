@@ -75,8 +75,12 @@
     width: 50px;
 }  
 
-.gwittir-BoundTable td {
+.gwittir-BoundTable tbody > tr > td {
     border-bottom: 1px solid gray;
+}
+
+.gwittir-BoundTable td.expanded {
+    background-color: #DDDDDD;
 }
 
 

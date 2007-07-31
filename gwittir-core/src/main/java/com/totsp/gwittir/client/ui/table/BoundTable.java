@@ -280,15 +280,14 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private void addRow(Bindable o) {
         int row = table.getRowCount();
-        int colOffset = ((masks & BoundTable.INSERT_WIDGET_MASK) > 0) ? 1 : 0;
-
+        
         if((
                     (((masks & BoundTable.HEADER_MASK) > 0) && (row >= 2))
                     || (((masks & BoundTable.HEADER_MASK) == 0) && (row >= 1))
                 ) && ((masks & BoundTable.SPACER_ROW_MASK) > 0)) {
             table.setWidget(row, 0, new Label(""));
             table.getFlexCellFormatter()
-                 .setColSpan(row, 0, this.getColumns().length + colOffset);
+                 .setColSpan(row, 0, this.getColumns().length );
             table.getRowFormatter().setStyleName(row, "spacer");
             row++;
         }
@@ -299,16 +298,16 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         for(int col = 0; col < getColumns().length; col++) {
             Widget widget = (Widget) createCellWidget(bindingRow,
                     getColumns()[col], o);
-            table.setWidget(row, col + colOffset, widget);
+            table.setWidget(row, col , widget);
 
             if(widget instanceof HasFocus) {
                 addSelectedFocusListener((HasFocus) widget,
-                    topBinding.getChildren().size() - 1, col + colOffset);
+                    topBinding.getChildren().size() - 1, col );
             }
 
             if(widget instanceof SourcesClickEvents) {
                 addSelectedClickListener((SourcesClickEvents) widget,
-                    topBinding.getChildren().size() - 1, col + colOffset);
+                    topBinding.getChildren().size() - 1, col );
             }
         }
 
@@ -815,10 +814,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                     if(((masks & BoundTable.SORT_MASK) > 0)
                             && ((masks & BoundTable.HEADER_MASK) > 0)
                             && (row == 0)) {
-                        int colOffset = (
-                                (masks & BoundTable.INSERT_WIDGET_MASK) > 0
-                            ) ? 1 : 0;
-                        sortColumn(cell - colOffset);
+                        sortColumn(cell);
                     }
                 }
             });
@@ -875,6 +871,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         this.table.setWidget(row + 1, 0, (Widget) widget);
         this.table.getFlexCellFormatter()
                   .setColSpan(row + 1, 0, this.columns.length + 1);
+        this.table.getCellFormatter().setStyleName( row +1, 0, "expanded");
         this.modifySelectedIndexes(row, +1);
     }
 
@@ -966,22 +963,14 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private void renderAll() {
         this.clear();
-
-        int colOffset = ((masks & BoundTable.INSERT_WIDGET_MASK) > 0) ? 1 : 0;
-
         if((this.masks & BoundTable.HEADER_MASK) > 0) {
             for(int i = 0; i < this.columns.length; i++) {
-                this.table.setWidget(0, i + colOffset,
+                this.table.setWidget(0, i ,
                     new Label(this.columns[i].getLabel()));
                 this.table.getCellFormatter()
-                          .setStyleName(0, i + colOffset, "header");
+                          .setStyleName(0, i , "header");
             }
         }
-
-        if(colOffset > 0) {
-            this.table.getColumnFormatter().setWidth(0, "0px");
-        }
-
         for(Iterator it = this.value.iterator(); it.hasNext();) {
             this.addRow((Bindable) it.next());
         }
@@ -992,7 +981,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             int row = this.table.getRowCount();
             this.table.setWidget(row, 0, this.createNavWidget());
             this.table.getFlexCellFormatter()
-                      .setColSpan(row, 0, this.columns.length + colOffset);
+                      .setColSpan(row, 0, this.columns.length );
             table.getCellFormatter()
                  .setHorizontalAlignment(row, 0,
                 HasHorizontalAlignment.ALIGN_CENTER);
