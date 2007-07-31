@@ -21,6 +21,7 @@ package com.totsp.gwittir.client.flow;
 
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 
 import java.util.HashMap;
 

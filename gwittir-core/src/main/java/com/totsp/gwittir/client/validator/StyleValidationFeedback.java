@@ -53,11 +53,12 @@ public class StyleValidationFeedback extends AbstractValidationFeedback {
     public void resolve(Object source) {
         UIObject object = (UIObject) source;
         String previousStyle = (String) this.previousStyles.get(source);
-        GWT.log( "Reverting to style:" + previousStyle, null  );
-        object.setStyleName( previousStyle );
-        GWT.log( object.toString(), null  );
-        
-        this.previousStyles.remove( source );
+        if( previousStyle != null ){
+            GWT.log( "Reverting to style:" + previousStyle, null  );
+            object.setStyleName( previousStyle );
+            GWT.log( object.toString(), null  );
+            this.previousStyles.remove( source );
+        }
     }
     
     

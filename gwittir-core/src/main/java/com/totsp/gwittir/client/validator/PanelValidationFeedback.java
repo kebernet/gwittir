@@ -22,7 +22,7 @@ package com.totsp.gwittir.client.validator;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.flow.BoundWidgetProvider;
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Label;
 import java.util.HashMap;

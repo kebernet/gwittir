@@ -22,7 +22,8 @@ public class Foo implements Bindable {
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
     private String stringProperty;
     private int intProperty;
-
+    private boolean booleanProperty;
+    
     public Foo( String stringProperty, int intProperty ){
         this.stringProperty = stringProperty;
         this.intProperty = intProperty;
@@ -72,5 +73,15 @@ public class Foo implements Bindable {
         String old = this.stringProperty;
         this.stringProperty = stringProperty;
         changes.firePropertyChange("stringProperty", old, stringProperty);
+    }
+
+    public boolean isBooleanProperty() {
+        return booleanProperty;
+    }
+
+    public void setBooleanProperty(boolean booleanProperty) {
+        Boolean old = this.booleanProperty ? Boolean.TRUE : Boolean.FALSE;
+        this.booleanProperty = booleanProperty;
+        changes.firePropertyChange( "booleanProperty", old, this.booleanProperty ? Boolean.TRUE : Boolean.FALSE);
     }
 }

@@ -6,10 +6,9 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package com.totsp.gwittir.client.flow;
+package com.totsp.gwittir.client.ui.util;
 
-import com.totsp.gwittir.client.ui.BoundWidget;
-
+import com.totsp.gwittir.client.ui.*;
 
 /**
  *

@@ -22,14 +22,16 @@ package com.totsp.gwittir.client.ui;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
+import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.KeyboardListener;
-
+import com.google.gwt.user.client.ui.SourcesClickEvents;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
  * @author cooper
  */
-public class Checkbox extends AbstractBoundWidget {
+public class Checkbox extends AbstractBoundWidget implements HasEnabled, SourcesClickEvents, HasFocus {
     
     com.google.gwt.user.client.ui.CheckBox base;
     
@@ -54,6 +56,13 @@ public class Checkbox extends AbstractBoundWidget {
         this.base = new com.google.gwt.user.client.ui.CheckBox(label);
         this.setRenderer( new ToBooleanRenderer() );
         super.initWidget( this.base );
+        this.base.addClickListener( new ClickListener(){
+            public void onClick(Widget sender) {
+                Boolean old = isChecked() ? Boolean.FALSE : Boolean.TRUE;
+                changes.firePropertyChange( "value", old, getValue() );
+            }
+            
+        });
     }
 
     public void addKeyboardListener(KeyboardListener listener) {
@@ -226,7 +235,11 @@ public class Checkbox extends AbstractBoundWidget {
     }
 
     public void setValue(Object value) {
+        Boolean old = (Boolean) this.getValue();
         this.setChecked( value == null ? false : ((Boolean) this.getRenderer().render( value )).booleanValue() );
+        if( old != this.getValue() && !old.equals( this.getValue() ) ){
+            this.changes.firePropertyChange( "value", old, this.getValue() );
+        }
     }
 
     public Object getValue() {

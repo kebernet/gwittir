@@ -19,7 +19,7 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
-import com.totsp.gwittir.client.flow.BoundWidgetProvider;
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
 import com.totsp.gwittir.client.validator.Validator;

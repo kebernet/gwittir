@@ -38,7 +38,7 @@ import java.util.Comparator;
  *
  * @author cooper
  */
-public class TextBox extends AbstractBoundWidget implements HasFocus, SourcesKeyboardEvents, SourcesClickEvents {
+public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled, SourcesKeyboardEvents, SourcesClickEvents {
     private com.google.gwt.user.client.ui.TextBox base = new com.google.gwt.user.client.ui.TextBox();
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private String old;
@@ -353,6 +353,10 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, SourcesKey
         
         retValue = super.getAction();
         return retValue;
+    }
+
+    public boolean isEnabled() {
+        return this.base.isEnabled();
     }
     
 }

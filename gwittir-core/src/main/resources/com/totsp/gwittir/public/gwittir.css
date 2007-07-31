@@ -79,14 +79,13 @@
     border-bottom: 1px solid gray;
 }
 
-.gwittir-BoundTable tr td * {
+
+.gwittir-BoundTable tr td > * {
     width: 100%;
 }
 
 .gwittir-BoundTable tr td input {
     border: 0px solid black;
-}
-.gwittir-BoundTable tr td input {
     background-color: transparent;
 }
 
@@ -110,6 +109,7 @@
 .gwittir-BoundTable td.selected {
     background-color: #EEEEFF;
 }
+
 
 .gwittir-BoundTable td.header {
     background-color: silver;

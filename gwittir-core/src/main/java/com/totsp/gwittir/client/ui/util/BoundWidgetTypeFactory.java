@@ -20,7 +20,11 @@
 
 package com.totsp.gwittir.client.ui.util;
 
+
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.Checkbox;
+import com.totsp.gwittir.client.ui.TextBox;
 import java.util.HashMap;
 
 /**
@@ -32,12 +36,51 @@ public class BoundWidgetTypeFactory {
     
     /** Creates a new instance of BoundWidgetTypeFactory */
     public BoundWidgetTypeFactory() {
+        BoundWidgetProvider p = new BoundWidgetProvider(){
+            public BoundWidget get() {
+                return new Checkbox();
+            }
+            
+        };
+        registry.put( Boolean.class, p );
+        registry.put( boolean.class, p );
         
+        p = new BoundWidgetProvider(){
+            public BoundWidget get() {
+                return new TextBox();
+            }
+            
+        };
+        registry.put( String.class, p );
+        registry.put( Integer.class, p );
+        registry.put( int.class, p );
+        registry.put( Long.class, p );
+        registry.put( long.class, p );
+        registry.put( Float.class, p );
+        registry.put( float.class, p );
+        registry.put( Double.class, p );
+        registry.put( double.class, p );
+       
     }
     
-    public BoundWidget createViewWidget( Class type ){
-        return null;
+    public BoundWidgetProvider getWidgetProvider( Class type ){
+        return (BoundWidgetProvider) registry.get( type );
     }
+    
+    public BoundWidgetProvider getWidgetProvider( String propertyName, Class type ){
+        return registry.containsKey(propertyName) ? 
+                (BoundWidgetProvider) registry.get( propertyName ) :
+                (BoundWidgetProvider) registry.get( type );
+    }
+    
+    public void add( Class type, BoundWidgetProvider provider ){
+        registry.put( type, provider );
+    }
+    
+    public void add( String propertyName, BoundWidgetProvider provider ){
+        registry.put( propertyName, provider );
+    }
+    
     
     
     

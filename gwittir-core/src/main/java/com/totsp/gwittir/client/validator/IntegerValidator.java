@@ -35,8 +35,7 @@ public class IntegerValidator implements Validator {
     }
 
     public Object validate(Object value) throws ValidationException {
-        GWT.log("VALIDATING " + value, null);
-
+        
         if(value == null) {
             return value;
         }

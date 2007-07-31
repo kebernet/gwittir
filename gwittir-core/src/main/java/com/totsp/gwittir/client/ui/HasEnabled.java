@@ -1,7 +1,7 @@
 /*
- * Introspector.java
+ * HasEnabled.java
  *
- * Created on July 15, 2007, 1:44 PM
+ * Created on July 30, 2007, 11:00 AM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,22 +17,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.beans;
 
-import com.google.gwt.core.client.GWT;
-
+package com.totsp.gwittir.client.ui;
 
 /**
  *
  * @author cooper
  */
-public interface Introspector {
+public interface HasEnabled {
     
-    public static final Introspector INSTANCE = (Introspector) GWT.create( Introspector.class);
+    public void setEnabled( boolean enabled );
     
-    public BeanDescriptor getDescriptor(Class clazz);
-
-    public BeanDescriptor getDescriptor(Object object);
-
-    public Class resolveClass(Object instance);
+    public boolean isEnabled();
+    
 }

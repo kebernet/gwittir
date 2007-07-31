@@ -66,8 +66,10 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
 
     public void resolve(Object source) {
         PopupPanel p = (PopupPanel) popups.get( source );
-        p.hide();
-        popups.remove( source );
+        if( p != null ){
+            p.hide();
+            popups.remove( source );
+        }
     }
 
     
