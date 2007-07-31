@@ -169,6 +169,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Creates a new instance of Bound table with the indicated options value.
+     * @param typeFactory A BoundWidget type factory used to create the widgets that appear in the table.
      * @param masks int value containing the sum of the *_MASK options for the table.
      */
     public BoundTable(int masks, BoundWidgetTypeFactory typeFactory) {
@@ -192,6 +193,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Creates a new instance of a table using a Collection as a data set.
+     * @param typeFactory A BoundWidget type factory used to create the widgets that appear in the table.
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      * @param value A collection containing Bindable objects to render in the table.
@@ -207,9 +209,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Creates a new instance of a table using a Collection as a data set.
+     * 
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
-     * @param value A collection containing Bindable objects to render in the table.
      */
     public BoundTable(int masks, Column[] cols) {
         super();
@@ -219,9 +221,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Creates a new instance of a table using a Collection as a data set.
+     * @param typeFactory A BoundWidget type factory used to create the widgets that appear in the table.
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
-     * @param value A collection containing Bindable objects to render in the table.
      */
     public BoundTable(int masks, BoundWidgetTypeFactory typeFactory,
         Column[] cols) {
@@ -246,6 +248,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Creates a new instance of BoundTable
+     * @param typeFactory A BoundWidget type factory used to create the widgets that appear in the table.
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      * @param provider Instance of DataProvider to get chunked data from.
