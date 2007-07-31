@@ -202,7 +202,7 @@ public class ExampleEntryPoint implements EntryPoint {
                 + BoundTable.NO_SELECT_COL_MASK
                 + BoundTable.NO_SELECT_CELL_MASK
                 //+ BoundTable.SCROLL_MASK
-                + BoundTable.MULTIROWSELECT_MASK
+                //+ BoundTable.MULTIROWSELECT_MASK
                 + BoundTable.INSERT_WIDGET_MASK
                 , f
                 , c, //data );
@@ -225,7 +225,7 @@ public class ExampleEntryPoint implements EntryPoint {
         Button removeSelected = new Button("Remove Selected", new ClickListener(){
             public void onClick(Widget sender) {
                 List selections = t2.getSelected();
-                selections.remove( 1 );
+                selections.remove( 0 );
                 t2.setSelected( selections );
             }
             

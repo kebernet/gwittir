@@ -339,8 +339,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
                 public void onFocus(Widget sender) {
                     int row = calculateObjectToRowOffset(objectNumber);
-                    GWT.log( "Focus row: "+ row + " object: "+objectNumber +" col: "+ col, null);
-                    GWT.log( "SelectedRowLastIndex "+selectedRowLastIndex, null );
+                   //GWT.log( "Focus row: "+ row + " object: "+objectNumber +" col: "+ col, null);
+                   //GWT.log( "SelectedRowLastIndex "+selectedRowLastIndex, null );
                     handleSelect(row != selectedRowLastIndex, row, col);
                 }
             };
@@ -365,7 +365,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         if((masks & BoundTable.HEADER_MASK) > 0) {
             row++;
         }
-        GWT.log( "Row before: "+ row, null);
+       //GWT.log( "Row before: "+ row, null);
         if((masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
             //if( (masks & BoundTable.MULTIROWSELECT_MASK) > 0){
              //   row += this.selectedRowsBeforeObjectRow(row);
@@ -373,7 +373,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 row += this.selectedRowsBeforeRow( row );
             //}
         }
-        GWT.log( "Row after "+ row, null);
+       //GWT.log( "Row after "+ row, null);
         return row;
     }
 
@@ -389,10 +389,10 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         }
         //GWT.log( "Selected rows before row "+row+" "+ this.selectedRowsBeforeRow( row ), null );
         if((masks & BoundTable.INSERT_WIDGET_MASK) > 0 && (masks & BoundTable.MULTIROWSELECT_MASK) > 0 ) {
-            GWT.log( "At"+ row+ " Removing: "+this.selectedRowsBeforeRow(row), null );
+           //GWT.log( "At"+ row+ " Removing: "+this.selectedRowsBeforeRow(row), null );
             row -= this.selectedRowsBeforeRow(row);
         }
-        GWT.log( "Returning object instance index: "+row, null);
+       //GWT.log( "Returning object instance index: "+row, null);
         return new Integer(row);
     }
 
@@ -448,6 +448,19 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     private void clearSelectedRows() {
         List old = this.getSelected();
 
+        if( (this.masks & BoundTable.INSERT_WIDGET_MASK) > 0 ){
+            List removeRows = new ArrayList();
+            if( this.selectedRowStyles != null ){
+                removeRows.addAll( this.selectedRowStyles.keySet() );
+            } else {
+                removeRows.add( new Integer( this.selectedRowLastIndex ) );
+            }
+            for( int i= removeRows.size() -1; i >=0; i-- ){
+                GWT.log( "Removing nested: "+ removeRows.get(i), null );
+                this.removeNestedWidget( ((Integer) removeRows.get(i)).intValue() );
+            }
+        }
+        HashSet removeRows = new HashSet();
         if((this.masks & BoundTable.MULTIROWSELECT_MASK) > 0) {
             for(Iterator it = this.selectedRowStyles.entrySet().iterator();
                     it.hasNext();) {
@@ -455,8 +468,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 int row = ((Integer) entry.getKey()).intValue();
                 this.table.getRowFormatter()
                           .setStyleName(row, (String) entry.getValue());
+                
             }
-
+            
             this.selectedRowStyles.clear();
         } else if((this.masks & BoundTable.NO_SELECT_ROW_MASK) == 0) {
             if(this.selectedRowLastIndex != -1) {
@@ -695,8 +709,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private void handleSelect(boolean toggleRow, int row, int col) {
         int calcRow = row;
-        GWT.log( "Toggle row "+ toggleRow, null );
-        GWT.log( " ON "+row+", "+col, new RuntimeException() );
+       //GWT.log( "Toggle row "+ toggleRow, null );
+       //GWT.log( " ON "+row+", "+col, new RuntimeException() );
         if((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
             if((
                         (this.selectedRowStyles == null)
@@ -739,7 +753,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                     ((masks & BoundTable.HEADER_MASK) == 0)
                     && ((calcRow % 2) != 1)
                 )) {
-            GWT.log( "Inside" , null); 
+           //GWT.log( "Inside" , null); 
             if(toggleRow &&
                     (
                     ((masks & BoundTable.MULTIROWSELECT_MASK) == 0 && row != this.selectedCellRowLastIndex)) ||
@@ -846,9 +860,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     private void insertNestedWidget(int row) {
-        GWT.log( "Inserting nested for row "+row, null);
+       //GWT.log( "Inserting nested for row "+row, null);
         Integer realIndex = this.calculateRowToObjectOffset(new Integer(row));
-        GWT.log( "RealIndex: "+ realIndex, null );
+       //GWT.log( "RealIndex: "+ realIndex, null );
         int i = 0;
         Bindable o = null;
 
@@ -1011,13 +1025,13 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }*/
 
     private int selectedRowsBeforeRow(int row) {
-        GWT.log( "=======Selected rows before "+row, null);
-        GWT.log( "=======lastRow "+this.selectedRowLastIndex, null );
+       //GWT.log( "=======Selected rows before "+row, null);
+       //GWT.log( "=======lastRow "+this.selectedRowLastIndex, null );
         if(this.selectedRowStyles == null) {
-            GWT.log( "========" +  ((
-                (this.selectedRowLastIndex == -1)
-                || (this.selectedRowLastIndex >= row)
-            ) ? 0 : 1), null);
+           //GWT.log( "========" +  ((
+           //     (this.selectedRowLastIndex == -1)
+           //     || (this.selectedRowLastIndex >= row)
+           // ) ? 0 : 1), null);
             return //((this.masks & BoundTable.HEADER_MASK ) == 0  )||
                     (
                 (this.selectedRowLastIndex == -1)
