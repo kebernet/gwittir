@@ -28,8 +28,11 @@ import com.totsp.gwittir.client.validator.Validator;
  * @author cooper
  */
 public class PassThroughValidator implements Validator {
+    
+    public static final PassThroughValidator INSTANCE = new PassThroughValidator();
+    
     /** Creates a new instance of PassThroughValidator */
-    public PassThroughValidator() {
+    private PassThroughValidator() {
     }
 
     public Object validate(Object value) throws ValidationException {

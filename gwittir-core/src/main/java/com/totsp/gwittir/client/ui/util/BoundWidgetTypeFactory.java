@@ -17,73 +17,81 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.util;
 
-
-import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Checkbox;
+import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.TextBox;
+
 import java.util.HashMap;
+
 
 /**
  *
  * @author cooper
  */
 public class BoundWidgetTypeFactory {
-    HashMap registry = new HashMap();
     
-    /** Creates a new instance of BoundWidgetTypeFactory */
-    public BoundWidgetTypeFactory() {
-        BoundWidgetProvider p = new BoundWidgetProvider(){
+    public static final BoundWidgetProvider CHECKBOX_PROVIDER = new BoundWidgetProvider() {
             public BoundWidget get() {
                 return new Checkbox();
             }
-            
         };
-        registry.put( Boolean.class, p );
-        registry.put( boolean.class, p );
-        
-        p = new BoundWidgetProvider(){
+
+    public static final BoundWidgetProvider TEXTBOX_PROVIDER = new BoundWidgetProvider() {
             public BoundWidget get() {
                 return new TextBox();
             }
-            
         };
-        registry.put( String.class, p );
-        registry.put( Integer.class, p );
-        registry.put( int.class, p );
-        registry.put( Long.class, p );
-        registry.put( long.class, p );
-        registry.put( Float.class, p );
-        registry.put( float.class, p );
-        registry.put( Double.class, p );
-        registry.put( double.class, p );
-       
+
+    public static final BoundWidgetProvider LABEL_PROVIDER =   new BoundWidgetProvider() {
+            public BoundWidget get() {
+                return new Label();
+            }
+        };
+   
+        
+    HashMap registry = new HashMap();
+
+    public BoundWidgetTypeFactory(boolean defaults) {
+        super();
+
+        if(defaults) {
+            registry.put(Boolean.class, BoundWidgetTypeFactory.CHECKBOX_PROVIDER);
+            registry.put(boolean.class, BoundWidgetTypeFactory.CHECKBOX_PROVIDER);
+            registry.put(String.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(Integer.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(int.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(Long.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(long.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(Float.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(float.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(Double.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(double.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+        }
     }
-    
-    public BoundWidgetProvider getWidgetProvider( Class type ){
-        return (BoundWidgetProvider) registry.get( type );
+
+    /** Creates a new instance of BoundWidgetTypeFactory */
+    public BoundWidgetTypeFactory() {
+        super();
     }
-    
-    public BoundWidgetProvider getWidgetProvider( String propertyName, Class type ){
-        return registry.containsKey(propertyName) ? 
-                (BoundWidgetProvider) registry.get( propertyName ) :
-                (BoundWidgetProvider) registry.get( type );
+
+    public void add(Class type, BoundWidgetProvider provider) {
+        registry.put(type, provider);
     }
-    
-    public void add( Class type, BoundWidgetProvider provider ){
-        registry.put( type, provider );
+
+    public void add(String propertyName, BoundWidgetProvider provider) {
+        registry.put(propertyName, provider);
     }
-    
-    public void add( String propertyName, BoundWidgetProvider provider ){
-        registry.put( propertyName, provider );
+
+    public BoundWidgetProvider getWidgetProvider(Class type) {
+        return (BoundWidgetProvider) registry.get(type);
     }
-    
-    
-    
-    
-    
-    
+
+    public BoundWidgetProvider getWidgetProvider(String propertyName, Class type) {
+        return registry.containsKey(propertyName)
+        ? (BoundWidgetProvider) registry.get(propertyName)
+        : (BoundWidgetProvider) registry.get(type);
+    }
 }

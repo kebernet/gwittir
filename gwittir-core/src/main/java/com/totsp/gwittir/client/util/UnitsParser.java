@@ -1,7 +1,7 @@
 /*
- * NotNullValidator.java
+ * UnitsParser.java
  *
- * Created on July 16, 2007, 5:16 PM
+ * Created on August 3, 2007, 3:40 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,30 +17,39 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.validator;
 
-import com.totsp.gwittir.client.validator.ValidationException;
-import com.totsp.gwittir.client.validator.Validator;
-
+package com.totsp.gwittir.client.util;
 
 /**
  *
  * @author cooper
  */
-public class NotNullValidator implements Validator {
+public class UnitsParser {
+    private static final String NUMBERS="-1234567890";
     
-    public static final NotNullValidator INSTANCE = new NotNullValidator();
-    
-    /** Creates a new instance of NotNullValidator */
-    private NotNullValidator() {
+    /** Creates a new instance of UnitsParser */
+    private UnitsParser() {
     }
-
-    public Object validate(Object value) throws ValidationException {
-        if(value == null) {
-            throw new ValidationException("Value cannot be empty.",
-                NotNullValidator.class);
+    
+    public static UnitValue parse( String input ){
+        String intPart = "";
+        int i=0;
+        for( ; i < input.length(); i++ ){
+            if( NUMBERS.indexOf( input.charAt(i) ) != -1 ){
+                intPart +=input.charAt(i);
+            } else {
+                break;
+            }
         }
-
+        UnitValue value = new UnitValue();
+        value.value = Integer.parseInt( intPart );
+        value.units = input.substring( i, input.length() );
         return value;
     }
+    
+    public static class UnitValue {
+        public int value;
+        public String units;
+    }
+    
 }

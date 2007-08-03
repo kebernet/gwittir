@@ -28,7 +28,6 @@ import com.totsp.gwittir.client.validator.Validator;
  * @author cooper
  */
 public class IntegerRangeValidator implements Validator {
-    private IntegerValidator iv = new IntegerValidator();
     private int max;
     private int min;
 
@@ -39,7 +38,7 @@ public class IntegerRangeValidator implements Validator {
     }
 
     public Object validate(Object value) throws ValidationException {
-        Integer i = (Integer) iv.validate(value);
+        Integer i = (Integer) value;
 
         if(i == null) {
             return null;

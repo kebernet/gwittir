@@ -31,15 +31,13 @@ public class DoubleRangeValidator implements Validator{
     
     private double min;
     private double max;
-    private DoubleValidator dv = new DoubleValidator();
-    
     public DoubleRangeValidator(double min, double max) {
         this.min = min;
         this.max = max;
     }
 
     public Object validate(Object value) throws ValidationException {
-        Double i = (Double) dv.validate(value);
+        Double i = (Double) value;
 
         if(i == null) {
             return null;

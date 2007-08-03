@@ -40,7 +40,7 @@ public class ListSorter {
     }
 
     /**
-     * Performs a selection sort on a List
+     * Performs a selection sort on a List of Introspectables
      */
     public static void sortOnProperty(List list, String propertyName,
         boolean ascending) throws Exception {

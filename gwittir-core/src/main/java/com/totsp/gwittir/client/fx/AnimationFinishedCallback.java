@@ -1,7 +1,7 @@
 /*
- * DoubleValidator.java
+ * AnimationFinishedCallback.java
  *
- * Created on July 16, 2007, 5:37 PM
+ * Created on August 3, 2007, 2:44 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,36 +17,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+package com.totsp.gwittir.client.fx;
 
-package com.totsp.gwittir.client.validator;
 
 /**
  *
  * @author cooper
  */
-public class DoubleValidator implements Validator {
-    
-    public static final DoubleValidator INSTANCE = new DoubleValidator();
-    
-    /** Creates a new instance of DoubleValidator */
-    private DoubleValidator() {
-    }
+public interface AnimationFinishedCallback {
+    public void onFailure(Exception e);
 
-    public Object validate(Object value) throws ValidationException {
-        if(value == null) {
-            return value;
-        }
-
-        Double i;
-
-        try {
-            i = new Double(value.toString());
-        } catch(NumberFormatException nfe) {
-            throw new ValidationException("Must be an decimal value.",
-                DoubleValidator.class);
-        }
-
-        return i;
-    }
-    
+    public void onFinish(PropertyAnimator animator);
 }
