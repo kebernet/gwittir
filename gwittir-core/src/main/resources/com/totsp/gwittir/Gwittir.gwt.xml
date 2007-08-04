@@ -10,4 +10,10 @@
         <when-type-assignable
             class="com.totsp.gwittir.client.beans.Introspector" />
     </generate-with>
+    <replace-with
+        class="com.totsp.gwittir.client.fx.rebind.OpacitySetterIE6">
+        <when-type-is 
+            class="com.totsp.gwittir.client.fx.rebind.OpacitySetter" />
+        <when-property-is name="user.agent" value="ie6"/>
+    </replace-with>
 </module>

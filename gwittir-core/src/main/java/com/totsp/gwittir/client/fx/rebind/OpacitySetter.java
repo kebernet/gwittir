@@ -1,7 +1,7 @@
 /*
- * OpacityWrapper.java
+ * OpacitySetter.java
  *
- * Created on August 3, 2007, 5:15 PM
+ * Created on August 3, 2007, 8:18 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,32 +18,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.totsp.gwittir.client.fx;
+package com.totsp.gwittir.client.fx.rebind;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.UIObject;
-import com.totsp.gwittir.client.beans.Introspectable;
-import com.totsp.gwittir.client.fx.rebind.OpacitySetter;
 
 /**
  *
  * @author cooper
  */
-public class OpacityWrapper implements Introspectable{
-    private static final OpacitySetter SETTER = (OpacitySetter) GWT.create( OpacitySetter.class );
-    UIObject o;
-    /** Creates a new instance of OpacityWrapper */
-    public OpacityWrapper(UIObject o) {
-        this.o = o;
+public class OpacitySetter {
+    
+    /** Creates a new instance of OpacitySetter */
+    public OpacitySetter() {
     }
     
-    public Double getOpacity(){
-        return SETTER.getOpacity( this.o );
+    public Double getOpacity(UIObject o){
+        String str = DOM.getStyleAttribute( o.getElement(), "opacity");
+        if( str == null || str.length() == 0 ){
+            return new Double( 1.0 );
+        } else {
+            return Double.valueOf( str );
+        }
     }
     
-    public void setOpacity(Double opacity){
-         SETTER.setOpacity( this.o, opacity );
+    public void setOpacity(UIObject o, Double opacity){
+        if( opacity  != null ){
+            DOM.setStyleAttribute( o.getElement(), "opacity", opacity.toString() );
+        } else {
+            DOM.setStyleAttribute( o.getElement(), "opacity", "inherit" );
+        }
     }
     
 }
