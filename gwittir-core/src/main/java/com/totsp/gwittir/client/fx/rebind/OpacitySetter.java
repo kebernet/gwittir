@@ -17,37 +17,36 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.fx.rebind;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.UIObject;
+
 
 /**
  *
  * @author cooper
  */
 public class OpacitySetter {
-    
     /** Creates a new instance of OpacitySetter */
     public OpacitySetter() {
     }
-    
-    public Double getOpacity(UIObject o){
-        String str = DOM.getStyleAttribute( o.getElement(), "opacity");
-        if( str == null || str.length() == 0 ){
-            return new Double( 1.0 );
+
+    public Double getOpacity(UIObject o) {
+        String str = DOM.getStyleAttribute(o.getElement(), "opacity");
+
+        if((str == null) || (str.length() == 0)) {
+            return new Double(1.0);
         } else {
-            return Double.valueOf( str );
+            return Double.valueOf(str);
         }
     }
-    
-    public void setOpacity(UIObject o, Double opacity){
-        if( opacity  != null ){
-            DOM.setStyleAttribute( o.getElement(), "opacity", opacity.toString() );
+
+    public void setOpacity(UIObject o, Double opacity) {
+        if(opacity != null) {
+            DOM.setStyleAttribute(o.getElement(), "opacity", opacity.toString());
         } else {
-            DOM.setStyleAttribute( o.getElement(), "opacity", "inherit" );
+            DOM.setStyleAttribute(o.getElement(), "opacity", "inherit");
         }
     }
-    
 }

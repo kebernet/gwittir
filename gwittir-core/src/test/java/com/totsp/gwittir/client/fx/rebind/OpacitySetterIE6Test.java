@@ -22,20 +22,7 @@ public class OpacitySetterIE6Test extends TestCase {
         super(testName);
     }
 
-    /**
-     * Test of getOpacity method, of class com.totsp.gwittir.client.fx.rebind.OpacitySetterIE6.
-     */
-    public void testGetOpacity() {
-        // TODO add your test code.
-    }
-
-    /**
-     * Test of setOpacity method, of class com.totsp.gwittir.client.fx.rebind.OpacitySetterIE6.
-     */
-    public void testSetOpacity() {
-        // TODO add your test code.
-    }
-
+    
     /**
      * Test of parseOrReplace method, of class com.totsp.gwittir.client.fx.rebind.OpacitySetterIE6.
      */
@@ -57,7 +44,7 @@ public class OpacitySetterIE6Test extends TestCase {
         
         String test5 =  "alpha(foo=25)";
         String replaced5 = OpacitySetterIE6.parseOrReplace( test5, "60");
-        System.out.println( replaced5 );
+        this.assertEquals("alpha(opacity=60,foo=25)", replaced5 );
         
     }
     

@@ -17,33 +17,35 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.fx;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.UIObject;
+
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.fx.rebind.OpacitySetter;
+
 
 /**
  *
  * @author cooper
  */
-public class OpacityWrapper implements Introspectable{
-    private static final OpacitySetter SETTER = (OpacitySetter) GWT.create( OpacitySetter.class );
+public class OpacityWrapper implements Introspectable {
+    private static final OpacitySetter SETTER = (OpacitySetter) GWT
+        .create(OpacitySetter.class);
     UIObject o;
+
     /** Creates a new instance of OpacityWrapper */
     public OpacityWrapper(UIObject o) {
         this.o = o;
     }
-    
-    public Double getOpacity(){
-        return SETTER.getOpacity( this.o );
+
+    public Double getOpacity() {
+        return SETTER.getOpacity(this.o);
     }
-    
-    public void setOpacity(Double opacity){
-         SETTER.setOpacity( this.o, opacity );
+
+    public void setOpacity(Double opacity) {
+        SETTER.setOpacity(this.o, opacity);
     }
-    
 }

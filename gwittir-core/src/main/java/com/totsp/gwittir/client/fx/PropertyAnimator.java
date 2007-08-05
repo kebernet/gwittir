@@ -136,15 +136,10 @@ public class PropertyAnimator {
                             ) / (double) duration;
                         Object newValue = strategy.mutateValue(initialValue,
                                 finalValue, percentComplete);
-                        GWT.log(percentComplete + "%", null);
-                        GWT.log((startTime + duration) + " < "
-                            + System.currentTimeMillis(), null);
 
                         if(percentComplete < 1) {
-                            GWT.log("incrementing", null);
                             invoke(property.getMutatorMethod(), newValue);
                         } else {
-                            GWT.log("finalizeing", null);
                             invoke(property.getMutatorMethod(), finalValue);
 
                             if(callback != null) {
@@ -156,6 +151,7 @@ public class PropertyAnimator {
                     } catch(Exception e) {
                         if(callback != null) {
                             callback.onFailure(e);
+                            this.cancel();
 
                             return;
                         }

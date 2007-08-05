@@ -62,8 +62,9 @@ public class ExampleEntryPoint implements EntryPoint {
                     public void onFailure(Exception e) {
                     }
                 });
-        final PropertyAnimator a2 = new PropertyAnimator( new OpacityWrapper(b), "opacity", new Double(0),
-                new Double(1), MutationStrategy.DOUBLE_SINOIDAL, 3000);
+        final PropertyAnimator a2 = new PropertyAnimator(new OpacityWrapper(b),
+                "opacity", new Double(0), new Double(1),
+                MutationStrategy.DOUBLE_SINOIDAL, 3000);
         RootPanel.get().add(b);
 
         Button b2 = new Button("Animate",
