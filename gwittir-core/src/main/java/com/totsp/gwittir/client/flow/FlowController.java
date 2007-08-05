@@ -12,9 +12,11 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.HasWidget;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,12 +50,12 @@ public class FlowController {
             context = (FlowContext) contexts.get(contextRoot);
         }
 
-        if(context == null || !(contextRoot instanceof HasWidgets)) {
+        if(context == null || !(contextRoot instanceof HasWidgets || contextRoot instanceof HasWidget )) {
             throw new RuntimeException(
                 "Unknown destination name for this elements context.");
         }
 
-        HasWidgets panel = (HasWidgets) contextRoot;
+        Object panel = contextRoot;
         BoundWidget widget = context.get(name);
 
         if(widget == null) {
@@ -63,20 +65,35 @@ public class FlowController {
         widget.setModel(model);
 
         BoundWidget old = null;
-        Iterator it = panel.iterator();
+        
 
-        while(it.hasNext()) {
-            Object next = it.next();
-
-            if(next instanceof BoundWidget) {
-                old = (BoundWidget) next;
-
-                break;
+        if( panel instanceof SimplePanel ){
+            SimplePanel sp = (SimplePanel) panel;
+            if( sp.getWidget() instanceof BoundWidget ){
+                old = (BoundWidget) sp.getWidget();
             }
-        }
+            sp.setWidget( (Widget) widget );
+        } else if( panel instanceof HasWidget ){
+            HasWidget hw = (HasWidget) panel;
+            if( hw.getWidget() instanceof BoundWidget ){
+                old = (BoundWidget) hw.getWidget();
+            }
+            hw.setWidget( (Widget) widget );
+        } else if( panel instanceof HasWidgets ){
+            HasWidgets hw = (HasWidgets) panel;
+            Iterator it = hw.iterator();
+            while(it.hasNext()) {
+                Object next = it.next();
 
-        panel.clear();
-        panel.add((Widget) widget);
+                if(next instanceof BoundWidget) {
+                    old = (BoundWidget) next;
+
+                    break;
+                }
+            }
+            hw.clear();
+            hw.add((Widget) widget );
+        }
 
         if(FlowController.manager != null) {
             manager.transition(name, old, widget);

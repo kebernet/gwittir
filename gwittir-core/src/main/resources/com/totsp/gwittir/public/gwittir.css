@@ -120,7 +120,15 @@
     border-right: 1px solid black;
 }
 
+.gwittir-SlidePanel {
+    border: 1px dotted silver;
+}
 
+.red {
+    background-color: red;
+}
 
+.blue {
+    background-color: blue;
 
 

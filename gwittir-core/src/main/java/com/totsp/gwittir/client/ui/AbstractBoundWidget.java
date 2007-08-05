@@ -125,6 +125,7 @@ public abstract class AbstractBoundWidget extends Composite
     }
 
     public void setModel(Object model) {
+        Object old = this.getModel();
         if(this.getAction() instanceof BindingAction &&
                 (this.getModel() != null)) {
             ((BindingAction) getAction()).unbind(this);
@@ -139,6 +140,7 @@ public abstract class AbstractBoundWidget extends Composite
                 ((BindingAction) getAction()).bind(this);
             }
         }
+        this.changes.firePropertyChange( "model", old, model );
     }
 
     public void setRenderer(Renderer renderer) {
