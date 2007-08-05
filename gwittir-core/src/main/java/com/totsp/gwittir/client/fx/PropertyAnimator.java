@@ -115,14 +115,13 @@ public class PropertyAnimator {
 
     public void start() {
         final long startTime = System.currentTimeMillis();
-
         final PropertyAnimator instance = this;
 
         try {
             invoke(this.property.getMutatorMethod(), this.initialValue);
         } catch(Exception e) {
             if(this.callback != null) {
-                this.callback.onFailure(e);
+                this.callback.onFailure(this, e);
 
                 return;
             }
@@ -134,6 +133,7 @@ public class PropertyAnimator {
                         double percentComplete = (double) (
                                 System.currentTimeMillis() - startTime
                             ) / (double) duration;
+                        GWT.log( ""+strategy, null );
                         Object newValue = strategy.mutateValue(initialValue,
                                 finalValue, percentComplete);
 
@@ -150,7 +150,7 @@ public class PropertyAnimator {
                         }
                     } catch(Exception e) {
                         if(callback != null) {
-                            callback.onFailure(e);
+                            callback.onFailure(instance, e);
                             this.cancel();
 
                             return;

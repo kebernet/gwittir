@@ -29,7 +29,7 @@ import com.totsp.gwittir.client.fx.rebind.OpacitySetter;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class OpacityWrapper implements Introspectable {
     private static final OpacitySetter SETTER = (OpacitySetter) GWT

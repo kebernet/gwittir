@@ -44,6 +44,8 @@ import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 import com.totsp.gwittir.client.util.ListSorter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -762,12 +764,13 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     private void init(int masksValue) {
+        final BoundTable instance = this;
         this.topBinding = new Binding();
         this.masks = masksValue;
         this.typeFactory = (this.typeFactory == null)
             ? new BoundWidgetTypeFactory() : this.typeFactory;
 
-        if((this.masks & BoundTable.SORT_MASK) > 0) {
+        if((this.masks & BoundTable.SORT_MASK) > 0 && this.columns != null) {
             this.ascending = new boolean[this.columns.length];
         }
 
@@ -829,6 +832,15 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             this.provider.init(this);
             this.inChunk = true;
         }
+        
+        this.addPropertyChangeListener( "selected", new PropertyChangeListener(){
+            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                if( getAction() != null ){
+                    getAction().execute( instance );
+                }
+            }
+            
+        });
     }
 
     /**
@@ -1047,6 +1059,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      */
     public void setColumns(Column[] columns) {
         this.columns = columns;
+        if((this.masks & BoundTable.SORT_MASK) > 0 ) {
+            this.ascending = new boolean[this.columns.length];
+        }
         this.renderAll();
     }
 

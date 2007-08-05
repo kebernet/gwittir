@@ -29,7 +29,6 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import java.beans.IntrospectionException;
 
 import java.io.PrintWriter;
 
@@ -143,7 +142,7 @@ public class IntrospectorGenerator extends Generator {
                         methods.add(p.getWriteMethod());
                     }
                 }
-            
+                
             } catch(Exception e) {
                 logger.log(logger.ERROR,
                         "Unable to introspect class. Is class a bean?", e);
@@ -216,6 +215,9 @@ public class IntrospectorGenerator extends Generator {
             JClassType introspectable = oracle.getType(com.totsp.gwittir.client.beans.Introspectable.class
                     .getCanonicalName());
             
+            
+            
+            
             for(int i = 0; i < types.length; i++) {
                 logger.log(logger.SPAM,
                         types[i] + " is assignable to " + introspectable + " "
@@ -227,6 +229,29 @@ public class IntrospectorGenerator extends Generator {
                     results.add( new BeanResolver(logger, types[i]));
                 }
             }
+            
+            // Do a crazy assed sort to make sure least
+            // assignable types are at the bottom of the list
+            
+            boolean swap = true;
+            while(swap){
+                swap = false;
+                for( int i = results.size() - 1; i >=0; i --){
+                    BeanResolver type = (BeanResolver) results.get(i);
+                    for( int j = i - 1; j >=0; j-- ){
+                        BeanResolver check = (BeanResolver) results.get(j);
+                        if( type.getType().isAssignableTo( check.getType() ) ){
+                            results.set(i, check);
+                            results.set(j, type );
+                            swap = true;
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            
         } catch(Exception e) {
             logger.log(logger.ERROR, "Unable to finad Introspectable types.", e);
         }
@@ -365,7 +390,7 @@ public class IntrospectorGenerator extends Generator {
         writer.outdent();
         writer.println("}");
         writer.println(
-                "if( p == null ) throw new RuntimeException(\"Couldn't find property \"+name );");
+                "if( p == null ) throw new RuntimeException(\"Couldn't find property \"+name+\" for "+info.getType().getQualifiedSourceName()+ "\");");
         writer.println("else return p;");
         writer.outdent();
         writer.println("}");
@@ -394,7 +419,7 @@ public class IntrospectorGenerator extends Generator {
                 + ".class, ");
                 this.writeBeanDescriptor(logger, bean, methods, writer);
                 writer.println(" );");
-            
+                
             } catch(Exception  e) {
                 logger.log(logger.ERROR,
                         "Unable to introspect class. Is class a bean?", e);

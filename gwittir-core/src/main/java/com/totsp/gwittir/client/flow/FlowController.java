@@ -118,7 +118,11 @@ public class FlowController {
         return FlowController.manager;
     }
 
-    public static void setFlowContext(Panel container, FlowContext context) {
+    public static void setFlowContext(HasWidgets container, FlowContext context) {
+        contexts.put(container, context);
+    }
+    
+    public static void setFlowContext(HasWidget container, FlowContext context) {
         contexts.put(container, context);
     }
 

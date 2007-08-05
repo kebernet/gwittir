@@ -24,14 +24,19 @@ import com.google.gwt.user.client.ui.UIObject;
 
 
 /**
- *
- * @author cooper
+ * This is a simple class for setting the opacity on a UIObject.
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class OpacitySetter {
     /** Creates a new instance of OpacitySetter */
     public OpacitySetter() {
     }
 
+    /**
+     * Gets the current opacity value.
+     * @param o UIObject to inspect.
+     * @return The current opacity between 0.0 and 1.0
+     */
     public Double getOpacity(UIObject o) {
         String str = DOM.getStyleAttribute(o.getElement(), "opacity");
 
@@ -42,6 +47,11 @@ public class OpacitySetter {
         }
     }
 
+    /**
+     * Sets the opactiy.
+     * @param o The UIObject to set.
+     * @param opacity The new opacity between 0.0 and 1.0
+     */
     public void setOpacity(UIObject o, Double opacity) {
         if(opacity != null) {
             DOM.setStyleAttribute(o.getElement(), "opacity", opacity.toString());

@@ -21,11 +21,21 @@ package com.totsp.gwittir.client.fx;
 
 
 /**
- *
- * @author cooper
+ * This is a callback interface that can be implemented to receive
+ * notifications when a PropertyAnimator completes its run.
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface AnimationFinishedCallback {
-    public void onFailure(Exception e);
+    /**
+     * This method is called when an exception occurred during the animation.
+     * @param animator The animator that failed.
+     * @param e The exception that was thrown.
+     */
+    public void onFailure(PropertyAnimator animator, Exception e);
 
+    /**
+     * This method is called when a property animator finishes its run.
+     * @param animator The animator that finished.
+     */
     public void onFinish(PropertyAnimator animator);
 }

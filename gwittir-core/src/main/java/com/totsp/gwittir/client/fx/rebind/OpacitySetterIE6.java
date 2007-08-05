@@ -25,18 +25,33 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.UIObject;
 
 /**
- *
- * @author cooper
+ * This is an opactiy setter than works by parsing the alpha() block
+ * on the MSIE "filter" CSS property.
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class OpacitySetterIE6 extends OpacitySetter {
+    /**
+     * Text of the alpha block.
+     */
     protected static final String ALPHA="alpha(";
+    /**
+     * Text of the opacity block.
+     */
     protected static final String OPACITY="opacity=";
+    /**
+     * A string containing number characters for comparison.
+     */
     protected static final String NUMBERS="1234567890.";
     
     /** Creates a new instance of OpacitySetter */
     public OpacitySetterIE6() {
     }
     
+    /**
+     * Gets the current opacity value.
+     * @param o UIObject to inspect.
+     * @return The current opacity between 0.0 and 1.0
+     */
     public Double getOpacity(UIObject o){
         String str = DOM.getStyleAttribute( o.getElement(), "filter");
         str = parseOrReplace( str, null );
@@ -47,6 +62,11 @@ public class OpacitySetterIE6 extends OpacitySetter {
         }
     }
     
+    /**
+     * Gets the current opacity value.
+     * @param opacity the new opacity value between 0.0 and 1.0
+     * @param o UIObject to inspect.
+     */
     public void setOpacity(UIObject o, Double opacity){
         String filter = DOM.getStyleAttribute( o.getElement(), "filter" );
             if( filter == null ){ 

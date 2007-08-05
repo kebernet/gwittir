@@ -59,7 +59,7 @@ public class ExampleEntryPoint implements EntryPoint {
                         a2.start();
                     }
 
-                    public void onFailure(Exception e) {
+                    public void onFailure(PropertyAnimator animator, Exception e) {
                     }
                 });
         final PropertyAnimator a2 = new PropertyAnimator(new OpacityWrapper(b),

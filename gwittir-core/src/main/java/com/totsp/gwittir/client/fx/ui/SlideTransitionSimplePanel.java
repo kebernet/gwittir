@@ -3,8 +3,19 @@
  *
  * Created on August 5, 2007, 10:44 AM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 package com.totsp.gwittir.client.fx.ui;
@@ -34,7 +45,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
     private FlowPanel base = new FlowPanel();
     private String direction;
     private int duration = 1000;
-    private MutationStrategy mutationStrategy;
+    private MutationStrategy mutationStrategy = MutationStrategy.UNITS_SINOIDAL;
     
     /** Creates a new instance of SlidePanel */
     public SlideTransitionSimplePanel() {
@@ -57,6 +68,8 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
     }
     
     public void setWidget(Widget w) {
+        
+        GWT.log( "Setting widget "+ w.toString(), null );
         final PositionWrapper nextWidget = new PositionWrapper(w);
         nextWidget.setPosition("relative");
         String high = "100%";
@@ -65,10 +78,10 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
             high = "0px";
             low = "-"+currentWidget.getUIObject().getOffsetHeight()+"px";
         }
-        PropertyAnimator a = new PropertyAnimator( nextWidget, this.getDirection(), 
+        PropertyAnimator a = new PropertyAnimator( nextWidget, this.getDirection(),
                 high, low, this.getMutationStrategy(), 1000,
                 new AnimationFinishedCallback(){
-            public void onFailure(Exception e) {
+            public void onFailure(PropertyAnimator animator, Exception e) {
                 GWT.log( "Exception animating transition", e);
             }
             
@@ -85,9 +98,9 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
             if( this.getDirection().equals(SlideTransitionSimplePanel.HORIZONTAL) ){
                 nextWidget.setTop( "-"+oldWidget.getOffsetHeight()+"px");
             }
-            PropertyAnimator old = new PropertyAnimator( currentWidget, this.getDirection(), 
+            PropertyAnimator old = new PropertyAnimator( currentWidget, this.getDirection(),
                     "0%", "-100%", this.getMutationStrategy(), 1000, new AnimationFinishedCallback(){
-                public void onFailure(Exception e) {
+                public void onFailure(PropertyAnimator animator, Exception e) {
                     GWT.log( "Exception animating transition", e);
                 }
                 
@@ -112,7 +125,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
     public boolean remove(Widget w) {
         if( currentWidget != null ){
             PropertyAnimator old = new PropertyAnimator( currentWidget, getDirection(), "0%", "-100%", MutationStrategy.UNITS_LINEAR, 1000, new AnimationFinishedCallback(){
-                public void onFailure(Exception e) {
+                public void onFailure(PropertyAnimator animator, Exception e) {
                     GWT.log( "Exception animating transition", e);
                 }
                 
@@ -149,33 +162,37 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
         base.clear();
         this.currentWidget = null;
     }
-
+    
     public String getDirection() {
         return direction;
     }
-
+    
     public void setDirection(String direction) {
         this.direction = direction;
     }
-
+    
     public int getDuration() {
         return duration;
     }
-
+    
     public void setDuration(int duration) {
         this.duration = duration;
     }
-
+    
     public MutationStrategy getMutationStrategy() {
         return mutationStrategy;
     }
-
+    
     public void setMutationStrategy(MutationStrategy mutationStrategy) {
         this.mutationStrategy = mutationStrategy;
     }
     
     public Widget getWidget(){
+        if( this.currentWidget == null ){
+            return null;
+        }
         return (Widget) this.currentWidget.getUIObject();
+        
     }
     
 }
