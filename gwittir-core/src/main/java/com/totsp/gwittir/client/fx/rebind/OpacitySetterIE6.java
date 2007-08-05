@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.UIObject;
  *
  * @author cooper
  */
-public class OpacitySetterIE6 {
+public class OpacitySetterIE6 extends OpacitySetter {
     protected static final String ALPHA="alpha(";
     protected static final String OPACITY="opacity=";
     protected static final String NUMBERS="1234567890.";

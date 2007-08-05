@@ -33,6 +33,7 @@
             <artifactId>gwt-user</artifactId>
             <version>1.4.10</version>
             <type>jar</type>
+            <scope>provided</scope>
         </dependency>
          <dependency>
             <groupId>com.google.gwt</groupId>
