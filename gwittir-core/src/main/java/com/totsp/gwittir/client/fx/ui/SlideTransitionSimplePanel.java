@@ -18,7 +18,9 @@ import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.PositionWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
-import com.totsp.gwittir.client.ui.*;
+import com.totsp.gwittir.client.ui.AbstractBoundWidget;
+import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.HasWidget;
 import java.util.Iterator;
 
 /**
