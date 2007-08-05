@@ -48,20 +48,15 @@ public class OpacitySetterIE6 extends OpacitySetter {
     }
     
     public void setOpacity(UIObject o, Double opacity){
-        if( opacity  != null ){
-            String filter = DOM.getStyleAttribute( o.getElement(), "filter" );
+        String filter = DOM.getStyleAttribute( o.getElement(), "filter" );
             if( filter == null ){ 
                 filter = "";
             }
+        if( opacity  != null ){
             filter = parseOrReplace( filter, ""+Math.round( opacity.doubleValue() * 100d) );
             DOM.setStyleAttribute( o.getElement(), "filter", filter );
         } else {
-            String filter = DOM.getStyleAttribute( o.getElement(), "filter" );
-            if( filter == null ){ 
-                filter = "";
-            }
             filter = parseOrReplace( filter, "100" );
-            Window.alert( "Serting filter "+ filter);
             DOM.setStyleAttribute( o.getElement(), "filter", filter );
         }
     }
