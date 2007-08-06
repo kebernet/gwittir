@@ -44,6 +44,7 @@ import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 import com.totsp.gwittir.client.util.ListSorter;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -54,7 +55,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-
 
 
 /**
@@ -208,7 +208,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     /**
      * Creates a new instance of a table using a Collection as a data set.
-     * 
+     *
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      */
@@ -282,14 +282,14 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private void addRow(Bindable o) {
         int row = table.getRowCount();
-        
+
         if((
                     (((masks & BoundTable.HEADER_MASK) > 0) && (row >= 2))
                     || (((masks & BoundTable.HEADER_MASK) == 0) && (row >= 1))
                 ) && ((masks & BoundTable.SPACER_ROW_MASK) > 0)) {
             table.setWidget(row, 0, new Label(""));
             table.getFlexCellFormatter()
-                 .setColSpan(row, 0, this.getColumns().length );
+                 .setColSpan(row, 0, this.getColumns().length);
             table.getRowFormatter().setStyleName(row, "spacer");
             row++;
         }
@@ -300,16 +300,16 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         for(int col = 0; col < getColumns().length; col++) {
             Widget widget = (Widget) createCellWidget(bindingRow,
                     getColumns()[col], o);
-            table.setWidget(row, col , widget);
+            table.setWidget(row, col, widget);
 
             if(widget instanceof HasFocus) {
                 addSelectedFocusListener((HasFocus) widget,
-                    topBinding.getChildren().size() - 1, col );
+                    topBinding.getChildren().size() - 1, col);
             }
 
             if(widget instanceof SourcesClickEvents) {
                 addSelectedClickListener((SourcesClickEvents) widget,
-                    topBinding.getChildren().size() - 1, col );
+                    topBinding.getChildren().size() - 1, col);
             }
         }
 
@@ -367,7 +367,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         if((masks & BoundTable.HEADER_MASK) > 0) {
             row++;
         }
-       //GWT.log( "Row before: "+ row, null);
+
+        //GWT.log( "Row before: "+ row, null);
         if((masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
             //if( (masks & BoundTable.MULTIROWSELECT_MASK) > 0){
             //   row += this.selectedRowsBeforeObjectRow(row);
@@ -376,7 +377,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
             //}
         }
-       //GWT.log( "Row after "+ row, null);
+
+        //GWT.log( "Row after "+ row, null);
         return row;
     }
 
@@ -392,11 +394,13 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         }
 
         //GWT.log( "Selected rows before row "+row+" "+ this.selectedRowsBeforeRow( row ), null );
-        if((masks & BoundTable.INSERT_WIDGET_MASK) > 0 && (masks & BoundTable.MULTIROWSELECT_MASK) > 0 ) {
-           //GWT.log( "At"+ row+ " Removing: "+this.selectedRowsBeforeRow(row), null );
+        if(((masks & BoundTable.INSERT_WIDGET_MASK) > 0)
+                && ((masks & BoundTable.MULTIROWSELECT_MASK) > 0)) {
+            //GWT.log( "At"+ row+ " Removing: "+this.selectedRowsBeforeRow(row), null );
             row -= this.selectedRowsBeforeRow(row);
         }
-       //GWT.log( "Returning object instance index: "+row, null);
+
+        //GWT.log( "Returning object instance index: "+row, null);
         return new Integer(row);
     }
 
@@ -437,6 +441,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         this.selectedColLastStyle = BoundTable.DEFAULT_STYLE;
         this.selectedRowLastIndex = -1;
         this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
+        this.selectedCellRowLastIndex = -1;
     }
 
     private void clearSelectedCol() {
@@ -450,19 +455,23 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     private void clearSelectedRows() {
         List old = this.getSelected();
 
-        if( (this.masks & BoundTable.INSERT_WIDGET_MASK) > 0 ){
+        if((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
             List removeRows = new ArrayList();
-            if( this.selectedRowStyles != null ){
-                removeRows.addAll( this.selectedRowStyles.keySet() );
+
+            if(this.selectedRowStyles != null) {
+                removeRows.addAll(this.selectedRowStyles.keySet());
             } else {
-                removeRows.add( new Integer( this.selectedRowLastIndex ) );
+                removeRows.add(new Integer(this.selectedRowLastIndex));
             }
-            for( int i= removeRows.size() -1; i >=0; i-- ){
-                GWT.log( "Removing nested: "+ removeRows.get(i), null );
-                this.removeNestedWidget( ((Integer) removeRows.get(i)).intValue() );
+
+            for(int i = removeRows.size() - 1; i >= 0; i--) {
+                GWT.log("Removing nested: " + removeRows.get(i), null);
+                this.removeNestedWidget(((Integer) removeRows.get(i)).intValue());
             }
         }
+
         HashSet removeRows = new HashSet();
+
         if((this.masks & BoundTable.MULTIROWSELECT_MASK) > 0) {
             for(Iterator it = this.selectedRowStyles.entrySet().iterator();
                     it.hasNext();) {
@@ -470,9 +479,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 int row = ((Integer) entry.getKey()).intValue();
                 this.table.getRowFormatter()
                           .setStyleName(row, (String) entry.getValue());
-                
             }
-            
+
             this.selectedRowStyles.clear();
         } else if((this.masks & BoundTable.NO_SELECT_ROW_MASK) == 0) {
             if(this.selectedRowLastIndex != -1) {
@@ -709,8 +717,9 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private void handleSelect(boolean toggleRow, int row, int col) {
         int calcRow = row;
-       //GWT.log( "Toggle row "+ toggleRow, null );
-       //GWT.log( " ON "+row+", "+col, new RuntimeException() );
+
+        //GWT.log( "Toggle row "+ toggleRow, null );
+        //GWT.log( " ON "+row+", "+col, new RuntimeException() );
         if((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
             if((
                         (this.selectedRowStyles == null)
@@ -727,7 +736,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
             calcRow = row - this.selectedRowsBeforeRow(row);
         }
-        
+
         if((
                     ((masks & BoundTable.SPACER_ROW_MASK) == 0)
                     && (
@@ -745,13 +754,19 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                     ((masks & BoundTable.HEADER_MASK) == 0)
                     && ((calcRow % 2) != 1)
                 )) {
-           //GWT.log( "Inside" , null); 
-            if(toggleRow &&
-                    (
-                    ((masks & BoundTable.MULTIROWSELECT_MASK) == 0 && row != this.selectedCellRowLastIndex)) ||
-                      (masks & BoundTable.MULTIROWSELECT_MASK) > 0 && toggleRow ){
-             
-            //if( toggleRow || (masks & BoundTable.MULTIROWSELECT_MASK) == 0){
+            //GWT.log( "Inside" , null);
+            if((
+                        toggleRow
+                        && (
+                            ((masks & BoundTable.MULTIROWSELECT_MASK) == 0)
+                            && (row != this.selectedCellRowLastIndex)
+                        )
+                    )
+                    || (
+                        ((masks & BoundTable.MULTIROWSELECT_MASK) > 0)
+                        && toggleRow
+                    )) {
+                //if( toggleRow || (masks & BoundTable.MULTIROWSELECT_MASK) == 0){
                 row = setSelectedRow(row);
             }
 
@@ -770,7 +785,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         this.typeFactory = (this.typeFactory == null)
             ? new BoundWidgetTypeFactory() : this.typeFactory;
 
-        if((this.masks & BoundTable.SORT_MASK) > 0 && this.columns != null) {
+        if(((this.masks & BoundTable.SORT_MASK) > 0) && (this.columns != null)) {
             this.ascending = new boolean[this.columns.length];
         }
 
@@ -787,23 +802,23 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             this.scroll.setWidget(table);
             super.initWidget(scroll);
 
-            if(this.provider != null) {
-                scroll.addScrollListener(new ScrollListener() {
-                        public void onScroll(Widget widget, int scrollLeft,
-                            int scrollTop) {
-                            if((inChunk == false)
-                                    && (
-                                        scrollTop >= (
-                                            table.getOffsetHeight()
-                                            - scroll.getOffsetHeight()
-                                        )
-                                    )) {
-                                lastScrollPosition = scrollTop - 1;
-                                next();
-                            }
+            scroll.addScrollListener(new ScrollListener() {
+                    public void onScroll(Widget widget, int scrollLeft,
+                        int scrollTop) {
+                        GWT.log( "HasProvider: "+ (provider != null ), null );
+                        if((provider != null) && (inChunk == false)
+                                && (
+                                    scrollTop >= (
+                                        table.getOffsetHeight()
+                                        - scroll.getOffsetHeight()
+                                    )
+                                )) {
+                            GWT.log( "Scroll Event fired. ", null);
+                            lastScrollPosition = scrollTop - 1;
+                            next();
                         }
-                    });
-            }
+                    }
+                });
         } else {
             super.initWidget(table);
         }
@@ -832,15 +847,16 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             this.provider.init(this);
             this.inChunk = true;
         }
-        
-        this.addPropertyChangeListener( "selected", new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if( getAction() != null ){
-                    getAction().execute( instance );
+
+        this.addPropertyChangeListener("selected",
+            new PropertyChangeListener() {
+                public void propertyChange(
+                    PropertyChangeEvent propertyChangeEvent) {
+                    if(getAction() != null) {
+                        getAction().execute(instance);
+                    }
                 }
-            }
-            
-        });
+            });
     }
 
     /**
@@ -857,9 +873,10 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     }
 
     private void insertNestedWidget(int row) {
-       //GWT.log( "Inserting nested for row "+row, null);
+        //GWT.log( "Inserting nested for row "+row, null);
         Integer realIndex = this.calculateRowToObjectOffset(new Integer(row));
-       //GWT.log( "RealIndex: "+ realIndex, null );
+
+        //GWT.log( "RealIndex: "+ realIndex, null );
         int i = 0;
         Bindable o = null;
 
@@ -882,7 +899,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         this.table.setWidget(row + 1, 0, (Widget) widget);
         this.table.getFlexCellFormatter()
                   .setColSpan(row + 1, 0, this.columns.length + 1);
-        this.table.getCellFormatter().setStyleName( row +1, 0, "expanded");
+        this.table.getCellFormatter().setStyleName(row + 1, 0, "expanded");
         this.modifySelectedIndexes(row, +1);
     }
 
@@ -932,6 +949,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * Causes the table to render the next chunk of data.
      */
     public void next() {
+        GWT.log( "Next invoked. NOC: "+ this.numberOfChunks, null);
         if((this.currentChunk + 1) < this.numberOfChunks) {
             this.provider.getChunk(this, ++currentChunk);
             this.inChunk = true;
@@ -965,14 +983,14 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
 
     private void renderAll() {
         this.clear();
+
         if((this.masks & BoundTable.HEADER_MASK) > 0) {
             for(int i = 0; i < this.columns.length; i++) {
-                this.table.setWidget(0, i ,
-                    new Label(this.columns[i].getLabel()));
-                this.table.getCellFormatter()
-                          .setStyleName(0, i , "header");
+                this.table.setWidget(0, i, new Label(this.columns[i].getLabel()));
+                this.table.getCellFormatter().setStyleName(0, i, "header");
             }
         }
+
         for(Iterator it = this.value.iterator(); it.hasNext();) {
             this.addRow((Bindable) it.next());
         }
@@ -983,19 +1001,19 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             int row = this.table.getRowCount();
             this.table.setWidget(row, 0, this.createNavWidget());
             this.table.getFlexCellFormatter()
-                      .setColSpan(row, 0, this.columns.length );
+                      .setColSpan(row, 0, this.columns.length);
             table.getCellFormatter()
                  .setHorizontalAlignment(row, 0,
                 HasHorizontalAlignment.ALIGN_CENTER);
         }
+        
     }
 
     private int selectedRowsBeforeRow(int row) {
-       //GWT.log( "=======Selected rows before "+row, null);
-       //GWT.log( "=======lastRow "+this.selectedRowLastIndex, null );
+        //GWT.log( "=======Selected rows before "+row, null);
+        //GWT.log( "=======lastRow "+this.selectedRowLastIndex, null );
         if(this.selectedRowStyles == null) {
-            return
-            (
+            return (
                 (this.selectedRowLastIndex == -1)
                 || (this.selectedRowLastIndex >= row)
             ) ? 0 : 1;
@@ -1059,9 +1077,11 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      */
     public void setColumns(Column[] columns) {
         this.columns = columns;
-        if((this.masks & BoundTable.SORT_MASK) > 0 ) {
+
+        if((this.masks & BoundTable.SORT_MASK) > 0) {
             this.ascending = new boolean[this.columns.length];
         }
+
         this.renderAll();
     }
 
@@ -1110,6 +1130,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 .setStyleName(this.selectedCellRowLastIndex,
                 this.selectedColLastIndex, this.selectedCellLastStyle);
         }
+
         this.selectedCellLastStyle = table.getCellFormatter()
                                           .getStyleName(row, col);
 

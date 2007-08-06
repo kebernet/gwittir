@@ -69,7 +69,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
     
     public void setWidget(Widget w) {
         
-        GWT.log( "Setting widget "+ w.toString(), null );
+        //GWT.log( "Setting widget "+ w.toString(), null );
         final PositionWrapper nextWidget = new PositionWrapper(w);
         nextWidget.setPosition("relative");
         String high = "100%";
@@ -86,7 +86,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget implements H
             }
             
             public void onFinish(PropertyAnimator animator) {
-                GWT.log( nextWidget.getLeft(), null);
+                //GWT.log( nextWidget.getLeft(), null);
                 currentWidget = nextWidget;
                 nextWidget.setTop( "0px");
             }

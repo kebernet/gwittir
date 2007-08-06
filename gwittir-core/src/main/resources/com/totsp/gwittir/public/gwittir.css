@@ -75,7 +75,7 @@
     width: 50px;
 }  
 
-.gwittir-BoundTable tbody > tr > td {
+.gwittir-BoundTable > tbody > tr > td {
     border-bottom: 1px solid gray;
 }
 
@@ -118,6 +118,7 @@
 .gwittir-BoundTable td.header {
     background-color: silver;
     border-right: 1px solid black;
+    cursor: default;
 }
 
 .gwittir-SlidePanel {

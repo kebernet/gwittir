@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.ui.util;
 
+import com.google.gwt.core.client.GWT;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Checkbox;
 import com.totsp.gwittir.client.ui.Label;
@@ -90,6 +91,7 @@ public class BoundWidgetTypeFactory {
     }
 
     public BoundWidgetProvider getWidgetProvider(String propertyName, Class type) {
+        //GWT.log( "Looking up: ("+propertyName+") "+ type, null );
         return registry.containsKey(propertyName)
         ? (BoundWidgetProvider) registry.get(propertyName)
         : (BoundWidgetProvider) registry.get(type);

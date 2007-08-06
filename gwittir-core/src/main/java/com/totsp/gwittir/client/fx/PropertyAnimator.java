@@ -133,7 +133,7 @@ public class PropertyAnimator {
                         double percentComplete = (double) (
                                 System.currentTimeMillis() - startTime
                             ) / (double) duration;
-                        GWT.log( ""+strategy, null );
+                       // GWT.log( ""+strategy, null );
                         Object newValue = strategy.mutateValue(initialValue,
                                 finalValue, percentComplete);
 
