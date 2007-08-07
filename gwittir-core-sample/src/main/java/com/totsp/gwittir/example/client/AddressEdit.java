@@ -27,6 +27,8 @@ import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.ListBox;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.example.client.remote.Services;
+import com.totsp.gwittir.example.client.remote.StateLookup;
+import java.util.Comparator;
 
 
 /**
@@ -46,6 +48,11 @@ public class AddressEdit extends AbstractBoundWidget {
     public AddressEdit() {
         super();
         state.setOptions( Services.FREEZER.stateLookups() );
+        state.setComparator( new Comparator(){
+            public int compare(Object o, Object c){
+                return ((StateLookup)o).id.compareTo( ((StateLookup)c).id );
+            }
+        });
         type.setOptions(Services.FREEZER.typeLookups()) ;
         base.setStyleName("example-AddressEdit");
         super.initWidget(base);
@@ -70,7 +77,7 @@ public class AddressEdit extends AbstractBoundWidget {
         super.onAttach();
         
         PropertyAnimator anim = new PropertyAnimator(this, "height", "0px",
-                "150px", MutationStrategy.UNITS_SINOIDAL, 750);
+                "125px", MutationStrategy.UNITS_SINOIDAL, 750);
         anim.start();
     }
     

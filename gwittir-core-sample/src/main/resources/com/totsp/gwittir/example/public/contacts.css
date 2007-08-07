@@ -21,7 +21,7 @@ root {
 
 .example-AddressEdit {
     background-color: #DDDDDD;
-    overflow: clip;
+    overflow: hidden;
 }
 
 .example.AddressEdit td {

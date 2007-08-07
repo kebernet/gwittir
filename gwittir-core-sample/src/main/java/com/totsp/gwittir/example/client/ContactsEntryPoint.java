@@ -33,7 +33,7 @@ public class ContactsEntryPoint implements EntryPoint {
                .add("contactEdit", new ContactEdit(), new ContactEditAction());
 
         SlideTransitionSimplePanel p = new SlideTransitionSimplePanel();
-        p.setSize("500px", "500px");
+        p.setWidth( "500px");
 
         FlowController.setFlowContext((HasWidget) p, context);
         FlowController.setHistoryManager(new SimpleSessionHistoryManager());

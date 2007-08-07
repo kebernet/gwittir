@@ -96,7 +96,7 @@ public class ContactEdit extends AbstractBoundWidget{
         
         factory.add( TypeLookup.class, new BoundWidgetProvider(){
             public BoundWidget get() {
-                Label label = new Label();
+                TextBox label = new TextBox();
                 label.setRenderer( new Renderer(){
                     public Object render(Object o) {
                         return o == null ? "" : ((TypeLookup) o).name;
