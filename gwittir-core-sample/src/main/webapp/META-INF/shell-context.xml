@@ -1,0 +1,44 @@
+<context path="/">
+    
+    <Resource name="jdbc/ContactsDB" auth="Container" type="javax.sql.DataSource"
+
+            maxActive="40" maxIdle="10" maxWait="10000"
+
+            username="gwittir" password="example" driverClassName="com.mysql.jdbc.Driver"
+
+            removeAbandoned="true" removeAbandonedTimeout="30" logAbandoned="true"
+
+            validationQuery="SELECT * FROM StateLookup" testWhileIdle="true"
+
+            url="jdbc:mysql://localhost/cotacts"/>
+      <!--      
+    
+    <Resource name="jdbc/ContactsDB" auth="Container"
+              type="javax.sql.DataSource" />
+    
+    <ResourceParams name="jdbc/ContactsDB">
+        
+        <parameter>
+            <name>factory</name>
+            <value>
+                org.apache.commons.dbcp.BasicDataSourceFactory
+            </value>
+        </parameter>
+        <parameter>
+            <name>username</name>
+            <value>gwittir</value>
+        </parameter>
+        <parameter>
+            <name>password</name>
+            <value>example</value>
+        </parameter>
+        <parameter>
+            <name>driverClassName</name>
+            <value>com.mysql.jdbc.Driver</value>
+        </parameter>
+        <parameter>
+            <name>url</name>
+            <value>jdbc:mysql://localhost/cotacts</value>
+        </parameter>
+    </ResourceParams>-->
+</context>     
