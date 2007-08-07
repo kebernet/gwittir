@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ChangeListener;
@@ -228,10 +229,14 @@ public class ListBox extends AbstractBoundWidget {
 
     public Object getValue() {
         if(this.base.isMultipleSelect()) {
+            GWT.log("IsMultipleSelect. Returning collection", null);
+
             return this.selected;
         } else if(this.selected.size() == 0) {
             return null;
         } else {
+            GWT.log("NotMultipleSelect. Returning first item", null);
+
             return this.selected.get(0);
         }
     }
@@ -285,11 +290,7 @@ public class ListBox extends AbstractBoundWidget {
     }
 
     public boolean isMultipleSelect() {
-        boolean retValue;
-
-        retValue = this.base.isMultipleSelect();
-
-        return retValue;
+        return this.base.isMultipleSelect();
     }
 
     public boolean isVisible() {
@@ -402,7 +403,15 @@ public class ListBox extends AbstractBoundWidget {
 
         ArrayList old = this.selected;
         this.selected = newSelected;
-        changes.firePropertyChange("value", old, selected);
+        if(this.isMultipleSelect()) {
+            changes.firePropertyChange("value", old, selected);
+        } else {
+            Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
+            Object curr = (this.selected.size() == 0) ? null
+                                                      : this.selected.get(0);
+            changes.firePropertyChange("value", old, curr);
+        }
+
         fireChangeListeners();
     }
 
@@ -452,7 +461,7 @@ public class ListBox extends AbstractBoundWidget {
         } else {
             for(Iterator it = this.options.iterator(); it.hasNext(); i++) {
                 Object item = it.next();
-
+                //GWT.log( "Comparing: "+this.getComparator().compare(value, item), null);
                 if(this.getComparator().compare(value, item) == 0) {
                     base.setItemSelected(i, true);
                 } else {
@@ -463,7 +472,15 @@ public class ListBox extends AbstractBoundWidget {
             this.selected.add(value);
         }
 
-        changes.firePropertyChange("value", old, selected);
+        if(this.isMultipleSelect()) {
+            changes.firePropertyChange("value", old, selected);
+        } else {
+            Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
+            Object curr = (this.selected.size() == 0) ? null
+                                                      : this.selected.get(0);
+            changes.firePropertyChange("value", old, curr);
+        }
+
         fireChangeListeners();
     }
 
@@ -513,7 +530,16 @@ public class ListBox extends AbstractBoundWidget {
 
         ArrayList old = this.selected;
         this.selected = selected;
-        changes.firePropertyChange("value", old, selected);
+
+        if(this.isMultipleSelect()) {
+            changes.firePropertyChange("value", old, selected);
+        } else {
+            Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
+            Object curr = (this.selected.size() == 0) ? null
+                                                      : this.selected.get(0);
+            changes.firePropertyChange("value", old, curr);
+        }
+
         fireChangeListeners();
     }
 }
