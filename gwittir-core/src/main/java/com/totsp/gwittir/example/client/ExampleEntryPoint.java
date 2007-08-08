@@ -29,6 +29,11 @@ import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.ui.table.Field;
+import com.totsp.gwittir.client.ui.table.GridForm;
+import com.totsp.gwittir.client.validator.DoubleValidator;
+import com.totsp.gwittir.client.validator.IntegerValidator;
+import com.totsp.gwittir.client.validator.PopupValidationFeedback;
 
 
 /**
@@ -37,43 +42,67 @@ import com.totsp.gwittir.client.ui.Button;
  */
 public class ExampleEntryPoint implements EntryPoint {
     boolean big = false;
-
+    
     /** Creates a new instance of ExampleEntryPoint */
     public ExampleEntryPoint() {
     }
-
+    
     public void onModuleLoad() {
         final Button b = new Button("FOO!");
-
+        
         final PropertyAnimator a = new PropertyAnimator(b, "height", "100px",
                 "300px", MutationStrategy.UNITS_SINOIDAL, 3000,
                 new AnimationFinishedCallback() {
-                    public void onFinish(PropertyAnimator animator) {
-                        final PropertyAnimator a = new PropertyAnimator(b,
-                                "height", "300px", "100px",
-                                MutationStrategy.UNITS_SINOIDAL, 3000);
-                        final PropertyAnimator a2 = new PropertyAnimator(b,
-                                "width", "300px", "100px",
-                                MutationStrategy.UNITS_SINOIDAL, 3000);
-                        a.start();
-                        a2.start();
-                    }
-
-                    public void onFailure(PropertyAnimator animator, Exception e) {
-                    }
-                });
+            public void onFinish(PropertyAnimator animator) {
+                final PropertyAnimator a = new PropertyAnimator(b,
+                        "height", "300px", "100px",
+                        MutationStrategy.UNITS_SINOIDAL, 3000);
+                final PropertyAnimator a2 = new PropertyAnimator(b,
+                        "width", "300px", "100px",
+                        MutationStrategy.UNITS_SINOIDAL, 3000);
+                a.start();
+                a2.start();
+            }
+            
+            public void onFailure(PropertyAnimator animator, Exception e) {
+            }
+        });
         final PropertyAnimator a2 = new PropertyAnimator(new OpacityWrapper(b),
                 "opacity", new Double(0), new Double(1),
                 MutationStrategy.DOUBLE_SINOIDAL, 3000);
         RootPanel.get().add(b);
-
+        
         Button b2 = new Button("Animate",
                 new ClickListener() {
-                    public void onClick(Widget w) {
-                        a.start();
-                        a2.start();
-                    }
-                });
+            public void onClick(Widget w) {
+                a.start();
+                a2.start();
+            }
+        });
         RootPanel.get().add(b2);
+        
+        Field[] mcf = new Field[8];
+        mcf[0] = new Field( "someInteger", "An Integer", null, "This is an Integer Value", null, IntegerValidator.INSTANCE,  new PopupValidationFeedback( PopupValidationFeedback.BOTTOM ) );
+        mcf[1] = new Field( "name", "Name", null, "A name value <br /> who cares?" );
+        mcf[2] = new Field( "firstName", "First Name", null, "Somebody's first name." );
+        mcf[3] = new Field( "lastName", "Last Name", null, "Somebody's last name." );
+        mcf[4] = new Field( "emailAddress", "Email Address", null, "Somebody's email." );
+        mcf[5] = new Field( "price", "Price", null, "This is an decimal Value", null, DoubleValidator.INSTANCE,  new PopupValidationFeedback( PopupValidationFeedback.BOTTOM ) );
+        mcf[6] = new Field( "homeTown", "Home Town", null, "Somebody's place of origin." );
+        mcf[7] = new Field( "zipCode", "Postal Code", null, "A USPS Postal Code" );
+        
+        GridForm form = new GridForm(mcf, 2 );
+        form.setValue( new MyClass() );
+        
+        RootPanel.get().add( form );
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 }

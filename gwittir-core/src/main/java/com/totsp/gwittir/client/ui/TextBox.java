@@ -51,7 +51,7 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled
         final TextBox instance = this;
         old = base.getText();
         this.setRenderer(new ToStringRenderer());
-        this.setComparator(new SimpleComparator());
+        this.setComparator(SimpleComparator.INSTANCE);
         
         if(updateOnKeypress) {
             this.addKeyboardListener(new KeyboardListener() {

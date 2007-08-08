@@ -209,7 +209,7 @@ public class IntrospectorGenerator extends Generator {
     
     private List getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
         ArrayList results = new ArrayList();
-        
+        HashSet resolvers = new HashSet();
         try {
             JClassType[] types = oracle.getTypes();
             JClassType introspectable = oracle.getType(com.totsp.gwittir.client.beans.Introspectable.class
@@ -226,13 +226,13 @@ public class IntrospectorGenerator extends Generator {
                 
                 if(types[i].isAssignableTo(introspectable)
                 && (types[i].isInterface() == null)) {
-                    results.add( new BeanResolver(logger, types[i]));
+                    resolvers.add( new BeanResolver(logger, types[i]));
                 }
             }
             
             // Do a crazy assed sort to make sure least
             // assignable types are at the bottom of the list
-            
+            results.addAll( resolvers );
             boolean swap = true;
             while(swap){
                 swap = false;

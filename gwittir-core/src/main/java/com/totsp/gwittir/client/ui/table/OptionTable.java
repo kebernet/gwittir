@@ -84,7 +84,7 @@ public class OptionTable extends BoundTable {
      * @param cols The Column objects for the table.
      * @param options A collection containing Bindable objects to render in the table.
      */
-    public OptionTable(int masks, Column[] cols, Collection options) {
+    public OptionTable(int masks, Field[] cols, Collection options) {
         super( masks, cols, options);
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener( globalListener );
@@ -98,7 +98,7 @@ public class OptionTable extends BoundTable {
      * @param cols The Column objects for the table.
      */
     public OptionTable(int masks, BoundWidgetTypeFactory typeFactory,
-            Column[] cols, Collection options) {
+            Field[] cols, Collection options) {
         super( masks, typeFactory, cols, options );
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener( globalListener );
@@ -110,7 +110,7 @@ public class OptionTable extends BoundTable {
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      */
-    public OptionTable(int masks, Column[] cols) {
+    public OptionTable(int masks, Field[] cols) {
         super( masks, cols );
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener( globalListener );
@@ -123,7 +123,7 @@ public class OptionTable extends BoundTable {
      * @param cols The Column objects for the table.
      */
     public OptionTable(int masks, BoundWidgetTypeFactory typeFactory,
-            Column[] cols) {
+            Field[] cols) {
         super( masks, typeFactory, cols );
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener( globalListener );
@@ -135,7 +135,7 @@ public class OptionTable extends BoundTable {
      * @param cols The Column objects for the table.
      * @param provider Instance of DataProvider to get chunked data from.
      */
-    public OptionTable(int masks, Column[] cols, DataProvider provider) {
+    public OptionTable(int masks, Field[] cols, DataProvider provider) {
         super( masks, cols, provider);
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener( globalListener );
@@ -149,7 +149,7 @@ public class OptionTable extends BoundTable {
      * @param provider Instance of DataProvider to get chunked data from.
      */
     public OptionTable(int masks, BoundWidgetTypeFactory typeFactory,
-            Column[] cols, DataProvider provider) {
+            Field[] cols, DataProvider provider) {
         super( masks, typeFactory, cols, provider );
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener( globalListener );

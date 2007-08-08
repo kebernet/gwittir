@@ -48,7 +48,7 @@ public class ListBox extends AbstractBoundWidget {
     public ListBox() {
         super.initWidget(base);
         this.setRenderer(new ToStringRenderer());
-        this.setComparator(new SimpleComparator());
+        this.setComparator(SimpleComparator.INSTANCE);
         this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
                     update();

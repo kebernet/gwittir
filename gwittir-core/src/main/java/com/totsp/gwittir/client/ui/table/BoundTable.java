@@ -62,7 +62,7 @@ import java.util.Map.Entry;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  * @see com.totsp.gwittir.client.beans.Bindable
  */
-public class BoundTable extends AbstractBoundWidget implements HasChunks {
+public class BoundTable extends AbstractTableWidget implements HasChunks {
     /**
      * A placholder for no mask options (0)
      */
@@ -128,7 +128,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     private static final String DEFAULT_STYLE = "default";
     private static final String NAV_STYLE = "nav";
     private Binding topBinding;
-    private BoundWidgetTypeFactory typeFactory;
+    
     private Collection value;
     private DataProvider provider;
     private FlexTable table;
@@ -141,7 +141,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
     private String selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
     private Widget base;
     private boolean[] ascending;
-    private Column[] columns;
+    private Field[] columns;
     private boolean inChunk = false;
     private int currentChunk = -1;
     private int lastScrollPosition;
@@ -173,7 +173,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      */
     public BoundTable(int masks, BoundWidgetTypeFactory typeFactory) {
         super();
-        this.typeFactory = typeFactory;
+        this.factory = typeFactory;
         this.init(masks);
     }
 
@@ -183,7 +183,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param cols The Column objects for the table.
      * @param value A collection containing Bindable objects to render in the table.
      */
-    public BoundTable(int masks, Column[] cols, Collection value) {
+    public BoundTable(int masks, Field[] cols, Collection value) {
         super();
         this.columns = cols;
         this.value = value;
@@ -198,11 +198,11 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param value A collection containing Bindable objects to render in the table.
      */
     public BoundTable(int masks, BoundWidgetTypeFactory typeFactory,
-        Column[] cols, Collection value) {
+        Field[] cols, Collection value) {
         super();
         this.columns = cols;
         this.value = value;
-        this.typeFactory = typeFactory;
+        this.factory = typeFactory;
         this.init(masks);
     }
 
@@ -212,7 +212,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      */
-    public BoundTable(int masks, Column[] cols) {
+    public BoundTable(int masks, Field[] cols) {
         super();
         this.columns = cols;
         this.init(masks);
@@ -225,10 +225,10 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param cols The Column objects for the table.
      */
     public BoundTable(int masks, BoundWidgetTypeFactory typeFactory,
-        Column[] cols) {
+        Field[] cols) {
         super();
         this.columns = cols;
-        this.typeFactory = typeFactory;
+        this.factory = typeFactory;
         this.init(masks);
     }
 
@@ -238,7 +238,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param cols The Column objects for the table.
      * @param provider Instance of DataProvider to get chunked data from.
      */
-    public BoundTable(int masks, Column[] cols, DataProvider provider) {
+    public BoundTable(int masks, Field[] cols, DataProvider provider) {
         super();
         this.columns = cols;
         this.provider = provider;
@@ -253,11 +253,11 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * @param provider Instance of DataProvider to get chunked data from.
      */
     public BoundTable(int masks, BoundWidgetTypeFactory typeFactory,
-        Column[] cols, DataProvider provider) {
+        Field[] cols, DataProvider provider) {
         super();
         this.columns = cols;
         this.provider = provider;
-        this.typeFactory = typeFactory;
+        this.factory = typeFactory;
         this.init(masks);
     }
 
@@ -497,7 +497,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         this.changes.firePropertyChange("selected", old, this.getSelected());
     }
 
-    private BoundWidget createCellWidget(Binding rowBinding, Column col,
+    private BoundWidget createCellWidget(Binding rowBinding, Field col,
         Bindable target) {
         final BoundWidget widget;
         Binding binding;
@@ -508,7 +508,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             final Property p = Introspector.INSTANCE.getDescriptor(target)
                                                     .getProperty(col
                     .getPropertyName());
-            widget = this.typeFactory.getWidgetProvider(col.getPropertyName(),
+            widget = this.factory.getWidgetProvider(col.getPropertyName(),
                     p.getType()).get();
 
             // TODO Figure out some way to make this read only.
@@ -630,7 +630,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * Returns the Columns used in this table.
      * @return Column[] used for rendering this table.
      */
-    public Column[] getColumns() {
+    public Field[] getColumns() {
         return columns;
     }
 
@@ -782,8 +782,8 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
         final BoundTable instance = this;
         this.topBinding = new Binding();
         this.masks = masksValue;
-        this.typeFactory = (this.typeFactory == null)
-            ? new BoundWidgetTypeFactory() : this.typeFactory;
+        this.factory = (this.factory == null)
+            ? new BoundWidgetTypeFactory() : this.factory;
 
         if(((this.masks & BoundTable.SORT_MASK) > 0) && (this.columns != null)) {
             this.ascending = new boolean[this.columns.length];
@@ -840,7 +840,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
                 (this.scroll == null) ? (Widget) this.table : (Widget) this.scroll
             );
         this.value = (this.value == null) ? new ArrayList() : this.value;
-        this.columns = (this.columns == null) ? new Column[0] : this.columns;
+        this.columns = (this.columns == null) ? new Field[0] : this.columns;
         this.setStyleName("gwittir-BoundTable");
 
         if((this.provider != null) && (this.getCurrentChunk() == -1)) {
@@ -892,7 +892,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
             }
         }
 
-        BoundWidget widget = this.typeFactory.getWidgetProvider(Introspector.INSTANCE
+        BoundWidget widget = this.factory.getWidgetProvider(Introspector.INSTANCE
                 .resolveClass(o)).get();
         widget.setModel(o);
         this.table.insertRow(row + 1);
@@ -1075,7 +1075,7 @@ public class BoundTable extends AbstractBoundWidget implements HasChunks {
      * Note, this will foce a re-init of the table.
      * @param columns Column[] to use to render the table.
      */
-    public void setColumns(Column[] columns) {
+    public void setColumns(Field[] columns) {
         this.columns = columns;
 
         if((this.masks & BoundTable.SORT_MASK) > 0) {

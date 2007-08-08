@@ -28,8 +28,12 @@ import java.util.Comparator;
  * @author cooper
  */
 public class SimpleComparator implements Comparator, Serializable {
+    
+    
+    public static final SimpleComparator INSTANCE = new SimpleComparator();
+    
     /** Creates a new instance of SimpleComparator */
-    public SimpleComparator() {
+    private  SimpleComparator() {
     }
     
     public int compare(Object o1, Object o2) {

@@ -151,4 +151,12 @@ public class BeanResolver {
     public JClassType getType(){
         return this.type;
     }
+
+    public boolean equals(Object object) {
+        return ((BeanResolver) object).getType().equals( this.getType() );
+    }
+
+    public int hashCode() {
+        return this.getType().getQualifiedSourceName().hashCode();
+    }
 }
