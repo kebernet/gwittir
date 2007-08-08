@@ -30,6 +30,7 @@ import com.totsp.gwittir.example.client.remote.Phone;
 import com.totsp.gwittir.example.client.remote.Services;
 import com.totsp.gwittir.example.client.remote.StateLookup;
 import com.totsp.gwittir.example.client.remote.TypeLookup;
+import java.util.ArrayList;
 
 /**
  *
@@ -67,6 +68,9 @@ public class ContactEditAction implements BindingAction {
                newAddress.setType(  (TypeLookup) Services.FREEZER.typeLookups().get(0) );
                newAddress.setState(  (StateLookup) Services.FREEZER.stateLookups().get(0));
                e.addresses.add( newAddress );
+               ArrayList list = new ArrayList();
+               list.add( newAddress );
+               e.addresses.setSelected( list );
                
            }  
         });

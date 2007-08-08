@@ -30,6 +30,7 @@ import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.beans.Bindable;
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.HasDefaultBinding;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
@@ -38,7 +39,7 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
  *
  * @author cooper
  */
-public class GridForm extends AbstractTableWidget {
+public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
     private static final String STYLE_NAME = "gwittir-GridForm";
     private Binding binding = new Binding();
     private FlexTable base = new FlexTable();
