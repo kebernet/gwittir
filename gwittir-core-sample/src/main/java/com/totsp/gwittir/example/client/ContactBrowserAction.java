@@ -28,7 +28,6 @@ import com.totsp.gwittir.client.flow.FlowController;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.table.BoundTable;
-import com.totsp.gwittir.client.ui.table.Column;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.HasChunks;
 import com.totsp.gwittir.client.ui.table.SortableDataProvider;
