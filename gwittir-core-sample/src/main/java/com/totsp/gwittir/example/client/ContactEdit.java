@@ -30,7 +30,7 @@ import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.table.BoundTable;
-import com.totsp.gwittir.client.ui.table.Column;
+import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 import com.totsp.gwittir.example.client.remote.Address;
@@ -45,14 +45,14 @@ import java.util.List;
 public class ContactEdit extends AbstractBoundWidget{
     
     private VerticalPanel p = new VerticalPanel();
-    private Column[] addressCols = new Column[6];
+    private Field[] addressCols = new Field[6];
     TextBox firstName = new TextBox();
     TextBox lastName = new TextBox();
     TextBox notes = new TextBox();
     BoundTable addresses;
     Button newAddress = new Button("New Address");
     BoundWidgetTypeFactory factory = new BoundWidgetTypeFactory();
-    private Column[] phoneCols = new Column[2];
+    private Field[] phoneCols = new Field[2];
     BoundTable phoneNumbers;
     Button newPhone = new Button("New Phone Number");
     
@@ -73,12 +73,12 @@ public class ContactEdit extends AbstractBoundWidget{
         base.getFlexCellFormatter().setColSpan(3,0, 2 );
         p.add( base );
         p.add( new Label("Addresses:") );
-        addressCols[0] = new Column( "type", "Type" );
-        addressCols[1] = new Column( "address1", "Address" );
-        addressCols[2] = new Column( "address2", "" );
-        addressCols[3] = new Column( "city", "City");
-        addressCols[4] = new Column( "state", "State" );
-        addressCols[5] = new Column( "zip", "Zip" );
+        addressCols[0] = new Field( "type", "Type" );
+        addressCols[1] = new Field( "address1", "Address" );
+        addressCols[2] = new Field( "address2", "" );
+        addressCols[3] = new Field( "city", "City");
+        addressCols[4] = new Field( "state", "State" );
+        addressCols[5] = new Field( "zip", "Zip" );
         
         factory.add( StateLookup.class, new BoundWidgetProvider(){
             public BoundWidget get() {

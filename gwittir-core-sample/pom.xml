@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.totsp.gwittir</groupId>
             <artifactId>gwittir-core</artifactId>
-            <version>0.1.9</version>
+            <version>0.1.11</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>

@@ -29,6 +29,7 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Column;
+import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.HasChunks;
 import com.totsp.gwittir.client.ui.table.SortableDataProvider;
 import com.totsp.gwittir.example.client.remote.Contact;
@@ -42,15 +43,15 @@ import java.util.Collection;
 public class ContactBrowserAction implements BindingAction {
     
     
-    Column[] tableCols = new Column[3];
+    Field[] tableCols = new Field[3];
     private boolean initted = false;
     private boolean loaded = false;
     
     /** Creates a new instance of ContactBrowserAction */
     public ContactBrowserAction() {
-        tableCols[0] = new Column("lastName", "Last Name");
-        tableCols[1] = new Column("firstName", "First Name");
-        tableCols[2] = new Column("notes", "Notes");
+        tableCols[0] = new Field("lastName", "Last Name");
+        tableCols[1] = new Field("firstName", "First Name");
+        tableCols[2] = new Field("notes", "Notes");
         
         
         
