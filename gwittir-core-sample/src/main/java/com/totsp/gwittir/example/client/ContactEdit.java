@@ -130,8 +130,8 @@ public class ContactEdit extends AbstractBoundWidget{
         p.add( this.newAddress );
         p.add( new Label( "Phone Numbers: ") );
         
-        phoneCols[0] = new Column("type", "Type");
-        phoneCols[1] = new Column("number", "Number" );
+        phoneCols[0] = new Field("type", "Type");
+        phoneCols[1] = new Field("number", "Number" );
         
         
         BoundWidgetTypeFactory phoneFactory = new BoundWidgetTypeFactory(true);
