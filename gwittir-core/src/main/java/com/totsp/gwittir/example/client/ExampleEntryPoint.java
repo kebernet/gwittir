@@ -20,9 +20,12 @@
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.beans.Introspector;
 
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
@@ -91,15 +94,29 @@ public class ExampleEntryPoint implements EntryPoint {
         mcf[6] = new Field( "homeTown", "Home Town", null, "Somebody's place of origin." );
         mcf[7] = new Field( "zipCode", "Postal Code", null, "A USPS Postal Code" );
         
-        GridForm form = new GridForm(mcf, 2 );
+        final GridForm form = new GridForm(mcf, 3 );
         form.setValue( new MyClass() );
+        
+        GridForm form2 = new GridForm(mcf, 3 );
+        form2.setValue( form.getValue() );
+        
         
         RootPanel.get().add( form );
         
+        RootPanel.get().add( form2 );
+        
+        Button check = new Button("check", new ClickListener(){
+            public void onClick(Widget sender) {
+                
+                Window.alert( ((MyClass) form.getValue()).getPrice()+"");
+            }
+            
+        });
         
         
         
         
+        RootPanel.get().add(check);
         
         
         

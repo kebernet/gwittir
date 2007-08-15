@@ -100,7 +100,7 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
             this.binding.getChildren().clear();
         }
         int row = 0;
-        for(int i = 0; i < this.fields.length; i++) {
+        for(int i = 0; i < this.fields.length; ) {
             for(int col = 0; col < this.columns && i < fields.length; col++) {
                 final Field field = this.fields[i];
                 if(field == null) {
@@ -117,7 +117,6 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
                 .setStyleName(row, (col * 2) + 1, "field");
                 
                 if(field.getHelpText() != null) {
-                    GWT.log( "Help text "+field.getHelpText(), null );
                     label.addClickListener(new ClickListener() {
                         public void onClick(Widget widget) {
                             final PopupPanel p = new PopupPanel(true);

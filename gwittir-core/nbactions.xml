@@ -127,6 +127,16 @@
                 <packaging>jar</packaging>
             </packagings>
             <goals>
+                <goal>gwt:gwt</goal>
+                
+            </goals>
+        </action>
+    <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
                 <goal>clean</goal>
                 <goal>gwt:gwt</goal>
             </goals>

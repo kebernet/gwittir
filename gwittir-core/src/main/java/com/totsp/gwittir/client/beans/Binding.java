@@ -223,7 +223,6 @@ public class Binding {
         }
         
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            
             Object value = propertyChangeEvent.getNewValue();
             if(instance.validator != null) {
                 try {
@@ -258,7 +257,6 @@ public class Binding {
             Object[] args =  new Object[1];
             args[0] = value;
             try {
-                //GWT.log( "Setting"+ target.property.getName() +" from "+propertyChangeEvent.getPropertyName(), null );
                 target.property.getMutatorMethod().invoke(target.object, args);
             } catch(Exception e) {
                 throw new RuntimeException(e);

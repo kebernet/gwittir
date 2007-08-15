@@ -121,7 +121,7 @@ public class MyClass implements Bindable{
     }
 
     public void setPrice(double price) {
-        Double old = new Double( price );
+        Double old = new Double( this.price  );
         this.price = price;
         this.changes.firePropertyChange("price", old, new Double(price));
     }
