@@ -26,6 +26,10 @@
             <id>gwt-maven</id>
             <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
         </repository>
+         <repository>
+            <id>gwittir</id>
+            <url>http://gwittir.googlecode.com/svn/repository/</url>
+        </repository>
         <repository>
             <id>java.net</id>
             <url>https://maven-repository.dev.java.net/nonav/repository</url>
