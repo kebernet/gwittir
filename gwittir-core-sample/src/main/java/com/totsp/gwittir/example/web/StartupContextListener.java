@@ -84,7 +84,8 @@ public class StartupContextListener implements ServletContextListener {
     }
     
     public String getSerializedStates( ContactsService service ) throws Exception {
-        List<StateLookup> states = (List<StateLookup>) BeanMapping.convert(MAPPING_PROPS,
+        List<StateLookup> states = (List<StateLookup>) 
+        BeanMapping.convert(MAPPING_PROPS,
                 service.getStateLookups());
         String statesSer = URLEncoder.encode(SimpleSerializer
                 .serializeCollection(states), "UTF-8");

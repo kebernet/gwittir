@@ -81,7 +81,8 @@ public class ContactsServiceServlet extends RemoteServiceServlet
         try {
             return (Contact) BeanMapping.convert(getMappings(),
                 getService()
-                    .saveContact((com.totsp.gwittir.example.api.Contact) BeanMapping
+                    .saveContact((com.totsp.gwittir.example.api.Contact) 
+                    BeanMapping
                     .convert(getMappings(), contact)));
         } catch(Exception e) {
             this.log("Exception in findContacts", e);

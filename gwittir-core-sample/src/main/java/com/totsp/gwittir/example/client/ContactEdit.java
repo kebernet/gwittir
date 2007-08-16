@@ -121,6 +121,7 @@ public class ContactEdit extends AbstractBoundWidget{
                 BoundTable.SORT_MASK +
                 BoundTable.NO_SELECT_CELL_MASK 
                 + BoundTable.NO_SELECT_COL_MASK
+                //+ BoundTable.MULTIROWSELECT_MASK
                 + BoundTable.INSERT_WIDGET_MASK
                 , factory  );
         addresses.setColumns( addressCols );

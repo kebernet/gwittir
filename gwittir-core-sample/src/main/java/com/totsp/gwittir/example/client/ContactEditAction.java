@@ -60,7 +60,7 @@ public class ContactEditAction implements BindingAction {
         binding.getChildren().add( new Binding(e.firstName, "value", c ,"firstName") );
         binding.getChildren().add( new Binding(e.lastName, "value", c ,"lastName") );
         binding.getChildren().add( new Binding(e.notes, "value", c, "notes") );
-        binding.getChildren().add( new Binding( e.addresses, "value", c, "addresses") );
+        binding.getChildren().add( new Binding(e.addresses, "value", c, "addresses") );
         binding.setLeft();
         e.newAddress.setAction( new Action(){
            public void execute( BoundWidget w ){
