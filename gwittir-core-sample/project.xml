@@ -158,15 +158,15 @@
         </dependency>
         <!--  /all hibernate crap -->
 		
+		<!--  gwt, gwittir, freezedry, etc  -->
 		<dependency>
-			<groupId>com.totsp.gwittir</groupId>
-			<artifactId>gwittir-core</artifactId>
-			<version>0.1.11</version>
-			<type>jar</type>
+			<groupId>com.googlecode.gwtx</groupId>
+			<artifactId>GWTx</artifactId>
+			<version>20070110</version>
 			<properties>
 				<war.bundle>true</war.bundle>
 			</properties>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -184,16 +184,17 @@
 			<properties>
 				<war.bundle>true</war.bundle>
 			</properties>
-		</dependency>
+		</dependency>		
+		
 		<dependency>
-			<groupId>com.googlecode.gwtx</groupId>
-			<artifactId>GWTx</artifactId>
-			<version>20070110</version>
+			<groupId>com.totsp.gwittir</groupId>
+			<artifactId>gwittir-core</artifactId>
+			<version>0.1.11</version>
+			<type>jar</type>
 			<properties>
 				<war.bundle>true</war.bundle>
 			</properties>
 		</dependency>
-		
 		<dependency>
 			<groupId>com.totsp.gwt</groupId>
 			<artifactId>gwt-freezedry</artifactId>
@@ -209,16 +210,9 @@
 			<properties>
 				<war.bundle>true</war.bundle>
 			</properties>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<properties>
-				<war.bundle>true</war.bundle>
-			</properties>
-		</dependency>
-		<!--  these need to be present because the Hosted Mode Tomcat instance does not have them
+		</dependency>		
+		
+		<!--  These need to be present because the Hosted Mode Tomcat instance does not have them
 			- in an actual deployment they need not be in the WAR because they are typically included with regular Tomcat -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -239,6 +233,14 @@
 			<type>jar</type>
 		</dependency>
 
+		<!--  other non war required stuff -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+
+		<!--  plugins -->
 		<dependency>
 			<groupId>com.totsp.gwt</groupId>
 			<artifactId>maven-googlewebtoolkit-plugin</artifactId>
