@@ -1,0 +1,91 @@
+Gwittir Sample Build Notes
+==========================
+
+PRE-REQS
+--------
+
+GWT
+Maven (1 or 2)
+
+Localhost MySQL database with "Contacts" schema.
+MySQL user "gwittir" with password "example" with full permissions to the Contact schema.
+Database tables populated with src/main/sql/ states.sql and types.sql. 
+(In the future we plan to move to HSQL to eliminate these, for now though, needs local db.)
+
+MAVEN 2
+-------
+"mvn clean gwt:gwt"
+
+You may run into missing deps for JTA and JDBC. 
+These are older versions of these projects that Sun required 
+a manual license acceptance and download for, so they are not
+in normal public repos (yeah Sun!). 
+
+If deps are missing, follow the instructions to download and install locally.
+
+Missing:
+1) javax.transaction:jta:jar:1.0.1B
+  Try downloading the file manually from:
+      http://java.sun.com/products/jta
+  Then, install it using the command:
+      mvn install:install-file -DgroupId=javax.transaction -DartifactId=jta \
+          -Dversion=1.0.1B -Dpackaging=jar -Dfile=/path/to/file
+      
+Missing:
+1) javax.sql:jdbc-stdext:jar:2.0
+  Try downloading the file manually from:
+      http://java.sun.com/products/jdbc/download.html
+  Then, install it using the command:
+      mvn install:install-file -DgroupId=javax.sql -DartifactId=jdbc-stdext -Dversion=2.0 -Dpackaging=jar -Dfile=/path/to/file
+
+
+You should have a "settings.xml" file in your home directory that specifies GWT profiles,
+and sets the currently active profile. An example is the following:
+
+<?xml version="1.0" encoding="UTF-8"?>
+ <settings>
+   <localRepository>/Docume~1/rcooper/.m2/repository/</localRepository>
+   <profiles>
+     <profile>
+       <id>gwt-1.2.22</id> 
+       <properties>
+         <google.webtoolkit.home>c:\opt\gwt-windows-1.2.22</google.webtoolkit.home>
+       </properties>
+     </profile>
+     <profile>
+       <id>gwt-1.3.3</id> 
+       <properties>
+         <google.webtoolkit.home>c:\opt\gwt-windows-1.3.3</google.webtoolkit.home>
+       </properties>
+     </profile>
+	 <profile>
+       <id>gwt-1.4.10</id> 
+       <properties>
+         <google.webtoolkit.home>c:\opt\gwt-windows-1.4.10</google.webtoolkit.home>
+       </properties>
+     </profile>
+   </profiles> 
+   <activeProfiles>
+     <activeProfile>gwt-1.4.10</activeProfile>
+   </activeProfiles>
+</settings>
+
+
+MAVEN 1
+-------
+"maven clean gwt"
+
+Requires that GWT_HOME environment variable is set.
+Requires that maven.jar.gwt-dev-platform is specified correctly in project.properties
+(default is gwt-dev-windows.jar).
+
+
+
+
+
+        
+        
+
+
+
+
