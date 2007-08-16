@@ -25,12 +25,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.beans.Introspector;
 
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
+import com.totsp.gwittir.client.fx.ReflectedImage;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
@@ -84,15 +84,16 @@ public class ExampleEntryPoint implements EntryPoint {
         });
         RootPanel.get().add(b2);
         
-        Field[] mcf = new Field[8];
+        Field[] mcf = new Field[9];
         mcf[0] = new Field( "someInteger", "An Integer", null, "This is an Integer Value", null, IntegerValidator.INSTANCE,  new PopupValidationFeedback( PopupValidationFeedback.BOTTOM ) );
         mcf[1] = new Field( "name", "Name", null, "A name value <br /> who cares?" );
         mcf[2] = new Field( "firstName", "First Name", null, "Somebody's first name." );
         mcf[3] = new Field( "lastName", "Last Name", null, "Somebody's last name." );
         mcf[4] = new Field( "emailAddress", "Email Address", null, "Somebody's email." );
-        mcf[5] = new Field( "price", "Price", null, "This is an decimal Value", null, DoubleValidator.INSTANCE,  new PopupValidationFeedback( PopupValidationFeedback.BOTTOM ) );
-        mcf[6] = new Field( "homeTown", "Home Town", null, "Somebody's place of origin." );
-        mcf[7] = new Field( "zipCode", "Postal Code", null, "A USPS Postal Code" );
+        
+        mcf[6] = new Field( "price", "Price", null, "This is an decimal Value", null, DoubleValidator.INSTANCE,  new PopupValidationFeedback( PopupValidationFeedback.BOTTOM ) );
+        mcf[7] = new Field( "homeTown", "Home Town", null, "Somebody's place of origin." );
+        mcf[8] = new Field( "zipCode", "Postal Code", null, "A USPS Postal Code" );
         
         final GridForm form = new GridForm(mcf, 3 );
         form.setValue( new MyClass() );
@@ -119,7 +120,16 @@ public class ExampleEntryPoint implements EntryPoint {
         RootPanel.get().add(check);
         
         
-        
+        final ReflectedImage ri = new ReflectedImage( GWT.getModuleBaseURL()+"gwtip.png", 163, 204, .2, .5 );
+        RootPanel.get().add(ri);
+        Button resize = new Button("resize", new ClickListener(){
+            public void onClick(Widget sender) {
+                ri.setWidth( 400 );
+                ri.setHeight( 400 );
+            }
+            
+        });
+        RootPanel.get().add( resize );
         
     }
 }

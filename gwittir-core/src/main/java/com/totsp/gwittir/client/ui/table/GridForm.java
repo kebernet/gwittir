@@ -104,6 +104,7 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
             for(int col = 0; col < this.columns && i < fields.length; col++) {
                 final Field field = this.fields[i];
                 if(field == null) {
+                    i++;
                     continue;
                 }
                 
