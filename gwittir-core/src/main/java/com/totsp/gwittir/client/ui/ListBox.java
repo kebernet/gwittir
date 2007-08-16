@@ -241,14 +241,7 @@ public class ListBox extends AbstractBoundWidget {
         }
     }
 
-    public String getValue(int index) {
-        String retValue;
-
-        retValue = this.base.getValue(index);
-
-        return retValue;
-    }
-
+    
     public int getVisibleItemCount() {
         int retValue;
 
@@ -484,10 +477,7 @@ public class ListBox extends AbstractBoundWidget {
         fireChangeListeners();
     }
 
-    public void setValue(int index, String value) {
-        this.base.setValue(index, value);
-    }
-
+    
     public void setVisible(boolean visible) {
         this.base.setVisible(visible);
     }

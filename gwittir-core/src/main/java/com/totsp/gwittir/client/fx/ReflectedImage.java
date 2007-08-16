@@ -34,7 +34,7 @@ import com.totsp.gwittir.client.ui.AbstractBoundWidget;
  */
 public class ReflectedImage extends AbstractBoundWidget {
     private Image base;
-    private String value;
+    private Object value;
     private VerticalPanel v = new VerticalPanel();
     private Reflection reflect = (Reflection) GWT.create( Reflection.class );
     private int baseWidth;
@@ -72,8 +72,10 @@ public class ReflectedImage extends AbstractBoundWidget {
     }
     
     public void setValue(Object newValue){
-        String old =this.value;
-        this.value = (String) this.getRenderer().render(newValue);
+        Object old =this.value;
+        this.value = value;
+        this.setUrl( (String) this.getRenderer().render(newValue));
+        this.reflect.paint( this.base, this.getWidth(), this.getHeight(), this.reflectHeight, this.opacity );
         this.changes.firePropertyChange("value", old, this.value );
     }
 
@@ -99,7 +101,15 @@ public class ReflectedImage extends AbstractBoundWidget {
         this.reflect.paint( this.base, this.getWidth(), height, this.reflectHeight, this.opacity );
     }
     
+    public String getUrl(){
+        return this.base.getUrl();
+    }
     
+    public void setUrl(String url){
+        String old = this.base.getUrl();
+        this.base.setUrl( url );
+        this.changes.firePropertyChange("url", old, url );
+    }
 
     
     

@@ -23,6 +23,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -32,6 +33,7 @@ import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.fx.ReflectedImage;
 import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.fx.ui.SoftScrollPanel;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.validator.DoubleValidator;
@@ -124,12 +126,47 @@ public class ExampleEntryPoint implements EntryPoint {
         RootPanel.get().add(ri);
         Button resize = new Button("resize", new ClickListener(){
             public void onClick(Widget sender) {
-                ri.setWidth( 400 );
-                ri.setHeight( 400 );
+                PropertyAnimator a = new PropertyAnimator( ri, "width", new Integer( 400), MutationStrategy.INTEGER_SINOIDAL );
+                PropertyAnimator b = new PropertyAnimator( ri, "height", new Integer( 400), MutationStrategy.INTEGER_SINOIDAL );
+                a.start();
+                b.start();
             }
             
         });
         RootPanel.get().add( resize );
+        
+        final SoftScrollPanel ssp = new SoftScrollPanel();
+        ssp.setPixelSize( 400, 400 );
+        ssp.setWidget( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg"));
+        Button pageDown = new Button("pageDown", new ClickListener(){
+            public void onClick(Widget sender) {
+                ssp.pageDownAnimated();
+            }
+            
+        });
+        Button pageUp = new Button("pageUp", new ClickListener(){
+            public void onClick(Widget sender) {
+                ssp.pageUpAnimated();
+            }
+            
+        });
+        Button pageLeft = new Button("pageLeft", new ClickListener(){
+            public void onClick(Widget sender) {
+                ssp.pageLeftAnimated();
+            }
+            
+        });
+        Button pageRight = new Button("pageRight", new ClickListener(){
+            public void onClick(Widget sender) {
+                ssp.pageRightAnimated();
+            }
+            
+        });
+        RootPanel.get().add( ssp );
+        RootPanel.get().add( pageDown );
+        RootPanel.get().add( pageUp );
+        RootPanel.get().add( pageLeft );
+        RootPanel.get().add( pageRight );
         
     }
 }

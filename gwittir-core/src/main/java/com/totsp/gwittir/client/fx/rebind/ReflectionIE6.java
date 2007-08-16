@@ -47,7 +47,6 @@ public class ReflectionIE6 extends Reflection {
         DOM.setStyleAttribute( element, "marginBottom", "-"+reflectHeight+"px");
         DOM.setStyleAttribute( element, "filter", "flipv progid:DXImageTransform.Microsoft.Alpha(opacity="+(opacity*100)+", style=1, finishOpacity=0, startx=0, starty=0, finishx=0, finishy="+(height*100)+")" );
         DOM.setStyleAttribute( base.getElement(), "cssText", "vertical-align: bottom");
-        
     }
     
 }
