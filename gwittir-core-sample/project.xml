@@ -189,7 +189,7 @@
 		<dependency>
 			<groupId>com.totsp.gwittir</groupId>
 			<artifactId>gwittir-core</artifactId>
-			<version>0.1.11</version>
+			<version>0.1.12</version>
 			<type>jar</type>
 			<properties>
 				<war.bundle>true</war.bundle>
