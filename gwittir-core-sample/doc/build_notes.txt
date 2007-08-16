@@ -9,8 +9,6 @@ Maven (1 or 2)
 
 Localhost MySQL database with "Contacts" schema.
 MySQL user "gwittir" with password "example" with full permissions to the Contact schema.
-Database tables populated with src/main/sql/ states.sql and types.sql. 
-(In the future we plan to move to HSQL to eliminate these, for now though, needs local db.)
 
 MAVEN 2
 -------
@@ -70,6 +68,9 @@ and sets the currently active profile. An example is the following:
    </activeProfiles>
 </settings>
 
+When you run the project via Maven, JPA will create the table structure. 
+After that is done the tables should be populated with src/main/sql/ states.sql and types.sql. 
+(In the future we plan to move to HSQL to eliminate these, for now though, needs local db.) 
 
 MAVEN 1
 -------
@@ -79,7 +80,9 @@ Requires that GWT_HOME environment variable is set.
 Requires that maven.jar.gwt-dev-platform is specified correctly in project.properties
 (default is gwt-dev-windows.jar).
 
-
+When you run the project via Maven, JPA will create the table structure. 
+After that is done the tables should be populated with src/main/sql/ states.sql and types.sql. 
+(In the future we plan to move to HSQL to eliminate these, for now though, needs local db.) 
 
 
 
