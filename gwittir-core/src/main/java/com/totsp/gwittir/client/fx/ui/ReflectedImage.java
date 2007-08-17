@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.totsp.gwittir.client.fx;
+package com.totsp.gwittir.client.fx.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;

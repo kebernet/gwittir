@@ -125,11 +125,52 @@
     border: 1px dotted silver;
 }
 
+.gwittir-SoftScrollArea {
+    border: 1px dotted silver;
+}
+
+.gwittir-SoftScrollbar {
+    border: 1px outset black;
+}
+
+.gwittir-SoftScrollbar .lower {
+    background-color: silver;
+}
+
+.gwittir-SoftScrollbar .higher {
+    background-color: silver;
+}
+
+.gwittir-SoftScrollbar .bar {
+    background-color: blue;
+    cursor: default;
+}
+
+.gwittir-SoftHorizontalScrollbar {
+    border: 1px outset black;
+}
+
+.gwittir-SoftHorizontalScrollbar .lower {
+    background-color: silver;
+}
+
+.gwittir-SoftHorizontalScrollbar .higher {
+    background-color: silver;
+}
+
+.gwittir-SoftHorizontalScrollbar .bar {
+    background-color: blue;
+    cursor: default;
+}
+
 .red {
     background-color: red;
 }
 
 .blue {
     background-color: blue;
+}
+
+
 
 

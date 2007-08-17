@@ -23,17 +23,25 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
-import com.totsp.gwittir.client.fx.ReflectedImage;
+import com.totsp.gwittir.client.fx.ui.ReflectedImage;
+import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
 import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.fx.ui.SoftScrollPanel;
+import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
+import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.validator.DoubleValidator;
@@ -134,39 +142,95 @@ public class ExampleEntryPoint implements EntryPoint {
             
         });
         RootPanel.get().add( resize );
+        DockPanel scroll = new DockPanel();
         
-        final SoftScrollPanel ssp = new SoftScrollPanel();
-        ssp.setPixelSize( 400, 400 );
-        ssp.setWidget( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg"));
-        Button pageDown = new Button("pageDown", new ClickListener(){
+        
+        
+        final SoftScrollArea ssp = new SoftScrollArea();
+        scroll.add(  ssp, DockPanel.CENTER );
+        ssp.setWidth("500px");
+        ssp.setHeight("500px");
+        VerticalPanel vp = new VerticalPanel();
+        vp.add( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
+        final Button visible = new Button("ensure visible test");
+        vp.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
+        vp.add( visible );
+        
+        vp.add( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
+        vp.add( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
+        vp.add( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
+        
+        
+        ssp.setWidget(vp);
+        
+        SoftScrollbar bar = new SoftAnimatedScrollbar( ssp );
+        //bar.setLowerWidget( new Image( GWT.getModuleBaseURL()+"gwtip.png") );
+        //bar.setHigherWidget( new Image( GWT.getModuleBaseURL()+"gwtip.png") );
+        //bar.setBarWidget( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
+        bar.setHeight("400px");
+        bar.setWidth("50px");
+        
+        
+        VerticalPanel control = new VerticalPanel();
+        Button pageDown = new Button("down", new ClickListener(){
             public void onClick(Widget sender) {
                 ssp.pageDownAnimated();
             }
             
         });
-        Button pageUp = new Button("pageUp", new ClickListener(){
+        pageDown.setSize("50px", "50px");
+        Button pageUp = new Button("up", new ClickListener(){
             public void onClick(Widget sender) {
                 ssp.pageUpAnimated();
             }
             
         });
-        Button pageLeft = new Button("pageLeft", new ClickListener(){
+        pageUp.setSize("50px", "50px");
+        control.add( pageUp );
+        control.add( bar );
+        control.add( pageDown );
+        scroll.add( control, DockPanel.EAST );
+        
+        HorizontalPanel hcontrol = new HorizontalPanel();
+        SoftHorizontalScrollbar hbar = new SoftAnimatedHorizontalScrollbar( ssp );
+        hbar.setHeight("50px");
+        hbar.setWidth("400px");
+        //hbar.setLowerWidget( new Image( GWT.getModuleBaseURL()+"gwtip.png") );
+        //hbar.setHigherWidget( new Image( GWT.getModuleBaseURL()+"gwtip.png") );
+        //hbar.setBarWidget( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
+        Button pageLeft = new Button("<<", new ClickListener(){
             public void onClick(Widget sender) {
                 ssp.pageLeftAnimated();
             }
             
         });
-        Button pageRight = new Button("pageRight", new ClickListener(){
+        pageLeft.setSize("50px", "50px");
+        Button pageRight = new Button(">>", new ClickListener(){
             public void onClick(Widget sender) {
                 ssp.pageRightAnimated();
             }
             
         });
-        RootPanel.get().add( ssp );
-        RootPanel.get().add( pageDown );
-        RootPanel.get().add( pageUp );
-        RootPanel.get().add( pageLeft );
-        RootPanel.get().add( pageRight );
+        pageRight.setSize( "50px", "50px");
+        hcontrol.add(pageLeft );
+        hcontrol.add( hbar );
+        hcontrol.add(pageRight);
+        scroll.add( hcontrol, DockPanel.SOUTH );
+        
+        
+        
+        
+        
+        
+        
+        Button checkEnsure = new Button("checkEnsure", new ClickListener(){
+            public void onClick(Widget sender) {
+                ssp.ensureVisibleAnimated( visible );
+            }
+            
+        });
+        RootPanel.get().add( scroll );
+        RootPanel.get().add( checkEnsure );
         
     }
 }

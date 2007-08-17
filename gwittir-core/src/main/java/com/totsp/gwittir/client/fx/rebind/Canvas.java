@@ -65,7 +65,6 @@ public class Canvas extends Widget {
         /*-{ context.translate( x, y ); }-*/;
                                                                      
         public void translate( float x, float y){
-            GWT.log( "Translate "+x+","+y, null);
             this.translate( this.context, x, y);
         }
         
@@ -102,7 +101,6 @@ public class Canvas extends Widget {
         /*-{  context.drawImage( image, x, y, width, height ); }-*/;
         
         public void drawImage( Image image, float x, float y, float width, float height ){
-            GWT.log( x+" "+y+" "+width + " "+ height, null);
             this.drawImage( this.context, image.getElement(), x, y, width, height);
         }
         

@@ -23,6 +23,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -38,11 +39,13 @@ public class Reflection extends Widget {
     private double opacity;
     private int baseWidth;
     private int baseHeight;
+    private SimplePanel panel = new SimplePanel();
 
     /** Creates a new instance of Reflection */
     public Reflection() {
         super();
-        super.setElement(element);
+        super.setElement(panel.getElement());
+        panel.setWidget( canvas );
     }
 
     public void paint(Image base, int baseWidth, int baseHeight, double height, double opacity) {
@@ -55,14 +58,14 @@ public class Reflection extends Widget {
         this.baseWidth = baseWidth;
         this.baseHeight = baseHeight;
 
-        long reflectHeight = Math.round(baseHeight * height);
+        int reflectHeight = (int) Math.round(baseHeight * height);
         DOM.setStyleAttribute(element, "width", baseWidth + "px");
         DOM.setStyleAttribute(element, "height", reflectHeight + "px");
         DOM.setStyleAttribute(element, "marginBottom",
             "-" + reflectHeight + "px");
         DOM.setElementAttribute(element, "width", "" + baseWidth);
         DOM.setElementAttribute(element, "height", "" + reflectHeight);
-        
+        this.panel.setPixelSize(baseWidth, reflectHeight);
         paint();
     }
 

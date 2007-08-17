@@ -1,7 +1,7 @@
 /*
- * SoftScrollPanel.java
+ * HasScrollbarComponents.java
  *
- * Created on August 16, 2007, 4:56 PM
+ * Created on August 16, 2007, 6:25 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,19 +20,16 @@
 
 package com.totsp.gwittir.client.fx.ui;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
  * @author cooper
  */
-public class SoftScrollPanel extends Composite{
+public interface HasScrollbarComponents {
     
-    DockPanel base = new DockPanel();
-    
-    /** Creates a new instance of SoftScrollPanel */
-    public SoftScrollPanel() {
-    }
+    public void setLowerWidget( Widget w );
+    public void setBarWidget( Widget w );
+    public void setHigherWidget( Widget w );
     
 }

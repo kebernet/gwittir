@@ -42,6 +42,8 @@ public class PropertyAnimator {
     private int duration;
     private int stepTime;
 
+    private Timer timer;
+    
     /** Creates a new instance of PropertyAnimator */
     public PropertyAnimator(Introspectable target, String propertyName,
         Object initialValue, Object finalValue, MutationStrategy strategy,
@@ -127,7 +129,7 @@ public class PropertyAnimator {
             }
         }
 
-        Timer t = new Timer() {
+         timer= new Timer() {
                 public void run() {
                     try {
                         double percentComplete = (double) (
@@ -159,6 +161,13 @@ public class PropertyAnimator {
                 }
             };
 
-        t.scheduleRepeating(this.stepTime);
+        timer.scheduleRepeating(this.stepTime);
+    }
+    
+    public void cancel(){
+        timer.cancel();
+        if( this.callback != null ){
+            callback.onFailure(this, null);
+        }
     }
 }
