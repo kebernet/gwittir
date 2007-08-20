@@ -73,8 +73,6 @@ public class Reflection extends Widget {
         int reflectHeight = (int) Math.round(baseHeight * height);
         Canvas.Context ctx = canvas.getContext();
         ctx.save();
-        GWT.log( "Reflect height: "+ reflectHeight, null );
-        GWT.log( "Width: "+this.baseWidth, null  );
         ctx.clearRect(0, 0, this.baseWidth, reflectHeight );
         ctx.save();
         ctx.translate(0, this.baseHeight -1 );

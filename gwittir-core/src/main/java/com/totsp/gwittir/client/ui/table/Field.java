@@ -19,10 +19,11 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
-import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.Renderer;
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
 import com.totsp.gwittir.client.validator.Validator;
+
 import java.util.Comparator;
 
 
@@ -32,14 +33,14 @@ import java.util.Comparator;
  */
 public class Field {
     private BoundWidgetProvider cellProvider;
+    private Comparator comparator;
     private Renderer renderer;
+    private String helpText;
     private String label;
     private String propertyName;
     private String styleName;
     private ValidationFeedback feedback;
     private Validator validator;
-    private String helpText;
-    private Comparator comparator;
 
     /** Creates a new instance of Column */
     public Field(String propertyName) {
@@ -56,8 +57,9 @@ public class Field {
         this.label = label;
         this.styleName = styleName;
     }
-    
-    public Field(String propertyName, String label, String styleName,String helpText) {
+
+    public Field(String propertyName, String label, String styleName,
+        String helpText) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
@@ -71,9 +73,9 @@ public class Field {
         this.styleName = styleName;
         this.renderer = renderer;
     }
-    
-    public Field(String propertyName, String label, String styleName, String helpText,
-        Renderer renderer) {
+
+    public Field(String propertyName, String label, String styleName,
+        String helpText, Renderer renderer) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
@@ -90,27 +92,29 @@ public class Field {
         this.feedback = feedback;
         this.renderer = renderer;
     }
-    
-    public Field(String propertyName, String label, String styleName, String helpText,
-        Renderer renderer, Validator validator, ValidationFeedback feedback) {
+
+    public Field(String propertyName, String label, String styleName,
+        String helpText, Renderer renderer, Validator validator,
+        ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.validator = validator;
         this.feedback = feedback;
         this.renderer = renderer;
-        this.helpText= helpText;
+        this.helpText = helpText;
     }
-    
-    public Field(String propertyName, String label, String styleName, String helpText,
-        Renderer renderer, Validator validator, ValidationFeedback feedback, Comparator comparator) {
+
+    public Field(String propertyName, String label, String styleName,
+        String helpText, Renderer renderer, Validator validator,
+        ValidationFeedback feedback, Comparator comparator) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.validator = validator;
         this.feedback = feedback;
         this.renderer = renderer;
-        this.helpText= helpText;
+        this.helpText = helpText;
     }
 
     public Field(String propertyName, String label, String styleName,
@@ -120,9 +124,9 @@ public class Field {
         this.styleName = styleName;
         this.cellProvider = cellProvider;
     }
-    
-    public Field(String propertyName, String label, String styleName, String helpText,
-        BoundWidgetProvider cellProvider) {
+
+    public Field(String propertyName, String label, String styleName,
+        String helpText, BoundWidgetProvider cellProvider) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
@@ -133,8 +137,16 @@ public class Field {
         return cellProvider;
     }
 
+    public Comparator getComparator() {
+        return comparator;
+    }
+
     public ValidationFeedback getFeedback() {
         return feedback;
+    }
+
+    public String getHelpText() {
+        return helpText;
     }
 
     public String getLabel() {
@@ -155,13 +167,5 @@ public class Field {
 
     public Validator getValidator() {
         return validator;
-    }
-
-    public String getHelpText() {
-        return helpText;
-    }
-
-    public Comparator getComparator() {
-        return comparator;
     }
 }

@@ -17,19 +17,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.fx.ui;
 
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.Widget;
 
+
 /**
  *
  * @author cooper
  */
 public class SoftAnimatedScrollbar extends SoftScrollbar {
-    
     private MouseListener higherListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
                 float newPercent = (float) (
@@ -54,20 +53,17 @@ public class SoftAnimatedScrollbar extends SoftScrollbar {
                 target.animateToScrollPosition(newPosition);
             }
         };
-    
+
     /** Creates a new instance of SoftAnimatedScrollbar */
     public SoftAnimatedScrollbar(SoftScrollArea target) {
-        super( target );
-    }
-
-    protected MouseListener getLowerListener() {
-        return this.lowerListener;
+        super(target);
     }
 
     protected MouseListener getHigherListener() {
         return this.higherListener;
     }
-    
-    
-    
+
+    protected MouseListener getLowerListener() {
+        return this.lowerListener;
+    }
 }

@@ -98,6 +98,7 @@ public class FlowController {
         if(FlowController.manager != null) {
             manager.transition(name, old, widget);
         }
+        context.fireEvents( name, widget, old );
 
         return true;
     }

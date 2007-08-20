@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.table;
 
 import com.totsp.gwittir.client.beans.Bindable;
@@ -28,46 +27,49 @@ import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
+
 /**
  *
  * @author cooper
  */
-public abstract class AbstractTableWidget extends AbstractBoundWidget{
-    
+public abstract class AbstractTableWidget extends AbstractBoundWidget {
     protected BoundWidgetTypeFactory factory;
-    
+
     /** Creates a new instance of AbstractTableWidget */
     public AbstractTableWidget() {
     }
-    
-    protected BoundWidget createWidget( Binding parent, Field field, Bindable target ){
+
+    protected BoundWidget createWidget(Binding parent, Field field,
+        Bindable target) {
         final BoundWidget widget;
         Binding binding;
 
         if(field.getCellProvider() != null) {
             widget = field.getCellProvider().get();
         } else {
-            final Property p = Introspector.INSTANCE.getDescriptor( target )
+            final Property p = Introspector.INSTANCE.getDescriptor(target)
                                                     .getProperty(field
                     .getPropertyName());
             widget = this.factory.getWidgetProvider(field.getPropertyName(),
                     p.getType()).get();
-             
+
             // TODO Figure out some way to make this read only.
         }
 
         binding = new Binding(widget, "value", field.getValidator(),
-                field.getFeedback(), target , field.getPropertyName(), null, null);
-        widget.setModel(this.getValue() );
-        if(field.getRenderer() != null ){
-            widget.setRenderer( field.getRenderer() );
+                field.getFeedback(), target, field.getPropertyName(), null, null);
+        widget.setModel(this.getValue());
+
+        if(field.getRenderer() != null) {
+            widget.setRenderer(field.getRenderer());
         }
-        if( field.getComparator() != null ){
-            widget.setComparator( field.getComparator() );
+
+        if(field.getComparator() != null) {
+            widget.setComparator(field.getComparator());
         }
+
         parent.getChildren().add(binding);
+
         return widget;
     }
-    
-    
 }

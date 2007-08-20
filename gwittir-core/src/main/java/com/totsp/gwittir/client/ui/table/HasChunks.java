@@ -17,19 +17,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.table;
 
 import java.util.Collection;
+
 
 /**
  *
  * @author cooper
  */
 public interface HasChunks {
-    
-    public void setChunk( Collection c );
-    
-    public void init( Collection firstChunk, int numberOfChunks );
-    
+    public void init(Collection firstChunk, int numberOfChunks);
+
+    public void setChunk(Collection c);
 }

@@ -17,22 +17,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.fx.ui;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 
+
 /**
  *
  * @author cooper
  */
-public class SoftScrollPanel extends Composite{
-    
+public class SoftScrollPanel extends Composite {
     DockPanel base = new DockPanel();
-    
+
     /** Creates a new instance of SoftScrollPanel */
     public SoftScrollPanel() {
     }
-    
 }

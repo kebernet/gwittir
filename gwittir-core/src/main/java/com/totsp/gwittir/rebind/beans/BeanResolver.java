@@ -153,10 +153,14 @@ public class BeanResolver {
     }
 
     public boolean equals(Object object) {
-        return ((BeanResolver) object).getType().equals( this.getType() );
+        return ((BeanResolver) object).getType().getQualifiedSourceName().equals( this.getType().getQualifiedSourceName() );
     }
 
     public int hashCode() {
         return this.getType().getQualifiedSourceName().hashCode();
+    }
+    
+    public String toString(){
+        return this.getType().getQualifiedSourceName();
     }
 }

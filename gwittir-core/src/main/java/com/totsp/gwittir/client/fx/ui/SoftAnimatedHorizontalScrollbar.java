@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.fx.ui;
 
 import com.google.gwt.core.client.GWT;
@@ -25,12 +24,12 @@ import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.Widget;
 
+
 /**
  *
  * @author cooper
  */
-public class SoftAnimatedHorizontalScrollbar extends SoftHorizontalScrollbar{
-    
+public class SoftAnimatedHorizontalScrollbar extends SoftHorizontalScrollbar {
     private MouseListener higherListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
                 float newPercent = (float) (
@@ -52,18 +51,16 @@ public class SoftAnimatedHorizontalScrollbar extends SoftHorizontalScrollbar{
                             target.getOffsetWidth()
                             + target.getMaxHorizontalScrollPosition()
                         ) * newPercent) - (target.getOffsetWidth() / 2);
-                GWT.log( "New Position: "+ newPosition, null );
+                GWT.log("New Position: " + newPosition, null);
                 target.animateToHorizontalScrollPosition(newPosition);
             }
         };
-        
-       
-    
+
     /** Creates a new instance of SoftAnimatedHorizontalScrollbar */
     public SoftAnimatedHorizontalScrollbar(SoftScrollArea target) {
         super(target);
     }
-    
+
     protected MouseListener getHigherListener() {
         return this.higherListener;
     }
@@ -71,5 +68,4 @@ public class SoftAnimatedHorizontalScrollbar extends SoftHorizontalScrollbar{
     protected MouseListener getLowerListener() {
         return this.lowerListener;
     }
-    
 }

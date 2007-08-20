@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.ClickListenerCollection;
@@ -90,6 +89,11 @@ public class SoftButton extends Button implements SourcesMouseEvents,
      */
     public SoftButton(String label) {
         super(label);
+    }
+    
+    public SoftButton(String label, ClickListener listener ){
+        super(label);
+        this.addClickListener( listener );
     }
     
     /**

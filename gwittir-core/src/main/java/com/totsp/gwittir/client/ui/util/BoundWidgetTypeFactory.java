@@ -91,7 +91,7 @@ public class BoundWidgetTypeFactory {
     }
 
     public BoundWidgetProvider getWidgetProvider(String propertyName, Class type) {
-        //GWT.log( "Looking up: ("+propertyName+") "+ type, null );
+        GWT.log( "Looking up: ("+propertyName+") "+ type, null );
         return registry.containsKey(propertyName)
         ? (BoundWidgetProvider) registry.get(propertyName)
         : (BoundWidgetProvider) registry.get(type);

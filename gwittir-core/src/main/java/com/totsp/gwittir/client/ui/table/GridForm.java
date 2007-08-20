@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.action.BindingAction;
 
+import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.beans.Bindable;
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.ui.BoundWidget;
@@ -41,73 +41,82 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
  */
 public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
     private static final String STYLE_NAME = "gwittir-GridForm";
+    private static final BindingAction DEFAULT_ACTION = new BindingAction() {
+            public void bind(BoundWidget widget) {
+                ((GridForm) widget).bind();
+            }
+
+            public void execute(BoundWidget model) {
+            }
+
+            public void unbind(BoundWidget widget) {
+                ((GridForm) widget).unbind();
+            }
+
+            public void set(BoundWidget widget) {
+                ((GridForm) widget).set();
+            }
+        };
+
     private Binding binding = new Binding();
     private FlexTable base = new FlexTable();
     private Field[] fields;
     private int columns = 1;
-    private static final BindingAction DEFAULT_ACTION = new BindingAction(){
-        public void bind(BoundWidget widget) {
-            ((GridForm) widget).bind();
-        }
 
-        public void execute(BoundWidget model) {
-        }
-
-        public void unbind(BoundWidget widget) {
-            ((GridForm) widget).unbind();
-        }
-
-        public void set(BoundWidget widget) {
-            ((GridForm) widget).set();
-        }
-        
-    };
-    
     /** Creates a new instance of GridForm */
     public GridForm(Field[] fields) {
         this.fields = fields;
         this.factory = new BoundWidgetTypeFactory(true);
         super.initWidget(this.base);
         this.setStyleName(GridForm.STYLE_NAME);
-        this.setAction( GridForm.DEFAULT_ACTION );
+        this.setAction(GridForm.DEFAULT_ACTION);
     }
-    
+
     public GridForm(Field[] fields, int columns) {
         this.fields = fields;
         this.columns = columns;
         this.factory = new BoundWidgetTypeFactory(true);
         super.initWidget(this.base);
         this.setStyleName(GridForm.STYLE_NAME);
-        this.setAction( GridForm.DEFAULT_ACTION );
+        this.setAction(GridForm.DEFAULT_ACTION);
     }
-    
+
     public GridForm(Field[] fields, int columns, BoundWidgetTypeFactory factory) {
         this.fields = fields;
         this.columns = columns;
         this.factory = factory;
         super.initWidget(this.base);
         this.setStyleName(GridForm.STYLE_NAME);
-        this.setAction( GridForm.DEFAULT_ACTION );
+        this.setAction(GridForm.DEFAULT_ACTION);
     }
-    
+
+    public void bind() {
+        this.binding.bind();
+    }
+
     public Object getValue() {
         return this.getModel();
     }
-    
+
     private void render() {
-        if( this.binding.getChildren().size() > 0 ){
+        if(this.binding.getChildren().size() > 0) {
             this.binding.unbind();
             this.binding.getChildren().clear();
         }
+
         int row = 0;
-        for(int i = 0; i < this.fields.length; ) {
-            for(int col = 0; col < this.columns && i < fields.length; col++) {
+
+        for(int i = 0; i < this.fields.length;) {
+            for(int col = 0; (col < this.columns) && (i < fields.length);
+                    col++) {
                 final Field field = this.fields[i];
+
                 if(field == null) {
                     i++;
+
                     continue;
                 }
-                
+
                 Widget widget = (Widget) this.createWidget(this.binding, field,
                         (Bindable) this.getValue());
                 Label label = new Label(field.getLabel());
@@ -115,47 +124,45 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
                 this.base.getCellFormatter().setStyleName(row, col * 2, "label");
                 this.base.setWidget(row, (col * 2) + 1, widget);
                 this.base.getCellFormatter()
-                .setStyleName(row, (col * 2) + 1, "field");
-                
+                         .setStyleName(row, (col * 2) + 1, "field");
+
                 if(field.getHelpText() != null) {
                     label.addClickListener(new ClickListener() {
-                        public void onClick(Widget widget) {
-                            final PopupPanel p = new PopupPanel(true);
-                            p.setStyleName("gwittir-GridForm-Help");
-                            p.setWidget(new HTML(field.getHelpText()));
-                            p.setPopupPosition(widget.getAbsoluteLeft(),
+                            public void onClick(Widget widget) {
+                                final PopupPanel p = new PopupPanel(true);
+                                p.setStyleName("gwittir-GridForm-Help");
+                                p.setWidget(new HTML(field.getHelpText()));
+                                p.setPopupPosition(widget.getAbsoluteLeft(),
                                     widget.getAbsoluteTop()
                                     + widget.getOffsetHeight());
-                            p.show();
-                        }
-                    });
+                                p.show();
+                            }
+                        });
                 }
+
                 i++;
             }
+
             row++;
         }
     }
-    
+
+    public void set() {
+        this.binding.setLeft();
+    }
+
+    public void setModel(Object model) {
+        super.setModel(model);
+        this.render();
+    }
+
     public void setValue(Object value) {
         Object old = this.getModel();
         this.setModel(value);
         this.changes.firePropertyChange("value", old, value);
     }
-    
-    public void setModel(Object model ){
-        super.setModel(model);
-        this.render();
-    }
-    
-    public void set(){
-        this.binding.setLeft();
-    }
-    
-    public void bind(){
-        this.binding.bind();
-    }
-    
-    public void unbind(){
+
+    public void unbind() {
         this.binding.unbind();
     }
 }

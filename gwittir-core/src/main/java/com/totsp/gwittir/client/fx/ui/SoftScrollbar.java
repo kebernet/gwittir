@@ -53,6 +53,37 @@ public class SoftScrollbar extends Composite {
     SimplePanel higher = new SimplePanel();
     SimplePanel lower = new SimplePanel();
     SoftScrollArea target;
+    private MouseListener barListener = new MouseListenerAdapter() {
+            boolean inDrag = false;
+            int start;
+
+            public void onMouseLeave(Widget sender) {
+                inDrag = false;
+            }
+
+            public void onMouseUp(Widget sender, int x, int y) {
+                inDrag = false;
+            }
+
+            public void onMouseDown(Widget sender, int x, int y) {
+                inDrag = true;
+                start = y;
+            }
+
+            public void onMouseMove(Widget sender, int x, int y) {
+                if(inDrag) {
+                    float newPercent = (float) (
+                            (y - start) + lower.getOffsetHeight()
+                        ) / (float) base.getOffsetHeight();
+                    int newPosition = Math.round((
+                                target.getOffsetHeight()
+                                + target.getMaxScrollPosition()
+                            ) * newPercent) + x;
+                    target.setScrollPosition(newPosition);
+                }
+            }
+        };
+
     private MouseListener higherListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
                 float newPercent = (float) (
@@ -77,37 +108,12 @@ public class SoftScrollbar extends Composite {
                 target.setScrollPosition(newPosition);
             }
         };
-        
-        private MouseListener barListener = new MouseListenerAdapter(){
-        boolean inDrag = false;
-        int start;
 
-        public void onMouseLeave(Widget sender) {
-            inDrag = false;
-        }
-
-        public void onMouseUp(Widget sender, int x, int y) {
-            inDrag = false;
-        }
-
-        public void onMouseDown(Widget sender, int x, int y) {
-            inDrag = true;
-            start = y;
-        }
-
-        public void onMouseMove(Widget sender, int x, int y) {
-            if( inDrag ){
-                float newPercent = (float) (  (y - start) + lower.getOffsetHeight() ) / (float) base.getOffsetHeight();
-                int newPosition = Math.round((
-                            target.getOffsetHeight()
-                            + target.getMaxScrollPosition()
-                        ) * newPercent) +x;
-                target.setScrollPosition(newPosition);
-                
+    private WindowResizeListener windowListener = new WindowResizeListener() {
+            public void onWindowResized(int width, int height) {
+                refresh();
             }
-        }
-        
-    };
+        };
 
     /** Creates a new instance of SoftVerticalScroll */
     public SoftScrollbar(SoftScrollArea target) {
@@ -134,20 +140,25 @@ public class SoftScrollbar extends Composite {
         DOM.setStyleAttribute(this.getElement(), "overflow", "hidden");
     }
 
-     private WindowResizeListener windowListener = new WindowResizeListener(){
-        public void onWindowResized(int width, int height) {
-            refresh();
-        }
-        
-    };
-    
+    protected MouseListener getBarListener() {
+        return barListener;
+    }
+
+    protected MouseListener getHigherListener() {
+        return this.higherListener;
+    }
+
+    protected MouseListener getLowerListener() {
+        return this.lowerListener;
+    }
+
     protected void onAttach() {
         super.onAttach();
         target.addScrollListener(this.scrollListener);
         this.lowerTarget.addMouseListener(this.getLowerListener());
         this.higherTarget.addMouseListener(this.getHigherListener());
-        this.barTarget.addMouseListener( this.getBarListener() );
-        Window.addWindowResizeListener( this.windowListener );
+        this.barTarget.addMouseListener(this.getBarListener());
+        Window.addWindowResizeListener(this.windowListener);
 
         Timer t = new Timer() {
                 public void run() {
@@ -155,17 +166,16 @@ public class SoftScrollbar extends Composite {
                 }
             };
 
-        t.schedule(1);
+        t.schedule(10);
     }
 
     protected void onDetach() {
         super.onDetach();
-        Window.removeWindowResizeListener( this.windowListener );
+        Window.removeWindowResizeListener(this.windowListener);
         target.removeScrollListener(this.scrollListener);
         this.lowerTarget.removeMouseListener(this.getLowerListener());
         this.higherTarget.removeMouseListener(this.getHigherListener());
-        this.barTarget.removeMouseListener( this.getBarListener() );
-        
+        this.barTarget.removeMouseListener(this.getBarListener());
     }
 
     public void refresh() {
@@ -194,9 +204,9 @@ public class SoftScrollbar extends Composite {
 
         int higherHeight = currentHeight - lowerHeight - barHeight;
         this.higher.setHeight(higherHeight + "px");
-        this.lower.setWidth( this.getOffsetWidth() +"px");
-        this.bar.setWidth( this.getOffsetWidth() +"px");
-        this.higher.setWidth( this.getOffsetWidth() +"px");
+        this.lower.setWidth(this.getOffsetWidth() + "px");
+        this.bar.setWidth(this.getOffsetWidth() + "px");
+        this.higher.setWidth(this.getOffsetWidth() + "px");
     }
 
     public void setBarWidget(Widget w) {
@@ -212,17 +222,5 @@ public class SoftScrollbar extends Composite {
     public void setLowerWidget(Widget w) {
         this.lower.setWidget(w);
         DOM.setStyleAttribute(this.lower.getElement(), "overflow", "hidden");
-    }
-
-    protected MouseListener getHigherListener() {
-        return this.higherListener;
-    }
-
-    protected MouseListener getLowerListener() {
-        return this.lowerListener;
-    }
-    
-    protected MouseListener getBarListener() {
-        return barListener;
     }
 }

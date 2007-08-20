@@ -22,8 +22,10 @@ package com.totsp.gwittir.client.flow;
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
+import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**
@@ -31,9 +33,10 @@ import java.util.HashMap;
  * @author cooper
  */
 public class FlowContext {
+    private String fromName = null;
     private final HashMap actions = new HashMap();
     private final HashMap destinations = new HashMap();
-
+    private ArrayList listeners = new ArrayList();
     /** Creates a new instance of FlowContext */
     public FlowContext() {
         super();
@@ -81,5 +84,14 @@ public class FlowContext {
         }
 
         return ret;
+    }
+    
+    public void fireEvents( String toName, BoundWidget toWidget, BoundWidget fromWidget ){
+        FlowEvent e = new FlowEvent( this, fromWidget, fromWidget.getModel(), this.fromName,
+                toWidget, toWidget.getModel(), toName);
+        for(Iterator i = this.listeners.iterator(); i.hasNext(); ){
+                ((FlowEventListener) i.next()).onFlowEvent( e );
+        }
+        this.fromName = toName;
     }
 }

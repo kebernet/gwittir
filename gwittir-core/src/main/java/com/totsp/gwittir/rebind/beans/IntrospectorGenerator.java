@@ -243,6 +243,9 @@ public class IntrospectorGenerator extends Generator {
                         if( type.getType().isAssignableTo( check.getType() ) ){
                             results.set(i, check);
                             results.set(j, type );
+                            if( type.toString().equals( check.toString() ) ){
+                                results.remove(i);
+                            }
                             swap = true;
                         }
                     }

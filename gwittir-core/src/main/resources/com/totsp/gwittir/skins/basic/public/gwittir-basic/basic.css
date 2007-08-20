@@ -1,0 +1,289 @@
+body {
+    height: 100%;
+}
+
+.gwittir-SoftButton {
+    border-style: outset;
+    border-width: 2px;
+    color: black;
+    background-color: silver;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+    
+}
+.gwittir-SoftButton-disabled {
+    border-style: inset;
+    border-width: 2px;
+    color: gray;
+    background-color: white;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.gwittir-SoftButton-hover {
+    border-style: outset;
+    border-width: 2px;
+    background-color: silver;
+    color: black;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.gwittir-SoftButton-focused {
+    border-style: outset;
+    border-width: 2px;
+    color: black;
+    background-color: silver;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.gwittir-SoftButton-pressed {
+    border-width: 2px;
+    border-style: inset;
+    background-color: gray;
+    color: black;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.gwittir-BoundTable {
+    width: 100%;
+    border: 1px solid gray;
+}
+.gwittir-BoundTable table {
+    width: 100%;
+}
+
+.gwittir-BoundTable table.nav{
+    width: 200px;
+}
+
+.gwittir-BoundTable table.nav > tbody > td {
+    border-width: 0px;
+    width: 50px;
+}
+.gwittir-BoundTable table.nav > tbody > td *{
+    width: 50px;
+}  
+
+.gwittir-BoundTable  tbody > tr > td {
+    border-right: 1px solid #D9D9D9;
+    border-bottom: 1px solid #E9E9E9;
+}
+
+.gwittir-BoundTable td.expanded {
+    background-color: #DDDDDD;
+}
+
+
+.gwittir-BoundTable tr > td > * {
+    width: 100%;
+}
+
+.gwittir-BoundTable tr.selected > td > input {
+    border-width: 0px;
+    background-color: transparent;
+    color: white;
+}
+.gwittir-BoundTable tr > td.selected > input {
+    border-width: 0px;
+    background-color: transparent;
+    color: white;
+}
+.gwittir-BoundTable tr > td > input {
+    border: 0px solid black;
+    background-color: transparent;
+}
+
+.gwittir-BoundTable tr.selected {
+    background-color: #3D80DF;
+    color: white;
+}
+
+.gwittir-BoundTable tr.spacer {
+    background-color: #DFDFDF;
+}
+
+.gwittir-BoundTable tr.spacer > td{
+    background-color: #DFDFDF;
+    height: 10px;
+}
+
+.gwittir-BoundTable colgroup > col.selected {
+    background-color: #3D80DF;
+    color: white;
+}
+
+.gwittir-BoundTable tr.selected > td {
+    border-right: 1px solid #3D80DF;
+}
+
+.gwittir-BoundTable td.selected {
+    background-color: #3A75DF;
+    color: white;
+}
+
+
+.gwittir-BoundTable  tbody > tr.header {
+    background-image: url( images/TableHeaderRow.png );
+    background-repeat: repeat-x;
+    border: 1px solid #555555;
+    font-size: 80%;
+}
+
+.gwittir-BoundTable tr.header > td.ascending {
+    background-image: url( images/ascending.png );
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+
+.gwittir-BoundTable tr.header > td.descending {
+    background-image: url( images/descending.png );
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+
+.gwittir-BoundTable > tbody > tr.header > td {
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #ACACAC;
+    padding-left: 4px;
+    font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+    color: black;
+    cursor: default;
+}
+
+.gwittir-SlidePanel {
+    border: 1px dotted silver;
+}
+
+.gwittir-SoftScrollArea {
+    border: 1px dotted silver;
+}
+
+
+.gwittir-SoftScrollbar {
+    border-width: 0px;
+    width: 15px;
+    background-color: transparent;
+    background-image: url( images/VerticalScrollbar.png );
+    background-repeat: repeat-y;
+}
+
+.gwittir-SoftScrollbar .lower {
+    background-color: transparent;
+}
+
+.gwittir-SoftScrollbar .higher {
+    background-color: transparent;
+}
+
+
+.gwittir-SoftScrollbar .bar {
+    border: 1px solid #959595;
+    background-color: transparent;
+    background-image: url( images/VerticalScrollbarBar.png );
+    background-repeat: repeat-y;
+    background-position: -1px 0px;
+    width: 12px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    
+}
+
+ .gwittir-SoftHorizontalScrollbar {
+    border-width: 0px;
+    height: 15px;
+    background-color: transparent;
+    background-image: url( images/HorizontalScrollbar.png );
+    background-repeat: repeat-x;
+    background-position: center left;
+    
+}
+
+.gwittir-SoftHorizontalScrollbar .lower {
+    background-color: transparent;
+}
+
+.gwittir-SoftHorizontalScrollbar .higher {
+    background-color: transparent;
+}
+
+
+.gwittir-SoftHorizontalScrollbar .bar {
+    border: 1px solid #959595;
+    background-color: transparent;
+    background-image: url( images/HorizontalScrollbarBar.png );
+    background-repeat: repeat-x;
+    background-position: 0px -1px;
+    height: 12px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+/*
+
+  GWT Core related stuff
+
+*/
+
+.gwt-TabPanel {
+    width: 100%;
+}
+
+.gwt-TabPanelBottom {
+    padding: 5px;
+    border: 1px solid #555555;
+}
+.gwt-TabBar .gwt-TabBarFirst {
+    width: 7px;
+    background-image: url( images/TabBarFirst.png );
+    background-position: top left;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #555555;
+    border-right: 1px solid #ACACAC;
+    padding-top: 2px;
+    padding-bottom: 3px;
+}
+.gwt-TabBar .gwt-TabBarRest {
+    width: 7px;
+    background-image: url( images/TabBarRest.png );
+    background-position: top right;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #555555;
+    border-left: 1px solid #DBDBDB;
+    padding-top: 2px;
+    padding-bottom: 3px;
+}
+.gwt-TabBar .gwt-TabBarItem {
+    border-top: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #ACACAC;
+    color: #222222;
+    font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+    cursor: default;
+    font-size: 80%;
+    padding-left: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 7px;
+    background-image: url( images/GradientToSilver.png );
+}
+
+.gwt-TabBar .gwt-TabBarItem-selected {
+    background-image: url( images/GradientToPaleBlue.png );
+}
+    
