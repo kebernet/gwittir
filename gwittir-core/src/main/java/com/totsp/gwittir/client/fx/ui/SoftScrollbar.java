@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.fx.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -27,7 +28,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollListener;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -39,6 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author cooper
  */
 public class SoftScrollbar extends Composite {
+    VerticalPanel vertical = new VerticalPanel();
     FocusPanel barTarget = new FocusPanel();
     FocusPanel higherTarget = new FocusPanel();
     FocusPanel lowerTarget = new FocusPanel();
@@ -120,7 +121,7 @@ public class SoftScrollbar extends Composite {
         this.target = target;
         this.base = new SimplePanel();
 
-        Panel vertical = new VerticalPanel();
+        
         this.base.setWidget(vertical);
         super.initWidget(this.base);
         this.higherTarget.setWidget(this.higher);
@@ -137,6 +138,9 @@ public class SoftScrollbar extends Composite {
         DOM.setStyleAttribute(this.lower.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.bar.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.higher.getElement(), "overflow", "hidden");
+        DOM.setStyleAttribute(this.lowerTarget.getElement(), "overflow", "hidden");
+        DOM.setStyleAttribute(this.barTarget.getElement(), "overflow", "hidden");
+        DOM.setStyleAttribute(this.higherTarget.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.getElement(), "overflow", "hidden");
     }
 
@@ -190,19 +194,16 @@ public class SoftScrollbar extends Composite {
                 target.getMaxScrollPosition() + 1
             );
 
-        //GWT.log("Scroll Percentage " + scrollPercentage, null);
         int lowerHeight = Math.round((
                     currentHeight
                     - Math.round((float) currentHeight * pageSize)
                 ) * scrollPercentage);
-        //GWT.log("Lower height " + lowerHeight, null);
+        lowerHeight = lowerHeight == 0 ? 1 : lowerHeight; // Fixes MSIE;
         this.lower.setHeight(lowerHeight + "px");
-
         int barHeight = Math.round(currentHeight * pageSize);
-        //GWT.log("Bar height " + barHeight, null);
         this.bar.setHeight(barHeight + "px");
-
         int higherHeight = currentHeight - lowerHeight - barHeight;
+        higherHeight = higherHeight < 0 ? 0 : higherHeight;
         this.higher.setHeight(higherHeight + "px");
         this.lower.setWidth(this.getOffsetWidth() + "px");
         this.bar.setWidth(this.getOffsetWidth() + "px");

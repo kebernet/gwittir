@@ -87,8 +87,9 @@ public class FlowContext {
     }
     
     public void fireEvents( String toName, BoundWidget toWidget, BoundWidget fromWidget ){
-        FlowEvent e = new FlowEvent( this, fromWidget, fromWidget.getModel(), this.fromName,
-                toWidget, toWidget.getModel(), toName);
+        FlowEvent e = new FlowEvent( this, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
+                this.fromName,
+                toWidget, toWidget == null ? null : toWidget.getModel(), toName);
         for(Iterator i = this.listeners.iterator(); i.hasNext(); ){
                 ((FlowEventListener) i.next()).onFlowEvent( e );
         }

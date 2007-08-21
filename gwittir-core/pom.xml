@@ -4,7 +4,7 @@
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.13</version>
+    <version>0.1.15</version>
     <name>Google Web ToolkIt Rails</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>

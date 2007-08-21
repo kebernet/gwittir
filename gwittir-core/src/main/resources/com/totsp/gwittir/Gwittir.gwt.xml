@@ -21,4 +21,10 @@
             class="com.totsp.gwittir.client.fx.rebind.Reflection" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
+    <replace-with
+        class="com.totsp.gwittir.client.fx.rebind.DimensionsIE6">
+        <when-type-is 
+            class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
+        <when-property-is name="user.agent" value="ie6"/>
+    </replace-with>
 </module>

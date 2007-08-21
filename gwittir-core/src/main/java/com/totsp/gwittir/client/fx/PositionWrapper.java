@@ -21,6 +21,7 @@
 package com.totsp.gwittir.client.fx;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.UIObject;
 import com.totsp.gwittir.client.beans.Introspectable;
 
@@ -81,4 +82,18 @@ public class PositionWrapper implements Introspectable {
     public UIObject getUIObject(){
         return this.o;
     }
+    
+    public int getOffsetTop(){
+        return getOffsetTop(o.getElement() );
+    }
+    
+    private static native int getOffsetTop(Element e) /*-{ return e.offsetTop }-*/;
+    
+    public int getOffsetLeft(){
+        return getOffsetTop(o.getElement() );
+    }
+    
+    private static native int getOffsetLeft(Element e) /*-{ return e.offsetLeft }-*/;
+    
+    
 }

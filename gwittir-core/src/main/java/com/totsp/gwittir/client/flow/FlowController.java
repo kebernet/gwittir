@@ -61,9 +61,9 @@ public class FlowController {
         if(widget == null) {
             return call(contextRoot.getParent(), name, model);
         }
-
-        widget.setModel(model);
-
+        if( model != null ){
+            widget.setModel(model);
+        }
         BoundWidget old = null;
         
 

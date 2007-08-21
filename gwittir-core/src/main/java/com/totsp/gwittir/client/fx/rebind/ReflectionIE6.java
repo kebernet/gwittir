@@ -20,33 +20,39 @@
 
 package com.totsp.gwittir.client.fx.rebind;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  *
  * @author cooper
  */
 public class ReflectionIE6 extends Reflection {
-    
-    Element element = DOM.createElement("image");
+    SimplePanel p = new SimplePanel();
+    Image image = new Image();
     
     /** Creates a new instance of ReflectionIE6 */
     public ReflectionIE6() {
         super();
-        super.setElement( element );
+        p.add( image );
+        super.setElement( p.getElement() );
     }
     
     public void paint(Image base, int baseWidth, int baseHeight, double height, double opacity){
-        long reflectHeight = Math.round(base.getHeight() * height);
-        DOM.setElementAttribute( element, "src", base.getUrl() );
-        DOM.setStyleAttribute( element, "width", base.getWidth()+"px" );
-        DOM.setStyleAttribute( element, "height", reflectHeight+"px" );
-        DOM.setStyleAttribute( element, "marginBottom", "-"+reflectHeight+"px");
-        DOM.setStyleAttribute( element, "filter", "flipv progid:DXImageTransform.Microsoft.Alpha(opacity="+(opacity*100)+", style=1, finishOpacity=0, startx=0, starty=0, finishx=0, finishy="+(height*100)+")" );
-        DOM.setStyleAttribute( base.getElement(), "cssText", "vertical-align: bottom");
+        int reflectHeight = (int) Math.round(baseHeight * height);
+        DOM.setStyleAttribute( p.getElement(), "overflow", "hidden");
+        DOM.setStyleAttribute( p.getElement(), "margin", "0px");
+        p.setPixelSize( baseWidth, reflectHeight );
+        
+        image.setUrl( base.getUrl() );
+        image.setWidth( baseWidth+"px");
+        //DOM.setStyleAttribute( image.getElement(), "marginBottom", "-"+(baseHeight-reflectHeight)+"px");
+        DOM.setStyleAttribute( image.getElement(), "filter", "flipv progid:DXImageTransform.Microsoft.Alpha(opacity="+(opacity*100)+", style=1, finishOpacity=0, startx=0, starty=0, finishx=0, finishy="+(height*100)+")" );
+        //DOM.setStyleAttribute( base.getElement(), "cssText", "vertical-align: bottom");
+        GWT.log( image.toString(), null );
+        
     }
     
 }

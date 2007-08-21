@@ -29,6 +29,7 @@ import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.PositionWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
+import com.totsp.gwittir.client.fx.rebind.Dimensions;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.HasWidget;
@@ -181,9 +182,13 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
 
         if(currentWidget != null) {
             final Widget oldWidget = (Widget) currentWidget.getUIObject();
-
+            GWT.log( "This Offset: "+ this.getOffsetHeight(), null);
+            GWT.log("Current offset "+ this.currentWidget.getUIObject().getOffsetHeight(), null );
+            int totalOffset = this.currentWidget.getUIObject().getOffsetHeight() +
+                    Dimensions.INSTANCE.getTotalVerticalMargin( this.currentWidget.getUIObject().getElement() );
+            GWT.log("Total offset "+ totalOffset, null );
             if(this.getDirection().equals(SlideTransitionSimplePanel.HORIZONTAL)) {
-                nextWidget.setTop("-" + oldWidget.getOffsetHeight() + "px");
+                nextWidget.setTop("-" +totalOffset + "px");
             }
 
             PropertyAnimator old = new PropertyAnimator(currentWidget,

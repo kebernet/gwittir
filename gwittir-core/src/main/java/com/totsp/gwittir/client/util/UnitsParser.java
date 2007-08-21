@@ -42,7 +42,7 @@ public class UnitsParser {
             }
         }
         UnitValue value = new UnitValue();
-        value.value = Integer.parseInt( intPart );
+        value.value = intPart.length() > 0 ? Integer.parseInt( intPart ) : 0;
         value.units = input.substring( i, input.length() );
         return value;
     }
