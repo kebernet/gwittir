@@ -36,6 +36,7 @@ import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
+import com.totsp.gwittir.client.fx.rebind.Dimensions;
 import com.totsp.gwittir.client.fx.ui.ReflectedImage;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
@@ -260,6 +261,8 @@ public class ExampleEntryPoint implements EntryPoint {
         
         
         RootPanel.get().add( tp );
+        GWT.log( Dimensions.INSTANCE.getMarginHeight( tp.getElement() )+"", null );
+        GWT.log( tp.getOffsetHeight()+"", null );
         
     }
 }

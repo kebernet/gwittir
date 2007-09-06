@@ -86,7 +86,7 @@ public class FlowContext {
         return ret;
     }
     
-    public void fireEvents( String toName, BoundWidget toWidget, BoundWidget fromWidget ){
+    void fireEvents( String toName, BoundWidget toWidget, BoundWidget fromWidget ){
         FlowEvent e = new FlowEvent( this, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
                 this.fromName,
                 toWidget, toWidget == null ? null : toWidget.getModel(), toName);
@@ -94,5 +94,17 @@ public class FlowContext {
                 ((FlowEventListener) i.next()).onFlowEvent( e );
         }
         this.fromName = toName;
+    }
+    
+    public void addFlowEventListener( FlowEventListener l ){
+        this.listeners.add( l );
+    }
+    
+    public void removeFlowEventListener( FlowEventListener l ){
+        this.listeners.remove( l );
+    }
+    
+    public FlowEventListener[] getFlowEventListeners(){
+        return (FlowEventListener[]) listeners.toArray();
     }
 }
