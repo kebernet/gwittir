@@ -35,4 +35,8 @@ public class Dimensions {
     public native String getMarginBottom(Element e)/*-{
         return  document.defaultView.getComputedStyle(e, '').getPropertyValue('margin-bottom');
     }-*/;
+    
+    public native String getMarginHeight(Element e)/*-{
+    return  document.defaultView.getComputedStyle(e, '').getPropertyValue('margin-height');
+    }-*/;
 }
