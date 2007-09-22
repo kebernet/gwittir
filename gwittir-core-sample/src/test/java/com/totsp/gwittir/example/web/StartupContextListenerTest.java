@@ -7,10 +7,13 @@
 
 package com.totsp.gwittir.example.web;
 
-import com.totsp.gwittir.example.api.ContactsService;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import junit.framework.*;
+
+import junit.framework.TestCase;
+
+import com.totsp.gwittir.example.api.ContactsService;
+import com.totsp.gwittir.example.web.StartupContextListener;
 
 /**
  *

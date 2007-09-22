@@ -9,9 +9,17 @@ package com.totsp.gwittir.example.api;
 
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.*;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import junit.framework.TestCase;
+
+import com.totsp.gwittir.example.api.Address;
+import com.totsp.gwittir.example.api.Contact;
+import com.totsp.gwittir.example.api.ContactsService;
+import com.totsp.gwittir.example.api.StateLookup;
+import com.totsp.gwittir.example.api.TypeLookup;
 
 /**
  *

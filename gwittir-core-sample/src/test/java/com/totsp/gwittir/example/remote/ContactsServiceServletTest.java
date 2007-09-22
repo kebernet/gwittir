@@ -7,16 +7,20 @@
 
 package com.totsp.gwittir.example.remote;
 
-import junit.framework.*;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import junit.framework.TestCase;
+
 import com.totsp.gwittir.example.api.ContactsService;
 import com.totsp.gwittir.example.client.remote.Address;
 import com.totsp.gwittir.example.client.remote.Contact;
 import com.totsp.gwittir.example.client.remote.StateLookup;
 import com.totsp.gwittir.example.client.remote.TypeLookup;
-import java.util.ArrayList;
-import java.util.Properties;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import com.totsp.gwittir.example.remote.ContactsServiceServlet;
 
 /**
  *
