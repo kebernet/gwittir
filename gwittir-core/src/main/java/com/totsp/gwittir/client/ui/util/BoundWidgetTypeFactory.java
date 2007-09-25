@@ -19,21 +19,23 @@
  */
 package com.totsp.gwittir.client.ui.util;
 
-import com.google.gwt.core.client.GWT;
 import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Checkbox;
+import com.totsp.gwittir.client.ui.Hyperlink;
 import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.client.ui.RadioButton;
 import com.totsp.gwittir.client.ui.TextBox;
 
 import java.util.HashMap;
 
 
 /**
+ * DOCUMENT ME!
  *
  * @author cooper
  */
 public class BoundWidgetTypeFactory {
-    
     public static final BoundWidgetProvider CHECKBOX_PROVIDER = new BoundWidgetProvider() {
             public BoundWidget get() {
                 return new Checkbox();
@@ -46,19 +48,36 @@ public class BoundWidgetTypeFactory {
             }
         };
 
-    public static final BoundWidgetProvider LABEL_PROVIDER =   new BoundWidgetProvider() {
+    public static final BoundWidgetProvider LABEL_PROVIDER = new BoundWidgetProvider() {
             public BoundWidget get() {
                 return new Label();
             }
         };
-   
-        
+
+    public static final BoundWidgetProvider BUTTON_PROVIDER = new BoundWidgetProvider() {
+            public BoundWidget get() {
+                return new Button();
+            }
+        };
+
+    public static final BoundWidgetProvider RADIOBUTTON_PROVIDER = new BoundWidgetProvider() {
+            public BoundWidget get() {
+                return new RadioButton();
+            }
+        };
+
+    public static final BoundWidgetProvider HYPERLINK_PROVIDER = new BoundWidgetProvider() {
+            public BoundWidget get() {
+                return new Hyperlink();
+            }
+        };
+
     HashMap registry = new HashMap();
 
     public BoundWidgetTypeFactory(boolean defaults) {
         super();
 
-        if(defaults) {
+        if (defaults) {
             registry.put(Boolean.class, BoundWidgetTypeFactory.CHECKBOX_PROVIDER);
             registry.put(boolean.class, BoundWidgetTypeFactory.CHECKBOX_PROVIDER);
             registry.put(String.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
@@ -73,7 +92,7 @@ public class BoundWidgetTypeFactory {
         }
     }
 
-    /** Creates a new instance of BoundWidgetTypeFactory */
+/** Creates a new instance of BoundWidgetTypeFactory */
     public BoundWidgetTypeFactory() {
         super();
     }
