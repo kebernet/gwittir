@@ -5,7 +5,7 @@
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
     <version>0.1.19</version>
-    <name>Google Web ToolkIt Rails</name>
+    <name>Google Web Toolkit Rails</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>
     <repositories>
