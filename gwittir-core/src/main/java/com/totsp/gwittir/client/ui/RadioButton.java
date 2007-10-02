@@ -37,7 +37,7 @@ DOCUMENT ME!
  */
 public class RadioButton extends AbstractBoundWidget implements HasEnabled,
     SourcesClickEvents, HasFocus, SourcesKeyboardEvents {
-    private com.google.gwt.user.client.ui.CheckBox base;
+    private com.google.gwt.user.client.ui.RadioButton base;
 
 /** Creates a new instance of RadioButton */
     public RadioButton() {
@@ -109,7 +109,7 @@ public class RadioButton extends AbstractBoundWidget implements HasEnabled,
     }
 
     private void init(String label) {
-        this.base = new com.google.gwt.user.client.ui.CheckBox(label);
+        this.base = new com.google.gwt.user.client.ui.RadioButton(label);
         this.setRenderer(new ToBooleanRenderer());
         super.initWidget(this.base);
         this.base.addClickListener(new ClickListener() {
