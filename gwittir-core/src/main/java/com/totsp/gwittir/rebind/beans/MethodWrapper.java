@@ -25,7 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class MethodWrapper implements Comparable{
     

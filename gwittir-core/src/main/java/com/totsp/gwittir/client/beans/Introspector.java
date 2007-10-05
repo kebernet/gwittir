@@ -24,7 +24,7 @@ import com.google.gwt.core.client.GWT;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface Introspector {
     

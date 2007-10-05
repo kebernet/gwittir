@@ -22,7 +22,7 @@ package com.totsp.gwittir.client.beans;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Property {
     private Class type;

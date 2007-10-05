@@ -34,7 +34,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public abstract class AbstractBoundWidget extends Composite
     implements BoundWidget {
@@ -87,10 +87,16 @@ public abstract class AbstractBoundWidget extends Composite
     }
 
     protected void onAttach() {
+         if(this.getAction() instanceof BindingAction) {
+            ((BindingAction) getAction()).set(this);
+            
+        }
         super.onAttach();
-
+    }
+    
+    protected void onLoad(){
         if(this.getAction() instanceof BindingAction) {
-            ((BindingAction) getAction()).bind(this);
+           ((BindingAction) getAction()).bind(this);
         }
     }
 

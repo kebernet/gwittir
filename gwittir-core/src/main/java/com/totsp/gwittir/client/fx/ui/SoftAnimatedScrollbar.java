@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SoftAnimatedScrollbar extends SoftScrollbar {
     private MouseListener higherListener = new MouseListenerAdapter() {

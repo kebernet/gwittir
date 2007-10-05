@@ -30,7 +30,7 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public abstract class AbstractTableWidget extends AbstractBoundWidget {
     protected BoundWidgetTypeFactory factory;

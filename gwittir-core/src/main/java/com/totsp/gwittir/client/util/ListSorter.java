@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ListSorter {
     private static final Introspector INTRO = (Introspector) GWT.create(Introspector.class);

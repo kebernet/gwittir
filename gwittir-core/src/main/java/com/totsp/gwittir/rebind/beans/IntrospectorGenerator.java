@@ -41,7 +41,7 @@ import java.util.List;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class IntrospectorGenerator extends Generator {
     String implementationName = com.totsp.gwittir.client.beans.Introspector.class

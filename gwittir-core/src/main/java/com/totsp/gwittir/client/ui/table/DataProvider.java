@@ -24,7 +24,7 @@ import java.util.Collection;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface DataProvider {
     public void getChunk(final HasChunks table, final int chunkNumber);

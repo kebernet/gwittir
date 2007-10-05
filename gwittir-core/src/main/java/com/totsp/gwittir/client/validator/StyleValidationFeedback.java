@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class StyleValidationFeedback extends AbstractValidationFeedback {
     

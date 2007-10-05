@@ -4,7 +4,7 @@
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.20</version>
+    <version>0.1.21</version>
     <name>Google Web Toolkit Rails</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>
@@ -63,7 +63,7 @@
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
                 <configuration>
                     <logLevel>INFO</logLevel>
-                    <runTarget>com.totsp.gwittir.example.Example/</runTarget>
+                    <runTarget>com.totsp.gwittir.example.Example/?log.level=debug</runTarget>
                     <compileTarget>
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTarget>
@@ -109,7 +109,6 @@
                     <dependency>
                         <groupId>com.google.gwt</groupId>
                         <artifactId>gwt-dev-linux</artifactId>
-                        <version>1.4.69</version>
                         <scope>system</scope>
                         <systemPath>${google.webtoolkit.home}/gwt-dev-linux.jar</systemPath>
                     </dependency>

@@ -14,7 +14,7 @@ import com.totsp.gwittir.client.util.UnitsParser;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class DimensionsIE6 extends Dimensions {
     

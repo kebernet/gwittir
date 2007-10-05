@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public abstract class AbstractValidationFeedback implements ValidationFeedback {
     private HashMap mappings = new HashMap() /*<Class, Message>*/;

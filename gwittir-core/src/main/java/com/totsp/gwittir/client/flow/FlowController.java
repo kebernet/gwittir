@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class FlowController {
     static final HashMap /*<Widget, FlowContext>*/ contexts = new HashMap();
@@ -107,12 +107,24 @@ public class FlowController {
         Widget contextRoot = widget;
         FlowContext context = (FlowContext) contexts.get(contextRoot);
 
-        while((context == null) && (contextRoot != null)) {
+        while((context == null || context.get(name) == null) && (contextRoot != null) ) {
             contextRoot = contextRoot.getParent();
             context = (FlowContext) contexts.get(contextRoot);
         }
 
         return contextRoot;
+    }
+    
+    public static FlowContext findContext(Widget widget, String name){
+        Widget contextRoot = widget;
+        FlowContext context = (FlowContext) contexts.get(contextRoot);
+
+        while((context == null || context.get(name) == null) && (contextRoot != null) ) {
+            contextRoot = contextRoot.getParent();
+            context = (FlowContext) contexts.get(contextRoot);
+        }
+
+        return context;
     }
 
     public static HistoryManager getHistoryManager() {

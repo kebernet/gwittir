@@ -31,7 +31,7 @@ import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ReflectedImage extends AbstractBoundWidget {
     private Image base;

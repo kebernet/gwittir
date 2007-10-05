@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.DockPanel;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SoftScrollPanel extends Composite {
     DockPanel base = new DockPanel();

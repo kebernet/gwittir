@@ -24,7 +24,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface SourcesPropertyChangeEvents {
     public void addPropertyChangeListener(PropertyChangeListener l);

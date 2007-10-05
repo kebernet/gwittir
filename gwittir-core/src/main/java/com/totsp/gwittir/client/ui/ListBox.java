@@ -36,7 +36,7 @@ import java.util.Vector;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ListBox extends AbstractBoundWidget {
     private com.google.gwt.user.client.ui.ListBox base = new com.google.gwt.user.client.ui.ListBox();

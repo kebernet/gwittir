@@ -34,7 +34,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Button extends AbstractBoundWidget implements SourcesClickEvents, HasFocus {
     private final com.google.gwt.user.client.ui.Button base = new com.google.gwt.user.client.ui.Button();

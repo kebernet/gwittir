@@ -39,7 +39,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SlideTransitionSimplePanel extends AbstractBoundWidget
     implements HasWidgets, HasWidget {
@@ -151,6 +151,9 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
     }
 
     public void setWidget(Widget w) {
+        if( this.currentWidget != null && this.currentWidget.getUIObject() == w ){
+            return;
+        }
         //GWT.log( "Setting widget "+ w.toString(), null );
         final PositionWrapper nextWidget = new PositionWrapper(w);
         nextWidget.setPosition("relative");

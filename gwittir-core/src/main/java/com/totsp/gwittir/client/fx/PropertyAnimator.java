@@ -30,7 +30,7 @@ import com.totsp.gwittir.client.beans.Property;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class PropertyAnimator {
     private AnimationFinishedCallback callback;

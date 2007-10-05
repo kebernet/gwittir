@@ -309,6 +309,9 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 addSelectedClickListener((SourcesClickEvents) widget,
                         topBinding.getChildren().size() - 1, col);
             }
+            if( getColumns()[col].getStyleName() != null ){
+                table.getCellFormatter().setStyleName( row, col, getColumns()[col].getStyleName() );
+            }
         }
         
         boolean odd = this.calculateRowToObjectOffset( new Integer(row) ).intValue() % 2 != 0;

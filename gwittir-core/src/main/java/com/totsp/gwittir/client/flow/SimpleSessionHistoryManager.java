@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SimpleSessionHistoryManager extends AbstractHistoryManager {
     private ArrayList states = new ArrayList();

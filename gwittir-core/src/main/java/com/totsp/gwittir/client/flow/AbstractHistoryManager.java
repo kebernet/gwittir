@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public abstract class AbstractHistoryManager implements HistoryManager {
     /** Creates a new instance of AbstractHistoryManager */

@@ -22,7 +22,7 @@ package com.totsp.gwittir.client.action;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface UndoableBindingAction {
     public void redo();

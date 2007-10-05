@@ -33,7 +33,7 @@ import java.util.HashMap;
 /**
  * DOCUMENT ME!
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class BoundWidgetTypeFactory {
     public static final BoundWidgetProvider CHECKBOX_PROVIDER = new BoundWidgetProvider() {

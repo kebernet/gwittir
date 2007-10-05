@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ReflectionIE6 extends Reflection {
     SimplePanel p = new SimplePanel();

@@ -22,7 +22,7 @@ package com.totsp.gwittir.client.util;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class UnitsParser {
     private static final String NUMBERS="-1234567890";

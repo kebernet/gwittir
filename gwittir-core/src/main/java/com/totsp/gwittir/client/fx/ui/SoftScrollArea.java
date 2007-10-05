@@ -1,5 +1,4 @@
-/*
- * SoftScrollPanel.java
+ /* SoftScrollPanel.java
  *
  * Created on August 16, 2007, 9:11 AM
  *
@@ -43,7 +42,7 @@ import com.totsp.gwittir.client.util.UnitsParser;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SoftScrollArea extends Composite implements HasWidget,
     Introspectable, SourcesScrollEvents {

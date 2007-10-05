@@ -25,7 +25,7 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ValidatorPopup {
     public static void validateAndSet(BoundWidget widget, Validator validator,

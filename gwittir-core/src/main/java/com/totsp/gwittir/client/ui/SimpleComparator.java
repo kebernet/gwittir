@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SimpleComparator implements Comparator, Serializable {
     

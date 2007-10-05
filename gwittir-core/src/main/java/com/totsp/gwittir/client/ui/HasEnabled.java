@@ -22,7 +22,7 @@ package com.totsp.gwittir.client.ui;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface HasEnabled {
     

@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class CompositeValidationFeedback extends AbstractValidationFeedback {
     private ArrayList feedbacks = new ArrayList();

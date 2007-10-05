@@ -22,7 +22,7 @@ package com.totsp.gwittir.client.validator;
 
 /**
  * TODO this needs a .resolve() method
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface ValidationFeedback {
     public void handleException(Object source, ValidationException exception);

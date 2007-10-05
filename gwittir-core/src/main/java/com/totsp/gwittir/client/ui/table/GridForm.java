@@ -37,7 +37,7 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
     private static final String STYLE_NAME = "gwittir-GridForm";

@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface HasWidget {
     public Widget getWidget();

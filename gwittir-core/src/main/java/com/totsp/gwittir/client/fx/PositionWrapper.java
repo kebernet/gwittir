@@ -27,7 +27,7 @@ import com.totsp.gwittir.client.beans.Introspectable;
 
 /**
  *
- * @author rcooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class PositionWrapper implements Introspectable {
     

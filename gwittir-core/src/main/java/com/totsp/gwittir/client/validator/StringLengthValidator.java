@@ -25,7 +25,7 @@ import com.totsp.gwittir.client.validator.Validator;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class StringLengthValidator implements Validator {
     int max;

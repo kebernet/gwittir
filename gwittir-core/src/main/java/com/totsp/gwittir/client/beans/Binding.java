@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  *
- * @author cooper
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Binding {
     private static final Introspector INTROSPECTOR = (Introspector) GWT.create(Introspector.class);
