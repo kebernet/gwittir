@@ -1,0 +1,7 @@
+<module>
+    <!-- Inherit the core Web Toolkit stuff.                  -->
+    <inherits name='com.google.gwt.user.User'/>
+    <source path="client" />
+    <servlet path="/LogService" 
+     class="com.totsp.gwittir.service.LogServiceServlet" />
+</module>

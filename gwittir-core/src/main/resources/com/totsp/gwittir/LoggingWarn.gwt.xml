@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+    <!-- Inherit the core Web Toolkit stuff.                  -->
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.totsp.gwittir.LoggingService'/>
+    <source path="client" />
+    <define-property name="log.level" values="warn" />
+    <property-provider name="log.level">
+        <![CDATA[
+	return "warn";
+	]]>
+    </property-provider>
+    
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.WarnLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+        <when-property-is name="log.level" value="warn"/>
+    </replace-with>
+</module>

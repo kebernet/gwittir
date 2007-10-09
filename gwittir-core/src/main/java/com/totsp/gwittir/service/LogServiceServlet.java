@@ -36,6 +36,7 @@ public class LogServiceServlet extends RemoteServiceServlet implements LogServic
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        this.log( "LogServiceServlet init.");
         Enumeration<URL> enu;
         try {
             enu = LogServiceServlet.class.getClassLoader().getResources("META-INF/services/com.totsp.gwittir.service.ServerLogService");
@@ -72,7 +73,7 @@ public class LogServiceServlet extends RemoteServiceServlet implements LogServic
         InputStreamReader reader = new InputStreamReader(is);
         BufferedReader br = new BufferedReader( reader );
         String line = br.readLine();
-        ArrayList<String> providers = new ArrayList();
+        ArrayList<String> providers = new ArrayList<String>();
         while( line != null ){
             if( line.indexOf("#") != -1 ){
                 line = line.substring(0, line.indexOf("#") );
@@ -80,6 +81,7 @@ public class LogServiceServlet extends RemoteServiceServlet implements LogServic
             line = line.trim();
             if( line.length() > 0 ){
                 providers.add( line );
+                this.log( "Found Log SPI "+ line);
             }
             line = br.readLine();
         }

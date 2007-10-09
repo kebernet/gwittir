@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+    <!-- Inherit the core Web Toolkit stuff.                  -->
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.totsp.gwittir.LoggingService'/>
+    <source path="client" />
+    <define-property name="log.level" values="error,warn,info,debug,spam" />
+    <property-provider name="log.level">
+        <![CDATA[
+	try {
+          var level;
+          
+          // Look for the runtime as a url argument
+          if (level == null) {
+            var args = location.search;
+            var startLang = args.indexOf("log.level");
+            if (startLang >= 0) {
+              var value = args.substring(startLang);
+              var begin = value.indexOf("=") + 1;
+              var end = value.indexOf("&");
+              if (end == -1) {
+                end = value.length;
+              }
+              level = value.substring(begin, end);
+            }
+          }      
+          
+          if(level == null) {  
+            // Look for the runtime on the web page
+            level = __gwt_getMetaProperty("log.level")   
+          }
+           
+          if(level == null) {
+            return "warn";
+          }
+          
+          return level;
+        } catch(e){
+          alert("Unexpected exception in log.level detection, using default: " + e);
+          return "level";
+        }
+	]]>
+    </property-provider>
+    
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.ErrorLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+        <when-property-is name="log.level" value="error"/>
+    </replace-with>
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.WarnLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+        <when-property-is name="log.level" value="warn"/>
+    </replace-with>
+    
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.InfoLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+        <when-property-is name="log.level" value="info"/>
+    </replace-with>
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.DebugLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+        <when-property-is name="log.level" value="debug"/>
+    </replace-with>
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.SpamLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+        <when-property-is name="log.level" value="spam"/>
+    </replace-with>
+</module>
