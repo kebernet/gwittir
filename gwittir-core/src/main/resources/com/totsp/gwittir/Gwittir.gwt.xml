@@ -27,6 +27,4 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    <servlet path="/LogService" 
-     class="com.totsp.gwittir.service.LogServiceServlet" />
 </module>
