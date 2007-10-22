@@ -25,32 +25,69 @@ package com.totsp.gwittir.client.action;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class KeyBinding {
-    private char key;
-    private int modifiers;
-
-    /** Creates a new instance of KeyBinding */
-    public KeyBinding() {
-        super();
-    }
+    public static final char F1 = (char) 112;
+    public static final char F2 = (char) 113;
+    public static final char F3 = (char) 114;
+    public static final char F4 = (char) 115;
+    public static final char F5 = (char) 116;
+    public static final char F6 = (char) 117;
+    public static final char F7 = (char) 118;
+    public static final char F8 = (char) 119;
+    public static final char F9 = (char) 120;
+    public static final char F10 = (char) 121;
+    public static final char F11 = (char) 122;
+    public static final char F13 = (char) 123;
     
-    public KeyBinding(final char key, final int modifiers){
+    private char key;
+    private boolean control;
+    private boolean alt;
+    private boolean shift;
+    
+
+    public KeyBinding(final char key, final boolean control, final boolean alt, final boolean shift){
         this.key = key;
-        this.modifiers = modifiers;
+        this.alt = alt;
+        this.control = control;
+        this.shift = shift;
     }
 
     public char getKey() {
         return key;
     }
-
-    public int getModifiers() {
-        return modifiers;
+   
+    public boolean isControl() {
+        return control;
     }
 
-    public void setKey(char key) {
-        this.key = key;
+   
+    public boolean isAlt() {
+        return alt;
     }
 
-    public void setModifiers(int modifiers) {
-        this.modifiers = modifiers;
+   
+    public boolean isShift() {
+        return shift;
+    }
+
+   
+
+    public int hashCode(){
+        return (this.control ? 32768 : 0 )+
+                (this.alt ? 16384 : 0 ) +
+                (this.shift ? 8192 : 0 ) +
+                (int) this.key;
+    }
+    
+    public boolean equals(Object o){
+        if( o instanceof KeyBinding && o != null ){
+            KeyBinding b = (KeyBinding) o;
+            if( b.alt = this.alt && b.control == this.control && b.shift == this.shift && b.key == this.key ){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

@@ -4,7 +4,7 @@
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.24</version>
+    <version>0.1.25</version>
     <name>Gwittir Core</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>

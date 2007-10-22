@@ -38,7 +38,9 @@ public class KeyboardController {
         if(bindings.containsKey(binding)) {
             throw new KeyBindingAlreadyRegisteredException();
         }
-
+        if( binding.getKey() == KeyBinding.F1 ){
+            this.clobberHelp();
+        }
         bindings.put(binding, widget);
     }
 
@@ -46,6 +48,9 @@ public class KeyboardController {
         throws KeyBindingException {
         if(bindings.containsKey(binding)) {
             throw new KeyBindingAlreadyRegisteredException();
+        }
+        if( binding.getKey() == KeyBinding.F1 ){
+            this.clobberHelp();
         }
         bindings.put( binding, action );
     }
@@ -55,14 +60,38 @@ public class KeyboardController {
         if(bindings.containsKey(binding)) {
             throw new KeyBindingAlreadyRegisteredException();
         }
+        if( binding.getKey() == KeyBinding.F1 ){
+            this.clobberHelp();
+        }
         bindings.put( binding, task );
         
     }
     
-    boolean handleEvent( char keyCode, boolean ctrl, boolean alt ){
+    public boolean unregister( final KeyBinding binding ){
+        return this.bindings.remove( binding ) != null;
+    }
+    
+    boolean handleEvent( char keyCode, boolean ctrl, boolean alt, boolean shift ){
         KeyboardController.LOG.log( Level.SPAM, "key event:"+keyCode+" ctrl:"+ctrl + " alt:"+alt, null);
+        KeyBinding check = new KeyBinding( keyCode, ctrl, alt, shift );
+        Object execute  = this.bindings.get( check );
+        if( execute != null ){
+             if( execute instanceof Task ){
+                 ((Task) execute).run();
+             } else if( execute instanceof Action ){
+                 ((Action) execute).execute(null);
+             } else if( execute instanceof BoundWidget ){
+                 ((BoundWidget) execute).getAction().execute((BoundWidget) execute);
+             }
+             return false;
+        }
         return true;
     }
     
+    private native void clobberHelp() /*-{
+        $wnd.onhelp = function(){ return false; }
+        $doc.onhelp = function(){ return false; }
+    }-*/;
+           
     
 }

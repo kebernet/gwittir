@@ -34,16 +34,19 @@ class EventPreviewListener implements EventPreview {
     /** Creates a new instance of EventPreviewListener */
     public EventPreviewListener() {
     }
-
+    
     public boolean onEventPreview(Event event) {
-        if( DOM.eventGetType(event) != Event.ONKEYPRESS ){
+        if( DOM.eventGetType(event) != Event.ONKEYDOWN ){
             return true;
         }
-        KeyboardController.LOG.log( Level.SPAM, "Got preview event EventType: "+ DOM.eventGetType( event )+ " "+Event.ONKEYPRESS, null );
+        KeyboardController.LOG.log( Level.SPAM, "Got preview event EventType: "+ DOM.eventGetType( event )+ " "+Event.ONKEYDOWN, null );
         KeyboardController.LOG.log( Level.SPAM, "KeyCode: "+ DOM.eventGetKeyCode(event), null );
-        
-        return KeyboardController.INSTANCE.handleEvent( (char) DOM.eventGetKeyCode( event ),
-                DOM.eventGetCtrlKey(event), DOM.eventGetAltKey(event) );
+        if( DOM.eventGetAltKey(event) || DOM.eventGetCtrlKey(event) ){
+            return KeyboardController.INSTANCE.handleEvent( (char) DOM.eventGetKeyCode( event ),
+                    DOM.eventGetCtrlKey(event), DOM.eventGetAltKey(event), DOM.eventGetShiftKey( event ) );
+        } else {
+            return true;
+        }
     }
     
 }

@@ -298,7 +298,6 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled
     }
     
     public void setValue(Object value) {
-        //GWT.log("Setting value "+ value, null );
         Object old = this.getValue();
         this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) : ""+value);
         if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
