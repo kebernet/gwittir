@@ -36,41 +36,95 @@ public class KeyBinding {
     public static final char F9 = (char) 120;
     public static final char F10 = (char) 121;
     public static final char F11 = (char) 122;
-    public static final char F13 = (char) 123;
+    public static final char F12 = (char) 123;
     
     private char key;
     private boolean control;
     private boolean alt;
     private boolean shift;
     
-
+    
     public KeyBinding(final char key, final boolean control, final boolean alt, final boolean shift){
         this.key = key;
         this.alt = alt;
         this.control = control;
         this.shift = shift;
     }
-
+    
     public char getKey() {
         return key;
     }
-   
+    
     public boolean isControl() {
         return control;
     }
-
-   
+    
+    
     public boolean isAlt() {
         return alt;
     }
-
-   
+    
+    
     public boolean isShift() {
         return shift;
     }
-
-   
-
+    
+    public String toString(){
+        StringBuffer val = new StringBuffer();
+        if( this.control ){
+            val.append( "CTRL+");
+        }
+        if( this.alt ){
+            val.append( "ALT+");
+        }
+        if( this.shift ){
+            val.append("SHIFT+");
+        }
+        switch( this.key ){
+            case KeyBinding.F1:
+                val.append("F1");
+                break;
+            case KeyBinding.F2:
+                val.append("F2");
+                break;
+            case KeyBinding.F3:
+                val.append("F3");
+                break;
+            case KeyBinding.F4:
+                val.append("F4");
+                break;
+            case KeyBinding.F5:
+                val.append("F5");
+                break;
+            case KeyBinding.F6:
+                val.append("F6");
+                break;
+            case KeyBinding.F7:
+                val.append("F7");
+                break;
+            case KeyBinding.F8:
+                val.append("F8");
+                break;
+            case KeyBinding.F9:
+                val.append("F9");
+                break;
+            case KeyBinding.F10:
+                val.append("F10");
+                break;
+            case KeyBinding.F11:
+                val.append("F11");
+                break;
+            case KeyBinding.F12:
+                val.append("F12");
+                break;
+            default:
+                val.append( this.key );
+        }
+        return val.toString();
+    }
+    
+    
+    
     public int hashCode(){
         return (this.control ? 32768 : 0 )+
                 (this.alt ? 16384 : 0 ) +

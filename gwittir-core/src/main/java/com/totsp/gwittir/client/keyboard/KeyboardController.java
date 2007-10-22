@@ -94,4 +94,31 @@ public class KeyboardController {
     }-*/;
            
     
+    public AutoMappedBinding fingAutoMapping( final String match ){
+        if( match == null || match.trim().length() == 0 ){
+            return null;
+        }
+        for( int i = 0; i < match.length(); i++ ){
+            KeyBinding b = new KeyBinding( match.toUpperCase().charAt(i), false, true, false);
+            if( !this.bindings.containsKey( b ) ){
+                String newHtml = match.substring( 0, i );
+                newHtml+="<u>";
+                newHtml+=match.substring( i, i+1 );
+                newHtml+="</u>";
+                if( i < match.length() - 1 ){
+                    newHtml+=match.substring(i, match.length() );
+                }
+                AutoMappedBinding ab = new AutoMappedBinding();
+                ab.newHtml = newHtml;
+                ab.binding = b;
+                return ab;
+            }
+        }
+        return null;
+    }
+    
+    public static class AutoMappedBinding {
+        String newHtml;
+        KeyBinding binding;
+    }
 }

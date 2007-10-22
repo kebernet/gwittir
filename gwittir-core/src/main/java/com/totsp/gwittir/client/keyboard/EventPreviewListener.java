@@ -41,12 +41,13 @@ class EventPreviewListener implements EventPreview {
         }
         KeyboardController.LOG.log( Level.SPAM, "Got preview event EventType: "+ DOM.eventGetType( event )+ " "+Event.ONKEYDOWN, null );
         KeyboardController.LOG.log( Level.SPAM, "KeyCode: "+ DOM.eventGetKeyCode(event), null );
-        if( DOM.eventGetAltKey(event) || DOM.eventGetCtrlKey(event) ){
-            return KeyboardController.INSTANCE.handleEvent( (char) DOM.eventGetKeyCode( event ),
+        
+        boolean handled =  KeyboardController.INSTANCE.handleEvent( (char) DOM.eventGetKeyCode( event ),
                     DOM.eventGetCtrlKey(event), DOM.eventGetAltKey(event), DOM.eventGetShiftKey( event ) );
-        } else {
-            return true;
+        if( handled ){
+            DOM.eventPreventDefault( event );
         }
+        return handled;
     }
     
 }
