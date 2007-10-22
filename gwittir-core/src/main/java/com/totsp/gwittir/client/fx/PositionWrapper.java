@@ -84,13 +84,13 @@ public class PositionWrapper implements Introspectable {
     }
     
     public int getOffsetTop(){
-        return getOffsetTop(o.getElement() );
+        return this.getOffsetTop(o.getElement() );
     }
     
     private static native int getOffsetTop(Element e) /*-{ return e.offsetTop }-*/;
     
     public int getOffsetLeft(){
-        return getOffsetTop(o.getElement() );
+        return this.getOffsetLeft(o.getElement() );
     }
     
     private static native int getOffsetLeft(Element e) /*-{ return e.offsetLeft }-*/;

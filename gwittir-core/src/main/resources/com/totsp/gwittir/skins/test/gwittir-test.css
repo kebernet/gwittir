@@ -1,0 +1,192 @@
+body {
+    height: 100%;
+}
+
+.gwittir-SoftButton {
+    border-style: outset;
+    border-width: 2px;
+    color: black;
+    background-color: silver;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+    
+}
+.gwittir-SoftButton-disabled {
+    border-style: inset;
+    border-width: 2px;
+    color: gray;
+    background-color: white;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.gwittir-SoftButton-hover {
+    border-style: outset;
+    border-width: 2px;
+    background-color: silver;
+    color: black;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.gwittir-SoftButton-focused {
+    border-style: outset;
+    border-width: 2px;
+    color: black;
+    background-color: silver;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.gwittir-SoftButton-pressed {
+    border-width: 2px;
+    border-style: inset;
+    background-color: gray;
+    color: black;
+    display: inline;
+    cursor: default;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.gwittir-BoundTable {
+    width: 100%;
+    border: 1px solid gray;
+}
+.gwittir-BoundTable table {
+    width: 100%;
+}
+
+.gwittir-BoundTable table.nav{
+    width: 200px;
+}
+
+.gwittir-BoundTable table.nav td {
+    border-width: 0px;
+    width: 50px;
+}
+.gwittir-BoundTable table.nav td *{
+    width: 50px;
+}  
+
+.gwittir-BoundTable > tbody > tr > td {
+    border-bottom: 1px solid gray;
+}
+
+.gwittir-BoundTable td.expanded {
+    background-color: #DDDDDD;
+}
+
+
+.gwittir-BoundTable tr td > * {
+    width: 100%;
+}
+
+.gwittir-BoundTable tr td input {
+    border: 0px solid black;
+    background-color: transparent;
+}
+
+.gwittir-BoundTable tr.selected {
+    background-color: #CCCCFF;
+}
+
+.gwittir-BoundTable tr.spacer {
+    background-color: #DFDFDF;
+}
+
+.gwittir-BoundTable tr.spacer td{
+    background-color: #DFDFDF;
+    height: 10px;
+}
+
+.gwittir-BoundTable colgroup col.selected {
+    background-color: #CCCCFF;
+}
+
+.gwittir-BoundTable td.selected {
+    background-color: #EEEEFF;
+}
+
+
+
+
+.gwittir-SlidePanel {
+    border: 1px dotted silver;
+}
+
+
+
+/*
+    SCROLL RELATED
+*/
+
+.gwittir-SoftScrollArea {
+    border: 1px dotted silver;
+}
+
+.gwittir-SoftScrollbar {
+    border-width: 0px;
+    width: 15px;
+    background-image: url( images/VerticalScrollbar );
+    background-repeat: repeat-x;
+}
+
+.gwittir-SoftScrollbar .lower {
+    background-color: transparent;
+    background-image: url( images/VerticalScrollbarLower.png );
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+.gwittir-SoftScrollbar .higher {
+    background-color: transparent;
+    background-image: url( images/VerticalScrollbarLower.png );
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.gwittir-SoftScrollbar .bar {
+    background-color: blue;
+    cursor: default;
+}
+
+.gwittir-SoftHorizontalScrollbar {
+    border-top: 1px solid black;
+  
+}
+
+.gwittir-SoftHorizontalScrollbar .lower {
+    background-color: silver;
+}
+
+.gwittir-SoftHorizontalScrollbar .higher {
+    background-color: silver;
+}
+
+.gwittir-SoftHorizontalScrollbar .bar {
+    background-color: blue;
+    cursor: default;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+
+
+
+

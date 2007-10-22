@@ -30,6 +30,12 @@ public class KeyBinding {
 
     /** Creates a new instance of KeyBinding */
     public KeyBinding() {
+        super();
+    }
+    
+    public KeyBinding(final char key, final int modifiers){
+        this.key = key;
+        this.modifiers = modifiers;
     }
 
     public char getKey() {

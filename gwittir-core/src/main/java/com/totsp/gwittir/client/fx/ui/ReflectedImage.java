@@ -92,14 +92,14 @@ public class ReflectedImage extends AbstractBoundWidget {
     }
 
     public void setUrl(String url) {
-        String old = this.base.getUrl();
         this.base.setUrl(url);
+        String old = this.base.getUrl();
         this.changes.firePropertyChange("url", old, url);
     }
 
     public void setValue(Object newValue) {
         Object old = this.value;
-        this.value = value;
+        this.value = newValue;
         this.setUrl((String) this.getRenderer().render(newValue));
         this.reflect.paint(this.base, this.getWidth(), this.getHeight(),
             this.reflectHeight, this.opacity);

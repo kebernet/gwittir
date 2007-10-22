@@ -83,8 +83,8 @@ public interface MutationStrategy {
     public static final MutationStrategy UNITS_SINOIDAL = new MutationStrategy() {
             public Object mutateValue(Object from, Object to,
                 double percentComplete) {
-                UnitValue tv = UnitsParser.parse((String) to);
-                double f = (double) UnitsParser.parse((String) from).value;
+                UnitValue tv = UnitsParser.parse( to == null ? null : to.toString() );
+                double f = (double) UnitsParser.parse( from == null ? null : from.toString()).value;
                 double t = (double) tv.value;
                 double offset = ((
                         -Math.cos((double) percentComplete * Math.PI) / 2d

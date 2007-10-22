@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.action.KeyBinding;
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
@@ -43,6 +44,9 @@ import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
 import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
+import com.totsp.gwittir.client.keyboard.KeyBindingException;
+import com.totsp.gwittir.client.keyboard.KeyboardController;
+import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.table.BoundTable;
@@ -70,7 +74,11 @@ public class ExampleEntryPoint implements EntryPoint {
         Logger log = Logger.getLogger("com.totsp.gwittir.example.client.ExampleEntryPoint");
         log.log( Level.ERROR, "startup", null);
         TabPanel tp = new TabPanel();
-
+        try{
+        KeyboardController.INSTANCE.register( new KeyBinding(), (Task) null);
+        } catch( KeyBindingException kbe ){
+            kbe.printStackTrace();
+        }
         final Button b = new Button("FOO!");
 
         final PropertyAnimator a = new PropertyAnimator(b, "height", "100px", "300px", MutationStrategy.UNITS_SINOIDAL, 3000, new AnimationFinishedCallback() {
@@ -254,9 +262,28 @@ public class ExampleEntryPoint implements EntryPoint {
         t.setValue(list);
         tp.add(t, "Bound Table");
 
-
+        
+        final Button alert = new Button("Alert Selection", new ClickListener(){
+            public void onClick(final Widget e){
+                alertSelection();
+            }
+        });
+        
         RootPanel.get().add(tp);
         log.log(Level.DEBUG, Dimensions.INSTANCE.getMarginTop(tp.getElement()) + "", null);
         log.log(Level.DEBUG, tp.getOffsetHeight() + "", null);
+        RootPanel.get().add( alert );
     }
+    
+    private native void alertSelection()/*-{
+        var selectionObject = $wnd.getSelection();
+        var range = $doc.createRange();
+		range.setStart(selectionObject.anchorNode,selectionObject.anchorOffset);
+		range.setEnd(selectionObject.focusNode,selectionObject.focusOffset);
+                var frag = range.cloneContents();
+		for( x in frag ){
+                  alert( x );
+                }                               
+                                         
+    }-*/;
 }

@@ -43,18 +43,30 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
     private static final String STYLE_NAME = "gwittir-GridForm";
     private static final BindingAction DEFAULT_ACTION = new BindingAction() {
             public void bind(BoundWidget widget) {
-                ((GridForm) widget).bind();
+                try {
+                    ((HasDefaultBinding) widget).bind();
+                } catch(ClassCastException cce) {
+                    throw new RuntimeException(cce);
+                }
             }
 
             public void execute(BoundWidget model) {
             }
 
             public void unbind(BoundWidget widget) {
-                ((GridForm) widget).unbind();
+                try {
+                    ((GridForm) widget).unbind();
+                } catch(ClassCastException cce) {
+                    throw new RuntimeException(cce);
+                }
             }
 
             public void set(BoundWidget widget) {
-                ((GridForm) widget).set();
+                try {
+                    ((GridForm) widget).set();
+                } catch(ClassCastException cce) {
+                    throw new RuntimeException(cce);
+                }
             }
         };
 
@@ -81,7 +93,8 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
         this.setAction(GridForm.DEFAULT_ACTION);
     }
 
-    public GridForm(Field[] fields, int columns, BoundWidgetTypeFactory factory) {
+    public GridForm(
+        Field[] fields, int columns, BoundWidgetTypeFactory factory) {
         this.fields = fields;
         this.columns = columns;
         this.factory = factory;
@@ -117,22 +130,25 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
                     continue;
                 }
 
-                Widget widget = (Widget) this.createWidget(this.binding, field,
-                        (Bindable) this.getValue());
+                Widget widget = (Widget) this.createWidget(
+                        this.binding, field, (Bindable) this.getValue());
                 Label label = new Label(field.getLabel());
                 this.base.setWidget(row, col * 2, label);
-                this.base.getCellFormatter().setStyleName(row, col * 2, "label");
+                this.base.getCellFormatter().setStyleName(
+                    row, col * 2, "label");
                 this.base.setWidget(row, (col * 2) + 1, widget);
                 this.base.getCellFormatter()
                          .setStyleName(row, (col * 2) + 1, "field");
 
                 if(field.getHelpText() != null) {
-                    label.addClickListener(new ClickListener() {
+                    label.addClickListener(
+                        new ClickListener() {
                             public void onClick(Widget widget) {
                                 final PopupPanel p = new PopupPanel(true);
                                 p.setStyleName("gwittir-GridForm-Help");
                                 p.setWidget(new HTML(field.getHelpText()));
-                                p.setPopupPosition(widget.getAbsoluteLeft(),
+                                p.setPopupPosition(
+                                    widget.getAbsoluteLeft(),
                                     widget.getAbsoluteTop()
                                     + widget.getOffsetHeight());
                                 p.show();

@@ -1,7 +1,7 @@
 /*
- * BeanDescriptor.java
+ * Task.java
  *
- * Created on July 15, 2007, 1:55 PM
+ * Created on October 22, 2007, 12:57 PM
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,15 +17,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.beans;
 
+package com.totsp.gwittir.client.keyboard;
 
 /**
  *
- * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * @author cooper
  */
-public interface BeanDescriptor {
-    Property[] getProperties();
-
-    Property getProperty(String name);
+public interface Task {
+    void run();
 }

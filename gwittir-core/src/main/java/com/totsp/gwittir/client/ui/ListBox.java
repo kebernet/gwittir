@@ -402,7 +402,7 @@ public class ListBox extends AbstractBoundWidget {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null
                                                       : this.selected.get(0);
-            changes.firePropertyChange("value", old, curr);
+            changes.firePropertyChange("value", prev, curr);
         }
 
         fireChangeListeners();
@@ -471,7 +471,7 @@ public class ListBox extends AbstractBoundWidget {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null
                                                       : this.selected.get(0);
-            changes.firePropertyChange("value", old, curr);
+            changes.firePropertyChange("value", prev, curr);
         }
 
         fireChangeListeners();
@@ -527,7 +527,7 @@ public class ListBox extends AbstractBoundWidget {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null
                                                       : this.selected.get(0);
-            changes.firePropertyChange("value", old, curr);
+            changes.firePropertyChange("value", prev, curr);
         }
 
         fireChangeListeners();

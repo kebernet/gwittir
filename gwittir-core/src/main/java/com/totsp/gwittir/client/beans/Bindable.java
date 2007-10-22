@@ -19,8 +19,6 @@
  */
 package com.totsp.gwittir.client.beans;
 
-import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
-
 
 /**
  *
