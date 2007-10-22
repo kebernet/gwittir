@@ -61,7 +61,7 @@ public class AddressEditAction implements BindingAction {
         binding.getChildren().add( new Binding(e.state, "value",  a, "state" ));
         binding.getChildren().add( new Binding(e.zip, "value", a, "zip" ));
         binding.getChildren().add( new Binding(e.type, "value",  a, "type" ));
-        binding.setLeft();
+        
         e.state.setRenderer( new Renderer(){
             public Object render(Object o) {
                 return ((StateLookup) o).name;
@@ -74,7 +74,7 @@ public class AddressEditAction implements BindingAction {
             }
             
         });
-        
+        binding.setLeft();
     }
 
     public void execute(BoundWidget model) {

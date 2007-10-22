@@ -19,12 +19,16 @@
  */
 package com.totsp.gwittir.client.action;
 
+import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
+import java.util.ArrayList;
+
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class KeyBinding {
+    private static final KeyBindingEventListener[] EMPTY_LISTENRS = new KeyBindingEventListener[0];
     public static final char F1 = (char) 112;
     public static final char F2 = (char) 113;
     public static final char F3 = (char) 114;
@@ -42,7 +46,7 @@ public class KeyBinding {
     private boolean control;
     private boolean alt;
     private boolean shift;
-    
+    private ArrayList bindingListeners;
     
     public KeyBinding(final char key, final boolean control, final boolean alt, final boolean shift){
         this.key = key;
@@ -143,5 +147,27 @@ public class KeyBinding {
         } else {
             return false;
         }
+    }
+    
+    public void addKeyBindingEventListener( KeyBindingEventListener l ){
+        if( this.bindingListeners == null ){
+            this.bindingListeners = new ArrayList();
+        }
+        this.bindingListeners.add( l );
+    }
+    
+    public boolean removeKeyBindingEventListener( KeyBindingEventListener l ){
+        if( this.bindingListeners == null ){
+            return false;
+        }
+        return this.bindingListeners.remove( l );
+    }
+    public KeyBindingEventListener[] getKeyBindingEventListeners(){
+        if( this.bindingListeners == null ){
+            return KeyBinding.EMPTY_LISTENRS;
+        }
+        KeyBindingEventListener[] l = new KeyBindingEventListener[ this.bindingListeners.size() ];
+        this.bindingListeners.toArray( l );
+        return l;
     }
 }
