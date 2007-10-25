@@ -24,16 +24,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.action.KeyBinding;
+import com.totsp.gwittir.client.action.Action;
+import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
@@ -43,12 +42,13 @@ import com.totsp.gwittir.client.fx.ui.ReflectedImage;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
+import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
 import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
-import com.totsp.gwittir.client.keyboard.KeyBindingException;
+import com.totsp.gwittir.client.keyboard.KeyBinding;
+import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
 import com.totsp.gwittir.client.keyboard.KeyboardController;
-import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.table.BoundTable;
@@ -76,11 +76,7 @@ public class ExampleEntryPoint implements EntryPoint {
         Logger log = Logger.getLogger("com.totsp.gwittir.example.client.ExampleEntryPoint");
         log.log( Level.ERROR, "startup", null);
         TabPanel tp = new TabPanel();
-        try{
-            KeyboardController.INSTANCE.register( new KeyBinding(), (Task) null);
-        } catch( KeyBindingException kbe ){
-            kbe.printStackTrace();
-        }
+        
         final Button b = new Button("FOO!");
         
         final PropertyAnimator a = new PropertyAnimator(b, "height", "100px", "300px", MutationStrategy.UNITS_SINOIDAL, 3000, new AnimationFinishedCallback() {
@@ -276,9 +272,58 @@ public class ExampleEntryPoint implements EntryPoint {
         log.log(Level.DEBUG, tp.getOffsetHeight() + "", null);
         RootPanel.get().add( alert );
         
-        FocusPanel fp = new FocusPanel();
-        fp.add( new Label("FOCUS ME!") );
-        RootPanel.get().add( fp );
+        vp = new VerticalPanel();
+        Button keyButton = new Button();
+        keyButton.setHTML( "<u>S</u>ave" );
+        keyButton.setKeyBinding( new KeyBinding('S', false, true, false ) );
+        keyButton.setAction( new Action(){
+            public void execute(BoundWidget model) {
+                Window.alert("SAVE!");
+            }
+        });
+        vp.add( keyButton );
+        
+        final Button suggest = new Button("Suggest");
+        suggest.setAction(new BindingAction(){
+            
+            public void execute(BoundWidget model) {
+                Window.alert("Suggested");
+            }
+            
+            public void bind(BoundWidget widget) {
+                KeyboardController.AutoMappedBinding auto = KeyboardController.INSTANCE.findSuggestedMapping( suggest.getText() );
+                if( auto != null ){
+                    suggest.setHTML( auto.newHtml );
+                    suggest.setKeyBinding( auto.binding );
+                    auto.binding.addKeyBindingEventListener( new KeyBindingEventListener(){
+                        public void onUnbind(KeyBinding binding) {
+                        }
+                        
+                        public void onBind(KeyBinding binding) {
+                            KeyboardController.AutoMappedBinding auto = KeyboardController.INSTANCE.findSuggestedMapping( suggest.getText() );
+                            if( auto != null ){
+                                suggest.setHTML( auto.newHtml );
+                                suggest.setKeyBinding( auto.binding );
+                            } else {
+                                suggest.setValue( suggest.getValue() );
+                            }
+                            
+                        }
+                        
+                    });
+                }
+            }
+            
+            public void unbind(BoundWidget widget) {
+            }
+            
+            public void set(BoundWidget widget) {
+            }
+        });
+        
+        vp.add( suggest );
+        tp.add( vp, "Key Bindings");
+        
         
     }
     

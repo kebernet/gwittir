@@ -3,25 +3,35 @@
  *
  * Created on October 22, 2007, 4:44 PM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.keyboard;
 
-import com.totsp.gwittir.client.action.KeyBinding;
 
 /**
  *
  * @author rcooper
  */
-public class SuggestedKeyBinding extends KeyBinding{
+public class SuggestedKeyBinding extends KeyBinding {
     /** Creates a new instance of SuggestedKeyBinding */
-    public SuggestedKeyBinding(char key, boolean control, boolean alt, boolean shift ){
-        super(key,control,alt, shift);
+    public SuggestedKeyBinding(
+        char key, boolean control, boolean alt, boolean shift) {
+        super(key, control, alt, shift);
     }
-    
-    public int hashCode(){
+
+    public int hashCode() {
         return super.hashCode() + 4096;
     }
 }

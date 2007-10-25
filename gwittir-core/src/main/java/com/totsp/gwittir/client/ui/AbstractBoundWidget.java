@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Composite;
 
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.action.BindingAction;
-import com.totsp.gwittir.client.action.KeyBinding;
+import com.totsp.gwittir.client.keyboard.KeyBinding;
 import com.totsp.gwittir.client.keyboard.KeyBindingException;
 import com.totsp.gwittir.client.keyboard.KeyBoundWidget;
 import com.totsp.gwittir.client.keyboard.KeyboardController;

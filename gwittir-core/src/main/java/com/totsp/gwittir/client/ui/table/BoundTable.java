@@ -343,9 +343,9 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             
             public void onFocus(Widget sender) {
                 int row = calculateObjectToRowOffset(objectNumber);
-                GWT.log("Focus row: " + row + " object: " + objectNumber
-                        + " col: " + col, null);
-                GWT.log("SelectedRowLastIndex " + selectedRowLastIndex, null);
+                //GWT.log("Focus row: " + row + " object: " + objectNumber
+                //        + " col: " + col, null);
+                //GWT.log("SelectedRowLastIndex " + selectedRowLastIndex, null);
                 handleSelect(row != selectedRowLastIndex, row, col);
             }
         };
@@ -468,7 +468,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             }
             
             for(int i = removeRows.size() - 1; i >= 0; i--) {
-                GWT.log("Removing nested: " + removeRows.get(i), null);
+                //GWT.log("Removing nested: " + removeRows.get(i), null);
                 this.removeNestedWidget(((Integer) removeRows.get(i)).intValue());
             }
         }
@@ -810,7 +810,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             scroll.addScrollListener(new ScrollListener() {
                 public void onScroll(Widget widget, int scrollLeft,
                         int scrollTop) {
-                    GWT.log("HasProvider: " + (provider != null), null);
+                    //GWT.log("HasProvider: " + (provider != null), null);
                     
                     if((provider != null) && (inChunk == false)
                     && (
@@ -819,7 +819,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                             - scroll.getOffsetHeight()
                             )
                             )) {
-                        GWT.log("Scroll Event fired. ", null);
+                        //GWT.log("Scroll Event fired. ", null);
                         lastScrollPosition = scrollTop - 1;
                         next();
                     }
@@ -955,7 +955,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
      * Causes the table to render the next chunk of data.
      */
     public void next() {
-        GWT.log("Next invoked. NOC: " + this.numberOfChunks, null);
+        //GWT.log("Next invoked. NOC: " + this.numberOfChunks, null);
         
         if((this.currentChunk + 1) < this.numberOfChunks) {
             this.provider.getChunk(this, ++currentChunk);
@@ -1014,7 +1014,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             .setHorizontalAlignment(row, 0,
                     HasHorizontalAlignment.ALIGN_CENTER);
         }
-        GWT.log(this.toString(), null);
+        //GWT.log(this.toString(), null);
     }
     
     private int selectedRowsBeforeRow(int row) {

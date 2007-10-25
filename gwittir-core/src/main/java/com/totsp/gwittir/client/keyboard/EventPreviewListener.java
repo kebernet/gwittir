@@ -17,38 +17,44 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.keyboard;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
+
 import com.totsp.gwittir.client.log.Level;
+
 
 /**
  *
  * @author cooper
  */
 class EventPreviewListener implements EventPreview {
-    
     /** Creates a new instance of EventPreviewListener */
     public EventPreviewListener() {
     }
-    
+
     public boolean onEventPreview(Event event) {
-        if( DOM.eventGetType(event) != Event.ONKEYDOWN ){
+        if(DOM.eventGetType(event) != Event.ONKEYDOWN) {
             return true;
         }
-        KeyboardController.LOG.log( Level.SPAM, "Got preview event EventType: "+ DOM.eventGetType( event )+ " "+Event.ONKEYDOWN, null );
-        KeyboardController.LOG.log( Level.SPAM, "KeyCode: "+ DOM.eventGetKeyCode(event), null );
-        
-        boolean handled =  KeyboardController.INSTANCE.handleEvent( (char) DOM.eventGetKeyCode( event ),
-                    DOM.eventGetCtrlKey(event), DOM.eventGetAltKey(event), DOM.eventGetShiftKey( event ) );
-        if( handled ){
-            DOM.eventPreventDefault( event );
-        }
-        return handled;
-    }
-    
-}
 
+        KeyboardController.LOG.log(
+            Level.SPAM,
+            "Got preview event EventType: " + DOM.eventGetType(event) + " "
+            + Event.ONKEYDOWN, null);
+        KeyboardController.LOG.log(
+            Level.SPAM, "KeyCode: " + DOM.eventGetKeyCode(event), null);
+
+        boolean bubble = KeyboardController.INSTANCE.handleEvent(
+                (char) DOM.eventGetKeyCode(event), DOM.eventGetCtrlKey(event),
+                DOM.eventGetAltKey(event), DOM.eventGetShiftKey(event));
+
+        if(!bubble) {
+            DOM.eventPreventDefault(event);
+        }
+
+        return bubble;
+    }
+}

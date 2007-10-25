@@ -17,9 +17,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.action;
+package com.totsp.gwittir.client.keyboard;
 
 import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
+
 import java.util.ArrayList;
 
 
@@ -41,105 +42,132 @@ public class KeyBinding {
     public static final char F10 = (char) 121;
     public static final char F11 = (char) 122;
     public static final char F12 = (char) 123;
-    
     private char key;
     private boolean control;
     private boolean alt;
     private boolean shift;
     private ArrayList bindingListeners;
-    
-    public KeyBinding(final char key, final boolean control, final boolean alt, final boolean shift){
+
+    public KeyBinding(
+        final char key, final boolean control, final boolean alt,
+        final boolean shift) {
         this.key = key;
         this.alt = alt;
         this.control = control;
         this.shift = shift;
     }
-    
+
     public char getKey() {
         return key;
     }
-    
+
     public boolean isControl() {
         return control;
     }
-    
-    
+
     public boolean isAlt() {
         return alt;
     }
-    
-    
+
     public boolean isShift() {
         return shift;
     }
-    
-    public String toString(){
+
+    public String toString() {
         StringBuffer val = new StringBuffer();
-        if( this.control ){
-            val.append( "CTRL+");
+
+        if(this.control) {
+            val.append("CTRL+");
         }
-        if( this.alt ){
-            val.append( "ALT+");
+
+        if(this.alt) {
+            val.append("ALT+");
         }
-        if( this.shift ){
+
+        if(this.shift) {
             val.append("SHIFT+");
         }
-        switch( this.key ){
-            case KeyBinding.F1:
+
+        switch(this.key) {
+            case KeyBinding.F1 :
                 val.append("F1");
+
                 break;
-            case KeyBinding.F2:
+
+            case KeyBinding.F2 :
                 val.append("F2");
+
                 break;
-            case KeyBinding.F3:
+
+            case KeyBinding.F3 :
                 val.append("F3");
+
                 break;
-            case KeyBinding.F4:
+
+            case KeyBinding.F4 :
                 val.append("F4");
+
                 break;
-            case KeyBinding.F5:
+
+            case KeyBinding.F5 :
                 val.append("F5");
+
                 break;
-            case KeyBinding.F6:
+
+            case KeyBinding.F6 :
                 val.append("F6");
+
                 break;
-            case KeyBinding.F7:
+
+            case KeyBinding.F7 :
                 val.append("F7");
+
                 break;
-            case KeyBinding.F8:
+
+            case KeyBinding.F8 :
                 val.append("F8");
+
                 break;
-            case KeyBinding.F9:
+
+            case KeyBinding.F9 :
                 val.append("F9");
+
                 break;
-            case KeyBinding.F10:
+
+            case KeyBinding.F10 :
                 val.append("F10");
+
                 break;
-            case KeyBinding.F11:
+
+            case KeyBinding.F11 :
                 val.append("F11");
+
                 break;
-            case KeyBinding.F12:
+
+            case KeyBinding.F12 :
                 val.append("F12");
+
                 break;
-            default:
-                val.append( this.key );
+
+            default :
+                val.append(this.key);
         }
+
         return val.toString();
     }
-    
-    
-    
-    public int hashCode(){
-        return (this.control ? 32768 : 0 )+
-                (this.alt ? 16384 : 0 ) +
-                (this.shift ? 8192 : 0 ) +
-                (int) this.key;
+
+    public int hashCode() {
+        return (this.control ? 32768 : 0) + (this.alt ? 16384 : 0)
+        + (this.shift ? 8192 : 0) + (int) this.key;
     }
-    
-    public boolean equals(Object o){
-        if( o instanceof KeyBinding && o != null ){
+
+    public boolean equals(Object o) {
+        if(o instanceof KeyBinding && (o != null)) {
             KeyBinding b = (KeyBinding) o;
-            if( b.alt = this.alt && b.control == this.control && b.shift == this.shift && b.key == this.key ){
+
+            if(
+                b.alt = this.alt && (b.control == this.control)
+                        && (b.shift == this.shift) && (b.key == this.key)) {
                 return true;
             } else {
                 return false;
@@ -148,26 +176,32 @@ public class KeyBinding {
             return false;
         }
     }
-    
-    public void addKeyBindingEventListener( KeyBindingEventListener l ){
-        if( this.bindingListeners == null ){
+
+    public void addKeyBindingEventListener(KeyBindingEventListener l) {
+        if(this.bindingListeners == null) {
             this.bindingListeners = new ArrayList();
         }
-        this.bindingListeners.add( l );
+
+        this.bindingListeners.add(l);
     }
-    
-    public boolean removeKeyBindingEventListener( KeyBindingEventListener l ){
-        if( this.bindingListeners == null ){
+
+    public boolean removeKeyBindingEventListener(KeyBindingEventListener l) {
+        if(this.bindingListeners == null) {
             return false;
         }
-        return this.bindingListeners.remove( l );
+
+        return this.bindingListeners.remove(l);
     }
-    public KeyBindingEventListener[] getKeyBindingEventListeners(){
-        if( this.bindingListeners == null ){
+
+    public KeyBindingEventListener[] getKeyBindingEventListeners() {
+        if(this.bindingListeners == null) {
             return KeyBinding.EMPTY_LISTENRS;
         }
-        KeyBindingEventListener[] l = new KeyBindingEventListener[ this.bindingListeners.size() ];
-        this.bindingListeners.toArray( l );
+
+        KeyBindingEventListener[] l = new KeyBindingEventListener[this.bindingListeners
+            .size()];
+        this.bindingListeners.toArray(l);
+
         return l;
     }
 }

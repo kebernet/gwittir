@@ -19,6 +19,8 @@
  */
 package com.totsp.gwittir.client.action;
 
+import com.totsp.gwittir.client.keyboard.KeyBinding;
+
 
 /**
  *
