@@ -28,10 +28,5 @@
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
     
-    <replace-with
-        class="com.totsp.gwittir.client.keyboard.EventPreviewListenerSafari">
-        <when-type-is 
-            class="com.totsp.gwittir.client.keyboard.EventPreviewListener" />
-        <when-property-is name="user.agent" value="safari"/>
-    </replace-with>
+    
 </module>

@@ -116,6 +116,7 @@ public abstract class AbstractBoundWidget extends Composite
                 AbstractBoundWidget.LOG.log(Level.SPAM, "Exception adding default binding", kbe);
             }
         }
+        this.changes.firePropertyChange("attached", false, true);
     }
     
     protected void onDetach() {
@@ -181,6 +182,10 @@ public abstract class AbstractBoundWidget extends Composite
     public void setKeyBinding(final KeyBinding binding) {
         this.binding = binding;
     }
+
+    protected void onUnload() {
+        this.changes.firePropertyChange("attached", true, false );
+    }
     
-    
+   
 }

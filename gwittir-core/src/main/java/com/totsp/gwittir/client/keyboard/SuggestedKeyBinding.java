@@ -34,4 +34,20 @@ public class SuggestedKeyBinding extends KeyBinding {
     public int hashCode() {
         return super.hashCode() + 4096;
     }
+    
+    public boolean equals(Object o) {
+        if(o instanceof SuggestedKeyBinding && (o != null)) {
+            SuggestedKeyBinding b = (SuggestedKeyBinding) o;
+
+            if(
+                (b.alt == this.alt)&& (b.control == this.control)
+                        && (b.shift == this.shift) && (b.key == this.key)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

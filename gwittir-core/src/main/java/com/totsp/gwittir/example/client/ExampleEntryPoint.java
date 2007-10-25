@@ -49,15 +49,19 @@ import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
 import com.totsp.gwittir.client.keyboard.KeyBinding;
 import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
 import com.totsp.gwittir.client.keyboard.KeyboardController;
+import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
+import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
+import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -251,27 +255,65 @@ public class ExampleEntryPoint implements EntryPoint {
         for (int i = 0; i < 5; i++) {
             cols[i] = mcf[i];
         }
-        
-        BoundTable t = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK, cols);
+        VerticalPanel tablesPanel = new VerticalPanel();
+        final BoundTable t = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
+                + BoundTable.ROW_HANDLE_MASK + BoundTable.NO_SELECT_COL_MASK, new ChangeMarkedTypeFactory() , cols);
         ArrayList list = new ArrayList();
         list.add(form.getValue());
+        list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );
+        try{
+            t.addKeyBinding( new SuggestedKeyBinding( 'N', true, false, false), new Task(){
+                public void run() {
+                    MyClass newClass =new MyClass();
+                    t.add( newClass );
+                    List select = new ArrayList();
+                    select.add( newClass );
+                    t.setSelected( select );
+                }
+            });
+            t.addKeyBinding( new SuggestedKeyBinding( KeyBinding.DELETE, true, false, false), new Task(){
+                public void run() {
+                    List selected = t.getSelected();
+                    List value = (List) t.getValue();
+                    value.removeAll( selected );
+                    t.setValue( value );
+                }
+                
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        
         // list.add( new MyClass() );
         //list.add( new MyClass() );
         t.setValue(list);
-        tp.add(t, "Bound Table");
+        tablesPanel.add( t );
         
         
+        BoundTable t2 = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
+                + BoundTable.ROW_HANDLE_MASK  + BoundTable.NO_SELECT_COL_MASK, cols);
+        list = new ArrayList();
+        list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );
+        t2.setValue( list );
+        
+        tablesPanel.add( t2 );
+        tp.add(tablesPanel, "Bound Table");
         final Button alert = new Button("Alert Selection", new ClickListener(){
             public void onClick(final Widget e){
                 alertSelection();
             }
         });
+        tablesPanel.add( alert );
         
         RootPanel.get().add(tp);
         log.log(Level.DEBUG, Dimensions.INSTANCE.getMarginTop(tp.getElement()) + "", null);
         log.log(Level.DEBUG, tp.getOffsetHeight() + "", null);
-        RootPanel.get().add( alert );
-        
         vp = new VerticalPanel();
         Button keyButton = new Button();
         keyButton.setHTML( "<u>S</u>ave" );

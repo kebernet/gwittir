@@ -42,10 +42,11 @@ public class KeyBinding {
     public static final char F10 = (char) 121;
     public static final char F11 = (char) 122;
     public static final char F12 = (char) 123;
-    private char key;
-    private boolean control;
-    private boolean alt;
-    private boolean shift;
+    public static final char DELETE = (char) 8;
+    protected char key;
+    protected boolean control;
+    protected boolean alt;
+    protected boolean shift;
     private ArrayList bindingListeners;
 
     public KeyBinding(
@@ -166,7 +167,7 @@ public class KeyBinding {
             KeyBinding b = (KeyBinding) o;
 
             if(
-                b.alt = this.alt && (b.control == this.control)
+                (b.alt == this.alt) && (b.control == this.control)
                         && (b.shift == this.shift) && (b.key == this.key)) {
                 return true;
             } else {

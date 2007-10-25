@@ -286,4 +286,11 @@ body {
 .gwt-TabBar .gwt-TabBarItem-selected {
     background-image: url( images/GradientToPaleBlue.png );
 }
-    
+
+.gwittir-ChangeMarker {
+   width: 15px;
+   height: 15px;
+   background-image: url( images/ChangedMarker.gif );
+   background-position: top right;
+   background-repeat: no-repeat;
+ }
