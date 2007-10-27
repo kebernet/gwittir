@@ -20,6 +20,7 @@
 package com.totsp.gwittir.client.beans;
 
 import com.google.gwt.core.client.GWT;
+import com.totsp.gwittir.client.ui.BoundWidget;
 
 import com.totsp.gwittir.client.validator.ValidationException;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
@@ -44,6 +45,10 @@ public class Binding {
     
     public Binding(){
         super();
+    }
+    
+    public Binding( BoundWidget widget, Validator validator, ValidationFeedback feedback, String modelProperty){
+        this( widget, "value", validator, feedback, (Bindable) widget.getModel(), "modelProperty", null, null );
     }
     
     /** Creates a new instance of Binding */

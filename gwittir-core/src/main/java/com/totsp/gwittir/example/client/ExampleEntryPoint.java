@@ -263,6 +263,23 @@ public class ExampleEntryPoint implements EntryPoint {
         list.add( new MyClass() );
         list.add( new MyClass() );
         list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );list.add( new MyClass() );
+        list.add( new MyClass() );
+        list.add( new MyClass() );
         try{
             t.addKeyBinding( new SuggestedKeyBinding( 'N', true, false, false), new Task(){
                 public void run() {

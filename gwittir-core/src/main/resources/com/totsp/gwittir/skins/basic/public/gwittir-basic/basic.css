@@ -102,6 +102,7 @@ body {
     border-width: 0px;
     background-color: transparent;
     color: white;
+    
 }
 .gwittir-BoundTable tr > td > input {
     border: 0px solid black;
@@ -164,7 +165,10 @@ body {
     color: black;
     cursor: default;
 }
-
+.gwittir-BoundTable .rowHandle {
+    width: 20px;
+    height: 20px;
+}
 .gwittir-SlidePanel {
     border: 1px dotted silver;
 }
@@ -293,4 +297,6 @@ body {
    background-image: url( images/ChangedMarker.gif );
    background-position: top right;
    background-repeat: no-repeat;
+   background-color: transparent;
+   border: 0px solid black;
  }

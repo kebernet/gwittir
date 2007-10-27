@@ -4,7 +4,7 @@
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.25</version>
+    <version>0.1.27</version>
     <name>Gwittir Core</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>
@@ -63,7 +63,7 @@
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
                 <configuration>
                     <logLevel>INFO</logLevel>
-                    <runTarget>com.totsp.gwittir.example.Example/?log.level=debug</runTarget>
+                    <runTarget>com.totsp.gwittir.example.Example/index.html?log.level=debug</runTarget>
                     <compileTarget>
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTarget>

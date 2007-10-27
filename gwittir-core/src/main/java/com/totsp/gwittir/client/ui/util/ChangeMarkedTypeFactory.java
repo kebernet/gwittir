@@ -20,8 +20,12 @@
 
 package com.totsp.gwittir.client.ui.util;
 
-import com.totsp.gwittir.client.fx.ui.ChangeMarkerListener;
+import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.ui.BoundWidget;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -29,7 +33,7 @@ import com.totsp.gwittir.client.ui.BoundWidget;
  */
 public class ChangeMarkedTypeFactory extends BoundWidgetTypeFactory {
     
-    
+    HashMap widgetLookup = new HashMap(); /*<Bindable, ArrayList<ChangeMarkListener>>*/
     
     public ChangeMarkedTypeFactory(){
         super(true);
@@ -38,26 +42,45 @@ public class ChangeMarkedTypeFactory extends BoundWidgetTypeFactory {
     public BoundWidgetProvider getWidgetProvider(Class type) {
         BoundWidgetProvider retValue;
         
-        retValue = new BoundWidgetProviderWrapper(super.getWidgetProvider(type));
+        retValue = new BoundWidgetProviderWrapper(super.getWidgetProvider(type), this);
         return retValue;
     }
 
     public BoundWidgetProvider getWidgetProvider(String propertyName, Class type) {
         BoundWidgetProvider retValue;
         
-        retValue = new BoundWidgetProviderWrapper(super.getWidgetProvider(propertyName, type));
+        retValue = new BoundWidgetProviderWrapper(super.getWidgetProvider(propertyName, type), this);
         return retValue;
+    }
+    
+    public void reset(Object o){
+        List widgets = (List) this.widgetLookup.get( o );
+        if( widgets == null || widgets.size() == 0){
+            return;
+        }
+        for( Iterator it = new ArrayList(widgets).iterator(); it.hasNext(); ){
+            Widget widget = (Widget) it.next();
+            ChangeMarkerListener.hideMarker( widget );
+            widgets.remove( widget );
+        }
+    }
+    
+    public boolean hasBeenEdited(Object o){
+        List widgets = (List) this.widgetLookup.get( o );
+        return !( widgets == null || widgets.size() == 0);
     }
     
     private static class BoundWidgetProviderWrapper implements BoundWidgetProvider{
         BoundWidgetProvider p;
-        BoundWidgetProviderWrapper(BoundWidgetProvider p){
+        ChangeMarkedTypeFactory factory;
+        BoundWidgetProviderWrapper(BoundWidgetProvider p, ChangeMarkedTypeFactory factory){
             this.p = p;
+            this.factory = factory;
         }
         
         public BoundWidget get() {
             BoundWidget w = p.get();
-            w.addPropertyChangeListener( new ChangeMarkerListener() );
+            w.addPropertyChangeListener( new ChangeMarkerListener(this.factory) );
             return w;
         }
         

@@ -318,6 +318,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
         int startColumn = 0;
         if((this.masks & BoundTable.ROW_HANDLE_MASK) > 0 ){
             handle = new Button( this.getActive() &&  rowHandles.size() < 9 ? Integer.toString(this.rowHandles.size() +1) : " ");
+            handle.setStyleName("rowHandle");
             handle.addFocusListener( new FocusListener(){
                 public void onFocus(Widget sender) {
                     setActive(true);
@@ -522,9 +523,12 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     public void clear() {
         this.topBinding.unbind();
         this.topBinding.getChildren().clear();
-        this.rowHandles.clear();
-        this.keyBindings.clear();
-        
+        if( this.rowHandles != null ){
+            this.rowHandles.clear();
+        }
+        if( this.keyBindings != null ){
+            this.keyBindings.clear();
+        }
         for(Iterator it = this.focusListeners.entrySet().iterator();
         it.hasNext();) {
             Entry entry = (Entry) it.next();
@@ -940,8 +944,9 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
         if((this.masks & BoundTable.MULTIROWSELECT_MASK) > 0) {
             this.selectedRowStyles = new HashMap();
         }
-        if((this.masks & BoundTable.ROW_HANDLE_MASK) >0 ){
-            this.allRowsHandle = new Button(" ", new ClickListener(){
+        if((this.masks & BoundTable.ROW_HANDLE_MASK) >0 &&
+                (this.masks & BoundTable.MULTIROWSELECT_MASK) > 0){
+            this.allRowsHandle = new Button("  ", new ClickListener(){
                 public void onClick(Widget sender) {
                     if( getSelected() != null && getSelected().size() == 0 ){
                         setSelected( new ArrayList( (Collection) getValue()) );
@@ -951,13 +956,16 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 }
                 
             } );
-            this.allRowsHandle.setStylePrimaryName("rowHandle");
+            this.allRowsHandle.setStyleName("rowHandle");
+            this.allRowsHandle.setHeight("100%");
+            this.allRowsHandle.setWidth("100%");
             if((this.masks & BoundTable.MULTIROWSELECT_MASK) == 0 ){
                 this.allRowsHandle.setEnabled( false );
             }
+        }
+        if((this.masks & BoundTable.ROW_HANDLE_MASK) > 0 ){
             this.rowHandles = new ArrayList();
         }
-        
         this.table = new FlexTable();
         this.table.setCellPadding(0);
         this.table.setCellSpacing(0);

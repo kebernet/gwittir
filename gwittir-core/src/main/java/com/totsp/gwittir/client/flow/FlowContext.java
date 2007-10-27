@@ -106,7 +106,7 @@ public class FlowContext {
     
     public FlowEventListener[] getFlowEventListeners(){
         FlowEventListener[] listeners = new FlowEventListener[this.listeners.size() ];
-        this.listeners.toArray(listeners);
+        this.listeners.toArray((Object[]) listeners);
         return listeners;
     }
 }
