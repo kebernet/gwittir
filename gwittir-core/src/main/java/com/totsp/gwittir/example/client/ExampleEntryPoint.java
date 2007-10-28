@@ -308,7 +308,14 @@ public class ExampleEntryPoint implements EntryPoint {
         //list.add( new MyClass() );
         t.setValue(list);
         tablesPanel.add( t );
-        
+        Button hide = new Button( "Hide", new ClickListener(){
+            public void onClick(Widget sender) {
+                t.setVisible( !t.isVisible() );
+                GWT.log( t.isAttached()+"" , null);
+            }
+            
+        });
+        tablesPanel.add( hide );
         
         BoundTable t2 = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
                 + BoundTable.ROW_HANDLE_MASK  + BoundTable.NO_SELECT_COL_MASK, cols);
