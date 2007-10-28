@@ -19,9 +19,12 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.action.BindingAction;
@@ -53,9 +56,13 @@ public abstract class AbstractBoundWidget extends Composite
     private Renderer renderer;
     private KeyBinding binding;
     private boolean bindingRegistered = false;
+    private SimplePanel container = new SimplePanel();
+    private Widget widget = null;
+    private boolean isVisible = true;
     
     /** Creates a new instance of AbstractBoundWidget */
     public AbstractBoundWidget() {
+        super.initWidget( container );
     }
     
     public void addChangeListener(ChangeListener listener) {
@@ -100,10 +107,18 @@ public abstract class AbstractBoundWidget extends Composite
             ((BindingAction) getAction()).set(this);
             
         }
+        if( this.widget == null ){
+            throw new RuntimeException("initWidget() not called");
+        }
+        if( this.isVisible ){
+            this.container.setWidget( this.widget );
+        }
         super.onAttach();
+        this.changes.firePropertyChange("attached", false, true);
     }
     
     protected void onLoad(){
+        super.onLoad();
         if(this.getAction() instanceof BindingAction) {
             ((BindingAction) getAction()).bind(this);
         }
@@ -116,7 +131,8 @@ public abstract class AbstractBoundWidget extends Composite
                 AbstractBoundWidget.LOG.log(Level.SPAM, "Exception adding default binding", kbe);
             }
         }
-        this.changes.firePropertyChange("attached", false, true);
+        
+       
     }
     
     protected void onDetach() {
@@ -129,6 +145,8 @@ public abstract class AbstractBoundWidget extends Composite
         if( this.binding != null && this.bindingRegistered ){
             KeyboardController.INSTANCE.unregister(this.binding);
         }
+        this.container.remove( widget );
+        this.changes.firePropertyChange("attached", true, false );
     }
     
     public void removeChangeListener(ChangeListener listener) {
@@ -183,9 +201,62 @@ public abstract class AbstractBoundWidget extends Composite
         this.binding = binding;
     }
 
-    protected void onUnload() {
-        this.changes.firePropertyChange("attached", true, false );
+   
+    public boolean isVisible(){
+        return this.isVisible;
+        
     }
+
+    public void setVisible(boolean visible) {
+        boolean old = this.isVisible;
+        if( visible ){
+            this.container.setWidget( this.widget );
+        } else {
+            this.container.remove( this.widget );
+        }
+        this.isVisible = visible;
+        this.changes.firePropertyChange( "visible", old, visible );
+    }
+
+    protected void initWidget(Widget widget) {
+        this.widget = widget;
+    }
+
+    public void addStyleDependentName(String styleSuffix) {
+        this.widget.addStyleDependentName( styleSuffix );
+    }
+
+    public void addStyleName(String style) {
+        this.widget.addStyleName(style);
+    }
+
+    public void setStylePrimaryName(String style) {
+        this.widget.setStylePrimaryName( style );
+    }
+
+    public void setStyleName(String style) {
+        this.widget.setStyleName(style);
+    }
+
+    public String getStylePrimaryName() {
+        return this.widget.getStylePrimaryName();
+    }
+
+    public String getStyleName() {
+        return this.widget.getStyleName();
+    }
+
+    public void removeStyleDependentName(String styleSuffix) {
+        this.widget.removeStyleDependentName(styleSuffix);
+    }
+
+    public void removeStyleName(String style) {
+        this.widget.removeStyleName(style);
+    }
+    
+    
+    
+    
     
    
 }

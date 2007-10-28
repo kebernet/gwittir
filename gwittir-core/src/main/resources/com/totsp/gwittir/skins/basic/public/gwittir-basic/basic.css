@@ -89,22 +89,27 @@ body {
 }
 
 
-.gwittir-BoundTable tr > td > * {
+.gwittir-BoundTable tr > td > div > * {
     width: 100%;
 }
 
-.gwittir-BoundTable tr.selected > td > input {
+.gwittir-BoundTable tr > td > * {
+    width: 100%;
+    height: 100%;
+}
+
+.gwittir-BoundTable tr.selected > td > div > input {
     border-width: 0px;
     background-color: transparent;
     color: white;
 }
-.gwittir-BoundTable tr > td.selected > input {
+.gwittir-BoundTable tr > td.selected> div > input {
     border-width: 0px;
     background-color: transparent;
     color: white;
     
 }
-.gwittir-BoundTable tr > td > input {
+.gwittir-BoundTable tr > td > div > input {
     border: 0px solid black;
     background-color: transparent;
 }
