@@ -1218,7 +1218,8 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             this.table.getRowFormatter().setStyleName(0, "header");
         }
         
-        for(Iterator it = this.value.iterator(); it.hasNext();) {
+        for(Iterator it = this.value == null ? null : this.value.iterator();
+        it != null && it.hasNext();) {
             this.addRow((Bindable) it.next());
         }
         
@@ -1562,6 +1563,15 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             BoundTable.activeTable = this;
             this.changes.firePropertyChange( "active", false, true);
         }
+    }
+    
+     public void addKeyBinding( KeyBinding binding, BoundWidget widget ) throws KeyBindingException {
+        if( this.getActive() ){
+            KeyboardController.INSTANCE.register( binding, widget );
+        }
+        this.addKeyBinding( binding, (Object) widget);
+        
+        
     }
     
     public void addKeyBinding( KeyBinding binding, Task task ) throws KeyBindingException {
