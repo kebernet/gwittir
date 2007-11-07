@@ -7,10 +7,7 @@
 
 package com.totsp.gwittir.client.validator;
 
-import junit.framework.*;
-import com.google.gwt.core.client.GWT;
-import com.totsp.gwittir.client.validator.ValidationException;
-import com.totsp.gwittir.client.validator.Validator;
+import junit.framework.TestCase;
 
 /**
  *

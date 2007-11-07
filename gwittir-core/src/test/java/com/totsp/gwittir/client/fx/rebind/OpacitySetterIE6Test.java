@@ -7,10 +7,7 @@
 
 package com.totsp.gwittir.client.fx.rebind;
 
-import junit.framework.*;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.UIObject;
+import junit.framework.TestCase;
 
 /**
  *

@@ -20,9 +20,7 @@
 package com.totsp.gwittir.client.fx;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.UIObject;
-
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.fx.rebind.OpacitySetter;
 

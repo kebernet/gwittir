@@ -21,8 +21,6 @@ package com.totsp.gwittir.client.fx.ui;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.WindowResizeListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ScrollListener;
 import com.google.gwt.user.client.ui.ScrollListenerCollection;
@@ -30,13 +28,12 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SourcesScrollEvents;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.PositionWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
-import com.totsp.gwittir.client.ui.*;
+import com.totsp.gwittir.client.ui.HasWidget;
 import com.totsp.gwittir.client.util.UnitsParser;
 
 

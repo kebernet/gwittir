@@ -19,18 +19,14 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.ChangeListener;
+import java.beans.PropertyChangeListener;
+
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.KeyboardListener;
-import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.SourcesClickEvents;
-import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
-
-import java.beans.PropertyChangeListener;
 
 /**
  *

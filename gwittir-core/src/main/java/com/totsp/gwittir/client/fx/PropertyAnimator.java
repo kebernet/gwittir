@@ -19,9 +19,7 @@
  */
 package com.totsp.gwittir.client.fx;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
-
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
@@ -54,7 +52,7 @@ public class PropertyAnimator {
 
         if((property == null)
                 || (
-                    (property.getAccessMethod() == null)
+                    (property.getAccessorMethod() == null)
                     && (initialValue == null)
                 ) || (property.getMutatorMethod() == null)) {
             throw new RuntimeException("Invalid property.");
@@ -62,7 +60,7 @@ public class PropertyAnimator {
 
         try {
             this.initialValue = (initialValue == null)
-                ? property.getAccessMethod().invoke(target, null) : initialValue;
+                ? property.getAccessorMethod().invoke(target, null) : initialValue;
         } catch(Exception e) {
             throw new RuntimeException(e);
         }

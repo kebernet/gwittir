@@ -19,7 +19,8 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import com.google.gwt.core.client.GWT;
+import java.util.Comparator;
+
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -31,7 +32,6 @@ import com.google.gwt.user.client.ui.SourcesKeyboardEvents;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
-import java.util.Comparator;
 
 
 /**

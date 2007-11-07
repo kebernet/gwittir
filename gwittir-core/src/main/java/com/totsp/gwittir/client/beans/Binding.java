@@ -118,7 +118,7 @@ public class Binding {
                         left.property.getName(),
                         null,
                         left.property
-                        .getAccessMethod()
+                        .getAccessorMethod()
                         .invoke( left.object, null ) ) );
             } catch(Exception e){
                 throw new RuntimeException(e);
@@ -137,7 +137,7 @@ public class Binding {
                         right.property.getName(),
                         null,
                         right.property
-                        .getAccessMethod()
+                        .getAccessorMethod()
                         .invoke( right.object, null ) ) );
             } catch(Exception e){
                 throw new RuntimeException(e);
@@ -172,10 +172,10 @@ public class Binding {
         try{
             if( left != null && right != null ){
                 if( left.validator != null ){
-                    left.validator.validate( left.property.getAccessMethod().invoke(left.object, null) );
+                    left.validator.validate( left.property.getAccessorMethod().invoke(left.object, null) );
                 }
                 if( right.validator != null ){
-                    right.validator.validate( right.property.getAccessMethod().invoke(right.object, null ) );
+                    right.validator.validate( right.property.getAccessorMethod().invoke(right.object, null ) );
                 }
             }
             boolean valid = true;

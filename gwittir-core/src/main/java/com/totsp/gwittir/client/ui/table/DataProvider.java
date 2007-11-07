@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
-import java.util.Collection;
 
 
 /**

@@ -20,7 +20,6 @@
 
 package com.totsp.gwittir.client.fx.rebind;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;

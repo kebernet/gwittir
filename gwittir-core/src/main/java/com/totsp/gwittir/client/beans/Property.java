@@ -26,21 +26,21 @@ package com.totsp.gwittir.client.beans;
  */
 public class Property {
     private Class type;
-    private Method accessMethod;
+    private Method accessorMethod;
     private Method mutatorMethod;
     private String name;
 
     /** Creates a new instance of Property */
-    public Property(String name, Class type, Method accessMethod,
+    public Property(String name, Class type, Method accessorMethod,
         Method mutatorMethod) {
         this.name = name;
-        this.accessMethod = accessMethod;
+        this.accessorMethod = accessorMethod;
         this.mutatorMethod = mutatorMethod;
         this.type = type;
     }
 
-    public Method getAccessMethod() {
-        return accessMethod;
+    public Method getAccessorMethod() {
+        return accessorMethod;
     }
 
     public Method getMutatorMethod() {

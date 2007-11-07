@@ -62,7 +62,7 @@ public class ListSorter {
                     }
                 }
 
-                Comparable oc1 = (Comparable) p.getAccessMethod()
+                Comparable oc1 = (Comparable) p.getAccessorMethod()
                                                .invoke(o1, null);
 
                 Object o2 = list.get(j);
@@ -75,7 +75,7 @@ public class ListSorter {
                     }
                 }
 
-                Comparable oc2 = (Comparable) p.getAccessMethod()
+                Comparable oc2 = (Comparable) p.getAccessorMethod()
                                                .invoke(o2, null);
 
                 if(ascending) {

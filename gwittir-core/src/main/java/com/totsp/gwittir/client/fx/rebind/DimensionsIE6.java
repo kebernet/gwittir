@@ -10,7 +10,6 @@
 package com.totsp.gwittir.client.fx.rebind;
 
 import com.google.gwt.user.client.Element;
-import com.totsp.gwittir.client.util.UnitsParser;
 
 /**
  *
