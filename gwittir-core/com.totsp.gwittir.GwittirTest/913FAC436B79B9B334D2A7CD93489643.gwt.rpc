@@ -1,0 +1,10 @@
+com.google.gwt.junit.client.TestResults, true
+com.google.gwt.junit.client.Trial, true
+com.google.gwt.junit.client.impl.ExceptionWrapper, true
+com.google.gwt.junit.client.impl.StackTraceWrapper, true
+[Lcom.google.gwt.junit.client.impl.StackTraceWrapper;, true
+com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true
+java.lang.String, true
+java.util.ArrayList, true
+java.util.HashMap, true
+java.util.Vector, true
