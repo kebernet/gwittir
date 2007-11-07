@@ -40,7 +40,12 @@
         <dependency>
             <groupId>com.totsp.gwittir</groupId>
             <artifactId>gwittir-core</artifactId>
-            <version>0.1.11</version>
+            <version>0.1.20</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.gwtx</groupId>
+            <artifactId>GWTx</artifactId>
+            <version>20070605</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
@@ -54,12 +59,7 @@
             <version>1.4.10</version>
             <type>jar</type>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.gwtx</groupId>
-            <artifactId>GWTx</artifactId>
-            <version>20070110</version>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>

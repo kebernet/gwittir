@@ -57,14 +57,14 @@ and sets the currently active profile. An example is the following:
        </properties>
      </profile>
 	 <profile>
-       <id>gwt-1.4.10</id> 
+       <id>gwt-1.4.60</id> 
        <properties>
          <google.webtoolkit.home>c:\opt\gwt-windows-1.4.10</google.webtoolkit.home>
        </properties>
      </profile>
    </profiles> 
    <activeProfiles>
-     <activeProfile>gwt-1.4.10</activeProfile>
+     <activeProfile>gwt-1.4.60</activeProfile>
    </activeProfiles>
 </settings>
 
@@ -74,7 +74,7 @@ After that is done the tables should be populated with src/main/sql/ states.sql 
 
 MAVEN 1
 -------
-"maven clean gwt"
+"maven clean gwt" (optionally "maven clean gwt:war")
 
 Requires that GWT_HOME environment variable is set.
 Requires that maven.jar.gwt-dev-platform is specified correctly in project.properties

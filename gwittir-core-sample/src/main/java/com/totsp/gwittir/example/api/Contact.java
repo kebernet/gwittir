@@ -64,7 +64,7 @@ public class Contact {
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     //@IndexColumn(name="ca_id")
     private List<Address> addresses;
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     //@IndexColumn(name="cp_id")
     private List<Phone> phoneNumbers;
     

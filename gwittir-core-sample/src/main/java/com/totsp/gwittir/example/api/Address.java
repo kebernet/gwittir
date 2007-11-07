@@ -43,7 +43,7 @@ public class Address {
     @ManyToOne(fetch=FetchType.EAGER)
     private StateLookup state;
     private String zip;
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     private TypeLookup type;
     /** Creates a new instance of Address */
     public Address() {
