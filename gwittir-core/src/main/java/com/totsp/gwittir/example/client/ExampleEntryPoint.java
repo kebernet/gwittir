@@ -38,6 +38,8 @@ import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.fx.rebind.Dimensions;
+import com.totsp.gwittir.client.fx.ui.MouseMoveScrollArea;
+import com.totsp.gwittir.client.fx.ui.ReflectedFisheyeImageGroup;
 import com.totsp.gwittir.client.fx.ui.ReflectedImage;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
@@ -53,6 +55,10 @@ import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
 import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
+import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.client.ui.calendar.Calendar;
+import com.totsp.gwittir.client.ui.calendar.CalendarListener;
+import com.totsp.gwittir.client.ui.calendar.DatePicker;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
@@ -61,6 +67,7 @@ import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -334,7 +341,6 @@ public class ExampleEntryPoint implements EntryPoint {
             }
         });
         tablesPanel.add( alert );
-        
         RootPanel.get().add(tp);
         log.log(Level.DEBUG, Dimensions.INSTANCE.getMarginTop(tp.getElement()) + "", null);
         log.log(Level.DEBUG, tp.getOffsetHeight() + "", null);
@@ -363,9 +369,6 @@ public class ExampleEntryPoint implements EntryPoint {
                     suggest.setKeyBinding( auto.binding );
                     auto.binding.addKeyBindingEventListener( new KeyBindingEventListener(){
                         public void onUnbind(KeyBinding binding) {
-                        }
-                        
-                        public void onBind(KeyBinding binding) {
                             KeyboardController.AutoMappedBinding auto = KeyboardController.INSTANCE.findSuggestedMapping( suggest.getText() );
                             if( auto != null ){
                                 suggest.setHTML( auto.newHtml );
@@ -373,6 +376,10 @@ public class ExampleEntryPoint implements EntryPoint {
                             } else {
                                 suggest.setValue( suggest.getValue() );
                             }
+                        }
+                        
+                        public void onBind(KeyBinding binding) {
+                            
                             
                         }
                         
@@ -390,6 +397,39 @@ public class ExampleEntryPoint implements EntryPoint {
         vp.add( suggest );
         tp.add( vp, "Key Bindings");
         
+        final VerticalPanel vp2 = new VerticalPanel();
+        Calendar cal = new Calendar();
+        vp2.add( cal );
+        tp.add( vp2, "Calendar" );
+        cal.addCalendarListener( new CalendarListener(){
+            public boolean onDateClicked(Calendar calendar, Date date) {
+                vp2.add( new Label("Clicked "+ date ) );
+                return true;
+            }
+            
+        });
+        vp2.add( new DatePicker() );
+        
+        vp = new VerticalPanel();
+        MouseMoveScrollArea mmsa = new MouseMoveScrollArea();
+        mmsa.setWidget(new Image(GWT.getModuleBaseURL() + "crested_butte.jpg"));
+        mmsa.setWidth( "600px");
+        mmsa.setHeight( "100px");
+        vp.add( mmsa );
+        
+        ReflectedFisheyeImageGroup fish = new ReflectedFisheyeImageGroup( 163, 204, .2, .5);
+        ArrayList urls = new ArrayList();
+        for( int i=0; i < 20 ; i++ ){
+            urls.add( GWT.getModuleBaseURL() + "gwtip.png");
+        }
+        fish.setValue( urls );
+        mmsa = new MouseMoveScrollArea();
+        mmsa.setHeight( "300px" );
+        mmsa.setWidth( "600px" );
+        mmsa.setWidget( fish );
+        vp.add( mmsa );
+        
+        tp.add( vp , "Mouse Move Scroll" );
         
     }
     

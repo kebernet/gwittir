@@ -63,7 +63,7 @@
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
                 <configuration>
                     <logLevel>INFO</logLevel>
-                    <runTarget>com.totsp.gwittir.example.Example/index.html?log.level=debug</runTarget>
+                    <runTarget>com.totsp.gwittir.example.Example/index.html?log.level=spam</runTarget>
                     <compileTarget>
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTarget>

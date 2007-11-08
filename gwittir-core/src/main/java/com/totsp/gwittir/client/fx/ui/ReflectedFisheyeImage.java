@@ -67,11 +67,6 @@ public class ReflectedImage extends AbstractBoundWidget {
         super.initWidget(v);
     }
 
-    public void setPixelSize(int width, int height){
-        this.setWidth( width );
-        this.setHeight( height );
-    }
-    
     public int getHeight() {
         return this.base.getHeight();
     }

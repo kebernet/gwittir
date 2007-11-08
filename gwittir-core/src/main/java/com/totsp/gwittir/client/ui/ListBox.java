@@ -135,14 +135,7 @@ public class ListBox extends AbstractBoundWidget {
         return retValue;
     }
 
-    public Element getElement() {
-        Element retValue;
-
-        retValue = this.base.getElement();
-
-        return retValue;
-    }
-
+   
     public int getItemCount() {
         int retValue;
 
@@ -187,14 +180,7 @@ public class ListBox extends AbstractBoundWidget {
         return options;
     }
 
-    public Widget getParent() {
-        Widget retValue;
-
-        retValue = this.base.getParent();
-
-        return retValue;
-    }
-
+    
     public int getSelectedIndex() {
         int retValue;
 
@@ -258,13 +244,7 @@ public class ListBox extends AbstractBoundWidget {
         return retValue;
     }
 
-    public boolean isAttached() {
-        boolean retValue;
-
-        retValue = this.base.isAttached();
-
-        return retValue;
-    }
+   
 
     public boolean isEnabled() {
         boolean retValue;
@@ -294,10 +274,7 @@ public class ListBox extends AbstractBoundWidget {
         return retValue;
     }
 
-    public void onBrowserEvent(Event event) {
-        this.base.onBrowserEvent(event);
-    }
-
+    
     public void removeChangeListener(ChangeListener listener) {
         this.changeListeners.remove(listener);
     }
