@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * A wrapper around a Calendar that provides Month/Year navigation for selection.
  * @author cooper
  */
 public class DatePicker extends AbstractBoundWidget implements
@@ -132,34 +132,66 @@ public class DatePicker extends AbstractBoundWidget implements
         
     }
     
+    /**
+     * Returns the Date value of this Calendar.
+     * @return Date value of this Calendar.
+     */
     public Object getValue() {
         return this.calendar.getValue();
     }
     
+    /**
+     * Sets Date value of this Calendar.
+     * @param value Date value of this Calendar.
+     */
     public void setValue(Object value) {
         this.calendar.setValue( value );
     }
     
+    /**
+     * 
+     * @param cdl 
+     */
     public void addCalendarDrawListener(CalendarDrawListener cdl) {
         this.calendar.addCalendarDrawListener( cdl );
     }
     
+    /**
+     * 
+     * @param cdl 
+     */
     public void removeCalendarDrawListener(CalendarDrawListener cdl) {
         this.calendar.removeCalendarDrawListener( cdl );
     }
     
+    /**
+     * 
+     * @return 
+     */
     public CalendarDrawListener[] getCalendarDrawListeners() {
         return this.calendar.getCalendarDrawListeners();
     }
     
+    /**
+     * 
+     * @param l 
+     */
     public void addCalendarListener(CalendarListener l) {
         this.calendar.addCalendarListener( l );
     }
     
+    /**
+     * 
+     * @param l 
+     */
     public void removeCalendarListener(CalendarListener l) {
         this.calendar.removeCalendarListener(l);
     }
     
+    /**
+     * 
+     * @return 
+     */
     public CalendarListener[] getCalendarListeners() {
         return this.calendar.getCalendarListeners();
     }
@@ -188,10 +220,18 @@ public class DatePicker extends AbstractBoundWidget implements
         return -1;
     }
     
+    /**
+     * Gets the Month/Year date the calendar should be rendering.
+     * @return Date currently rendered around.
+     */
     public Date getRenderDate() {
         return this.calendar.getRenderDate();
     }
 
+    /**
+     * Sets the Month/Year date the calendar should be rendering.
+     * @param renderDate Month/Year date the calendar should be rendering.
+     */
     public void setRenderDate(Date renderDate) {
         this.calendar.setRenderDate( renderDate );
     }

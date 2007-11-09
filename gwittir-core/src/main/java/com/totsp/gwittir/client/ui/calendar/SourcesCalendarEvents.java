@@ -21,13 +21,25 @@
 package com.totsp.gwittir.client.ui.calendar;
 
 /**
- *
+ * An interface noting classes that support CalendarListeners.
  * @author cooper
  */
 public interface SourcesCalendarEvents {
     
+    /**
+     * Adds a CalendarListener
+     * @param l CalendarListener to add
+     */
    void addCalendarListener( CalendarListener l );
+    /**
+     * Removes a CalendarListener
+     * @param l CalendarListener to remove
+     */
    void removeCalendarListener( CalendarListener l );
+    /**
+     * Returns the current registered CalendarListeners
+     * @return Array of CalendarListeners active
+     */
    CalendarListener[] getCalendarListeners();
     
 }

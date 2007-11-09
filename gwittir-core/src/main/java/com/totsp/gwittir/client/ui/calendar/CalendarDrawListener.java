@@ -17,15 +17,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.calendar;
 
+
 /**
- *
+ * A listener interface for Calendar Draw Events.
  * @author cooper
  */
 public interface CalendarDrawListener {
-    
-    String onCalendarDrawEvent( CalendarDrawEvent cde );
-    
+    /**
+     * Called when a CalendarDrawEvent is fired.
+     *
+     * @param cde The event fired.
+     * @return Returns a String value containing an additional style name that will be added
+     * to the cell containing the date.
+     */
+    String onCalendarDrawEvent(CalendarDrawEvent cde);
 }

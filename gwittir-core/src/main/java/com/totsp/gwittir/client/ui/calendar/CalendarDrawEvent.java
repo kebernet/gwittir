@@ -23,25 +23,37 @@ package com.totsp.gwittir.client.ui.calendar;
 import java.util.Date;
 
 /**
- *
+ * An event indicating a date has been drawn on a calendar.
  * @author cooper
  */
 public class CalendarDrawEvent {
     
-    private Calendar source;
+    private SourcesCalendarDrawEvents source;
     private Date date;
     
     
-    /** Creates a new instance of CalendarDrawEvent */
-    public CalendarDrawEvent(Calendar source, Date date) {
+    /**
+     * Creates a new instance of CalendarDrawEvent
+     * @param source Source calendar
+     * @param date Date rendered.
+     */
+    public CalendarDrawEvent(SourcesCalendarDrawEvents source, Date date) {
         this.source = source;
         this.date = date;
     }
 
-    public Calendar getSource() {
+    /**
+     * Returns the source Calendar for the event.
+     * @return The object that fired the event.
+     */
+    public SourcesCalendarDrawEvents getSource() {
         return source;
     }
 
+    /**
+     * The date rendered.
+     * @return  The date rendered.
+     */
     public Date getDate() {
         return date;
     }

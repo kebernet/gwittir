@@ -24,6 +24,9 @@ import com.google.gwt.i18n.client.Constants;
 import com.totsp.gwittir.client.ui.*;
 
 /**
+ * Internationalization constants for the ui.calendar package.
+ * Please provide properties files for any language you wish to support in your
+ * application. 
  *
  * @author cooper
  */

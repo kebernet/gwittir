@@ -28,8 +28,7 @@ import java.util.Date;
  * @author rcooper
  */
 public class PopupDatePicker extends AbstractBoundWidget
-        implements SourcesCalendarDrawEvents, SourcesCalendarEvents {
-    private static final CalendarMessages MESSAGES = (CalendarMessages) GWT.create(CalendarMessages.class);
+        implements SourcesCalendarDrawEvents, SourcesCalendarEvents, Renderers {
     DatePicker base = new DatePicker();
     Label label = new Label();
     Image icon = new Image(GWT.getModuleBaseURL()+"/calendar-icon.gif");
@@ -105,13 +104,7 @@ public class PopupDatePicker extends AbstractBoundWidget
         return this.base.getCalendarListeners();
     }
     
-    public static final Renderer SHORT_DATE_RENDERER = new Renderer() {
-        public Object render(Object o) {
-            Date d = (Date) o;
-            return MESSAGES.short_date( d.getDate(), d.getMonth() + 1, d.getYear() + 1900 );
-        }
-        
-    };
+    
     
     public Renderer getRenderer() {
         return this.label.getRenderer();
