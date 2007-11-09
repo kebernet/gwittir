@@ -276,4 +276,12 @@ public class Binding {
     public BindingInstance getRight(){
         return this.right;
     }
+
+    public int hashCode() {
+        return this.right.object.hashCode() & this.left.object.hashCode();
+    }
+    
+    public String toString(){
+        return "Binding [ \n + "+this.right.object +" \n "+ this.left.object + "\n ]";
+    }
 }

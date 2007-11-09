@@ -20,8 +20,11 @@
 package com.totsp.gwittir.client.fx.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.LoadListener;
+import com.google.gwt.user.client.ui.MouseListener;
+import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,7 +36,7 @@ import com.totsp.gwittir.client.ui.AbstractBoundWidget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ReflectedImage extends AbstractBoundWidget {
+public class ReflectedImage extends AbstractBoundWidget implements SourcesMouseEvents {
     private Image base;
     private Object value;
     private Reflection reflect = (Reflection) GWT.create(Reflection.class);
@@ -64,6 +67,7 @@ public class ReflectedImage extends AbstractBoundWidget {
         this.reflectHeight = reflectHeight;
         this.opacity = opacity;
         v.add(base);
+        v.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_CENTER);
         super.initWidget(v);
     }
 
@@ -117,5 +121,13 @@ public class ReflectedImage extends AbstractBoundWidget {
         this.changes.firePropertyChange("width", old, width);
         this.reflect.paint(this.base, width, this.getHeight(),
             this.reflectHeight, this.opacity);
+    }
+
+    public void addMouseListener(MouseListener listener) {
+        this.base.addMouseListener( listener );
+    }
+
+    public void removeMouseListener(MouseListener listener) {
+        this.base.addMouseListener( listener );
     }
 }

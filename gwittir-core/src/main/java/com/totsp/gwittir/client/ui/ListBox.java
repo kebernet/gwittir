@@ -39,14 +39,15 @@ import java.util.Vector;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ListBox extends AbstractBoundWidget {
-    private com.google.gwt.user.client.ui.ListBox base = new com.google.gwt.user.client.ui.ListBox();
+    private com.google.gwt.user.client.ui.ListBox base;
     private ArrayList selected = new ArrayList();
     private Collection options = new ArrayList();
     private Vector changeListeners = new Vector();
 
     /** Creates a new instance of ListBox */
     public ListBox() {
-        super.initWidget(base);
+        super();
+        this.base = new com.google.gwt.user.client.ui.ListBox();
         this.setRenderer(new ToStringRenderer());
         this.setComparator(SimpleComparator.INSTANCE);
         this.base.addClickListener(new ClickListener() {
@@ -61,6 +62,7 @@ public class ListBox extends AbstractBoundWidget {
 
                 // foo!
             });
+        super.initWidget(base);
     }
 
     public void addChangeListener(ChangeListener listener) {
@@ -100,14 +102,6 @@ public class ListBox extends AbstractBoundWidget {
         return false;
     }
 
-    public boolean equals(Object object) {
-        boolean retValue;
-
-        retValue = this.base.equals(object);
-
-        return retValue;
-    }
-
     private void fireChangeListeners() {
         for(Iterator it = this.changeListeners.iterator(); it.hasNext();) {
             ChangeListener l = (ChangeListener) it.next();
@@ -135,7 +129,6 @@ public class ListBox extends AbstractBoundWidget {
         return retValue;
     }
 
-   
     public int getItemCount() {
         int retValue;
 
@@ -180,7 +173,6 @@ public class ListBox extends AbstractBoundWidget {
         return options;
     }
 
-    
     public int getSelectedIndex() {
         int retValue;
 
@@ -245,7 +237,6 @@ public class ListBox extends AbstractBoundWidget {
     }
 
    
-
     public boolean isEnabled() {
         boolean retValue;
 
@@ -266,14 +257,6 @@ public class ListBox extends AbstractBoundWidget {
         return this.base.isMultipleSelect();
     }
 
-    public boolean isVisible() {
-        boolean retValue;
-
-        retValue = this.base.isVisible();
-
-        return retValue;
-    }
-
     
     public void removeChangeListener(ChangeListener listener) {
         this.changeListeners.remove(listener);
@@ -285,10 +268,6 @@ public class ListBox extends AbstractBoundWidget {
 
     public void removeFocusListener(FocusListener listener) {
         this.base.removeFocusListener(listener);
-    }
-
-    public void removeFromParent() {
-        super.removeFromParent();
     }
 
     public void removeItem(Object o) {
@@ -455,9 +434,7 @@ public class ListBox extends AbstractBoundWidget {
     }
 
     
-    public void setVisible(boolean visible) {
-        this.base.setVisible(visible);
-    }
+    
 
     public void setVisibleItemCount(int visibleItems) {
         this.base.setVisibleItemCount(visibleItems);
@@ -467,22 +444,7 @@ public class ListBox extends AbstractBoundWidget {
         this.base.setWidth(width);
     }
 
-    public void sinkEvents(int eventBitsToAdd) {
-        this.base.sinkEvents(eventBitsToAdd);
-    }
-
-    public String toString() {
-        String retValue;
-
-        retValue = this.base.toString();
-
-        return retValue;
-    }
-
-    public void unsinkEvents(int eventBitsToRemove) {
-        this.base.unsinkEvents(eventBitsToRemove);
-    }
-
+    
     private void update() {
         ArrayList selected = new ArrayList();
         Iterator it = this.options.iterator();

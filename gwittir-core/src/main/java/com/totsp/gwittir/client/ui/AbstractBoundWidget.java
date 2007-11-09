@@ -44,7 +44,7 @@ import com.totsp.gwittir.client.log.Logger;
  */
 public abstract class AbstractBoundWidget extends Composite
         implements BoundWidget, KeyBoundWidget {
-    protected static final Logger LOG = Logger.getLogger( "com.totsp.gwittir.client.ui.AbstractBoundWidget");
+    protected static final Logger LOG = Logger.getLogger( ""+AbstractBoundWidget.class );
     private Action action;
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private Comparator comparator;
@@ -53,13 +53,10 @@ public abstract class AbstractBoundWidget extends Composite
     private Renderer renderer;
     private KeyBinding binding;
     private boolean bindingRegistered = false;
-    private SimplePanel container = new SimplePanel();
-    private Widget widget = null;
-    private boolean isVisible = true;
+    
     
     /** Creates a new instance of AbstractBoundWidget */
     public AbstractBoundWidget() {
-        super.initWidget( container );
     }
     
     public void addChangeListener(ChangeListener listener) {
@@ -104,12 +101,6 @@ public abstract class AbstractBoundWidget extends Composite
             ((BindingAction) getAction()).set(this);
             
         }
-        if( this.widget == null ){
-            throw new RuntimeException("initWidget() not called");
-        }
-        if( this.isVisible ){
-            this.container.setWidget( this.widget );
-        }
         super.onAttach();
         this.changes.firePropertyChange("attached", false, true);
     }
@@ -142,8 +133,7 @@ public abstract class AbstractBoundWidget extends Composite
         if( this.binding != null && this.bindingRegistered ){
             KeyboardController.INSTANCE.unregister(this.binding);
         }
-        this.container.remove( widget );
-        this.changes.firePropertyChange("attached", true, false );
+       this.changes.firePropertyChange("attached", true, false );
     }
     
     public void removeChangeListener(ChangeListener listener) {
@@ -196,64 +186,17 @@ public abstract class AbstractBoundWidget extends Composite
     
     public void setKeyBinding(final KeyBinding binding) {
         this.binding = binding;
-    }
-
-   
-    public boolean isVisible(){
-        return this.isVisible;
-        
-    }
-
-    public void setVisible(boolean visible) {
-        boolean old = this.isVisible;
-        if( visible ){
-            this.container.setWidget( this.widget );
-        } else {
-            this.container.remove( this.widget );
+        if( this.binding != null && this.isAttached() ){
+            try{
+                KeyboardController.INSTANCE.register( this.binding, this);
+                this.bindingRegistered = true;
+            } catch(KeyBindingException kbe ){
+                this.bindingRegistered = false;
+                AbstractBoundWidget.LOG.log(Level.SPAM, "Exception adding default binding", kbe);
+            }
         }
-        this.isVisible = visible;
-        this.changes.firePropertyChange( "visible", old, visible );
     }
 
-    protected void initWidget(Widget widget) {
-        this.widget = widget;
-    }
-
-    public void addStyleDependentName(String styleSuffix) {
-        this.widget.addStyleDependentName( styleSuffix );
-    }
-
-    public void addStyleName(String style) {
-        this.widget.addStyleName(style);
-    }
-
-    public void setStylePrimaryName(String style) {
-        this.widget.setStylePrimaryName( style );
-    }
-
-    public void setStyleName(String style) {
-        this.widget.setStyleName(style);
-    }
-
-    public String getStylePrimaryName() {
-        return this.widget.getStylePrimaryName();
-    }
-
-    public String getStyleName() {
-        return this.widget.getStyleName();
-    }
-
-    public void removeStyleDependentName(String styleSuffix) {
-        this.widget.removeStyleDependentName(styleSuffix);
-    }
-
-    public void removeStyleName(String style) {
-        this.widget.removeStyleName(style);
-    }
-    
-    
-    
-    
-    
    
+    
 }

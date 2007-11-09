@@ -119,20 +119,13 @@ public class Checkbox extends AbstractBoundWidget implements HasEnabled,
             });
     }
 
-    public boolean isAttached() {
-        return this.base.isAttached();
-    }
-
+   
     public boolean isChecked() {
         return this.base.isChecked();
     }
 
     public boolean isEnabled() {
         return this.base.isEnabled();
-    }
-
-    public void onBrowserEvent(Event event) {
-        this.base.onBrowserEvent(event);
     }
 
     public void removeClickListener(ClickListener listener) {

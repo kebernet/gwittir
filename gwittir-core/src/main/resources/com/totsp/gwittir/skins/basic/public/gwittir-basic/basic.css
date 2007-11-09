@@ -93,25 +93,35 @@ body {
     width: 100%;
 }
 
-.gwittir-BoundTable tr > td > * {
+.gwittir-BoundTable tr > td > div {
     width: 100%;
     height: 100%;
 }
 
-.gwittir-BoundTable tr.selected > td > div > input {
+.gwittir-BoundTable tr.selected > td > input {
     border-width: 0px;
     background-color: transparent;
     color: white;
 }
-.gwittir-BoundTable tr > td.selected> div > input {
+
+.gwittir-BoundTable tr.selected > td > select {
+    background-color: #3D80DF;
+    color: white;
+}
+
+.gwittir-BoundTable tr > td.selected > input {
     border-width: 0px;
     background-color: transparent;
     color: white;
-    
 }
-.gwittir-BoundTable tr > td > div > input {
+.gwittir-BoundTable tr > td >  input {
     border: 0px solid black;
     background-color: transparent;
+}
+
+.gwittir-BoundTable tr > td > select {
+    border: 1px solid black;
+    height: 25px;
 }
 
 .gwittir-BoundTable tr.selected {
@@ -123,7 +133,7 @@ body {
     background-color: #DFDFDF;
 }
 
-.gwittir-BoundTable tr.spacer > td{
+.gwittir-BoundTable tr.spacer > td {
     background-color: #DFDFDF;
     height: 10px;
 }
@@ -305,3 +315,14 @@ body {
    background-color: transparent;
    border: 0px solid black;
  }
+
+.gwittir-ReflectedFisheyeImageGroup {
+    background-image: url( images/darkblue-gray-gradient.gif );
+    background-position: center center;
+    background-repeat: repeat-x;
+    background-color: transparent;
+}
+
+.gwittir-ReflectedFisheyeImageGroup .selected .gwt-Image {
+    border: 1px solid white;
+}

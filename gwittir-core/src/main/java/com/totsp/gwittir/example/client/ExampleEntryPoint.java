@@ -24,6 +24,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -39,7 +40,7 @@ import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.fx.rebind.Dimensions;
 import com.totsp.gwittir.client.fx.ui.MouseMoveScrollArea;
-import com.totsp.gwittir.client.fx.ui.ReflectedFisheyeImageGroup;
+import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
 import com.totsp.gwittir.client.fx.ui.ReflectedImage;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
@@ -411,21 +412,23 @@ public class ExampleEntryPoint implements EntryPoint {
         vp2.add( new DatePicker() );
         
         vp = new VerticalPanel();
-        MouseMoveScrollArea mmsa = new MouseMoveScrollArea();
+        SoftScrollArea mmsa = new SoftScrollArea();
         mmsa.setWidget(new Image(GWT.getModuleBaseURL() + "crested_butte.jpg"));
         mmsa.setWidth( "600px");
         mmsa.setHeight( "100px");
+        mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
         vp.add( mmsa );
         
-        ReflectedFisheyeImageGroup fish = new ReflectedFisheyeImageGroup( 163, 204, .2, .5);
+        ReflectedImageGroup fish = new ReflectedImageGroup( 80, 100, .2, .5);
         ArrayList urls = new ArrayList();
-        for( int i=0; i < 20 ; i++ ){
-            urls.add( GWT.getModuleBaseURL() + "gwtip.png");
+        for( int i=0; i < 15 ; i++ ){
+            urls.add( new StringBuffer( GWT.getModuleBaseURL() + "gwtip.png" ));
         }
         fish.setValue( urls );
-        mmsa = new MouseMoveScrollArea();
-        mmsa.setHeight( "300px" );
-        mmsa.setWidth( "600px" );
+        mmsa =  new SoftScrollArea();
+        mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
+        mmsa.setHeight( "190px" );
+        mmsa.setWidth( "500px" );
         mmsa.setWidget( fish );
         vp.add( mmsa );
         
