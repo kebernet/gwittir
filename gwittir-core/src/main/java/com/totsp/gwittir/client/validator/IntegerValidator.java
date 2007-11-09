@@ -45,7 +45,7 @@ public class IntegerValidator implements Validator {
         try {
             i = Integer.valueOf(value.toString());
         } catch(NumberFormatException nfe) {
-            GWT.log(null, nfe);
+            GWT.log( null, nfe);
             throw new ValidationException("Must be an integer value.",
                 IntegerValidator.class);
         }

@@ -20,10 +20,11 @@
 
 package com.totsp.gwittir.client.fx.rebind;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 /**
  *
@@ -51,7 +52,7 @@ public class ReflectionIE6 extends Reflection {
         //DOM.setStyleAttribute( image.getElement(), "marginBottom", "-"+(baseHeight-reflectHeight)+"px");
         DOM.setStyleAttribute( image.getElement(), "filter", "flipv progid:DXImageTransform.Microsoft.Alpha(opacity="+(opacity*100)+", style=1, finishOpacity=0, startx=0, starty=0, finishx=0, finishy="+(height*100)+")" );
         //DOM.setStyleAttribute( base.getElement(), "cssText", "vertical-align: bottom");
-        GWT.log( image.toString(), null );
+        Logger.getAnonymousLogger().log( Level.SPAM, image.toString(), null );
         
     }
     

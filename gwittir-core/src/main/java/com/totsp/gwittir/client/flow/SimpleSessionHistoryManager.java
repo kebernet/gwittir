@@ -8,9 +8,10 @@
  */
 package com.totsp.gwittir.client.flow;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 import com.totsp.gwittir.client.ui.BoundWidget;
 
@@ -40,12 +41,12 @@ public class SimpleSessionHistoryManager extends AbstractHistoryManager {
         }
 
         int targetState = Integer.parseInt(values.get("s").toString());
-        GWT.log("Repositioning to state: " + targetState + " of " +
+        Logger.getAnonymousLogger().log( Level.SPAM,"Repositioning to state: " + targetState + " of " +
             states.size() + "from " + currentState, null);
 
         for(int i = currentState; i != targetState;
                 i = (i > targetState) ? (i - 1) : (i + 1)) {
-            GWT.log("\tCalling intermediate state " + i, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"\tCalling intermediate state " + i, null);
             callState(i);
         }
 
@@ -77,7 +78,7 @@ public class SimpleSessionHistoryManager extends AbstractHistoryManager {
         }
 
         states.set(currentState, state);
-        GWT.log("Transitioning to state: " + currentState + " of " +
+        Logger.getAnonymousLogger().log( Level.INFO,"Transitioning to state: " + currentState + " of " +
             states.size(), null);
 
         HashMap values = this.parseHistoryToken(History.getToken());

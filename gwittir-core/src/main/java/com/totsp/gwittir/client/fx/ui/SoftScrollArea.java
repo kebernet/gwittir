@@ -18,7 +18,6 @@
  */
 package com.totsp.gwittir.client.fx.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Composite;
@@ -37,6 +36,8 @@ import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.PositionWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.HasWidget;
 import com.totsp.gwittir.client.util.UnitsParser;
 
@@ -356,7 +357,7 @@ public class SoftScrollArea extends Composite implements HasWidget,
     public final MouseListener MOUSE_MOVE_SCROLL_LISTENER  = new MouseListenerAdapter(){
            
             public void onMouseMove(Widget sender, int x, int y) {
-                GWT.log( x+" "+y, null);
+                Logger.getAnonymousLogger().log( Level.SPAM,  x+" "+y, null);
                 int baseX = getOffsetWidth();
                 int baseY = getOffsetHeight();
                 

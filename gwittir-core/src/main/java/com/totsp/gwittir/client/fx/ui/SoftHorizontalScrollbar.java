@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.fx.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -33,6 +32,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollListener;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 
 /**
@@ -76,7 +77,7 @@ public class SoftHorizontalScrollbar extends Composite {
                     float newPercent = (float) (
                             (x - start) + lower.getOffsetWidth()
                         ) / (float) base.getOffsetWidth();
-                    GWT.log(x + " " + newPercent, null);
+                    Logger.getAnonymousLogger().log( Level.SPAM, x + " " + newPercent, null);
 
                     int newPosition = Math.round((
                                 target.getOffsetWidth()
@@ -108,7 +109,7 @@ public class SoftHorizontalScrollbar extends Composite {
                             target.getOffsetWidth()
                             + target.getMaxHorizontalScrollPosition()
                         ) * newPercent) - (target.getOffsetWidth() / 2);
-                GWT.log("New Position: " + newPosition, null);
+                Logger.getAnonymousLogger().log( Level.SPAM, "New Position: " + newPosition, null);
                 target.setHorizontalScrollPosition(newPosition);
             }
         };

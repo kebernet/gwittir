@@ -20,6 +20,8 @@
 package com.totsp.gwittir.client.beans;
 
 import com.google.gwt.core.client.GWT;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.BoundWidget;
 
 import com.totsp.gwittir.client.validator.ValidationException;
@@ -185,7 +187,7 @@ public class Binding {
             }
             return valid;
         } catch( ValidationException ve ){
-            GWT.log( "Invalid", ve);
+            Logger.getAnonymousLogger().log( Level.INFO, "Invalid", ve);
             return false;
         } catch(Exception e){
             throw new RuntimeException( e );

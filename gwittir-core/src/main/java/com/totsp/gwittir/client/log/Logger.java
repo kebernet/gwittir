@@ -89,12 +89,12 @@ public abstract class Logger {
                 line +="] "+ this.name+" "+ message;
                 GWT.log( line, caught );
             } else {
-            String caughtString = caught == null ? null : caught.toString();
-            while( caught !=null && caught.getCause() != null ){
-                caughtString +="\n caused by: " + caught.getCause().toString();
-                caught = caught.getCause();
-            }
-            Logger.SERVICE.log( level, this.name, message, caughtString, Logger.CALLBACK );
+                String caughtString = caught == null ? null : caught.toString();
+                while( caught !=null && caught.getCause() != null ){
+                    caughtString +="\n caused by: " + caught.getCause().toString();
+                    caught = caught.getCause();
+                }
+                Logger.SERVICE.log( level, this.name, message, caughtString, Logger.CALLBACK );
             }
         }
     }

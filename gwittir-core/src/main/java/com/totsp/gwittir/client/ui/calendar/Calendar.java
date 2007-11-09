@@ -70,19 +70,25 @@ public class Calendar extends AbstractBoundWidget implements SourcesCalendarEven
             grid.setWidget( 0, i, new Label(Calendar.DAYS_OF_WEEK_SHORT[i]) );
             grid.getCellFormatter().setStyleName(0,i, "day");
         }
+        grid.setCellSpacing(0);
+        grid.setCellPadding(0);
         super.initWidget( grid );
         this.render();
         final Calendar instance = this;
         this.grid.addTableListener( new TableListener(){
             public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
-                for( Iterator it = eventListeners.iterator(); it.hasNext();  ){
-                    if( ((CalendarListener) it.next()).onDateClicked( instance, currentDates[row-1][cell] )){
-                        if( currentDates[row-1][cell].getMonth() == getRenderDate().getMonth() ){
-                            setValue(  currentDates[row-1][cell] );
-                            break;
-                        } 
+                boolean cancelled = false;
+                for( Iterator it = new ArrayList(eventListeners).iterator(); it.hasNext();  ){
+                    if( !((CalendarListener) it.next()).onDateClicked( instance, currentDates[row-1][cell] )){
+                        cancelled = true;
+                        break;
                     }
+                    
                 }
+                if( !cancelled && currentDates[row-1][cell].getMonth() == getRenderDate().getMonth() ){
+                    GWT.log("Setting  "+currentDates[row-1][cell], null);
+                    setValue(  currentDates[row-1][cell] );
+                } 
             }
             
         });
@@ -90,13 +96,15 @@ public class Calendar extends AbstractBoundWidget implements SourcesCalendarEven
     }
     
     public Object getValue() {
-        return value;
+        return this.value;
     }
     
     public void setValue(Object value) {
+        Date old = this.value;
         this.value = (Date) value;
         this.setRenderDate(new Date( this.value.getYear(), this.value.getMonth(), 1));
         this.render();
+        this.changes.firePropertyChange("value", old, this.value );
     }
     
     public void render(){
@@ -114,14 +122,14 @@ public class Calendar extends AbstractBoundWidget implements SourcesCalendarEven
                     this.grid.clearCell( row +1, col);
                 } else {
                     this.grid.setWidget( row +1, col, new Label( Integer.toString(tempDate.getDate())));
-                    String styleName = "date";
+                    this.grid.getCellFormatter().setStyleName(row + 1, col, "date");
                     for( Iterator it = this.drawEventListeners.iterator(); it.hasNext(); ){
                         String altStyle = ((CalendarDrawListener) it.next() ).onCalendarDrawEvent( new CalendarDrawEvent( this, tempDate ) );
                         if( altStyle != null ){
                             this.grid.getCellFormatter().addStyleName( row + 1, col, altStyle );
                         }
                     }
-                    this.grid.setStyleName("date");
+                    
                 }
                 tempDate = new Date( tempDate.getTime() + Calendar.ONE_DAY );
             }

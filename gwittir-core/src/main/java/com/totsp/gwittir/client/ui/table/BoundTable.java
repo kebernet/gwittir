@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusListener;
@@ -727,7 +726,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 ListSorter.sortOnProperty(
                     sort, columns[index].getPropertyName(), ascending[index]);
             } catch (Exception e) {
-                GWT.log("Exception during sort", e);
+                LOG.log( Level.INFO, "Exception during sort", e);
             }
 
             value.clear();

@@ -326,3 +326,37 @@ body {
 .gwittir-ReflectedFisheyeImageGroup .selected .gwt-Image {
     border: 1px solid white;
 }
+
+.gwittir-Calendar {
+    background-color: white;
+    border: 1px solid black;
+    font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;    
+    font-size: 80%;
+}
+.gwittir-Calendar .day {
+    border-bottom: 1px solid black;
+    color: white;
+    background-color: gray;
+}
+.gwittir-Calendar .date {
+    border-bottom: 1px solid gray;
+}
+
+.gwittir-Calendar .empty {
+    background-color: #555555;
+}
+
+.gwittir-DatePicker{
+    font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif; 
+    font-size: 80%;
+    background-color: white;
+}
+
+.gwittir-DatePicker .gwittir-Calendar {
+    width: 100%;
+    font-size: 100%;
+}
+
+.gwittir-DatePicker .gwittir-Calendar .date {
+    text-align: center;
+}

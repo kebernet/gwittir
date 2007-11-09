@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.fx.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -123,7 +122,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
                     new AnimationFinishedCallback() {
                         public void onFailure(PropertyAnimator animator,
                             Exception e) {
-                            GWT.log("Exception animating transition", e);
+                            Logger.getAnonymousLogger().log( Level.INFO, "Exception animating transition", e);
                         }
 
                         public void onFinish(PropertyAnimator animator) {
@@ -211,7 +210,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
             int totalOffset = this.currentWidget.getUIObject().getOffsetHeight() +
                 Dimensions.INSTANCE.getTotalVerticalMargin(this.currentWidget.getUIObject()
                                                                              .getElement());
-            GWT.log("Total offset " + totalOffset, null);
+            Logger.getAnonymousLogger().log( Level.SPAM, "Total offset " + totalOffset, null);
 
             if (this.getDirection().equals(SlideTransitionSimplePanel.HORIZONTAL)) {
                 nextWidget.setTop("-" + totalOffset + "px");
@@ -223,7 +222,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
                     new AnimationFinishedCallback() {
                         public void onFailure(PropertyAnimator animator,
                             Exception e) {
-                            GWT.log("Exception animating transition", e);
+                            Logger.getAnonymousLogger().log( Level.INFO, "Exception animating transition", e);
                         }
 
                         public void onFinish(PropertyAnimator animator) {

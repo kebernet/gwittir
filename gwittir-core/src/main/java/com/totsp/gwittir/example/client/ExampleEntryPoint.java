@@ -24,7 +24,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -60,6 +59,7 @@ import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.calendar.Calendar;
 import com.totsp.gwittir.client.ui.calendar.CalendarListener;
 import com.totsp.gwittir.client.ui.calendar.DatePicker;
+import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
@@ -399,6 +399,7 @@ public class ExampleEntryPoint implements EntryPoint {
         tp.add( vp, "Key Bindings");
         
         final VerticalPanel vp2 = new VerticalPanel();
+        vp2.add( new PopupDatePicker() );
         Calendar cal = new Calendar();
         vp2.add( cal );
         tp.add( vp2, "Calendar" );
@@ -410,6 +411,8 @@ public class ExampleEntryPoint implements EntryPoint {
             
         });
         vp2.add( new DatePicker() );
+        
+        
         
         vp = new VerticalPanel();
         SoftScrollArea mmsa = new SoftScrollArea();

@@ -19,10 +19,11 @@
  */
 package com.totsp.gwittir.client.fx.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 
 /**
@@ -51,7 +52,7 @@ public class SoftAnimatedHorizontalScrollbar extends SoftHorizontalScrollbar {
                             target.getOffsetWidth()
                             + target.getMaxHorizontalScrollPosition()
                         ) * newPercent) - (target.getOffsetWidth() / 2);
-                GWT.log("New Position: " + newPosition, null);
+                Logger.getAnonymousLogger().log( Level.SPAM, "New Position: " + newPosition, null);
                 target.animateToHorizontalScrollPosition(newPosition);
             }
         };

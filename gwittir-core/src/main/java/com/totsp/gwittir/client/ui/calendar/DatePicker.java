@@ -121,7 +121,14 @@ public class DatePicker extends AbstractBoundWidget implements
             }
             
         });
+        this.calendar.addPropertyChangeListener("value", new PropertyChangeListener(){
+            public void propertyChange(PropertyChangeEvent evt) {
+                changes.firePropertyChange("value", evt.getOldValue(), evt.getNewValue() );
+            }
+            
+        });
         super.initWidget( vp );
+        this.setStyleName("gwittir-DatePicker");
         
     }
     
@@ -179,6 +186,14 @@ public class DatePicker extends AbstractBoundWidget implements
             
         }
         return -1;
+    }
+    
+    public Date getRenderDate() {
+        return this.calendar.getRenderDate();
+    }
+
+    public void setRenderDate(Date renderDate) {
+        this.calendar.setRenderDate( renderDate );
     }
     
 }

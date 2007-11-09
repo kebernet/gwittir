@@ -60,17 +60,16 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
         this.opacity = opacity;
         this.imagesPanel.setHeight("100%");
         int  padding = ((int)(baseHeight * maxScalar) - baseHeight )/4;
-        GWT.log("PADDING "+padding, null);
         this.grid.setCellSpacing( padding );
         this.grid.setHeight("100%");
         this.grid.setStyleName("gwittir-ReflectedFisheyeImageGroup");
         this.grid.getRowFormatter().setVerticalAlign(0, HasVerticalAlignment.ALIGN_MIDDLE);
         this.imagesPanel.getRowFormatter().setVerticalAlign(0, HasVerticalAlignment.ALIGN_MIDDLE);
         this.grid.setWidget(0,1, imagesPanel );
-        super.initWidget( grid );
         this.imagesPanel.setCellPadding(0);
         this.imagesPanel.setCellSpacing(2);
         this.setRenderer( new ToStringRenderer() );
+         super.initWidget( grid );
     }
     
     

@@ -1,6 +1,5 @@
 package com.totsp.gwittir.client.fx;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -8,6 +7,8 @@ import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,12 +93,12 @@ public class DragAndDrop {
             startY = dragging.widget.getAbsoluteTop();
             offsetX = x;
             offsetY = y;
-            GWT.log("Start X = " + startX, null);
-            GWT.log("Start Y = " + startY, null);
-            GWT.log("X = " + x, null);
-            GWT.log("Y = " + y, null);
-            GWT.log("OffsetX = " + offsetX, null);
-            GWT.log("Offset Y = " + offsetY, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Start X = " + startX, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Start Y = " + startY, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"X = " + x, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Y = " + y, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"OffsetX = " + offsetX, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Offset Y = " + offsetY, null);
             startZ = DOM.getStyleAttribute(dragging.widget.getElement(),
                     "z-index");
             DOM.setStyleAttribute(dragging.widget.getElement(), "position",
@@ -126,8 +127,8 @@ public class DragAndDrop {
             super.onMouseMove(sender, x, y);
 
             if(dragging != null) {
-                GWT.log("Drag X:" + x + " Y:" + y, null);
-                GWT.log("Offset X:" + offsetX + " Y:" + offsetY, null);
+                Logger.getAnonymousLogger().log( Level.SPAM,"Drag X:" + x + " Y:" + y, null);
+                Logger.getAnonymousLogger().log( Level.SPAM,"Offset X:" + offsetX + " Y:" + offsetY, null);
                 DOM.setStyleAttribute(dragging.widget.getElement(), "top",
                     Integer.toString(sender.getAbsoluteTop() - offsetY + y));
                 DOM.setStyleAttribute(dragging.widget.getElement(), "left",
@@ -137,15 +138,15 @@ public class DragAndDrop {
 
         public void onMouseUp(Widget sender, int x, int y) {
             super.onMouseUp(sender, x, y);
-            GWT.log("Up", null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Up", null);
             DOM.setStyleAttribute(dragging.widget.getElement(), "z-index",
                 startZ);
 
-            GWT.log("Looking for Drop", null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Looking for Drop", null);
 
             int top = dragging.widget.getAbsoluteTop();
             int left = dragging.widget.getAbsoluteLeft();
-            GWT.log("Top:" + top + " Left:" + left + "OffsetTop" +
+            Logger.getAnonymousLogger().log( Level.SPAM,"Top:" + top + " Left:" + left + "OffsetTop" +
                 dragging.widget.getOffsetHeight() + " OffsetLeft:" +
                 dragging.widget.getOffsetWidth(), null);
 
@@ -153,14 +154,14 @@ public class DragAndDrop {
                 (int) ((float) dragging.widget.getOffsetHeight() / (float) 2);
             int centerX = left +
                 (int) ((float) dragging.widget.getOffsetWidth() / (float) 2);
-            GWT.log("Center Top:" + centerY + " Center Left:" + centerX, null);
+            Logger.getAnonymousLogger().log( Level.SPAM,"Center Top:" + centerY + " Center Left:" + centerX, null);
 
             for(int i = 0; (dropTargets != null) && (i < dropTargets.size());
                     i++) {
                 Widget w = (Widget) dropTargets.get(i);
-                GWT.log("Top Range: " + w.getAbsoluteTop() + " .. " +
+                Logger.getAnonymousLogger().log( Level.SPAM,"Top Range: " + w.getAbsoluteTop() + " .. " +
                     (w.getAbsoluteTop() + w.getOffsetHeight()), null);
-                GWT.log("Left Range: " + w.getAbsoluteLeft() + " .. " +
+                Logger.getAnonymousLogger().log( Level.SPAM,"Left Range: " + w.getAbsoluteLeft() + " .. " +
                     (w.getAbsoluteLeft() + w.getOffsetWidth()), null);
 
                 if((centerY >= w.getAbsoluteTop()) &&
