@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-/**
+/** A utility class for sorting lists of Introspectables.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */

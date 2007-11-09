@@ -20,8 +20,10 @@
 
 package com.totsp.gwittir.client.util;
 
+import com.google.gwt.core.client.GWT;
+
 /**
- *
+ * A utility class to parse Strings in the value of [int][units].
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class UnitsParser {
@@ -31,6 +33,11 @@ public class UnitsParser {
     private UnitsParser() {
     }
     
+    /**
+     * Parses a string returning a UnitsParser.UnitsValue object
+     * @param input String to parse
+     * @return Parsed value or null if unparsable.
+     */
     public static UnitValue parse( String input ){
         String intPart = "";
         int i=0;
@@ -41,14 +48,28 @@ public class UnitsParser {
                 break;
             }
         }
-        UnitValue value = new UnitValue();
-        value.value = intPart.length() > 0 ? Integer.parseInt( intPart ) : 0;
-        value.units = input.substring( i, input.length() );
+        UnitValue value = null;
+        try{ 
+            value = new UnitValue();
+            value.value = intPart.length() > 0 ? Integer.parseInt( intPart ) : 0;
+            value.units = input.substring( i, input.length() );
+        } catch(NumberFormatException nfe){
+            GWT.log( null, nfe );
+        }
         return value;
     }
     
+    /**
+     * A value object containing the parsed value and the units String.
+     */
     public static class UnitValue {
+        /**
+         * Value integer
+         */
         public int value;
+        /**
+         * Units String.
+         */
         public String units;
     }
     

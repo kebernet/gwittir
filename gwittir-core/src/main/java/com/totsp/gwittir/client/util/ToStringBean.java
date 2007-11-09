@@ -1,8 +1,25 @@
+/*
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package com.totsp.gwittir.client.util;
 
 import com.google.gwt.core.client.GWT;
 
 import com.totsp.gwittir.client.beans.BeanDescriptor;
+import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
@@ -41,14 +58,22 @@ import java.util.Stack;
  */
 public class ToStringBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Object bean;
+    private Introspectable bean;
     private Stack stack;
 
-    public ToStringBean(Object bean) {
+    /**
+     * Constructs a new instance of ToStringBean
+     * @param bean Introspectable object to create a toString for.
+     */
+    public ToStringBean(Introspectable bean) {
         this.bean = bean;
         this.stack = new Stack();
     }
 
+    /**
+     * returns a string value for the bean.
+     * @return returns a string value for the bean.
+     */
     public String toString() {
         String[] tsInfo = (String[]) ((stack.isEmpty()) ? null : stack.peek());
         String prefix;

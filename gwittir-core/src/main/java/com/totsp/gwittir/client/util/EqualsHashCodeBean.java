@@ -1,8 +1,25 @@
+/*
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package com.totsp.gwittir.client.util;
 
 import com.google.gwt.core.client.GWT;
 
 import com.totsp.gwittir.client.beans.BeanDescriptor;
+import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
@@ -15,9 +32,9 @@ import java.io.Serializable;
  * environ. Inspired by the Rome bean utils -
  * https://rome.dev.java.net/source/browse/rome/src/java/com/sun/syndication/feed/impl/.
  * Powered by the gwittir Introspection API.
- * 
+ *
  * Example:
- * 
+ *
  *  public String toString() {
  *       ToStringBean b = new ToStringBean(this);
  *
@@ -29,29 +46,35 @@ import java.io.Serializable;
  *
  *       return b.equals(obj);
  *   }
- * 
+ *
  * @see <code>com.totsp.gwittir.client.beans.AbstractModelBean</code>
  *
  * @author ccollins
  */
 public class EqualsHashCodeBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Object bean;
+    private Introspectable bean;
 
-    public EqualsHashCodeBean(Object bean) {
+    /**
+     * Creates a new instance of EqualsHashCodeBean for the object passed in.
+     * @param bean Object to provide methods for.
+     */
+    public EqualsHashCodeBean(Introspectable bean) {
         this.bean = bean;
     }
 
-    public boolean equals(Object obj) {
-        return beanEquals(obj);
-    }
-
+    /**
+     * equals implementation
+     * @param obj Object to check.
+     * @return Equality
+     */
     public boolean beanEquals(Object obj) {
         Object bean1 = bean;
         Object bean2 = obj;
+
         boolean eq;
 
-        if (bean2 == null) {
+        if ((bean2 == null) || bean2 instanceof Introspectable) {
             eq = false;
         } else if ((bean1 == null) && (bean2 == null)) {
             eq = true;
@@ -85,12 +108,30 @@ public class EqualsHashCodeBean implements Serializable {
         return eq;
     }
 
-    public int hashCode() {
-        return beanHashCode();
-    }
-
+    /**
+     * Returns a hashCode based on the toString() of the bean.
+     * @return integer hashCode.
+     */
     public int beanHashCode() {
         return bean.toString().hashCode();
+    }
+
+    /**
+     * equals implementation. Calls beanEquals.
+     * @param obj Object to check
+     * @return Equality.
+     */
+    public boolean equals(Object obj) {
+        return beanEquals(obj);
+    }
+
+    /**
+     * Returns a hashCode() callse beanHashCode.
+     *
+     * @return int hashCode value.
+     */
+    public int hashCode() {
+        return beanHashCode();
     }
 
     private boolean doEquals(Object obj1, Object obj2) {
