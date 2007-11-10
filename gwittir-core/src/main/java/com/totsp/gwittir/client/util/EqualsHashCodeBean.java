@@ -73,8 +73,9 @@ public class EqualsHashCodeBean implements Serializable {
         Object bean2 = obj;
 
         boolean eq;
-
-        if ((bean2 == null) || bean2 instanceof Introspectable) {
+        if( bean1 == bean2 ){
+            eq = true;
+        } else if ((bean2 == null) || bean2 instanceof Introspectable) {
             eq = false;
         } else if ((bean1 == null) && (bean2 == null)) {
             eq = true;
