@@ -36,7 +36,9 @@ import java.util.List;
 
 
 /**
- *
+ * This class represents a DataBinding between two objects. It also supports
+ * Child bindings. For more information, see 
+ * <a href="http://code.google.com/p/gwittir/wiki/Binding">Binding</a> in the Wiki.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Binding {
@@ -45,15 +47,35 @@ public class Binding {
     private BindingInstance right;
     private List children;
     
+    /**
+     * Creates an empty Binding object. This is mostly useful for top-of-tree
+     * parent Bindings.
+     */
     public Binding(){
         super();
     }
     
+    /**
+     * Creates a new binding. This method is a shorthand for working with BoundWidgets.
+     * The bound widget provided will become the left-hand binding, and the "value"
+     * property of the bound widget will be bound to the property specified by 
+     * modelProperty of the object on the BoundWidget's "model" property.
+     * @param widget BoundWidget containing the model.
+     * @param validator A validator for the BouldWidget's value property.
+     * @param feedback A feedback implementation for validation errors.
+     * @param modelProperty The property on the Widgets model object to bind to.
+     */
     public Binding( BoundWidget widget, Validator validator, ValidationFeedback feedback, String modelProperty){
         this( widget, "value", validator, feedback, (Bindable) widget.getModel(), "modelProperty", null, null );
     }
     
-    /** Creates a new instance of Binding */
+    /**
+     * Creates a new instance of Binding
+     * @param left The left hand object.
+     * @param leftProperty Property on the left object.
+     * @param right The right hand object
+     * @param rightProperty Property on the right object.
+     */
     public Binding(Bindable left, String leftProperty, Bindable right,
             String rightProperty) {
         this.left = new BindingInstance();
@@ -69,6 +91,17 @@ public class Binding {
         this.right.listener = new DefaultPropertyChangeListener(this.right, this.left);
     }
     
+    /**
+     * Creates a new Binding instance.
+     * @param left The left hand object.
+     * @param leftProperty The property of the left hand object.
+     * @param leftValidator A validator for the left hand property.
+     * @param leftFeedback Feedback for the left hand validator.
+     * @param right The right hand object.
+     * @param rightProperty The property on the right hand object
+     * @param rightValidator Validator for the right hand property.
+     * @param rightFeedback Feedback for the right hand validator.
+     */
     public Binding(Bindable left, String leftProperty, Validator leftValidator,
             ValidationFeedback leftFeedback, Bindable right, String rightProperty,
             Validator rightValidator, ValidationFeedback rightFeedback) {
@@ -91,6 +124,15 @@ public class Binding {
             
     }
     
+    /**
+     * 
+     * @param left 
+     * @param leftProperty 
+     * @param leftConverter 
+     * @param right 
+     * @param rightProperty 
+     * @param rightConverter 
+     */
     public Binding(Bindable left, String leftProperty, Converter leftConverter,
             Bindable right, String rightProperty, Converter rightConverter) {
         this.left = new BindingInstance();
@@ -108,11 +150,19 @@ public class Binding {
         this.right.listener = new DefaultPropertyChangeListener(this.right, this.left);
     }
     
+    /**
+     * Creates a Binding with two populated binding instances.
+     * @param left The left binding instance.
+     * @param right The right binding instance
+     */
     public Binding(BindingInstance left, BindingInstance right) {
         this.left = left;
         this.right = right;
     }
     
+    /**
+     * Sets the right objects property to the current value of the left.
+     */
     public void setRight(){
         if( left != null && right != null ){
             try{
@@ -132,6 +182,9 @@ public class Binding {
         }
     }
     
+    /**
+     * Sets the left hand property to the current value of the right.
+     */
     public void setLeft(){
         if( left != null && right != null ){
             try{
@@ -151,6 +204,9 @@ public class Binding {
         }
     }
     
+    /**
+     * Establishes a two-way binding between the objects.
+     */
     public void bind() {
         if( left != null && right != null ){
             left.object.addPropertyChangeListener(left.property.getName(),
@@ -165,10 +221,18 @@ public class Binding {
         }
     }
     
+    /**
+     * Returns a list of child Bindings.
+     * @return List of child bindings.
+     */
     public List getChildren() {
         return children = (children == null) ? new ArrayList() : children;
     }
     
+    /**
+     * Performs a quick validation on the Binding to determine if it is valid.
+     * @return boolean indicating all values are valid.
+     */
     public boolean isValid(){
         
         try{
@@ -194,6 +258,9 @@ public class Binding {
         }
     }
     
+    /**
+     * Breaks the two way binding and removes all listeners.
+     */
     public void unbind() {
         if( left != null && right != null ){
             left.object.removePropertyChangeListener(left.listener);
@@ -208,12 +275,30 @@ public class Binding {
         }
     }
     
+    /**
+     * A data class containing the relevant data for one half of a binding relationship.
+     */
     public static class BindingInstance {
+        /**
+         * The Object being bound.
+         */
         public Bindable object;
+        /**
+         * A converter when needed.
+         */
         public Converter converter;
+        /**
+         * The property name being bound.
+         */
         public Property property;
         private PropertyChangeListener listener;
+        /**
+         * A ValidationFeedback object when needed.
+         */
         public ValidationFeedback feedback;
+        /**
+         * A Validator object when needed.
+         */
         public Validator validator;
     }
     
@@ -271,18 +356,34 @@ public class Binding {
         }
     }
     
+    /**
+     * Returns the left hand BindingInstance.
+     * @return Returns the left hand BindingInstance.
+     */
     public BindingInstance getLeft(){
         return this.left;
     }
     
+    /**
+     * Returns the right hand BindingInstance.
+     * @return Returns the left hand BindingInstance.
+     */
     public BindingInstance getRight(){
         return this.right;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int hashCode() {
         return this.right.object.hashCode() & this.left.object.hashCode();
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String toString(){
         return "Binding [ \n + "+this.right.object +" \n "+ this.left.object + "\n ]";
     }

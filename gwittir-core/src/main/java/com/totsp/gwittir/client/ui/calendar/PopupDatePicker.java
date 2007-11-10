@@ -24,7 +24,9 @@ import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 /**
- *
+ * Renders a Date value to a Label with a Image src of 
+ * "[module root]/calendar-icon.gif", which when clicked, will pop up a DatePicker
+ * for selection.
  * @author rcooper
  */
 public class PopupDatePicker extends AbstractBoundWidget
@@ -72,44 +74,88 @@ public class PopupDatePicker extends AbstractBoundWidget
     }
     
     
+    /**
+     * Current Date value.
+     * @return Current Date value.
+     */
     public Object getValue() {
         return this.base.getValue();
     }
     
+    /**
+     * Current Date value.
+     * @param value Current Date value.
+     */
     public void setValue(Object value) {
         this.base.setValue(value);
     }
     
+    /**
+     * 
+     * @param cdl 
+     */
     public void addCalendarDrawListener(CalendarDrawListener cdl) {
         this.base.addCalendarDrawListener( cdl );
     }
     
+    /**
+     * 
+     * @param cdl 
+     */
     public void removeCalendarDrawListener(CalendarDrawListener cdl) {
         this.base.removeCalendarDrawListener( cdl );
     }
     
+    /**
+     * 
+     * @return 
+     */
     public CalendarDrawListener[] getCalendarDrawListeners() {
         return this.base.getCalendarDrawListeners();
     }
     
+    /**
+     * 
+     * @param l 
+     */
     public void addCalendarListener(CalendarListener l) {
         this.base.addCalendarListener( l );
     }
     
+    /**
+     * 
+     * @param l 
+     */
     public void removeCalendarListener(CalendarListener l) {
         this.base.removeCalendarListener( l );
     }
     
+    /**
+     * 
+     * @return 
+     */
     public CalendarListener[] getCalendarListeners() {
         return this.base.getCalendarListeners();
     }
     
     
     
+    /**
+     * Gets the current Renderer. 
+     * Defaults to Renderers.SHORT_DATE_RENDERER.
+     * 
+     * @return Current Renderer
+     */
     public Renderer getRenderer() {
         return this.label.getRenderer();
     }
     
+    /**
+     * Sets the current Renderer. 
+     * Defaults to Renderers.SHORT_DATE_RENDERER.
+     * 
+     * @param renderer Renderer to use.
+     */
     public void setRenderer(Renderer renderer) {
         this.label.setRenderer( renderer );
     }

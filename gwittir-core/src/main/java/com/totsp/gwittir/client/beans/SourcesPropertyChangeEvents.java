@@ -22,11 +22,12 @@ package com.totsp.gwittir.client.beans;
 import java.beans.PropertyChangeListener;
 
 
-/**
+/** An interface implemented by classes that support PropertyChangeListeners.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface SourcesPropertyChangeEvents {
+    
     public void addPropertyChangeListener(PropertyChangeListener l);
 
     public void addPropertyChangeListener(String propertyName,

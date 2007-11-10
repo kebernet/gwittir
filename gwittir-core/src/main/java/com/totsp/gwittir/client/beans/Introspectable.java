@@ -20,7 +20,8 @@
 package com.totsp.gwittir.client.beans;
 
 
-/**
+/** This is a marker interface that causes introspection information for a class
+ *  to be captured and built into the application at compile time.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */

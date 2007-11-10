@@ -20,7 +20,11 @@
 package com.totsp.gwittir.client.beans;
 
 
-/**
+/** This is the interface requiring implementation for an object to be used with 
+ * the Gwittir Binding framework.
+ *
+ * @see com.totsp.gwittir.client.beans.Binding
+ * @see com.totsp.gwittir.client.beans.AbstractModelBean
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
