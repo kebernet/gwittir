@@ -33,12 +33,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.action.BindingAction;
+import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.fx.rebind.Dimensions;
-import com.totsp.gwittir.client.fx.ui.MouseMoveScrollArea;
 import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
 import com.totsp.gwittir.client.fx.ui.ReflectedImage;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
@@ -48,6 +48,8 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
 import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
+import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
+import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
 import com.totsp.gwittir.client.keyboard.KeyBinding;
 import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
 import com.totsp.gwittir.client.keyboard.KeyboardController;
@@ -56,6 +58,7 @@ import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.calendar.Calendar;
 import com.totsp.gwittir.client.ui.calendar.CalendarListener;
 import com.totsp.gwittir.client.ui.calendar.DatePicker;
@@ -422,20 +425,37 @@ public class ExampleEntryPoint implements EntryPoint {
         mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
         vp.add( mmsa );
         
-        ReflectedImageGroup fish = new ReflectedImageGroup( 80, 100, .2, .5);
-        ArrayList urls = new ArrayList();
-        for( int i=0; i < 15 ; i++ ){
-            urls.add( new StringBuffer( GWT.getModuleBaseURL() + "gwtip.png" ));
-        }
-        fish.setValue( urls );
+        ReflectedImageGroup fish = new ReflectedImageGroup( 100, 75, .2, .5);
+        FlickrSearch search = new FlickrSearch();
+        fish.setRenderer( new Renderer(){
+            public Object render(Object o) {
+                return ((FlickrPhoto) o).getThumbnail();
+            }
+            
+        });
+        Binding images = new Binding(fish, "value", search, "photos");
+        images.setLeft();
+        images.bind();
+        
+        
         mmsa =  new SoftScrollArea();
         mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
         mmsa.setHeight( "190px" );
-        mmsa.setWidth( "500px" );
+        mmsa.setWidth( "800px" );
         mmsa.setWidget( fish );
         vp.add( mmsa );
         
+        ReflectedImage larger = new ReflectedImage( GWT.getModuleBaseURL() + "crested_butte.jpg", 500, 375, .2, .5);
+        larger.setRenderer( new Renderer(){
+             public Object render(Object o) {
+                return ((FlickrPhoto) o).getNormal();
+            }
+        });
+        Binding bigBinding = new Binding( larger, "value", fish, "selected" );
+        bigBinding.bind();
+        vp.add( larger );
         tp.add( vp , "Mouse Move Scroll" );
+        
         
     }
     

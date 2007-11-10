@@ -332,6 +332,7 @@ body {
     border: 1px solid black;
     font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;    
     font-size: 80%;
+    cursor: defaut;
 }
 .gwittir-Calendar .day {
     border-bottom: 1px solid black;

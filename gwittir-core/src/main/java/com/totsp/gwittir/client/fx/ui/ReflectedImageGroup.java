@@ -146,6 +146,9 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
     }
     
     public void setSelected(Object selected) {
+        if( selected == this.selected ){
+            return;
+        }
         Object old = this.selected;
         int index = 0;
         Object[] arr = value.toArray();

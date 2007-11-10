@@ -18,6 +18,7 @@
  */
 package com.totsp.gwittir.client.fx.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Composite;
@@ -360,10 +361,8 @@ public class SoftScrollArea extends Composite implements HasWidget,
                 Logger.getAnonymousLogger().log( Level.SPAM,  x+" "+y, null);
                 int baseX = getOffsetWidth();
                 int baseY = getOffsetHeight();
-                
                 double percentX = (double) x / (double) baseX;
                 double percentY = (double) y / (double) baseY;
-                
                 Integer currentX = (Integer) MutationStrategy.INTEGER_SINOIDAL
                         .mutateValue( new Integer(0), 
                         new Integer(getMaxHorizontalScrollPosition()),

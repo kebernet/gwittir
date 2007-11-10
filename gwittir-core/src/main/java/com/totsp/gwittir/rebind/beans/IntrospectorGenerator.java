@@ -316,7 +316,7 @@ public class IntrospectorGenerator extends Generator {
         writer.indent();
         writer.println("private HashMap lookup;");
         writer.println("private Property[] properties;");
-        writer.println("public Property[] getProperties(){");
+       writer.println("public Property[] getProperties(){");
         writer.indent();
         
         {
