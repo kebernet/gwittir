@@ -72,6 +72,22 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled
                         int modifiers) {
                 }
             });
+        } else {
+            this.addKeyboardListener( new KeyboardListener(){
+                public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+                }
+
+                public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+                    if( keyCode == KeyboardListener.KEY_ENTER ){
+                        setFocus(false);
+                        setFocus(true);
+                    }
+                }
+
+                public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+                }
+                
+            });
         }
         
         this.base.addChangeListener(new ChangeListener() {

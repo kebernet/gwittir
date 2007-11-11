@@ -40,16 +40,17 @@ import java.util.Iterator;
  */
 public class ReflectedImageGroup extends AbstractBoundWidget {
     
-    Collection value;
-    double maxScalar = 1.25D;
-    ReflectedImage[] images;
-    int baseWidth;
-    int baseHeight;
-    double reflectHeight;
-    double opacity;
-    Grid grid = new Grid(1,3);
-    FlexTable imagesPanel = new FlexTable();
+    private Collection value;
+    private double maxScalar = 1.25D;
+    private ReflectedImage[] images;
+    private int baseWidth;
+    private int baseHeight;
+    private double reflectHeight;
+    private double opacity;
+    private Grid grid = new Grid(1,3);
+    private FlexTable imagesPanel = new FlexTable();
     private Object selected;
+    private int lastSelectedIndex = -1;
     
     /** Creates a new instance of ReflectedImageGroup */
     public ReflectedImageGroup(final int baseWidth,
@@ -85,7 +86,11 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
     
     protected void render(Collection value){
         this.images = new ReflectedImage[ value.size() ];
+        this.lastSelectedIndex = -1;
         this.imagesPanel.clear();
+        if( this.imagesPanel.getRowCount() > 0 ){
+            this.imagesPanel.removeRow(0);
+        }
         if( value == null ){
             return;
         }
@@ -152,16 +157,11 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
         Object old = this.selected;
         int index = 0;
         Object[] arr = value.toArray();
-        final int sidePadding = (int)(baseWidth*maxScalar - baseWidth)/2;
-        if( old != null && value.contains(old)){
-            for( index = 0 ; index < arr.length; index++ ){
-                if( arr[index] == old ){
-                    images[index].setHeight( baseHeight );
-                    images[index].setWidth( baseWidth );
-                    this.imagesPanel.getCellFormatter().removeStyleName(0, index, "selected");
-                    break;
-                }
-            }
+        if( lastSelectedIndex != -1 ){
+            this.imagesPanel.getCellFormatter()
+            .removeStyleName(0, lastSelectedIndex, "selected");
+            this.images[lastSelectedIndex].setHeight( baseHeight );
+            this.images[lastSelectedIndex].setWidth( baseWidth );   
         }
         this.selected = selected;
         
@@ -180,6 +180,7 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
         images[index].setWidth( (int) (baseWidth * maxScalar) );
         this.imagesPanel.getCellFormatter().setStyleName(0, index, "selected");
         this.changes.firePropertyChange( "selected", old, selected );
+        this.lastSelectedIndex = index;
     }
     
     

@@ -70,6 +70,29 @@ public class ReflectedImage extends AbstractBoundWidget implements SourcesMouseE
         v.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_CENTER);
         super.initWidget(v);
     }
+    
+    public ReflectedImage( final int baseWidth,
+        final int baseHeight, final double reflectHeight, final double opacity) {
+        this.base = new Image();
+        this.base.addLoadListener(new LoadListener() {
+                public void onLoad(Widget sender) {
+                    reflect.paint(base, baseWidth, baseHeight, reflectHeight,
+                        opacity);
+                    v.add(reflect);
+                }
+
+                public void onError(Widget sender) {
+                }
+            });
+        this.base.setPixelSize(baseWidth, baseHeight);
+        this.baseWidth = baseWidth;
+        this.baseHeight = baseHeight;
+        this.reflectHeight = reflectHeight;
+        this.opacity = opacity;
+        v.add(base);
+        v.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_CENTER);
+        super.initWidget(v);
+    }
 
     public void setPixelSize(int width, int height){
         this.setWidth( width );

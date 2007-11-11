@@ -65,7 +65,9 @@ public class FlickrSearch extends AbstractModelBean {
     }
     
     public void setTitle(String title) {
+        String old = this.title;
         this.title = title;
+        this.changeSupport.firePropertyChange("title", old, title );
     }
     
     public List getPhotos() {
