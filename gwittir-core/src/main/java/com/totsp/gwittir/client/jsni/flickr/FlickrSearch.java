@@ -3,8 +3,6 @@
  *
  * Created on November 9, 2007, 9:28 PM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package com.totsp.gwittir.client.jsni.flickr;
@@ -19,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * A bean that performs JSON-P calls the Flickr Feeds API. Any changes to the 
+ * parameters (tags, user), will update the search result fields (title, phots). 
+ * 
  * @author rcooper
  */
 public class FlickrSearch extends AbstractModelBean {
@@ -33,7 +33,7 @@ public class FlickrSearch extends AbstractModelBean {
     public FlickrSearch() {
         this.addPropertyChangeListener( new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent evt) {
-                if( evt.getPropertyName().equals("photos") ){
+                if( evt.getPropertyName().equals("photos") || evt.getPropertyName().equals("title")){
                     return;
                 }
                 update();
@@ -42,38 +42,72 @@ public class FlickrSearch extends AbstractModelBean {
         update();
     }
     
+    /**
+     * Returns the current set of search tags.
+     * @return the current set of search tags.
+     */
     public String[] getTags() {
         return tags;
     }
     
+    /**
+     * Sets the search tags.
+     * @param tags String[] containing tags to search for.
+     */
     public void setTags(String[] tags) {
         String[] old = this.tags;
         this.tags = tags;
         this.changeSupport.firePropertyChange("tags", old, tags );
     }
     
+    /**
+     * Returns the current user search ID
+     * @return Flickr ID of the user to search
+     */
     public String getUser() {
         return user;
     }
     
+    /**
+     * Sets Flickr ID of the user to search
+     * @param user Flickr ID of the user to search
+     */
     public void setUser(String user) {
         this.user = user;
     }
     
+    /**
+     * Returns the title of the current set of search results.
+     * @return title of the current set of search results.
+     */
     public String getTitle() {
         return title;
     }
     
+    /**
+     * Sets the title of the current set of search results.
+     * @param title the title of the current set of search results.
+     */
     public void setTitle(String title) {
         String old = this.title;
         this.title = title;
         this.changeSupport.firePropertyChange("title", old, title );
     }
     
+    /**
+     * Returns a List of FlickrPhoto objects that are the results of the last search 
+     * returned.
+     * @return a List of FlickrPhoto objects that are the results of the last search 
+     * returned.
+     */
     public List getPhotos() {
         return photos;
     }
     
+    /**
+     * Sets the list of result photos.
+     * @param photos the list of result photos.
+     */
     public void setPhotos(List photos) {
         List old = this.photos;
         this.photos = photos;
@@ -88,6 +122,9 @@ public class FlickrSearch extends AbstractModelBean {
                 url+=tags[i]+",";
             }
             url+="&";
+        }
+        if( this.user != null ){
+            url +="id="+this.user+"&";
         }
         JSONServiceInvoker.invoke(url, "jsonFlickrFeed", new JSONCallback(){
             public void onJSONResult(JavaScriptObjectDecorator decorator) {

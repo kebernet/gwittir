@@ -15,11 +15,31 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- *
+ * The JSON service invoker is a utility class for invoking JSON-P style web 
+ * services. 
+ * 
+ * It has a single method to invoke a service with a specified callback method.
  * @author rcooper
  */
 public class JSONServiceInvoker {
     
+    /**
+     * Invokes a JSON-P service. 
+     * 
+     * <b>Note</b>: If you make multiple calls to a service with a single
+     * callback method name, calls made AFTER the first one will effectively be lost,
+     * or you will get multiple resonses sent to the later callback listener.
+     * 
+     * For JSON-P services like the Facebook API, where you can specify different
+     * different callback method names for each call, you should avail yourself of this.
+     * For services like the Flickr Feed service, you should simply be aware of this.
+     * @param url URL to invoke. This will become the "src" attribute of a &lt;script&gt; tag on 
+     * the page.
+     * 
+     * @param callbackMethodName The name of the callback method the service will invoke. This will be added to 
+     * the window/$wnd reference.
+     * @param callback A callback that will be invoked by the service.
+     */
     public static void invoke( String url, String callbackMethodName, JSONCallback callback) {
         createCallbackMethod( callbackMethodName, callback );
         createScriptTag( url );
