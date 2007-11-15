@@ -60,8 +60,8 @@ public class Reflection extends Widget {
         int reflectHeight = (int) Math.round(baseHeight * height);
         DOM.setStyleAttribute(element, "width", baseWidth + "px");
         DOM.setStyleAttribute(element, "height", reflectHeight + "px");
-        DOM.setStyleAttribute(element, "marginBottom",
-            "-" + reflectHeight + "px");
+        /*DOM.setStyleAttribute(element, "marginBottom",
+            "-" + reflectHeight + "px");*/
         DOM.setElementAttribute(element, "width", "" + baseWidth);
         DOM.setElementAttribute(element, "height", "" + reflectHeight);
         this.panel.setPixelSize(baseWidth, reflectHeight);

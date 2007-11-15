@@ -89,6 +89,9 @@ public class DatePicker extends AbstractBoundWidget implements
         hp.add( this.year );
         this.year.addPropertyChangeListener("value", new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                if( propertyChangeEvent.getNewValue() == null ){
+                    return;
+                }
                 Date current = calendar.getRenderDate();
                 current = new Date( Integer.parseInt( propertyChangeEvent.getNewValue().toString() ) -1900, current.getMonth(), 1 );
                 LOG.log(Level.SPAM, current.toString(), null );

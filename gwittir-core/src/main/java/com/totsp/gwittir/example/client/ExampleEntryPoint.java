@@ -20,22 +20,64 @@
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.action.Action;
+import com.totsp.gwittir.client.action.BindingAction;
 
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.beans.Converter;
+import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
+import com.totsp.gwittir.client.fx.MutationStrategy;
+import com.totsp.gwittir.client.fx.OpacityWrapper;
+import com.totsp.gwittir.client.fx.PropertyAnimator;
+import com.totsp.gwittir.client.fx.rebind.Dimensions;
+import com.totsp.gwittir.client.fx.ui.ReflectedImage;
 import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
+import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
+import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
 import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
 import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
+import com.totsp.gwittir.client.keyboard.KeyBinding;
+import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
+import com.totsp.gwittir.client.keyboard.KeyboardController;
+import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
+import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
+import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Image;
 import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.client.ui.ListBox;
 import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.client.ui.calendar.Calendar;
+import com.totsp.gwittir.client.ui.calendar.CalendarListener;
+import com.totsp.gwittir.client.ui.calendar.DatePicker;
+import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
+import com.totsp.gwittir.client.ui.table.BoundTable;
+import com.totsp.gwittir.client.ui.table.Field;
+import com.totsp.gwittir.client.ui.table.GridForm;
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
+import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.client.validator.DoubleValidator;
+import com.totsp.gwittir.client.validator.IntegerValidator;
+import com.totsp.gwittir.client.validator.PopupValidationFeedback;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -54,9 +96,9 @@ public class ExampleEntryPoint implements EntryPoint {
                 "com.totsp.gwittir.example.client.ExampleEntryPoint");
         log.log(Level.ERROR, "startup", null);
 
-        /*
+        
         TabPanel tp = new TabPanel();
-
+        RootPanel.get().add(tp);
         final Button b = new Button("FOO!");
 
         final PropertyAnimator a = new PropertyAnimator(b, "height", "100px", "300px", MutationStrategy.UNITS_SINOIDAL, 3000, new AnimationFinishedCallback() {
@@ -83,7 +125,7 @@ public class ExampleEntryPoint implements EntryPoint {
         });
         RootPanel.get().add(b2);
 
-        final Field[] mcf = new Field[9];
+        final Field[] mcf = new Field[10];
         mcf[0] = new Field("someInteger", "An Integer", null, "This is an Integer Value", null, IntegerValidator.INSTANCE, new PopupValidationFeedback(PopupValidationFeedback.BOTTOM));
         mcf[1] = new Field("name", "Name", null, "A name value <br /> who cares?");
         mcf[2] = new Field("firstName", "First Name", null, "Somebody's first name.");
@@ -93,7 +135,7 @@ public class ExampleEntryPoint implements EntryPoint {
         mcf[6] = new Field("price", "Price", null, "This is an decimal Value", null, DoubleValidator.INSTANCE, new PopupValidationFeedback(PopupValidationFeedback.BOTTOM));
         mcf[7] = new Field("homeTown", "Home Town", null, "Somebody's place of origin.");
         mcf[8] = new Field("zipCode", "Postal Code", null, "A USPS Postal Code");
-
+        mcf[9] = new Field("birthDate", "Birth Date", null, "Day of Birth");
         final GridForm form = new GridForm(mcf, 3);
         form.setValue(new MyClass());
 
@@ -227,13 +269,27 @@ public class ExampleEntryPoint implements EntryPoint {
         vp.add(checkEnsure);
         tp.add(vp, "Scroll Area");
 
-        Field[] cols = new Field[5];
+        Field[] cols = new Field[6];
         for (int i = 0; i < 5; i++) {
             cols[i] = mcf[i];
         }
+        cols[5] = new Field("birthDate", "Birth Date", null, "Day of Birth");
         VerticalPanel tablesPanel = new VerticalPanel();
+        ChangeMarkedTypeFactory factory =  new ChangeMarkedTypeFactory();
+        /*factory.add( "name", new BoundWidgetProvider(){
+            public BoundWidget get() {
+                ListBox listBox = new ListBox();
+                ArrayList options = new ArrayList();
+                options.add( "Foo" );
+                options.add( "Bar" );
+                options.add( "Baz" );
+                listBox.setOptions( options );
+                return listBox;
+            }
+            
+        });*/
         final BoundTable t = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
-                + BoundTable.ROW_HANDLE_MASK + BoundTable.NO_SELECT_COL_MASK, new ChangeMarkedTypeFactory() , cols);
+                + BoundTable.ROW_HANDLE_MASK + BoundTable.NO_SELECT_COL_MASK, factory, cols);
         ArrayList list = new ArrayList();
         list.add(form.getValue());
         list.add( new MyClass() );
@@ -283,6 +339,7 @@ public class ExampleEntryPoint implements EntryPoint {
         // list.add( new MyClass() );
         //list.add( new MyClass() );
         t.setValue(list);
+        
         tablesPanel.add( t );
         Button hide = new Button( "Hide", new ClickListener(){
             public void onClick(Widget sender) {
@@ -310,7 +367,10 @@ public class ExampleEntryPoint implements EntryPoint {
             }
         });
         tablesPanel.add( alert );
-        RootPanel.get().add(tp);
+        
+        factory.setMarking(true);
+        
+        
         log.log(Level.DEBUG, Dimensions.INSTANCE.getMarginTop(tp.getElement()) + "", null);
         log.log(Level.DEBUG, tp.getOffsetHeight() + "", null);
         vp = new VerticalPanel();
@@ -381,21 +441,21 @@ public class ExampleEntryPoint implements EntryPoint {
         vp2.add( new DatePicker() );
 
 
-         */
-        VerticalPanel vp = new VerticalPanel();
-        vp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
-        TextBox box = new TextBox(false);
-        Label title = new Label();
         
-        vp.add(box);
-        vp.add( title );
-        /*SoftScrollArea mmsa = new SoftScrollArea();
+        vp = new VerticalPanel();
+        vp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        SoftScrollArea mmsa = null; /*new SoftScrollArea();
         mmsa.setWidget(new Image(GWT.getModuleBaseURL() + "crested_butte.jpg"));
         mmsa.setWidth( "600px");
         mmsa.setHeight( "100px");
         mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
         vp.add( mmsa );*/
+        TextBox box = new TextBox(false);
+        Label title = new Label();
+        
+        vp.add(box);
+        vp.add( title );
+       
         ReflectedImageGroup group = new ReflectedImageGroup(100, 75, .2, .5);
         FlickrSearch search = new FlickrSearch();
         group.setRenderer(
@@ -443,7 +503,7 @@ public class ExampleEntryPoint implements EntryPoint {
         images.setLeft();
         images.bind();
 
-        SoftScrollArea mmsa = new SoftScrollArea();
+        mmsa = new SoftScrollArea();
         mmsa.addMouseListener(mmsa.MOUSE_MOVE_SCROLL_LISTENER);
         mmsa.setHeight("190px");
         mmsa.setWidth("800px");
@@ -462,9 +522,9 @@ public class ExampleEntryPoint implements EntryPoint {
         bigBinding.bind();
         vp.add(larger);
 
-        RootPanel.get().add(vp);
+       
 
-        //tp.add( vp , "Mouse Move Scroll" );
+        tp.add( vp , "Flickr" );
     }
 
     private native void alertSelection() /*-{

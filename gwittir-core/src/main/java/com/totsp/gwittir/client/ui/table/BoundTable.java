@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusListener;
@@ -153,6 +154,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     private Map externalKeyBindings = new HashMap();
     private Map keyBindings = new HashMap();
     private Map widgetCache = new HashMap();
+    private Map bindingCache = new HashMap();
     private ScrollPanel scroll;
     private String selectedCellLastStyle;
     private String selectedColLastStyle = BoundTable.DEFAULT_STYLE;
@@ -168,6 +170,25 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     private int selectedCellRowLastIndex = -1;
     private int selectedColLastIndex = -1;
     private int selectedRowLastIndex = -1;
+    private Timer cleanUpCaches = new Timer(){
+        public void run() {
+            if( value != null ){
+                for( Iterator it = widgetCache.keySet().iterator(); it.hasNext(); ){
+                    Object o = it.next();
+                    if(!value.contains( o ) ){
+                        widgetCache.remove(o);
+                    }
+                }
+                for( Iterator it = bindingCache.keySet().iterator(); it.hasNext(); ){
+                    Object o = it.next();
+                    if(!value.contains( o ) ){
+                        bindingCache.remove(o);
+                    }
+                }
+            }
+        }
+        
+    };
 
     /** Creates a new instance of BoundTable */
     public BoundTable() {
@@ -644,13 +665,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
         this.selectedRowLastIndex = -1;
         this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
         this.selectedCellRowLastIndex = -1;
-
-        /*for( Iterator it = this.widgetCache.keySet().iterator(); it.hasNext(); ){
-            Object checkForOld = it.next();
-            if( !this.value.contains( checkForOld ) ){
-                this.widgetCache.remove( checkForOld );
-            }
-        }*/
+        this.cleanUpCaches.schedule(50);
     }
 
     /**
@@ -900,6 +915,8 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             row++;
         }
 
+        
+        
         Binding bindingRow = new Binding();
         topBinding.getChildren().add(bindingRow);
 
@@ -1009,7 +1026,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
         }
 
         for (int col = 0; col < this.columns.length; col++) {
-            Widget widget = (Widget) createCellWidget(bindingRow, this.columns[col], o);
+            Widget widget = (Widget) createCellWidget(bindingRow, col, o);
 
             try {
                 table.setWidget(row, col + startColumn, widget);
@@ -1189,19 +1206,18 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
         this.changes.firePropertyChange("selected", old, this.getSelected());
     }
 
-    private BoundWidget createCellWidget(Binding rowBinding, Field col, Bindable target) {
+    private BoundWidget createCellWidget(Binding rowBinding,  int colIndex , Bindable target) {
         final BoundWidget widget;
-        Binding binding;
-
-        Map rowWidgets = (Map) widgetCache.get(target);
+        Field col = this.columns[colIndex];
+        BoundWidget[] rowWidgets = (BoundWidget[]) widgetCache.get(target);
 
         if (rowWidgets == null) {
-            rowWidgets = new HashMap();
+            rowWidgets = new BoundWidget[ this.columns.length ];
             widgetCache.put(target, rowWidgets);
         }
 
-        if (rowWidgets.containsKey(col)) {
-            widget = (BoundWidget) rowWidgets.get(col);
+        if (rowWidgets[colIndex] != null) {
+            widget = rowWidgets[colIndex];
             BoundTable.LOG.log(
                 Level.SPAM,
                 "Using cache widget for " + target + "." + col.getPropertyName(), null);
@@ -1218,18 +1234,25 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 // TODO Figure out some way to make this read only.
             }
 
-            rowWidgets.put(col, widget);
+            rowWidgets[colIndex]=widget;
             BoundTable.LOG.log(
                 Level.SPAM, "Creating widget for " + target + "." +
                 col.getPropertyName(), null);
         }
 
-        binding = new Binding(
-                widget, "value", col.getValidator(), col.getFeedback(), target,
-                col.getPropertyName(), null, null);
-        BoundTable.LOG.log(Level.SPAM, "Created binding " + binding, null);
+        Binding[] bindings = (Binding[]) this.bindingCache.get( target );
+        if( bindings == null ){
+            bindings = new Binding[this.columns.length];
+            this.bindingCache.put( target, bindings );
+        }
+        if( bindings[colIndex] == null ){
+            bindings[colIndex] = new Binding(
+                    widget, "value", col.getValidator(), col.getFeedback(), target,
+                    col.getPropertyName(), null, null);
+            BoundTable.LOG.log(Level.SPAM, "Created binding " + bindings[colIndex], null);
+        }
         widget.setModel(target);
-        rowBinding.getChildren().add(binding);
+        rowBinding.getChildren().add(bindings[colIndex]);
 
         return widget;
     }

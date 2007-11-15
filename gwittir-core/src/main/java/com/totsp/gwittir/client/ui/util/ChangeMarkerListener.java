@@ -45,8 +45,7 @@ public class ChangeMarkerListener implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        
-        if( propertyChangeEvent.getSource() instanceof Widget ){
+        if( factory.isMarking() && propertyChangeEvent.getSource() instanceof Widget ){
             Widget widget = (Widget) propertyChangeEvent.getSource();
             if(propertyChangeEvent.getPropertyName().equals("value") ){
                 valueHasChanged = true;
@@ -79,16 +78,6 @@ public class ChangeMarkerListener implements PropertyChangeListener {
     
     static void showMarker(Widget widget){
         widget.addStyleName("gwittir-ChangeMarker");
-        /*OpacityWrapper o = new OpacityWrapper(marker);
-        o.setOpacity(new Double(0.0));
-        RootPanel.get().add( this.marker );
-        PositionWrapper w = new PositionWrapper(marker);
-        w.setPosition("absolute");
-        w.setTop( widget.getAbsoluteTop()+"px" );
-        w.setRight( widget.getAbsoluteLeft() + widget.getOffsetWidth() +"px");
-        marker.setVisible(true);
-        PropertyAnimator a = new PropertyAnimator(o, "opacity", new Double(1), MutationStrategy.DOUBLE_CUBIC, 250);
-        a.start();*/
     }
     
     static void hideMarker(Widget widget){

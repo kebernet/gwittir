@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+    <!-- Inherit the core Web Toolkit stuff.                  -->
+    <inherits name='com.google.gwt.user.User'/>
+    <source path="client" />
+   
+    <replace-with 
+        class="com.totsp.gwittir.client.log.rebind.DevNullLogger">
+        <when-type-is 
+            class="com.totsp.gwittir.client.log.Logger" />
+    </replace-with>
+</module>

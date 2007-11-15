@@ -116,4 +116,13 @@ public class ArrayUtils {
 
         return result;
     }
+    
+    public static int indexOf( Object[] array, Object find ){
+        for( int i=0; array!= null && i < array.length; i++ ){
+            if( array[i] == find ){
+                return i;
+            }
+        }
+        return -1;
+    }
 }

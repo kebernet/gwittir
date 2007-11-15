@@ -49,14 +49,15 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
      */
     public static final long TWENTY_EIGHT_DAYS = 30 * ONE_DAY;
     private Date renderDate = new Date(new Date().getYear(), new Date().getMonth(), 1);
-    private Date value = this.renderDate;
-    private Grid grid = new Grid(6, 7);
+    private Date value;
+    private Grid grid = new Grid(7, 7);
     private List drawEventListeners = new ArrayList();
     private List eventListeners = new ArrayList();
-    private Date[][] currentDates = new Date[5][7];
+    private Date[][] currentDates = new Date[6][7];
 
     /** Creates a new instance of Calendar */
     public Calendar() {
+        this.value = this.renderDate;
         for (int i = 0; i < 7; i++) {
             grid.setWidget(0, i, new Label(Calendar.DAYS_OF_WEEK_SHORT[i]));
             grid.getCellFormatter().setStyleName(0, i, "day");
@@ -65,8 +66,6 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
         grid.setCellSpacing(0);
         grid.setCellPadding(0);
         super.initWidget(grid);
-        this.render();
-
         final Calendar instance = this;
         this.grid.addTableListener(
             new TableListener() {
@@ -91,7 +90,6 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
                                 currentDates[row - 1][cell].getMonth() == getRenderDate()
                                                                                   .getMonth()
                             )) {
-                        GWT.log("Setting  " + currentDates[row - 1][cell], null);
                         setValue(currentDates[row - 1][cell]);
                     }
                 }
@@ -148,7 +146,9 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
         this.renderDate = renderDate;
 
         if (!this.renderDate.equals(old)) {
-            this.render();
+            if( this.isAttached() ){ 
+                this.render();
+            }
             this.changes.firePropertyChange("renderDate", old, renderDate);
         }
     }
@@ -171,7 +171,9 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
         Date old = this.value;
         this.value = (Date) value;
         this.setRenderDate(new Date(this.value.getYear(), this.value.getMonth(), 1));
-        this.render();
+        if(this.isAttached() ){
+            this.render();
+        }
         this.changes.firePropertyChange("value", old, this.value);
     }
 
@@ -231,7 +233,7 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
             tempDate = new Date(tempDate.getTime() - Calendar.ONE_DAY);
         }
 
-        for (int row = 0; row < 5; row++) {
+        for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 this.currentDates[row][col] = tempDate;
 
@@ -254,8 +256,13 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
                     }
                 }
 
-                tempDate = new Date(tempDate.getTime() + Calendar.ONE_DAY);
+                tempDate = new Date(tempDate.getYear(), tempDate.getMonth(), tempDate.getDate() +1);
             }
         }
+    }
+
+    protected void onAttach() {
+        super.onAttach();
+        this.render();
     }
 }

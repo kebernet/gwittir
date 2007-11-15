@@ -7,7 +7,7 @@
     <!-- Inherit the java.beans.* classes from GWTx           -->
     <inherits name='com.googlecode.gwtx.Java'/>
     <inherits name='com.totsp.gwittir.Gwittir' />
-    <inherits name='com.totsp.gwittir.LoggingWarn' />
+    <inherits name='com.totsp.gwittir.LoggingDisabled' />
     <inherits name='com.totsp.gwittir.skins.basic.Basic' />
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.totsp.gwittir.example.client.ExampleEntryPoint'/>

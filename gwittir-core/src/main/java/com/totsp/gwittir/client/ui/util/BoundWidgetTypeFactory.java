@@ -26,6 +26,8 @@ import com.totsp.gwittir.client.ui.Hyperlink;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.RadioButton;
 import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
+import java.util.Date;
 
 import java.util.HashMap;
 
@@ -71,6 +73,13 @@ public class BoundWidgetTypeFactory {
                 return new Hyperlink();
             }
         };
+        
+   public static final BoundWidgetProvider POPUP_DATE_PICKER_PROVIDER = new BoundWidgetProvider(){
+        public BoundWidget get() {
+            return new PopupDatePicker();
+        }
+        
+   };
 
     HashMap registry = new HashMap();
 
@@ -89,6 +98,7 @@ public class BoundWidgetTypeFactory {
             registry.put(float.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
             registry.put(Double.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
             registry.put(double.class, BoundWidgetTypeFactory.TEXTBOX_PROVIDER);
+            registry.put(Date.class, BoundWidgetTypeFactory.POPUP_DATE_PICKER_PROVIDER);
         }
     }
 

@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import java.util.Comparator;
 
 import com.google.gwt.user.client.ui.ChangeListener;
@@ -187,39 +188,28 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled
     }
     
     public int getTabIndex() {
-        int retValue;
-        
-        retValue = this.base.getTabIndex();
-        
-        return retValue;
+        return this.base.getTabIndex();
     }
     
     public String getText() {
-        String retValue;
-        
-        retValue = this.base.getText();
-        
-        return retValue;
+        return this.base.getText();
     }
     
     public String getTitle() {
-        String retValue;
-        
-        retValue = this.base.getTitle();
-        
-        return retValue;
+        return this.base.getTitle();
     }
     
     public Object getValue() {
-        return this.base.getText().length() == 0 ? null : this.base.getText();
+        try{
+            return this.base.getText().length() == 0 ? null : this.base.getText();
+        } catch(RuntimeException re){
+            GWT.log( ""+this.base, re);
+            return null;
+        }
     }
     
     public int getVisibleLength() {
-        int retValue;
-        
-        retValue = this.base.getVisibleLength();
-        
-        return retValue;
+        return this.base.getVisibleLength();
     }
     
     public void removeChangeListener(ChangeListener listener) {

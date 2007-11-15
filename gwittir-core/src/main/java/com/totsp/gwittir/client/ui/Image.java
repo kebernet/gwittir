@@ -102,6 +102,28 @@ public class Image extends AbstractBoundWidget
         return this.base.getOriginTop();
     }
     
+    public void setPixelHeight(int height){
+        int old = this.base.getHeight();
+        this.base.setPixelSize( this.base.getWidth(), height );
+        this.changes.firePropertyChange("pixelHeight", old, height );
+    }
+    
+    public int getPixelHeight(){
+        return this.base.getHeight();
+    }
+    
+    public void setPixelWidth(int width){
+        int old = this.base.getWidth();
+        this.base.setPixelSize(width, this.base.getHeight() );
+        this.changes.firePropertyChange("pixelWidth", old, width );
+    }
+    
+    public int getPixelWidth(){
+        return this.base.getWidth();
+    }
+    
+    
+    
     
 
 }

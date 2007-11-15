@@ -2,6 +2,15 @@ body {
     height: 100%;
 }
 
+.gwittir-ChangeMarker {
+   background-color: #FFCCCC;
+   background-image: url( images/ChangedMarker.gif );
+   background-position: top right;
+   background-repeat: no-repeat;
+   width: 100%;
+ }
+
+
 .gwittir-SoftButton {
     border-style: outset;
     border-width: 2px;
@@ -115,13 +124,14 @@ body {
     color: white;
 }
 .gwittir-BoundTable tr > td >  input {
-    border: 0px solid black;
+    border-width: 0px;
+    width: 100%;
     background-color: transparent;
 }
 
 .gwittir-BoundTable tr > td > select {
-    border: 1px solid black;
     height: 25px;
+    width: 100%;
 }
 
 .gwittir-BoundTable tr.selected {
@@ -306,16 +316,6 @@ body {
     background-image: url( images/GradientToPaleBlue.png );
 }
 
-.gwittir-ChangeMarker {
-   width: 15px;
-   height: 15px;
-   background-image: url( images/ChangedMarker.gif );
-   background-position: top right;
-   background-repeat: no-repeat;
-   background-color: transparent;
-   border: 0px solid black;
- }
-
 .gwittir-ReflectedFisheyeImageGroup {
     background-image: url( images/darkblue-gray-gradient.gif );
     background-position: center center;
@@ -361,3 +361,4 @@ body {
 .gwittir-DatePicker .gwittir-Calendar .date {
     text-align: center;
 }
+

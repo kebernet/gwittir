@@ -264,10 +264,7 @@ public class Binding {
     public void unbind() {
         if( left != null && right != null ){
             left.object.removePropertyChangeListener(left.listener);
-            left.listener = null;
-            
             right.object.removePropertyChangeListener(right.listener);
-            right.listener = null;
         }
         for(int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = (Binding) children.get(i);

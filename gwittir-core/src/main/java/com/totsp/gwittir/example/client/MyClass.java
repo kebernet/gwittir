@@ -23,6 +23,7 @@ package com.totsp.gwittir.example.client;
 import com.totsp.gwittir.client.beans.Bindable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Date;
 
 /**
  *
@@ -39,6 +40,8 @@ public class MyClass implements Bindable{
     private double price;
     private String homeTown;
     private String zipCode;
+    private Date birthDate = new Date( 74, 9, 02 );
+    private boolean active = true;
     
     private transient PropertyChangeSupport changes = new PropertyChangeSupport(this);
     
@@ -144,6 +147,22 @@ public class MyClass implements Bindable{
         String old = this.zipCode;
         this.zipCode = zipCode;
         this.changes.firePropertyChange("zipCode", old, zipCode );
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
    

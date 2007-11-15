@@ -34,6 +34,7 @@ import java.util.List;
 public class ChangeMarkedTypeFactory extends BoundWidgetTypeFactory {
     
     HashMap widgetLookup = new HashMap(); /*<Bindable, ArrayList<ChangeMarkListener>>*/
+    private boolean marking = false;
     
     public ChangeMarkedTypeFactory(){
         super(true);
@@ -84,6 +85,14 @@ public class ChangeMarkedTypeFactory extends BoundWidgetTypeFactory {
             return w;
         }
         
+    }
+
+    public boolean isMarking() {
+        return marking;
+    }
+
+    public void setMarking(boolean marking) {
+        this.marking = marking;
     }
     
 }
