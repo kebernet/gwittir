@@ -64,11 +64,18 @@
                 <configuration>
                     <logLevel>INFO</logLevel>
                     <runTarget>com.totsp.gwittir.example.Example/index.html?log.level=spam</runTarget>
-                    <compileTarget>
+                    <compileTargets>
                         <param>com.totsp.gwittir.example.Example</param>
-                    </compileTarget>
+                    </compileTargets>
                     <port>8088</port>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>testGwt</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -87,7 +94,7 @@
                 <artifactId>maven-jxr-plugin</artifactId>
             </plugin>
         </plugins>
-  </reporting>
+    </reporting>
     <profiles>
         <profile>
             <id>darwin</id>

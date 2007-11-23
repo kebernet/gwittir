@@ -71,15 +71,10 @@ public class EqualsHashCodeBean implements Serializable {
     public boolean beanEquals(Object obj) {
         Object bean1 = bean;
         Object bean2 = obj;
-
         boolean eq;
         if( bean1 == bean2 ){
             eq = true;
-        } else if ((bean2 == null) || bean2 instanceof Introspectable) {
-            eq = false;
-        } else if ((bean1 == null) && (bean2 == null)) {
-            eq = true;
-        } else if ((bean1 == null) || (bean2 == null)) {
+        } else if ((bean2 == null) || !(bean2 instanceof Introspectable)) {
             eq = false;
         } else if (!GWT.getTypeName(bean1).equals(GWT.getTypeName(bean2))) {
             eq = false;
