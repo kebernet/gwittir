@@ -154,7 +154,9 @@ public class MyClass implements Bindable{
     }
 
     public void setBirthDate(Date birthDate) {
+        Date old = this.birthDate;
         this.birthDate = birthDate;
+        this.changes.firePropertyChange("birthDate", old, birthDate);
     }
 
     public boolean isActive() {
@@ -162,7 +164,9 @@ public class MyClass implements Bindable{
     }
 
     public void setActive(boolean active) {
+        boolean old = this.active;
         this.active = active;
+        this.changes.firePropertyChange("active", old, active);
     }
 
    

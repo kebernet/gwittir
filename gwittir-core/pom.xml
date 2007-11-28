@@ -4,7 +4,7 @@
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.32</version>
+    <version>0.2.0</version>
     <name>Gwittir Core</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>
@@ -14,6 +14,12 @@
             <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gwt-maven</id>
+            <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <distributionManagement>
         <repository>
             <id>local.repo</id>
@@ -61,9 +67,10 @@
             <plugin>
                 <groupId>com.totsp.gwt</groupId>
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
+                <version>2.0-beta2</version>
                 <configuration>
                     <logLevel>INFO</logLevel>
-                    <runTarget>com.totsp.gwittir.example.Example/index.html?log.level=spam</runTarget>
+                    <runTarget>com.totsp.gwittir.example.Example/index_strict.html?log.level=spam</runTarget>
                     <compileTargets>
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTargets>
@@ -72,6 +79,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>compile</goal>
                             <goal>testGwt</goal>
                         </goals>
                     </execution>
