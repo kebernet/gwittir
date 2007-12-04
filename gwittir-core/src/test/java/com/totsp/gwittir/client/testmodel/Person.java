@@ -7,6 +7,7 @@ public class Person extends AbstractModelBean {
     private String firstName;
     private String lastName;
     private int age;
+    private Person spouse;
 
     public Person() {
     }
@@ -22,7 +23,9 @@ public class Person extends AbstractModelBean {
     }
 
     public void setFirstName(String firstName) {
+        String old = this.firstName;
         this.firstName = firstName;
+        this.changeSupport.firePropertyChange("firstName", old, firstName );
     }
 
     public String getLastName() {
@@ -30,7 +33,9 @@ public class Person extends AbstractModelBean {
     }
 
     public void setLastName(String lastName) {
+        String old = this.lastName;
         this.lastName = lastName;
+        this.changeSupport.firePropertyChange("lastName", old, lastName );
     }
 
     public int getAge() {
@@ -38,6 +43,18 @@ public class Person extends AbstractModelBean {
     }
 
     public void setAge(int age) {
+        int old = this.age;
         this.age = age;
+        this.changeSupport.firePropertyChange("age", old, age);
+    }
+
+    public Person getSpouse() {
+        return spouse;
+    }
+
+    public void setSpouse(Person spouse) {
+        Person old = this.spouse;
+        this.spouse = spouse;
+        this.changeSupport.firePropertyChange("spouse", old, spouse );
     }
 }
