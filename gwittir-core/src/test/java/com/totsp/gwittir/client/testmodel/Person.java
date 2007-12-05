@@ -7,6 +7,30 @@ public class Person extends AbstractModelBean {
     private String firstName;
     private String lastName;
     private int age;
+    private Person[] children;
+
+    public static final String PROP_CHILDREN = "children";
+
+    /**
+     * Get the value of children
+     *
+     * @return the value of children
+     */
+    public Person[] getChildren() {
+        return this.children;
+    }
+
+    /**
+     * Set the value of children
+     *
+     * @param newchildren new value of children
+     */
+    public void setChildren(Person[] newchildren) {
+        Person[] oldchildren = children;
+        this.children = newchildren;
+        this.changeSupport.firePropertyChange(PROP_CHILDREN, oldchildren, newchildren);
+    }
+
     private Person spouse;
 
     public Person() {

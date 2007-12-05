@@ -45,6 +45,35 @@ public class GwtTestBinding extends GWTTestCase {
         this.assertEquals( "change", benayCopy.getFirstName() );
         
         b.unbind();
+        
+        // Test Array bindings with descriminators
+        Person childCopy = new Person();
+        Person[] children1 = { new Person("Delaney", "Krissel", 12), 
+                               new Person("Jonny", "Doe", 1),
+                               new Person("Jenny", "Nobody", 3) };
+        
+        Person[] children2 = { new Person("Jonny", "Doe", 1),
+                               new Person("Delaney", "Krissel", 12),
+                               new Person("Timmy", "Nobody", 3) };
+        
+        mark.setChildren(children1);
+        b = new Binding( childCopy, "firstName", mark, "children[2].firstName");
+        b.setLeft();
+        this.assertEquals( "Jenny", childCopy.getFirstName() );
+        b.bind();
+        children1[2].setFirstName("Becky");
+        this.assertEquals( "Becky", childCopy.getFirstName() );
+        mark.setChildren(children2);
+        this.assertEquals( "Timmy", childCopy.getFirstName() );
+        b.unbind();
+        
+        b = new Binding( childCopy, "firstName", mark, "children[lastName=Doe].firstName");
+        b.setLeft();
+        this.assertEquals("Jonny", childCopy.getFirstName() );
+        
+        
+        
+        
     }
     
 }
