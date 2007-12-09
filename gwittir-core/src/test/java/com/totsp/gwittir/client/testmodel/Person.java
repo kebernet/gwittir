@@ -81,4 +81,6 @@ public class Person extends AbstractModelBean {
         this.spouse = spouse;
         this.changeSupport.firePropertyChange("spouse", old, spouse );
     }
+    
+    public String toString(){ return this.firstName; }
 }

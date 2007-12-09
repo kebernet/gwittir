@@ -87,8 +87,8 @@ public class Binding {
      */
     public Binding(Bindable left, String leftProperty, Bindable right,
             String rightProperty) {
-        this.left = this.resolveDottedObject(left, leftProperty);
-        this.right = this.resolveDottedObject(right, rightProperty);
+        this.left = this.createBindingInstance(left, leftProperty);
+        this.right = this.createBindingInstance(right, rightProperty);
 
         this.left.listener = new DefaultPropertyChangeListener(this.left,
                 this.right);
@@ -110,11 +110,11 @@ public class Binding {
     public Binding(Bindable left, String leftProperty, Validator leftValidator,
             ValidationFeedback leftFeedback, Bindable right, String rightProperty,
             Validator rightValidator, ValidationFeedback rightFeedback) {
-        this.left = this.resolveDottedObject(left, leftProperty);
+        this.left = this.createBindingInstance(left, leftProperty);
         this.left.validator = leftValidator;
         this.left.feedback = leftFeedback;
 
-        this.right = this.resolveDottedObject(right, rightProperty);
+        this.right = this.createBindingInstance(right, rightProperty);
         this.right.validator = rightValidator;
         this.right.feedback = rightFeedback;
 
@@ -135,9 +135,9 @@ public class Binding {
      */
     public Binding(Bindable left, String leftProperty, Converter leftConverter,
             Bindable right, String rightProperty, Converter rightConverter) {
-        this.left = this.resolveDottedObject(left, leftProperty);
+        this.left = this.createBindingInstance(left, leftProperty);
         this.left.converter = leftConverter;
-        this.right = this.resolveDottedObject(right, rightProperty);
+        this.right = this.createBindingInstance(right, rightProperty);
         this.right.converter = rightConverter;
 
         this.left.listener = new DefaultPropertyChangeListener(this.left,
@@ -207,9 +207,14 @@ public class Binding {
         if ((left != null) && (right != null)) {
             left.object.addPropertyChangeListener(left.property.getName(),
                     left.listener);
-
+            if( left.nestedListener != null ){
+                left.nestedListener.setup();
+            }
             right.object.addPropertyChangeListener(right.property.getName(),
                     right.listener);
+            if( right.nestedListener != null ){
+                right.nestedListener.setup();
+            }
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
@@ -268,8 +273,14 @@ public class Binding {
      */
     public void unbind() {
         if ((left != null) && (right != null)) {
-            left.object.removePropertyChangeListener(left.listener);
-            right.object.removePropertyChangeListener(right.listener);
+            left.object.removePropertyChangeListener(left.property.getName(), left.listener);
+            if( left.nestedListener != null ){
+                left.nestedListener.cleanup();
+            }
+            right.object.removePropertyChangeListener(right.property.getName(), right.listener);
+            if( right.nestedListener != null ){
+                right.nestedListener.cleanup();
+            }
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
@@ -371,18 +382,19 @@ public class Binding {
         throw new IndexOutOfBoundsException("Binding descriminator too high: "+index );
     }
 
-    private BindingInstance resolveDottedObject(Bindable object,
+    private BindingInstance createBindingInstance(Bindable object,
             String propertyName) {
         int dotIndex = propertyName.indexOf(".");
         BindingInstance instance = new BindingInstance();
-        ResetTargetPropertyChangeListener rtpcl = (dotIndex == -1) ? null
-                : new ResetTargetPropertyChangeListener(instance,
+        NestedPropertyChangeListener rtpcl = (dotIndex == -1) ? null
+                : new NestedPropertyChangeListener(instance,
                 object, propertyName);
-
+        ArrayList parents = new ArrayList();
+        ArrayList propertyNames = new ArrayList();
         while (dotIndex != -1) {
             String pname = propertyName.substring(0, dotIndex);
             propertyName = propertyName.substring(dotIndex + 1);
-
+            parents.add(object);
             try {
                 String descriminator = null;
                 int descIndex = pname.indexOf("[");
@@ -390,8 +402,7 @@ public class Binding {
                     descriminator = pname.substring(descIndex + 1, pname.indexOf("]", descIndex));
                     pname = pname.substring(0, descIndex);
                 }
-                object.addPropertyChangeListener(pname, rtpcl);
-                
+                propertyNames.add(pname);
                 if (descriminator != null) {
                     //TODO Need a loop here to handle multi-dimensional/collections of collections
                     Object collectionOrArray = INTROSPECTOR.getDescriptor(object).getProperty(pname).getAccessorMethod().invoke(object, null);
@@ -400,6 +411,7 @@ public class Binding {
                 } else {
                     object = (Bindable) INTROSPECTOR.getDescriptor(object).getProperty(pname).getAccessorMethod().invoke(object, null);
                 }
+               
             } catch (ClassCastException cce) {
                 throw new RuntimeException("Nonbindable sub property: " +
                         object + " . " + pname, cce);
@@ -409,10 +421,15 @@ public class Binding {
 
             dotIndex = propertyName.indexOf(".");
         }
-
+        if( rtpcl != null ){
+            rtpcl.parents = new Bindable[parents.size()];
+            parents.toArray(rtpcl.parents);
+            rtpcl.propertyNames = new String[propertyNames.size()];
+            propertyNames.toArray( rtpcl.propertyNames );
+        }
         instance.object = object;
         instance.property = INTROSPECTOR.getDescriptor(object).getProperty(propertyName);
-
+        instance.nestedListener = rtpcl;
         return instance;
     }
 
@@ -442,6 +459,10 @@ public class Binding {
          * A Validator object when needed.
          */
         public Validator validator;
+        private NestedPropertyChangeListener nestedListener = null;
+        private BindingInstance(){
+            super();
+        }
     }
 
     private static class DefaultPropertyChangeListener
@@ -450,7 +471,7 @@ public class Binding {
         private BindingInstance instance;
         private BindingInstance target;
         private ValidationException lastException = null;
-
+        
         DefaultPropertyChangeListener(BindingInstance instance,
                 BindingInstance target) {
             this.instance = instance;
@@ -500,16 +521,20 @@ public class Binding {
                 throw new RuntimeException(e);
             }
         }
+        public String toString(){
+            return "[Listener on : "+ this.instance.object +" ] ";
+        }
     }
 
-    private class ResetTargetPropertyChangeListener
+    private class NestedPropertyChangeListener
             implements PropertyChangeListener {
 
         BindingInstance target;
         Bindable sourceObject;
         String propertyName;
-
-        ResetTargetPropertyChangeListener(BindingInstance target,
+        Bindable[] parents;
+        String[] propertyNames;
+        NestedPropertyChangeListener(BindingInstance target,
                 Bindable sourceObject, String propertyName) {
             this.target = target;
             this.sourceObject = sourceObject;
@@ -522,10 +547,10 @@ public class Binding {
                 bound = true;
             }
 
-            BindingInstance newInstance = resolveDottedObject(sourceObject,
+            BindingInstance newInstance = createBindingInstance(sourceObject,
                     propertyName);
             target.object = newInstance.object;
-
+            target.nestedListener = newInstance.nestedListener;
             if (lastSet == Boolean.TRUE) {
                 setLeft();
             } else if (lastSet == Boolean.FALSE) {
@@ -535,8 +560,20 @@ public class Binding {
             if (bound) {
                 bind();
             }
-
-            ((Bindable) evt.getSource()).removePropertyChangeListener(this);
+            
+            
+        }
+        
+        public void setup(){
+            for(int i=0; i < parents.length; i++){
+                parents[i].addPropertyChangeListener(this.propertyNames[i], this);
+            }
+        }
+        
+        public void cleanup(){
+            for(int i=0; i < parents.length; i++){
+               parents[i].removePropertyChangeListener(this.propertyNames[i], this);
+            }
         }
     }
 }
