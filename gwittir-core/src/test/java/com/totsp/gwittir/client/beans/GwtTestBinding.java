@@ -75,6 +75,10 @@ public class GwtTestBinding extends GWTTestCase {
         b.bind();
         b.unbind();
 
+        
+        //
+        // Make sure cleanups worked.
+        //
         Person pcsTest = new Person();
         PropertyChangeListener l = new PropertyChangeListener() {
 
