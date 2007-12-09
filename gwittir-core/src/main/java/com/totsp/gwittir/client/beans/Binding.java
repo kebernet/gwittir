@@ -324,7 +324,7 @@ public class Binding {
                 this.left.object + "\n ]";
     }
     
-    private Bindable getDescriminatedObject(Object collectionOrArray, String descriminator){
+    private Bindable getDiscriminatedObject(Object collectionOrArray, String descriminator){
         int equalsIndex = descriminator.indexOf("=");
         if( collectionOrArray instanceof Collection && equalsIndex == -1 ){
             return this.getBindableAtCollectionIndex( (Collection) collectionOrArray, Integer.parseInt( descriminator ) );
@@ -406,7 +406,7 @@ public class Binding {
                 if (descriminator != null) {
                     //TODO Need a loop here to handle multi-dimensional/collections of collections
                     Object collectionOrArray = INTROSPECTOR.getDescriptor(object).getProperty(pname).getAccessorMethod().invoke(object, null);
-                    object = this.getDescriminatedObject(collectionOrArray, descriminator);
+                    object = this.getDiscriminatedObject(collectionOrArray, descriminator);
 
                 } else {
                     object = (Bindable) INTROSPECTOR.getDescriptor(object).getProperty(pname).getAccessorMethod().invoke(object, null);
