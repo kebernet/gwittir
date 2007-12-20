@@ -995,7 +995,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
 
         if (count < 10) {
             SuggestedKeyBinding kb = new SuggestedKeyBinding(
-                    Integer.toString(count).charAt(0), true, false, false);
+                    Integer.toString(count).charAt(0), false, true, false );
             Task task = new Task() {
                     public void run() {
                         List newSelected = new ArrayList(getSelected());

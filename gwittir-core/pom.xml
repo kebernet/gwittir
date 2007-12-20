@@ -42,13 +42,14 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>1.4.60</version>
+            <version>1.4.61</version>
             <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-            <version>1.4.60</version>
+            <version>1.4.61</version>
             <type>jar</type>
             <scope>runtime</scope>
         </dependency>       
@@ -68,7 +69,7 @@
             <plugin>
                 <groupId>com.totsp.gwt</groupId>
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
-                <version>2.0-beta4</version>
+                <version>2.0-beta6</version>
                 <configuration>
                     <logLevel>INFO</logLevel>
                     <runTarget>com.totsp.gwittir.example.Example/index_strict.html?log.level=spam</runTarget>
@@ -76,6 +77,7 @@
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTargets>
                     <port>8088</port>
+                    <!--extraTestArgs>-Dgwt.args="-help"</extraTestArgs-->
                 </configuration>
                 <executions>
                     <execution>
@@ -128,7 +130,7 @@
                 <dependency>
                     <groupId>com.google.gwt</groupId>
                     <artifactId>gwt-dev-mac</artifactId>
-                    <version>1.4.60</version>
+                    <version>1.4.61</version>
                     <scope>system</scope>
                     <systemPath>${google.webtoolkit.home}/gwt-dev-mac.jar</systemPath>
                 </dependency>
@@ -161,7 +163,7 @@
                 <dependency>
                     <groupId>com.google.gwt</groupId>
                     <artifactId>gwt-dev-windows</artifactId>
-                    <version>1.4.60</version>
+                    <version>1.4.61</version>
                     <scope>system</scope>
                     <systemPath>${google.webtoolkit.home}/gwt-dev-windows.jar</systemPath>
                 </dependency>

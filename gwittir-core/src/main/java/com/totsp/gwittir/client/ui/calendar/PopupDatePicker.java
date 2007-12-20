@@ -77,9 +77,9 @@ public class PopupDatePicker extends AbstractBoundWidget
                         
                     });
                     pp.show();
-                    if( pp.getPopupLeft() + pp.getOffsetWidth()  > width  ){
+                    if( pp.getPopupLeft() + base.getOffsetWidth()  > width  ){
                         pp.setPopupPosition( pp.getPopupLeft() + 
-                                (width - pp.getPopupLeft()- pp.getOffsetWidth() ), pp.getPopupTop() );
+                                (width - pp.getPopupLeft()- base.getOffsetWidth() ), pp.getPopupTop() );
                     }
                 }
             }
