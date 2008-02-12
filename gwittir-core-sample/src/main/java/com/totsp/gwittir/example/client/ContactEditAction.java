@@ -75,7 +75,6 @@ public class ContactEditAction implements BindingAction
                 TypeLookup type = new TypeLookup();
                 type.id = new Integer(1);
                 type.name = "home";
-
                 StateLookup state = new StateLookup();
                 state.id = new Integer(2);
                 state.code = "AL";
@@ -86,7 +85,8 @@ public class ContactEditAction implements BindingAction
                 ArrayList list = new ArrayList();
                 list.add(newAddress);
                 System.out.println("newAddress - " + newAddress);
-                e.addresses.setSelected(list);
+                e.addresses.add(newAddress);                
+                //setSelected(list); // TODO setSelected causes errors, why are we using it here, and why does it err? 
             }
         });
 
@@ -98,10 +98,8 @@ public class ContactEditAction implements BindingAction
                 TypeLookup type = new TypeLookup();
                 type.id = new Integer(1);
                 type.name = "home";
-
                 phone.setType(type);
                 e.phoneNumbers.add(phone);
-
             }
         });
     }
