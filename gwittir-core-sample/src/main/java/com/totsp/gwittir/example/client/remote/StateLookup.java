@@ -31,4 +31,13 @@ public class StateLookup implements IsSerializable {
     public String code;
     public String name;
     
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("StateLookup: id-" + this.id);
+        sb.append(" code-" + this.code);
+        sb.append(" name-" + this.name);
+        return sb.toString();    
+    }
+
 }

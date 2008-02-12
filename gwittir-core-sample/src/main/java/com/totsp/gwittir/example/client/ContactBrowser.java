@@ -64,6 +64,7 @@ public class ContactBrowser extends AbstractBoundWidget{
         this.value = value;
     }
     
+    // when the action is set on this Widget it is applied to the contacts table AND the newContact button
     public void setAction(Action action ){
         super.setAction( action );
         contacts.setAction( action );

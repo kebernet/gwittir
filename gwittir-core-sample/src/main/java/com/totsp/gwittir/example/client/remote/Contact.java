@@ -111,4 +111,14 @@ public class Contact extends AbstractBindable{
         this.notes = notes;
     }
     
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Contact: id-" + this.id);
+        sb.append(" firstName-" + this.firstName);
+        sb.append(" lastName-" + this.lastName);
+        sb.append(" notes-" + this.notes);
+        return sb.toString();    
+    }
+    
 }

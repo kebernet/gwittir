@@ -108,4 +108,23 @@ public class Address extends AbstractBindable implements HasType {
         this.changes.firePropertyChange("id", old, id);
     }
     
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Address: id-" + this.id);
+        sb.append(" type-" + (this.type != null ? this.type.name : "null"));
+        sb.append(" address1-" + this.address1);
+        sb.append(" address2-" + this.address2);
+        sb.append(" city-" + this.city);
+        sb.append(" state-" + (this.state != null ? this.state.code : "null"));
+        sb.append(" zip-" + this.zip);
+        return sb.toString();    
+    }
+    
+    public static void main(String[] args)
+    {
+        Address a = new Address();
+        a.setCity("city");
+        System.out.println("address - " + a);
+    }
 }

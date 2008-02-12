@@ -57,4 +57,14 @@ public class Phone extends AbstractBindable implements HasType {
         this.type = type;
     }
     
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Phone: id-" + this.id);
+        sb.append(" number-" + this.number);
+        sb.append(" type-" + (this.type != null ? this.type.name : "null"));
+        return sb.toString();    
+    }
+
+    
 }

@@ -31,5 +31,11 @@ public class TypeLookup implements IsSerializable {
     public Integer id;
     public String name;
    
-    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("TypeLookup: id-" + this.id);
+        sb.append(" name-" + this.name);
+        return sb.toString();    
+    }
 }

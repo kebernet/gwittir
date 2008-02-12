@@ -8,7 +8,6 @@
 package com.totsp.gwittir.example.remote;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
