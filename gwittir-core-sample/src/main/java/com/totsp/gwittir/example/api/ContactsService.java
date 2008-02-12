@@ -21,9 +21,9 @@
 package com.totsp.gwittir.example.api;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
@@ -55,7 +55,7 @@ public class ContactsService {
              return results;
              
         }catch(RuntimeException e){
-            throw new ContactsServiceException( "Unable to query contacts", e);
+            throw new ContactsServiceException( "Unable to query contacts - " + e.getMessage());
         }
         finally {
             if (em != null) {
@@ -100,8 +100,7 @@ public class ContactsService {
                 em.getTransaction().rollback();
                 em.close();
             }
-        }
-        
+        }        
     }
     
     public List<TypeLookup> getTypeLookups(){
@@ -116,8 +115,7 @@ public class ContactsService {
                 em.getTransaction().rollback();
                 em.close();
             }
-        }
-        
+        }        
     }
 
     public EntityManagerFactory getEntityManagerFactory() {
@@ -127,5 +125,7 @@ public class ContactsService {
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
+    
+    
     
 }

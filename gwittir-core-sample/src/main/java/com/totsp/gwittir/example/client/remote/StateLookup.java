@@ -26,7 +26,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  * @author cooper
  */
-public class StateLookup implements IsSerializable{
+public class StateLookup implements IsSerializable {
     public Integer id;
     public String code;
     public String name;

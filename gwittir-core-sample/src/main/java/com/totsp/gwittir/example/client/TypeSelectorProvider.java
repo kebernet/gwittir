@@ -20,6 +20,8 @@
 
 package com.totsp.gwittir.example.client;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.ListBox;
 import com.totsp.gwittir.client.ui.Renderer;
@@ -27,6 +29,7 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.example.client.remote.Services;
 import com.totsp.gwittir.example.client.remote.TypeLookup;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  *
@@ -42,7 +45,7 @@ public class TypeSelectorProvider implements BoundWidgetProvider {
     
     public BoundWidget get(){
         
-        ListBox box = new ListBox();
+        final ListBox box = new ListBox();
         box.setRenderer( new Renderer() {
             public Object render(Object o) {
                 return ((TypeLookup)o).name;
@@ -55,8 +58,20 @@ public class TypeSelectorProvider implements BoundWidgetProvider {
             }
             
         });
-        box.setMultipleSelect( false );
-        box.setOptions( Services.FREEZER.typeLookups() );
+        box.setMultipleSelect( false );        
+        
+        Services.CONTACTS.getTypeLookups(new AsyncCallback() {
+            public void onSuccess(Object result)
+            {
+                box.setOptions((List) result );
+            }
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Error getting types - " + caught.getMessage());
+                return;
+            }
+        });    
+        
         return box;
     }
     

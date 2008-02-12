@@ -13,7 +13,6 @@ import javax.persistence.Persistence;
 import junit.framework.TestCase;
 
 import com.totsp.gwittir.example.api.ContactsService;
-import com.totsp.gwittir.example.web.StartupContextListener;
 
 /**
  *
@@ -43,21 +42,18 @@ public class StartupContextListenerTest extends TestCase {
         // TODO add your test code.
     }
 
-    /**
-     * Test of getSerializedStates method, of class com.totsp.gwittir.example.web.StartupContextListener.
-     */
+    /*
     public void testGetSerializedStates() throws Exception {
         StartupContextListener l = new StartupContextListener();
         System.out.println( l.getSerializedStates( service ) );
         
     }
 
-    /**
-     * Test of getSerializedTypes method, of class com.totsp.gwittir.example.web.StartupContextListener.
-     */
+    
     public void testGetSerializedTypes() throws Exception {
         StartupContextListener l = new StartupContextListener();
         System.out.println( l.getSerializedTypes( service ) );
     }
+    */
     
 }

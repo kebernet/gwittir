@@ -32,7 +32,7 @@ public class Services {
     static {
        ((ServiceDefTarget) CONTACTS).setServiceEntryPoint(GWT.getModuleBaseURL()+"/ContactsRemoteService");
     }
-    public static final LookupFreezer FREEZER = (LookupFreezer) GWT.create(LookupFreezer.class);
+    ///public static final LookupFreezer FREEZER = (LookupFreezer) GWT.create(LookupFreezer.class);
     
     
 }

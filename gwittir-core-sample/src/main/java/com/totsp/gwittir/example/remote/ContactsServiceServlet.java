@@ -55,7 +55,7 @@ public class ContactsServiceServlet extends RemoteServiceServlet
             return (List) BeanMapping.convert(getMappings(),
                 getService().findContacts(limit, start, orderBy, ascending));
         } catch(Exception e) {
-            this.log("Exception in findContacts", e);
+            //this.log("Exception in findContacts", e);
             throw new ContactsRemoteException(e.toString());
         }
     }
@@ -85,7 +85,7 @@ public class ContactsServiceServlet extends RemoteServiceServlet
                     BeanMapping
                     .convert(getMappings(), contact)));
         } catch(Exception e) {
-            this.log("Exception in findContacts", e);
+            //this.log("Exception in findContacts", e);
             throw new ContactsRemoteException(e.toString());
         }
     }
@@ -97,4 +97,26 @@ public class ContactsServiceServlet extends RemoteServiceServlet
     public void setService(ContactsService service) {
         this.service = service;
     }
+    
+    
+    public List getStateLookups() throws ContactsRemoteException {
+            try {
+                return (List) BeanMapping.convert(getMappings(),
+                    getService().getStateLookups());
+            } catch(Exception e) {
+                //this.log("Exception in getStates", e);
+                throw new ContactsRemoteException(e.toString());
+            }
+        }    
+    
+    public List getTypeLookups() throws ContactsRemoteException {
+        try {
+            return (List) BeanMapping.convert(getMappings(),
+                getService().getTypeLookups());
+        } catch(Exception e) {
+            //this.log("Exception in getTypes", e);
+            throw new ContactsRemoteException(e.toString());
+        }
+    }
+    
 }

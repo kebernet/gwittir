@@ -20,6 +20,8 @@
 
 package com.totsp.gwittir.example.client;
 
+import java.util.ArrayList;
+
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.beans.Binding;
@@ -27,10 +29,6 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.example.client.remote.Address;
 import com.totsp.gwittir.example.client.remote.Contact;
 import com.totsp.gwittir.example.client.remote.Phone;
-import com.totsp.gwittir.example.client.remote.Services;
-import com.totsp.gwittir.example.client.remote.StateLookup;
-import com.totsp.gwittir.example.client.remote.TypeLookup;
-import java.util.ArrayList;
 
 /**
  *
@@ -65,8 +63,9 @@ public class ContactEditAction implements BindingAction {
         e.newAddress.setAction( new Action(){
            public void execute( BoundWidget w ){
                Address newAddress = new Address();
-               newAddress.setType(  (TypeLookup) Services.FREEZER.typeLookups().get(0) );
-               newAddress.setState(  (StateLookup) Services.FREEZER.stateLookups().get(0));
+               // TODO cache types and states and get here
+               ///newAddress.setType(  (TypeLookup) Services.FREEZER.typeLookups().get(0) );
+               ///newAddress.setState(  (StateLookup) Services.FREEZER.stateLookups().get(0));
                e.addresses.add( newAddress );
                ArrayList list = new ArrayList();
                list.add( newAddress );
@@ -77,7 +76,8 @@ public class ContactEditAction implements BindingAction {
         e.newPhone.setAction( new Action(){
             public void execute( BoundWidget w ){
                Phone phone = new Phone();
-               phone.setType(  (TypeLookup) Services.FREEZER.typeLookups().get(0) );
+               // TODO cache get
+               ///phone.setType(  (TypeLookup) Services.FREEZER.typeLookups().get(0) );
                e.phoneNumbers.add( phone );
                
            }

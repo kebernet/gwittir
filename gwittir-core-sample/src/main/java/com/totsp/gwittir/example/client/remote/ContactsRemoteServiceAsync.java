@@ -20,7 +20,6 @@
 
 package com.totsp.gwittir.example.client.remote;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -33,4 +32,8 @@ public interface ContactsRemoteServiceAsync {
     
     public void saveContact( Contact contact, AsyncCallback callback );
    
+    public void getStateLookups(AsyncCallback callback);
+    
+    public void getTypeLookups(AsyncCallback callback);
+    
 }

@@ -19,22 +19,14 @@
  */
 package com.totsp.gwittir.example.web;
 
-import com.totsp.gwittir.example.api.ContactsService;
-import com.totsp.gwittir.example.client.remote.StateLookup;
-import com.totsp.gwittir.example.client.remote.TypeLookup;
-
-import com.totsp.gwt.beans.server.BeanMapping;
-import com.totsp.gwt.freezedry.server.SimpleSerializer;
-
-import java.net.URLEncoder;
-
-import java.util.List;
 import java.util.Properties;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import com.totsp.gwittir.example.api.ContactsService;
 
 
 /**
@@ -71,6 +63,7 @@ public class StartupContextListener implements ServletContextListener {
         servletContextEvent.getServletContext()
         .setAttribute(MAPPINGS, MAPPING_PROPS);
         
+        /*
         try {
             String typesSer = this.getSerializedTypes( service );
             servletContextEvent.getServletContext().setAttribute(TYPES, typesSer);
@@ -81,22 +74,10 @@ public class StartupContextListener implements ServletContextListener {
             servletContextEvent.getServletContext()
             .log("Exception getting lookup types.", e);
         }
+        */
     }
     
-    public String getSerializedStates( ContactsService service ) throws Exception {
-        List<StateLookup> states = (List<StateLookup>) 
-        BeanMapping.convert(MAPPING_PROPS,
-                service.getStateLookups());
-        String statesSer = URLEncoder.encode(SimpleSerializer
-                .serializeCollection(states), "UTF-8");
-        return statesSer;
-    }
     
-    public String getSerializedTypes( ContactsService service ) throws Exception {
-        List<TypeLookup> types = (List<TypeLookup>) BeanMapping
-                .convert(MAPPING_PROPS, service.getTypeLookups());
-        String typesSer = URLEncoder.encode(SimpleSerializer
-                .serializeCollection(types), "UTF-8");
-        return typesSer;
-    }
+   
+    
 }

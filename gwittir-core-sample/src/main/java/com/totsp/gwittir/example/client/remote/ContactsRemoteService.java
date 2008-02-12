@@ -36,5 +36,13 @@ public interface ContactsRemoteService extends RemoteService {
     
     public Contact saveContact( Contact contact ) throws ContactsRemoteException;
     
+    /**
+     * @gwt.typeArgs <com.totsp.gwittir.example.client.remote.StateLookup>
+     */
+    public List getStateLookups() throws ContactsRemoteException;
     
+    /**
+     * @gwt.typeArgs <com.totsp.gwittir.example.client.remote.TypeLookup>
+     */
+    public List getTypeLookups() throws ContactsRemoteException;
 }

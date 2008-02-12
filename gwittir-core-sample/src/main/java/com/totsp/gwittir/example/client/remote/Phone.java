@@ -20,7 +20,6 @@
 
 package com.totsp.gwittir.example.client.remote;
 
-import com.totsp.gwittir.client.beans.Bindable;
 
 /**
  *

@@ -21,6 +21,7 @@
 package com.totsp.gwittir.example.api;
 
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +32,8 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.IndexColumn;
 
 
 /**
@@ -62,10 +65,10 @@ public class Contact {
     @Lob
     private String notes;
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    //@IndexColumn(name="ca_id")
+    @IndexColumn(name="ca_id")
     private List<Address> addresses;
-    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    //@IndexColumn(name="cp_id")
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @IndexColumn(name="cp_id")
     private List<Phone> phoneNumbers;
     
     /** Creates a new instance of Contact */

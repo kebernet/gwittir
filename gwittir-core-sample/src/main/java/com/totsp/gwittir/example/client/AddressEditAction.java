@@ -20,16 +20,14 @@
 
 package com.totsp.gwittir.example.client;
 
+import java.util.Comparator;
+
 import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.beans.Binding;
-import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.example.client.remote.Address;
 import com.totsp.gwittir.example.client.remote.StateLookup;
-import com.totsp.gwittir.example.client.remote.TypeLookup;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  *

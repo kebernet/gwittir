@@ -8,6 +8,7 @@
 package com.totsp.gwittir.example.remote;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -20,7 +21,6 @@ import com.totsp.gwittir.example.client.remote.Address;
 import com.totsp.gwittir.example.client.remote.Contact;
 import com.totsp.gwittir.example.client.remote.StateLookup;
 import com.totsp.gwittir.example.client.remote.TypeLookup;
-import com.totsp.gwittir.example.remote.ContactsServiceServlet;
 
 /**
  *
@@ -99,6 +99,26 @@ public class ContactsServiceServletTest extends TestCase {
      */
     public void testInit() throws Exception {
         // TODO add your test code.
+    }
+    
+    /**
+     * Test of getStateLookups.
+     */
+    public void testGetStateLookups() throws Exception {
+        ContactsServiceServlet servlet = new ContactsServiceServlet();
+        servlet.setMappings( MAPPING_PROPS );
+        servlet.setService( service );
+        servlet.getStateLookups();        
+    }
+    
+    /**
+     * Test of getTypeLookups.
+     */
+    public void testGetTypeLookups() throws Exception {
+        ContactsServiceServlet servlet = new ContactsServiceServlet();
+        servlet.setMappings( MAPPING_PROPS );
+        servlet.setService( service );
+        servlet.getTypeLookups();         
     }
     
 }

@@ -19,8 +19,12 @@
  */
 package com.totsp.gwittir.example.client;
 
-import com.google.gwt.user.client.ui.FlexTable;
+import java.util.Comparator;
+import java.util.List;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
@@ -28,7 +32,6 @@ import com.totsp.gwittir.client.ui.ListBox;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.example.client.remote.Services;
 import com.totsp.gwittir.example.client.remote.StateLookup;
-import java.util.Comparator;
 
 
 /**
@@ -46,14 +49,37 @@ public class AddressEdit extends AbstractBoundWidget {
     
     /** Creates a new instance of AddressEdit */
     public AddressEdit() {
-        super();
-        state.setOptions( Services.FREEZER.stateLookups() );
+        super();        
+        
+        Services.CONTACTS.getStateLookups(new AsyncCallback() {
+            public void onSuccess(Object result)
+            {
+                state.setOptions((List) result );
+            }
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Error getting states - " + caught.getMessage());
+                return;
+            }
+        });
+        
+        Services.CONTACTS.getTypeLookups(new AsyncCallback() {
+            public void onSuccess(Object result)
+            {
+                type.setOptions((List) result );
+            }
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Error getting types - " + caught.getMessage());
+                return;
+            }
+        });        
+        
         state.setComparator( new Comparator(){
             public int compare(Object o, Object c){
                 return ((StateLookup)o).id.compareTo( ((StateLookup)c).id );
             }
         });
-        type.setOptions(Services.FREEZER.typeLookups()) ;
         base.setStyleName("example-AddressEdit");
         super.initWidget(base);
         base.setWidget(0, 0, address1);

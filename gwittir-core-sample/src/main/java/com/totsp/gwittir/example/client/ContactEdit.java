@@ -22,7 +22,6 @@ package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
@@ -36,7 +35,6 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 import com.totsp.gwittir.example.client.remote.Address;
 import com.totsp.gwittir.example.client.remote.StateLookup;
 import com.totsp.gwittir.example.client.remote.TypeLookup;
-import java.util.List;
 
 /**
  *
