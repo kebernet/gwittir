@@ -16,7 +16,9 @@
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.totsp.gwittir.example.client.ContactsEntryPoint'/>
     
-    <stylesheet src="contacts.css"/>
+    <!--  Include Gwittir styling -->
+    <inherits name='com.totsp.gwittir.skins.basic.Basic' />
+    <!-- ><stylesheet src="contacts.css"/> -->
     
     <servlet path="/ContactsRemoteService" class="com.totsp.gwittir.example.remote.ContactsServiceServlet" />
 </module>
