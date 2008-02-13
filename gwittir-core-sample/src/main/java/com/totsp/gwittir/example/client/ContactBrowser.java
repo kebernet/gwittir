@@ -30,7 +30,11 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
 
 /**
- * DOCUMENT ME!
+ * ContactBrowser is a "BoundWidget" that holds a table of "contacts"
+ * a label, and a button. When an "Action" is set on this 
+ * class it is applied as the action for both the table and button. 
+ * 
+ * @see ContactBrowserAction
  *
  * @author cooper
  */

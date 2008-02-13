@@ -19,12 +19,10 @@
  */
 package com.totsp.gwittir.example.client;
 
-import java.util.Comparator;
-import java.util.List;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
+
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
@@ -33,8 +31,13 @@ import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.example.client.remote.Services;
 import com.totsp.gwittir.example.client.remote.StateLookup;
 
+import java.util.Comparator;
+import java.util.List;
+
 
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
@@ -46,40 +49,42 @@ public class AddressEdit extends AbstractBoundWidget {
     TextBox address2 = new TextBox();
     TextBox city = new TextBox();
     TextBox zip = new TextBox();
-    
-    /** Creates a new instance of AddressEdit */
+
+/** Creates a new instance of AddressEdit */
     public AddressEdit() {
-        super();        
-        
+        super();
+
         Services.CONTACTS.getStateLookups(new AsyncCallback() {
-            public void onSuccess(Object result)
-            {
-                state.setOptions((List) result );
-            }
-            public void onFailure(Throwable caught)
-            {
-                Window.alert("Error getting states - " + caught.getMessage());
-                return;
-            }
-        });
-        
+                public void onSuccess(Object result) {
+                    state.setOptions((List) result);
+                }
+
+                public void onFailure(Throwable caught) {
+                    Window.alert("Error getting states - " +
+                        caught.getMessage());
+
+                    return;
+                }
+            });
+
         Services.CONTACTS.getTypeLookups(new AsyncCallback() {
-            public void onSuccess(Object result)
-            {
-                type.setOptions((List) result );
-            }
-            public void onFailure(Throwable caught)
-            {
-                Window.alert("Error getting types - " + caught.getMessage());
-                return;
-            }
-        });        
-        
-        state.setComparator( new Comparator(){
-            public int compare(Object o, Object c){
-                return ((StateLookup)o).id.compareTo( ((StateLookup)c).id );
-            }
-        });
+                public void onSuccess(Object result) {
+                    type.setOptions((List) result);
+                }
+
+                public void onFailure(Throwable caught) {
+                    Window.alert("Error getting types - " +
+                        caught.getMessage());
+
+                    return;
+                }
+            });
+
+        state.setComparator(new Comparator() {
+                public int compare(Object o, Object c) {
+                    return ((StateLookup) o).id.compareTo(((StateLookup) c).id);
+                }
+            });
         base.setStyleName("example-AddressEdit");
         super.initWidget(base);
         base.setWidget(0, 0, address1);
@@ -92,21 +97,20 @@ public class AddressEdit extends AbstractBoundWidget {
         base.setWidget(3, 0, type);
         base.getFlexCellFormatter().setColSpan(3, 0, 3);
         this.setHeight("0px");
-        
     }
-    
+
     public Object getValue() {
         return this.getModel();
     }
-    
+
     public void onAttach() {
         super.onAttach();
-        
+
         PropertyAnimator anim = new PropertyAnimator(this, "height", "0px",
                 "125px", MutationStrategy.UNITS_SINOIDAL, 750);
         anim.start();
     }
-    
+
     public void setValue(Object value) {
         this.setModel(value);
     }

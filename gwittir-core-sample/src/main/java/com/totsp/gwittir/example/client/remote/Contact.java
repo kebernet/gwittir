@@ -41,9 +41,7 @@ public class Contact extends AbstractBindable{
     /**
      * @gwt.typeArgs <com.totsp.gwittir.example.client.remote.Phone>
      */
-    private List phoneNumbers = new ArrayList();
-   
-    
+    private List phoneNumbers = new ArrayList();    
     
     
     /** Creates a new instance of Contact */
@@ -80,9 +78,6 @@ public class Contact extends AbstractBindable{
         this.changes.firePropertyChange("lastName", old, lastName);
     }
 
-    /**
-     * 
-     */
     public List getAddresses() {
         return addresses;
     }

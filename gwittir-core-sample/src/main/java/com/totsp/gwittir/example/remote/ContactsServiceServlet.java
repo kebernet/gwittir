@@ -37,6 +37,8 @@ import javax.servlet.ServletException;
 
 
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
@@ -45,7 +47,7 @@ public class ContactsServiceServlet extends RemoteServiceServlet
     private ContactsService service;
     private Properties mappings;
 
-    /** Creates a new instance of ContactsServiceServlet */
+/** Creates a new instance of ContactsServiceServlet */
     public ContactsServiceServlet() {
     }
 
@@ -54,7 +56,7 @@ public class ContactsServiceServlet extends RemoteServiceServlet
         try {
             return (List) BeanMapping.convert(getMappings(),
                 getService().findContacts(limit, start, orderBy, ascending));
-        } catch(Exception e) {
+        } catch (Exception e) {
             //this.log("Exception in findContacts", e);
             throw new ContactsRemoteException(e.toString());
         }
@@ -70,7 +72,7 @@ public class ContactsServiceServlet extends RemoteServiceServlet
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        System.out.println( "Initting the service servlet.");
+        System.out.println("Initting the service servlet.");
         this.setService((ContactsService) config.getServletContext()
                                                 .getAttribute(StartupContextListener.CONTACTS_SERVICE));
         this.setMappings((Properties) config.getServletContext()
@@ -81,10 +83,9 @@ public class ContactsServiceServlet extends RemoteServiceServlet
         try {
             return (Contact) BeanMapping.convert(getMappings(),
                 getService()
-                    .saveContact((com.totsp.gwittir.example.api.Contact) 
-                    BeanMapping
-                    .convert(getMappings(), contact)));
-        } catch(Exception e) {
+                    .saveContact((com.totsp.gwittir.example.api.Contact) BeanMapping.convert(
+                        getMappings(), contact)));
+        } catch (Exception e) {
             //this.log("Exception in findContacts", e);
             throw new ContactsRemoteException(e.toString());
         }
@@ -97,26 +98,24 @@ public class ContactsServiceServlet extends RemoteServiceServlet
     public void setService(ContactsService service) {
         this.service = service;
     }
-    
-    
+
     public List getStateLookups() throws ContactsRemoteException {
-            try {
-                return (List) BeanMapping.convert(getMappings(),
-                    getService().getStateLookups());
-            } catch(Exception e) {
-                //this.log("Exception in getStates", e);
-                throw new ContactsRemoteException(e.toString());
-            }
-        }    
-    
+        try {
+            return (List) BeanMapping.convert(getMappings(),
+                getService().getStateLookups());
+        } catch (Exception e) {
+            //this.log("Exception in getStates", e);
+            throw new ContactsRemoteException(e.toString());
+        }
+    }
+
     public List getTypeLookups() throws ContactsRemoteException {
         try {
             return (List) BeanMapping.convert(getMappings(),
                 getService().getTypeLookups());
-        } catch(Exception e) {
+        } catch (Exception e) {
             //this.log("Exception in getTypes", e);
             throw new ContactsRemoteException(e.toString());
         }
     }
-    
 }

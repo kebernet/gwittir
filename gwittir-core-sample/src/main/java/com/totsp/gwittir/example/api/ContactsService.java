@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.api;
 
 import java.util.List;
@@ -27,105 +26,112 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
+
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
-
 public class ContactsService {
     @PersistenceUnit
     private EntityManagerFactory entityManagerFactory;
-    
-    /** Creates a new instance of ContactsService */
+
+/** Creates a new instance of ContactsService */
     public ContactsService() {
     }
-    
-    public List<Contact> findContacts( int limit, int start, String orderBy, boolean ascending ) 
-    throws ContactsServiceException {
+
+    public List<Contact> findContacts(int limit, int start, String orderBy,
+        boolean ascending) throws ContactsServiceException {
         EntityManager em = this.getEntityManagerFactory().createEntityManager();
+
         try {
-             em.getTransaction().begin();
-             Query  q = em.createNamedQuery("Contact."+
-                     (orderBy == null ? "lastName" : orderBy ) +
-                     (ascending ? "Ascending" : "Descending" ) );;
-             q.setFirstResult( start );
-             q.setMaxResults( limit );
-             List<Contact> results =  q.getResultList();
-             
-             return results;
-             
-        }catch(RuntimeException e){
-            throw new ContactsServiceException( "Unable to query contacts - " + e.getMessage());
-        }
-        finally {
+            em.getTransaction().begin();
+
+            Query q = em.createNamedQuery("Contact." +
+                    ((orderBy == null) ? "lastName" : orderBy) +
+                    (ascending ? "Ascending" : "Descending"));
+            ;
+            q.setFirstResult(start);
+            q.setMaxResults(limit);
+
+            List<Contact> results = q.getResultList();
+
+            return results;
+        } catch (RuntimeException e) {
+            throw new ContactsServiceException("Unable to query contacts - " +
+                e.getMessage());
+        } finally {
             if (em != null) {
                 em.getTransaction().rollback();
                 em.close();
             }
         }
     }
-    
-    public Contact saveContact( Contact contact ) throws ContactsServiceException{
+
+    public Contact saveContact(Contact contact) throws ContactsServiceException {
         EntityManager em = this.getEntityManagerFactory().createEntityManager();
+
         try {
-             em.getTransaction().begin();
-             if( contact.getId() == null ){
-                 em.persist( contact );
-             } else {
-                 em.merge( contact );
-             }
-             return contact;
-             
-        }catch(RuntimeException e){
-            throw new ContactsServiceException( "Unable to query contacts", e);
-        }
-        finally {
+            em.getTransaction().begin();
+
+            if (contact.getId() == null) {
+                em.persist(contact);
+            } else {
+                em.merge(contact);
+            }
+
+            return contact;
+        } catch (RuntimeException e) {
+            throw new ContactsServiceException("Unable to query contacts", e);
+        } finally {
             if (em != null) {
                 em.getTransaction().commit();
                 em.close();
             }
         }
-        
     }
-    
-    public List<StateLookup> getStateLookups(){
+
+    public List<StateLookup> getStateLookups() {
         EntityManager em = this.getEntityManagerFactory().createEntityManager();
+
         try {
-             em.getTransaction().begin();
-             Query q = em.createNamedQuery("StateLookup.all");
+            em.getTransaction().begin();
+
+            Query q = em.createNamedQuery("StateLookup.all");
+
             return q.getResultList();
-             
         } finally {
             if (em != null) {
                 em.getTransaction().rollback();
                 em.close();
             }
-        }        
+        }
     }
-    
-    public List<TypeLookup> getTypeLookups(){
+
+    public List<TypeLookup> getTypeLookups() {
         EntityManager em = this.getEntityManagerFactory().createEntityManager();
+
         try {
-             em.getTransaction().begin();
-             Query q = em.createNamedQuery("TypeLookup.all");
+            em.getTransaction().begin();
+
+            Query q = em.createNamedQuery("TypeLookup.all");
+
             return q.getResultList();
-             
         } finally {
             if (em != null) {
                 em.getTransaction().rollback();
                 em.close();
             }
-        }        
+        }
     }
 
     public EntityManagerFactory getEntityManagerFactory() {
         return entityManagerFactory;
     }
 
-    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+    public void setEntityManagerFactory(
+        EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
-    
-    
-    
 }

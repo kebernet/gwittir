@@ -17,12 +17,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.client.remote;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
@@ -30,14 +32,13 @@ public class StateLookup implements IsSerializable {
     public Integer id;
     public String code;
     public String name;
-    
-    public String toString()
-    {
+
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("StateLookup: id-" + this.id);
         sb.append(" code-" + this.code);
         sb.append(" name-" + this.name);
-        return sb.toString();    
-    }
 
+        return sb.toString();
+    }
 }

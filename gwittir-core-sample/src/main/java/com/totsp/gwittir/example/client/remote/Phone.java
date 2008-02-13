@@ -17,11 +17,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.client.remote;
 
-
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
@@ -29,7 +29,8 @@ public class Phone extends AbstractBindable implements HasType {
     private Integer id;
     private String number;
     private TypeLookup type;
-    /** Creates a new instance of Phone */
+
+/** Creates a new instance of Phone */
     public Phone() {
     }
 
@@ -56,15 +57,13 @@ public class Phone extends AbstractBindable implements HasType {
     public void setType(TypeLookup type) {
         this.type = type;
     }
-    
-    public String toString()
-    {
+
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Phone: id-" + this.id);
         sb.append(" number-" + this.number);
-        sb.append(" type-" + (this.type != null ? this.type.name : "null"));
-        return sb.toString();    
-    }
+        sb.append(" type-" + ((this.type != null) ? this.type.name : "null"));
 
-    
+        return sb.toString();
+    }
 }

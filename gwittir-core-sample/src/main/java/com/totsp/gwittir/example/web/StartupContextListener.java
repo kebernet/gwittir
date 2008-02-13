@@ -19,17 +19,20 @@
  */
 package com.totsp.gwittir.example.web;
 
+import com.totsp.gwittir.example.api.ContactsService;
+
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.totsp.gwittir.example.api.ContactsService;
-
 
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
@@ -39,30 +42,32 @@ public class StartupContextListener implements ServletContextListener {
     public static final String TYPES = "TypeLookups";
     public static final String STATES = "StateLookups";
     private static final Properties MAPPING_PROPS = new Properties();
-    
+
     static {
         MAPPING_PROPS.setProperty("com.totsp.gwittir.example.api.*",
-                "com.totsp.gwittir.example.client.remote.*");
+            "com.totsp.gwittir.example.client.remote.*");
     }
-    
-    /** Creates a new instance of StartupContextListener */
+
+/** Creates a new instance of StartupContextListener */
     public StartupContextListener() {
     }
-    
+
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
     }
-    
+
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println( "Initting the context.");
-        EntityManagerFactory emf = 
-            Persistence.createEntityManagerFactory("gwittir-core-example");
+        System.out.println("Initting the context.");
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(
+                "gwittir-core-example");
         ContactsService service = new ContactsService();
-        service.setEntityManagerFactory( emf );
+        service.setEntityManagerFactory(emf);
         servletContextEvent.getServletContext()
-        .setAttribute(StartupContextListener.CONTACTS_SERVICE, service);
+                           .setAttribute(StartupContextListener.CONTACTS_SERVICE,
+            service);
         servletContextEvent.getServletContext()
-        .setAttribute(MAPPINGS, MAPPING_PROPS);
-        
+                           .setAttribute(MAPPINGS, MAPPING_PROPS);
+
         /*
         try {
             String typesSer = this.getSerializedTypes( service );
@@ -76,8 +81,4 @@ public class StartupContextListener implements ServletContextListener {
         }
         */
     }
-    
-    
-   
-    
 }

@@ -17,26 +17,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.api;
 
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
-public class ContactsServiceException extends Exception{
-    
-    /** Creates a new instance of ContactServiceException */
+public class ContactsServiceException extends Exception {
+/** Creates a new instance of ContactServiceException */
     public ContactsServiceException() {
         super();
     }
-    
-    public ContactsServiceException(String message){
+
+    public ContactsServiceException(String message) {
         super(message);
     }
-    
-    public ContactsServiceException(String message, Throwable cause){
+
+    public ContactsServiceException(String message, Throwable cause) {
         super(message, cause);
     }
-    
 }

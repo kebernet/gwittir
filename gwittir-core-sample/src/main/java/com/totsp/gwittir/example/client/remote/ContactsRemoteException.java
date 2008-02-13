@@ -17,25 +17,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.client.remote;
 
 import com.google.gwt.user.client.rpc.SerializableException;
 
+
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
-public class ContactsRemoteException extends SerializableException{
-    
-    /** Creates a new instance of ContactException */
+public class ContactsRemoteException extends SerializableException {
+/** Creates a new instance of ContactException */
     public ContactsRemoteException() {
         super();
     }
-    
-    public ContactsRemoteException(String message){
+
+    public ContactsRemoteException(String message) {
         super(message);
     }
-    
-    
 }

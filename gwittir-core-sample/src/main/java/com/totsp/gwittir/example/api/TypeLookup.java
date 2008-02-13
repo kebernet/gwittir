@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.api;
 
 import javax.persistence.Entity;
@@ -27,25 +26,23 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
+
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
 @Entity
-@NamedQueries( {
-    @NamedQuery(
-    name = "TypeLookup.all",
-            query = "SELECT t FROM TypeLookup t ORDER BY t.name" )
-} )
+@NamedQueries({@NamedQuery(name = "TypeLookup.all", query = "SELECT t FROM TypeLookup t ORDER BY t.name")
+})
 public class TypeLookup {
-    
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    
     private String name;
-    
-    /** Creates a new instance of TypeLookup */
+
+/** Creates a new instance of TypeLookup */
     public TypeLookup() {
     }
 
@@ -64,5 +61,4 @@ public class TypeLookup {
     public void setName(String name) {
         this.name = name;
     }
-    
 }

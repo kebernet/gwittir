@@ -17,62 +17,62 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.ListBox;
 import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.example.client.remote.Services;
 import com.totsp.gwittir.example.client.remote.TypeLookup;
+
 import java.util.Comparator;
 import java.util.List;
 
+
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
 public class TypeSelectorProvider implements BoundWidgetProvider {
-    
     public static final TypeSelectorProvider INSTANCE = new TypeSelectorProvider();
-    
-    /** Creates a new instance of TypeSelectorProvider */
+
+/** Creates a new instance of TypeSelectorProvider */
     private TypeSelectorProvider() {
     }
-    
-    public BoundWidget get(){
-        
+
+    public BoundWidget get() {
         final ListBox box = new ListBox();
-        box.setRenderer( new Renderer() {
-            public Object render(Object o) {
-                return ((TypeLookup)o).name;
-            }
-            
-        });
-        box.setComparator( new Comparator(){
-            public int compare(Object o, Object c ) {
-                return ((TypeLookup) o).id.compareTo( ((TypeLookup) c).id );
-            }
-            
-        });
-        box.setMultipleSelect( false );        
-        
+        box.setRenderer(new Renderer() {
+                public Object render(Object o) {
+                    return ((TypeLookup) o).name;
+                }
+            });
+        box.setComparator(new Comparator() {
+                public int compare(Object o, Object c) {
+                    return ((TypeLookup) o).id.compareTo(((TypeLookup) c).id);
+                }
+            });
+        box.setMultipleSelect(false);
+
         Services.CONTACTS.getTypeLookups(new AsyncCallback() {
-            public void onSuccess(Object result)
-            {
-                box.setOptions((List) result );
-            }
-            public void onFailure(Throwable caught)
-            {
-                Window.alert("Error getting types - " + caught.getMessage());
-                return;
-            }
-        });    
-        
+                public void onSuccess(Object result) {
+                    box.setOptions((List) result);
+                }
+
+                public void onFailure(Throwable caught) {
+                    Window.alert("Error getting types - " +
+                        caught.getMessage());
+
+                    return;
+                }
+            });
+
         return box;
     }
-    
 }

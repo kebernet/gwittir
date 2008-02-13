@@ -17,22 +17,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.client.remote;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
+
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
 public class Services {
-    public static final ContactsRemoteServiceAsync CONTACTS = (ContactsRemoteServiceAsync) GWT.create( ContactsRemoteService.class );
+    public static final ContactsRemoteServiceAsync CONTACTS = (ContactsRemoteServiceAsync) GWT.create(ContactsRemoteService.class);
+
     static {
-       ((ServiceDefTarget) CONTACTS).setServiceEntryPoint(GWT.getModuleBaseURL()+"/ContactsRemoteService");
+        ((ServiceDefTarget) CONTACTS).setServiceEntryPoint(GWT.getModuleBaseURL() +
+            "/ContactsRemoteService");
     }
+
     ///public static final LookupFreezer FREEZER = (LookupFreezer) GWT.create(LookupFreezer.class);
-    
-    
 }

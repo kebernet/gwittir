@@ -17,11 +17,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.example.client.remote;
 
-
 /**
+ * 
+DOCUMENT ME!
  *
  * @author cooper
  */
@@ -33,8 +33,8 @@ public class Address extends AbstractBindable implements HasType {
     private String city;
     private StateLookup state;
     private String zip;
-    
-    /** Creates a new instance of Address */
+
+/** Creates a new instance of Address */
     public Address() {
     }
 
@@ -90,7 +90,7 @@ public class Address extends AbstractBindable implements HasType {
 
     public String getZip() {
         return zip;
-    } 
+    }
 
     public void setZip(String zip) {
         String old = this.zip;
@@ -107,22 +107,21 @@ public class Address extends AbstractBindable implements HasType {
         this.id = id;
         this.changes.firePropertyChange("id", old, id);
     }
-    
-    public String toString()
-    {
+
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Address: id-" + this.id);
-        sb.append(" type-" + (this.type != null ? this.type.name : "null"));
+        sb.append(" type-" + ((this.type != null) ? this.type.name : "null"));
         sb.append(" address1-" + this.address1);
         sb.append(" address2-" + this.address2);
         sb.append(" city-" + this.city);
-        sb.append(" state-" + (this.state != null ? this.state.code : "null"));
+        sb.append(" state-" + ((this.state != null) ? this.state.code : "null"));
         sb.append(" zip-" + this.zip);
-        return sb.toString();    
+
+        return sb.toString();
     }
-    
-    public static void main(String[] args)
-    {
+
+    public static void main(String[] args) {
         Address a = new Address();
         a.setCity("city");
         System.out.println("address - " + a);
