@@ -128,15 +128,7 @@
                 <os>
                     <family>mac</family>
                 </os>
-            </activation>
-            <properties>
-				<google.webtoolkit.home>
-					${env.GWT_HOME}
-				</google.webtoolkit.home>
-				<google.webtoolkit.extrajvmargs>
-					-Xms256m -Xmx512m -XstartOnFirstThread
-				</google.webtoolkit.extrajvmargs>
-			</properties>
+            </activation>            
             <dependencies>
                 <dependency>
                     <groupId>com.google.gwt</groupId>
@@ -153,15 +145,7 @@
                     <os>
                         <family>linux</family>
                     </os>
-                </activation>
-                <properties>
-				<google.webtoolkit.home>
-					${env.GWT_HOME}
-				</google.webtoolkit.home>
-				<google.webtoolkit.extrajvmargs>
-					-Xms256m -Xmx512m 
-				</google.webtoolkit.extrajvmargs>
-			</properties>
+                </activation>                
                 <dependencies>
                     <dependency>
                         <groupId>com.google.gwt</groupId>
@@ -177,15 +161,7 @@
                 <os>
                     <family>windows</family>
                 </os>
-            </activation>
-            <properties>
-				<google.webtoolkit.home>
-					${env.GWT_HOME}
-				</google.webtoolkit.home>
-				<google.webtoolkit.extrajvmargs>
-					-Xms256m -Xmx512m 
-				</google.webtoolkit.extrajvmargs>
-			</properties>
+            </activation>            
             <dependencies>
                 <dependency>
                     <groupId>com.google.gwt</groupId>
