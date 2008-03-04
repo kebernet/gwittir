@@ -233,6 +233,30 @@ public class Binding {
         return children = (children == null) ? new ArrayList() : children;
     }
 
+    /** 
+     * Performas a validation on the binding, triggering the ValidationFeedback
+     * items. Unlike isValid() which only checks validity.
+     * @return boolean Validity state of all the validators.
+     */
+    public boolean validate(){
+        boolean valid = true;
+        try{
+            if( this.left.validator != null ){
+                valid = valid && this.left.listener.validate();
+            }
+            if( this.right.validator != null ){
+                valid = valid && this.right.listener.validate();
+            }
+        } catch(RuntimeException e){
+            valid = false;
+        }
+        
+        for(Iterator it = this.children.iterator(); it.hasNext(); ){
+            valid = valid && ((Binding) it.next() ).validate();
+        }
+        return valid;
+    }
+    
     /**
      * Performs a quick validation on the Binding to determine if it is valid.
      * @return boolean indicating all values are valid.
@@ -267,6 +291,8 @@ public class Binding {
             throw new RuntimeException(e);
         }
     }
+    
+    
 
     /**
      * Breaks the two way binding and removes all listeners.
@@ -477,11 +503,8 @@ public class Binding {
             this.instance = instance;
             this.target = target;
         }
-
-        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            Object value = propertyChangeEvent.getNewValue();
-
-            if (instance.validator != null) {
+        
+        public boolean validate(){if (instance.validator != null) {
                 try {
                     value = instance.validator.validate(value);
                 } catch (ValidationException ve) {
@@ -494,7 +517,7 @@ public class Binding {
                                 ve);
                         this.lastException = ve;
 
-                        return;
+                        return false;
                     } else {
                         this.lastException = ve;
                         throw new RuntimeException(ve);
@@ -504,6 +527,15 @@ public class Binding {
 
             if (this.instance.feedback != null) {
                 this.instance.feedback.resolve(propertyChangeEvent.getSource());
+            }
+            return true;
+        }
+
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+            Object value = propertyChangeEvent.getNewValue();
+
+            if( !validate() ){
+                return;
             }
 
             this.lastException = null;
