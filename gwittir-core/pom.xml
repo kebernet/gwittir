@@ -4,7 +4,7 @@
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>gwittir-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.2</version>
+    <version>0.3</version>
     <name>Gwittir Core</name>
     <description>Core libraries for GWT Applications.</description>
     <url>http://maven.apache.org</url>
@@ -53,13 +53,13 @@
             <type>jar</type>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
             <version>1.4.61</version>
             <type>jar</type>
             <scope>provided</scope>
-        </dependency>       
+        </dependency-->       
     </dependencies>
     <build>
         <plugins>
