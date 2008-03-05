@@ -41,7 +41,7 @@ public class PropertyAnimator {
     private int stepTime;
 
     private Timer timer;
-    
+    //TODO examine step time real results and increase animation time to match.
     /** Creates a new instance of PropertyAnimator */
     public PropertyAnimator(Introspectable target, String propertyName,
         Object initialValue, Object finalValue, MutationStrategy strategy,
@@ -128,6 +128,7 @@ public class PropertyAnimator {
         }
 
          timer= new Timer() {
+                private long lastStep = System.currentTimeMillis();
                 public void run() {
                     try {
                         double percentComplete = (double) (
@@ -144,8 +145,9 @@ public class PropertyAnimator {
                             if(callback != null) {
                                 callback.onFinish(instance);
                             }
-
+                            
                             this.cancel();
+                            return;
                         }
                     } catch(Exception e) {
                         if(callback != null) {
@@ -155,10 +157,15 @@ public class PropertyAnimator {
                             return;
                         }
                     }
+                    if( lastStep - System.currentTimeMillis() > stepTime * 2 ){
+                        stepTime = (int) lastStep - (int) System.currentTimeMillis();
+                    }
+                    timer.schedule(stepTime);
                 }
+               
             };
-
-        timer.scheduleRepeating(this.stepTime);
+            this.timer.schedule( this.stepTime );
+        
     }
     
     public void cancel(){

@@ -52,6 +52,13 @@
             <version>1.4.61</version>
             <type>jar</type>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>1.4.61</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>       
     </dependencies>
     <build>
@@ -73,6 +80,7 @@
                 <configuration>
                     <gwtVersion>1.4.61</gwtVersion>
                     <logLevel>INFO</logLevel>
+                    <gen>target/gwtgen</gen>
                     <runTarget>com.totsp.gwittir.example.Example/index_strict.html?log.level=spam</runTarget>
                     <compileTargets>
                         <param>com.totsp.gwittir.example.Example</param>
@@ -122,56 +130,7 @@
         </plugins>
     </reporting>
     <profiles>
-        <profile>
-            <id>darwin</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>            
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev-mac</artifactId>
-                    <version>1.4.61</version>
-                    <scope>system</scope>
-                    <systemPath>${google.webtoolkit.home}/gwt-dev-mac.jar</systemPath>
-                </dependency>
-            </dependencies>
-        </profile>
-        <!--<profile>
-                <id>linux</id>
-                <activation>
-                    <os>
-                        <family>linux</family>
-                    </os>
-                </activation>                
-                <dependencies>
-                    <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-dev-linux</artifactId>
-                        <scope>system</scope>
-                        <systemPath>${google.webtoolkit.home}/gwt-dev-linux.jar</systemPath>
-                    </dependency>
-                </dependencies>
-            </profile>-->
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>            
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev-windows</artifactId>
-                    <version>1.4.61</version>
-                    <scope>system</scope>
-                    <systemPath>${google.webtoolkit.home}/gwt-dev-windows.jar</systemPath>
-                </dependency>
-            </dependencies>
-        </profile>
+        
         <profile>
             <id>netbeans-public</id>
             <activation>

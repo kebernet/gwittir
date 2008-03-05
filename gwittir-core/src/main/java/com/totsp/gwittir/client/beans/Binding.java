@@ -32,9 +32,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 
 /**
  * This class represents a DataBinding between two objects. It also supports
@@ -43,11 +44,11 @@ import java.util.Iterator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Binding {
-
     private static final Introspector INTROSPECTOR = (Introspector) GWT.create(Introspector.class);
     private BindingInstance left;
     private BindingInstance right;
     private List children;
+
     /**
      *  TRUE = left; FALSE = right;
      */
@@ -73,9 +74,9 @@ public class Binding {
      * @param modelProperty The property on the Widgets model object to bind to.
      */
     public Binding(BoundWidget widget, Validator validator,
-            ValidationFeedback feedback, String modelProperty) {
+        ValidationFeedback feedback, String modelProperty) {
         this(widget, "value", validator, feedback,
-                (Bindable) widget.getModel(), "modelProperty", null, null);
+            (Bindable) widget.getModel(), "modelProperty", null, null);
     }
 
     /**
@@ -86,7 +87,7 @@ public class Binding {
      * @param rightProperty Property on the right object.
      */
     public Binding(Bindable left, String leftProperty, Bindable right,
-            String rightProperty) {
+        String rightProperty) {
         this.left = this.createBindingInstance(left, leftProperty);
         this.right = this.createBindingInstance(right, rightProperty);
 
@@ -108,8 +109,8 @@ public class Binding {
      * @param rightFeedback Feedback for the right hand validator.
      */
     public Binding(Bindable left, String leftProperty, Validator leftValidator,
-            ValidationFeedback leftFeedback, Bindable right, String rightProperty,
-            Validator rightValidator, ValidationFeedback rightFeedback) {
+        ValidationFeedback leftFeedback, Bindable right, String rightProperty,
+        Validator rightValidator, ValidationFeedback rightFeedback) {
         this.left = this.createBindingInstance(left, leftProperty);
         this.left.validator = leftValidator;
         this.left.feedback = leftFeedback;
@@ -134,7 +135,7 @@ public class Binding {
      * @param rightConverter
      */
     public Binding(Bindable left, String leftProperty, Converter leftConverter,
-            Bindable right, String rightProperty, Converter rightConverter) {
+        Bindable right, String rightProperty, Converter rightConverter) {
         this.left = this.createBindingInstance(left, leftProperty);
         this.left.converter = leftConverter;
         this.right = this.createBindingInstance(right, rightProperty);
@@ -164,7 +165,8 @@ public class Binding {
             try {
                 left.listener.propertyChange(new PropertyChangeEvent(
                         left.object, left.property.getName(), null,
-                        left.property.getAccessorMethod().invoke(left.object, null)));
+                        left.property.getAccessorMethod()
+                                     .invoke(left.object, null)));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -186,7 +188,8 @@ public class Binding {
             try {
                 right.listener.propertyChange(new PropertyChangeEvent(
                         right.object, right.property.getName(), null,
-                        right.property.getAccessorMethod().invoke(right.object, null)));
+                        right.property.getAccessorMethod()
+                                      .invoke(right.object, null)));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -206,13 +209,16 @@ public class Binding {
     public void bind() {
         if ((left != null) && (right != null)) {
             left.object.addPropertyChangeListener(left.property.getName(),
-                    left.listener);
-            if( left.nestedListener != null ){
+                left.listener);
+
+            if (left.nestedListener != null) {
                 left.nestedListener.setup();
             }
+
             right.object.addPropertyChangeListener(right.property.getName(),
-                    right.listener);
-            if( right.nestedListener != null ){
+                right.listener);
+
+            if (right.nestedListener != null) {
                 right.nestedListener.setup();
             }
         }
@@ -233,30 +239,59 @@ public class Binding {
         return children = (children == null) ? new ArrayList() : children;
     }
 
-    /** 
-     * Performas a validation on the binding, triggering the ValidationFeedback
-     * items. Unlike isValid() which only checks validity.
-     * @return boolean Validity state of all the validators.
-     */
-    public boolean validate(){
+    public boolean validate() {
         boolean valid = true;
-        try{
-            if( this.left.validator != null ){
-                valid = valid && this.left.listener.validate();
+
+        if ((left != null) && (right != null)) {
+            if (left.validator != null) {
+                try {
+                    left.validator.validate(left.property.getAccessorMethod()
+                                                         .invoke(left.object,
+                            null));
+                } catch (ValidationException ve) {
+                    valid = false;
+
+                    if (left.feedback != null) {
+                        left.feedback.handleException(left.object, ve);
+                    }
+
+                    if (left.listener instanceof DefaultPropertyChangeListener) {
+                        ((DefaultPropertyChangeListener) left.listener).lastException = ve;
+                    }
+                } catch (Exception e) {
+                    valid = false;
+                }
             }
-            if( this.right.validator != null ){
-                valid = valid && this.right.listener.validate();
+
+            if (right.validator != null) {
+                try {
+                    right.validator.validate(right.property.getAccessorMethod()
+                                                           .invoke(right.object,
+                            null));
+                } catch (ValidationException ve) {
+                    valid = false;
+
+                    if (right.feedback != null) {
+                        right.feedback.handleException(right.object, ve);
+                    }
+
+                    if (right.listener instanceof DefaultPropertyChangeListener) {
+                        ((DefaultPropertyChangeListener) right.listener).lastException = ve;
+                    }
+                } catch (Exception e) {
+                    valid = false;
+                }
             }
-        } catch(RuntimeException e){
-            valid = false;
         }
-        
-        for(Iterator it = this.children.iterator(); it.hasNext(); ){
-            valid = valid && ((Binding) it.next() ).validate();
+
+        for (int i = 0; (children != null) && (i < children.size()); i++) {
+            Binding child = (Binding) children.get(i);
+            valid = valid & child.isValid();
         }
+
         return valid;
     }
-    
+
     /**
      * Performs a quick validation on the Binding to determine if it is valid.
      * @return boolean indicating all values are valid.
@@ -265,12 +300,14 @@ public class Binding {
         try {
             if ((left != null) && (right != null)) {
                 if (left.validator != null) {
-                    left.validator.validate(left.property.getAccessorMethod().invoke(left.object,
+                    left.validator.validate(left.property.getAccessorMethod()
+                                                         .invoke(left.object,
                             null));
                 }
 
                 if (right.validator != null) {
-                    right.validator.validate(right.property.getAccessorMethod().invoke(right.object,
+                    right.validator.validate(right.property.getAccessorMethod()
+                                                           .invoke(right.object,
                             null));
                 }
             }
@@ -291,20 +328,23 @@ public class Binding {
             throw new RuntimeException(e);
         }
     }
-    
-    
 
     /**
      * Breaks the two way binding and removes all listeners.
      */
     public void unbind() {
         if ((left != null) && (right != null)) {
-            left.object.removePropertyChangeListener(left.property.getName(), left.listener);
-            if( left.nestedListener != null ){
+            left.object.removePropertyChangeListener(left.property.getName(),
+                left.listener);
+
+            if (left.nestedListener != null) {
                 left.nestedListener.cleanup();
             }
-            right.object.removePropertyChangeListener(right.property.getName(), right.listener);
-            if( right.nestedListener != null ){
+
+            right.object.removePropertyChangeListener(right.property.getName(),
+                right.listener);
+
+            if (right.nestedListener != null) {
                 right.nestedListener.cleanup();
             }
         }
@@ -347,115 +387,158 @@ public class Binding {
      */
     public String toString() {
         return "Binding [ \n + " + this.right.object + " \n " +
-                this.left.object + "\n ]";
+        this.left.object + "\n ]";
     }
-    
-    private Bindable getDiscriminatedObject(Object collectionOrArray, String descriminator){
+
+    private Bindable getDiscriminatedObject(Object collectionOrArray,
+        String descriminator) {
         int equalsIndex = descriminator.indexOf("=");
-        if( collectionOrArray instanceof Collection && equalsIndex == -1 ){
-            return this.getBindableAtCollectionIndex( (Collection) collectionOrArray, Integer.parseInt( descriminator ) );
-        } else if( collectionOrArray instanceof Collection ){
-            return this.getBindableFromCollectionWithProperty( (Collection) collectionOrArray, descriminator.substring(0, equalsIndex), descriminator.substring(equalsIndex + 1) );
-        } else if( equalsIndex == -1 ){
+
+        if (collectionOrArray instanceof Collection && (equalsIndex == -1)) {
+            return this.getBindableAtCollectionIndex((Collection) collectionOrArray,
+                Integer.parseInt(descriminator));
+        } else if (collectionOrArray instanceof Collection) {
+            return this.getBindableFromCollectionWithProperty((Collection) collectionOrArray,
+                descriminator.substring(0, equalsIndex),
+                descriminator.substring(equalsIndex + 1));
+        } else if (equalsIndex == -1) {
             return ((Bindable[]) collectionOrArray)[Integer.parseInt(descriminator)];
         } else {
-            return getBindableFromArrayWithProperty( (Bindable[]) collectionOrArray, descriminator.substring(0, equalsIndex), descriminator.substring(equalsIndex + 1) );
+            return getBindableFromArrayWithProperty((Bindable[]) collectionOrArray,
+                descriminator.substring(0, equalsIndex),
+                descriminator.substring(equalsIndex + 1));
         }
     }
-    
-    private Bindable getBindableFromArrayWithProperty( Bindable[] array, String propertyName, String stringValue ){
+
+    private Bindable getBindableFromArrayWithProperty(Bindable[] array,
+        String propertyName, String stringValue) {
         Method access = null;
-        for( int i=0; i < array.length; i++ ){
-            if(access == null ){
-                access = Introspector.INSTANCE.getDescriptor(array[i]).getProperty(propertyName).getAccessorMethod();
+
+        for (int i = 0; i < array.length; i++) {
+            if (access == null) {
+                access = Introspector.INSTANCE.getDescriptor(array[i])
+                                              .getProperty(propertyName)
+                                              .getAccessorMethod();
             }
-            try{
-                if( (access.invoke( array[i], null ) + "").equals(stringValue) ){
+
+            try {
+                if ((access.invoke(array[i], null) + "").equals(stringValue)) {
                     return array[i];
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        throw new RuntimeException("No Object matching "+propertyName+"="+stringValue );
+
+        throw new RuntimeException("No Object matching " + propertyName + "=" +
+            stringValue);
     }
-    
-    private Bindable getBindableFromCollectionWithProperty(Collection collection, String propertyName, String stringValue ){
+
+    private Bindable getBindableFromCollectionWithProperty(
+        Collection collection, String propertyName, String stringValue) {
         Method access = null;
-        for(Iterator it = collection.iterator(); it.hasNext(); ){
+
+        for (Iterator it = collection.iterator(); it.hasNext();) {
             Bindable object = (Bindable) it.next();
-            if(access == null ){
-                access = Introspector.INSTANCE.getDescriptor(object).getProperty(propertyName).getAccessorMethod();
+
+            if (access == null) {
+                access = Introspector.INSTANCE.getDescriptor(object)
+                                              .getProperty(propertyName)
+                                              .getAccessorMethod();
             }
-            try{
-                if( (access.invoke( object, null ) + "").equals(stringValue) ){
+
+            try {
+                if ((access.invoke(object, null) + "").equals(stringValue)) {
                     return object;
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        throw new RuntimeException("No Object matching "+propertyName+"="+stringValue );
+
+        throw new RuntimeException("No Object matching " + propertyName + "=" +
+            stringValue);
     }
-    
-    private Bindable getBindableAtCollectionIndex(Collection collection, int index ){
-        int i=0;
+
+    private Bindable getBindableAtCollectionIndex(Collection collection,
+        int index) {
+        int i = 0;
         Bindable result = null;
-        for( Iterator it = collection.iterator(); it.hasNext() && i <= index; i++ ){
+
+        for (Iterator it = collection.iterator(); it.hasNext() && (i <= index);
+                i++) {
             result = (Bindable) it.next();
+
             return result;
         }
-        throw new IndexOutOfBoundsException("Binding descriminator too high: "+index );
+
+        throw new IndexOutOfBoundsException("Binding descriminator too high: " +
+            index);
     }
 
     private BindingInstance createBindingInstance(Bindable object,
-            String propertyName) {
+        String propertyName) {
         int dotIndex = propertyName.indexOf(".");
         BindingInstance instance = new BindingInstance();
         NestedPropertyChangeListener rtpcl = (dotIndex == -1) ? null
-                : new NestedPropertyChangeListener(instance,
+                                                              : new NestedPropertyChangeListener(instance,
                 object, propertyName);
         ArrayList parents = new ArrayList();
         ArrayList propertyNames = new ArrayList();
+
         while (dotIndex != -1) {
             String pname = propertyName.substring(0, dotIndex);
             propertyName = propertyName.substring(dotIndex + 1);
             parents.add(object);
+
             try {
                 String descriminator = null;
                 int descIndex = pname.indexOf("[");
+
                 if (descIndex != -1) {
-                    descriminator = pname.substring(descIndex + 1, pname.indexOf("]", descIndex));
+                    descriminator = pname.substring(descIndex + 1,
+                            pname.indexOf("]", descIndex));
                     pname = pname.substring(0, descIndex);
                 }
+
                 propertyNames.add(pname);
+
                 if (descriminator != null) {
                     //TODO Need a loop here to handle multi-dimensional/collections of collections
-                    Object collectionOrArray = INTROSPECTOR.getDescriptor(object).getProperty(pname).getAccessorMethod().invoke(object, null);
-                    object = this.getDiscriminatedObject(collectionOrArray, descriminator);
-
+                    Object collectionOrArray = INTROSPECTOR.getDescriptor(object)
+                                                           .getProperty(pname)
+                                                           .getAccessorMethod()
+                                                           .invoke(object, null);
+                    object = this.getDiscriminatedObject(collectionOrArray,
+                            descriminator);
                 } else {
-                    object = (Bindable) INTROSPECTOR.getDescriptor(object).getProperty(pname).getAccessorMethod().invoke(object, null);
+                    object = (Bindable) INTROSPECTOR.getDescriptor(object)
+                                                    .getProperty(pname)
+                                                    .getAccessorMethod()
+                                                    .invoke(object, null);
                 }
-               
             } catch (ClassCastException cce) {
                 throw new RuntimeException("Nonbindable sub property: " +
-                        object + " . " + pname, cce);
+                    object + " . " + pname, cce);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
             dotIndex = propertyName.indexOf(".");
         }
-        if( rtpcl != null ){
+
+        if (rtpcl != null) {
             rtpcl.parents = new Bindable[parents.size()];
             parents.toArray(rtpcl.parents);
             rtpcl.propertyNames = new String[propertyNames.size()];
-            propertyNames.toArray( rtpcl.propertyNames );
+            propertyNames.toArray(rtpcl.propertyNames);
         }
+
         instance.object = object;
-        instance.property = INTROSPECTOR.getDescriptor(object).getProperty(propertyName);
+        instance.property = INTROSPECTOR.getDescriptor(object)
+                                        .getProperty(propertyName);
         instance.nestedListener = rtpcl;
+
         return instance;
     }
 
@@ -463,48 +546,54 @@ public class Binding {
      * A data class containing the relevant data for one half of a binding relationship.
      */
     public static class BindingInstance {
-
         /**
          * The Object being bound.
          */
         public Bindable object;
+
         /**
          * A converter when needed.
          */
         public Converter converter;
+
         /**
          * The property name being bound.
          */
         public Property property;
         private PropertyChangeListener listener;
+
         /**
          * A ValidationFeedback object when needed.
          */
         public ValidationFeedback feedback;
+
         /**
          * A Validator object when needed.
          */
         public Validator validator;
         private NestedPropertyChangeListener nestedListener = null;
-        private BindingInstance(){
+
+        private BindingInstance() {
             super();
         }
     }
 
     private static class DefaultPropertyChangeListener
-            implements PropertyChangeListener {
-
+        implements PropertyChangeListener {
         private BindingInstance instance;
         private BindingInstance target;
         private ValidationException lastException = null;
-        
+
         DefaultPropertyChangeListener(BindingInstance instance,
-                BindingInstance target) {
+            BindingInstance target) {
             this.instance = instance;
             this.target = target;
         }
-        
-        public boolean validate(){if (instance.validator != null) {
+
+        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+            Object value = propertyChangeEvent.getNewValue();
+
+            if (instance.validator != null) {
                 try {
                     value = instance.validator.validate(value);
                 } catch (ValidationException ve) {
@@ -514,10 +603,10 @@ public class Binding {
                         }
 
                         instance.feedback.handleException(propertyChangeEvent.getSource(),
-                                ve);
+                            ve);
                         this.lastException = ve;
 
-                        return false;
+                        return;
                     } else {
                         this.lastException = ve;
                         throw new RuntimeException(ve);
@@ -527,15 +616,6 @@ public class Binding {
 
             if (this.instance.feedback != null) {
                 this.instance.feedback.resolve(propertyChangeEvent.getSource());
-            }
-            return true;
-        }
-
-        public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-            Object value = propertyChangeEvent.getNewValue();
-
-            if( !validate() ){
-                return;
             }
 
             this.lastException = null;
@@ -553,21 +633,21 @@ public class Binding {
                 throw new RuntimeException(e);
             }
         }
-        public String toString(){
-            return "[Listener on : "+ this.instance.object +" ] ";
+
+        public String toString() {
+            return "[Listener on : " + this.instance.object + " ] ";
         }
     }
 
-    private class NestedPropertyChangeListener
-            implements PropertyChangeListener {
-
+    private class NestedPropertyChangeListener implements PropertyChangeListener {
         BindingInstance target;
         Bindable sourceObject;
         String propertyName;
         Bindable[] parents;
         String[] propertyNames;
+
         NestedPropertyChangeListener(BindingInstance target,
-                Bindable sourceObject, String propertyName) {
+            Bindable sourceObject, String propertyName) {
             this.target = target;
             this.sourceObject = sourceObject;
             this.propertyName = propertyName;
@@ -583,6 +663,7 @@ public class Binding {
                     propertyName);
             target.object = newInstance.object;
             target.nestedListener = newInstance.nestedListener;
+
             if (lastSet == Boolean.TRUE) {
                 setLeft();
             } else if (lastSet == Boolean.FALSE) {
@@ -592,19 +673,18 @@ public class Binding {
             if (bound) {
                 bind();
             }
-            
-            
         }
-        
-        public void setup(){
-            for(int i=0; i < parents.length; i++){
+
+        public void setup() {
+            for (int i = 0; i < parents.length; i++) {
                 parents[i].addPropertyChangeListener(this.propertyNames[i], this);
             }
         }
-        
-        public void cleanup(){
-            for(int i=0; i < parents.length; i++){
-               parents[i].removePropertyChangeListener(this.propertyNames[i], this);
+
+        public void cleanup() {
+            for (int i = 0; i < parents.length; i++) {
+                parents[i].removePropertyChangeListener(this.propertyNames[i],
+                    this);
             }
         }
     }

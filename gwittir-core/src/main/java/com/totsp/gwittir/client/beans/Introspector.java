@@ -34,13 +34,7 @@ public interface Introspector {
      */
     public static final Introspector INSTANCE = (Introspector) GWT.create( Introspector.class);
     
-    /**
-     * Gets the BeanDescriptor for a class literal.
-     * @param clazz Class literal to look for.
-     * @return BeanDescriptor for the class.
-     */
-    public BeanDescriptor getDescriptor(Class clazz);
-
+    
     /**
      * Gets the BeanDescriptor for an object.
      * @param object Object to introspect.
