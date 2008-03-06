@@ -146,13 +146,13 @@ public class PropertyAnimator {
                                 callback.onFinish(instance);
                             }
                             
-                            this.cancel();
+                            timer.cancel();
                             return;
                         }
                     } catch(Exception e) {
                         if(callback != null) {
                             callback.onFailure(instance, e);
-                            this.cancel();
+                            timer.cancel();
 
                             return;
                         }

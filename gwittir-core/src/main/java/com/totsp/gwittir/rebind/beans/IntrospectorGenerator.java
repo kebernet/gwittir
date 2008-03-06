@@ -212,7 +212,12 @@ public class IntrospectorGenerator extends Generator {
             BeanResolver resolver = (BeanResolver) it.next();
             writer.println("if( object instanceof " + resolver.getType().getQualifiedSourceName() +" ) {" );
             writer.indent();
-            writer.println( "return "+resolver.getType().getQualifiedSourceName().replaceAll("\\.", "_") +";");
+            
+            String name = resolver.getType().getQualifiedSourceName().replaceAll("\\.", "_");
+            logger.log( logger.DEBUG, "Writing : "+name, null);
+            writer.print( "return "+name+" == null ? "+name+" = ");
+            this.writeBeanDescriptor(logger, resolver, methods, writer);
+            writer.print( ": "+name+";");
             writer.outdent();
             writer.println("}");
         }
@@ -448,12 +453,11 @@ public class IntrospectorGenerator extends Generator {
                     continue;
                 }
 
-                writer.print("public static final BeanDescriptor ");
+                writer.print("private static BeanDescriptor ");
                 writer.print(bean.getType().getQualifiedSourceName()
                                  .replaceAll("\\.", "_"));
-                writer.print(" = ");
-                this.writeBeanDescriptor(logger, bean, methods, writer);
-                writer.println(";");
+                
+                writer.println(" = null;");
             } catch (Exception e) {
                 logger.log(logger.ERROR,
                     "Unable to introspect class. Is class a bean?", e);

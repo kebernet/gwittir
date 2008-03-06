@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
@@ -29,6 +28,8 @@ import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.google.gwt.user.client.ui.SourcesFocusEvents;
 import com.google.gwt.user.client.ui.Widget;
 
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -39,8 +40,9 @@ import java.util.Vector;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFocusEvents,
-    SourcesChangeEvents {
+public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFocusEvents, SourcesChangeEvents {
+    public static final String VALUE_PROPERTY_NAME = "value";
+    private static final Logger LOGGER = Logger.getLogger( ListBox.class.toString() );
     private ArrayList selected = new ArrayList();
     private Collection options = new ArrayList();
     private com.google.gwt.user.client.ui.ListBox base;
@@ -57,7 +59,8 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
                 public void onClick(Widget sender) {
                     update();
                 }
-            });
+            }
+        );
         this.base.addChangeListener(
             new ChangeListener() {
                 public void onChange(Widget sender) {
@@ -65,7 +68,8 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
                 }
 
                 // foo!
-            });
+            }
+        );
         super.initWidget(base);
     }
 
@@ -185,13 +189,11 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
 
         ArrayList newSelected = new ArrayList();
 
-        //GWT.log("Setting options", null );
         for (Iterator it = options.iterator(); it.hasNext();) {
             Object item = it.next();
             this.base.addItem((String) this.getRenderer().render(item));
 
             if (contains(this.selected, item)) {
-                //GWT.log( "Was previously selected: "+ this.getRenderer().render( item ), null );
                 this.base.setItemSelected(this.base.getItemCount() - 1, true);
                 newSelected.add(item);
             }
@@ -203,11 +205,11 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         this.selected = newSelected;
 
         if (this.isMultipleSelect()) {
-            changes.firePropertyChange("value", old, selected);
+            changes.firePropertyChange( VALUE_PROPERTY_NAME, old,selected);
         } else {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null : this.selected.get(0);
-            changes.firePropertyChange("value", prev, curr);
+            changes.firePropertyChange( VALUE_PROPERTY_NAME, prev,curr);
         }
 
         fireChangeListeners();
@@ -296,7 +298,6 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
             for (Iterator it = this.options.iterator(); it.hasNext(); i++) {
                 Object item = it.next();
 
-                //GWT.log( "Comparing: "+this.getComparator().compare(value, item), null);
                 if (this.getComparator().compare(value, item) == 0) {
                     base.setItemSelected(i, true);
                 } else {
@@ -308,31 +309,33 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         }
 
         if (this.isMultipleSelect()) {
-            changes.firePropertyChange("value", old, selected);
+            changes.firePropertyChange( VALUE_PROPERTY_NAME, old,selected);
         } else {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null : this.selected.get(0);
-            changes.firePropertyChange("value", prev, curr);
+            changes.firePropertyChange( VALUE_PROPERTY_NAME, prev,curr);
         }
 
         fireChangeListeners();
     }
 
     public Object getValue() {
+        final Object returnValue;
         if (this.base.isMultipleSelect()) {
-            GWT.log("IsMultipleSelect. Returning collection", null);
+            ListBox.LOGGER.log( Level.SPAM, "IsMultipleSelect. Returning collection", null);
 
-            return this.selected;
+            returnValue = this.selected;
         } else if (this.selected.size() == 0) {
-            return null;
+            returnValue = null;
         } else {
-            GWT.log("NotMultipleSelect. Returning first item", null);
+            ListBox.LOGGER.log( Level.SPAM,"NotMultipleSelect. Returning first item", null);
 
-            return this.selected.get(0);
+            returnValue = this.selected.get(0);
         }
+        return returnValue;
     }
 
-    public void setVisibleItemCount(int visibleItems) {
+    public void setVisibleItemCount(final int visibleItems) {
         this.base.setVisibleItemCount(visibleItems);
     }
 
@@ -344,23 +347,23 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         return retValue;
     }
 
-    public void setWidth(String width) {
+    public void setWidth(final String width) {
         this.base.setWidth(width);
     }
 
-    public void addChangeListener(ChangeListener listener) {
+    public void addChangeListener(final ChangeListener listener) {
         this.changeListeners.add(listener);
     }
 
-    public void addClickListener(ClickListener listener) {
+    public void addClickListener(final ClickListener listener) {
         this.base.addClickListener(listener);
     }
 
-    public void addFocusListener(FocusListener listener) {
+    public void addFocusListener(final FocusListener listener) {
         this.base.addFocusListener(listener);
     }
 
-    public void addItem(Object o) {
+    public void addItem(final Object o) {
         options.add(o);
         this.base.addItem((String) this.getRenderer().render(o));
     }
@@ -369,31 +372,43 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         this.base.addKeyboardListener(listener);
     }
 
-    public void addStyleName(String style) {
+    public void addStyleName(final String style) {
         this.base.addStyleName(style);
     }
 
-    public int hashCode() {
-        int retValue;
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
 
-        retValue = this.base.hashCode();
+        
 
-        return retValue;
+        final ListBox other = (ListBox) obj;
+
+        if ((this.options != other.options) && ((this.options == null) || !this.options.equals(other.options))) {
+            return false;
+        }
+
+        return true;
     }
 
-    public void removeChangeListener(ChangeListener listener) {
+    public int hashCode() {
+        return this.base.hashCode();
+    }
+
+    public void removeChangeListener(final ChangeListener listener) {
         this.changeListeners.remove(listener);
     }
 
-    public void removeClickListener(ClickListener listener) {
+    public void removeClickListener(final ClickListener listener) {
         this.base.removeClickListener(listener);
     }
 
-    public void removeFocusListener(FocusListener listener) {
+    public void removeFocusListener(final FocusListener listener) {
         this.base.removeFocusListener(listener);
     }
 
-    public void removeItem(Object o) {
+    public void removeItem(final Object o) {
         int i = 0;
 
         for (Iterator it = this.options.iterator(); it.hasNext(); i++) {
@@ -407,19 +422,19 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         }
     }
 
-    public void removeItem(int index) {
+    public void removeItem(final int index) {
         this.base.removeItem(index);
     }
 
-    public void removeKeyboardListener(KeyboardListener listener) {
+    public void removeKeyboardListener(final KeyboardListener listener) {
         this.base.removeKeyboardListener(listener);
     }
 
-    public void removeStyleName(String style) {
+    public void removeStyleName(final String style) {
         this.base.removeStyleName(style);
     }
 
-    protected boolean contains(Collection c, Object o) {
+    protected boolean contains(final Collection c, final Object o) {
         for (Iterator it = c.iterator(); it.hasNext();) {
             Object next = it.next();
 
@@ -458,11 +473,11 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         this.selected = selected;
 
         if (this.isMultipleSelect()) {
-            changes.firePropertyChange("value", old, selected);
+            changes.firePropertyChange( VALUE_PROPERTY_NAME, old,selected);
         } else {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null : this.selected.get(0);
-            changes.firePropertyChange("value", prev, curr);
+            changes.firePropertyChange( VALUE_PROPERTY_NAME, prev,curr);
         }
 
         fireChangeListeners();

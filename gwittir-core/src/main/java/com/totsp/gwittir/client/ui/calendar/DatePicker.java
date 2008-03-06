@@ -40,6 +40,7 @@ import java.util.List;
  */
 public class DatePicker extends AbstractBoundWidget implements
         SourcesCalendarDrawEvents, SourcesCalendarEvents {
+    private static final String VALUE_PROPERTY_NAME = "value";
     
     private Calendar calendar = new Calendar();
     private HorizontalPanel hp = new HorizontalPanel();
@@ -71,7 +72,7 @@ public class DatePicker extends AbstractBoundWidget implements
             months.add( Calendar.MONTHS_OF_YEAR_SHORT[i]);
         }
         month.setOptions(months);
-        month.addPropertyChangeListener("value", new PropertyChangeListener(){
+        month.addPropertyChangeListener(DatePicker.VALUE_PROPERTY_NAME, new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
                 Date current = calendar.getRenderDate();
                 current = new Date( current.getYear(),
@@ -87,7 +88,7 @@ public class DatePicker extends AbstractBoundWidget implements
         this.updateYears();
         this.year.setValue( Integer.toString( calendar.getRenderDate().getYear() + 1900 ) );
         hp.add( this.year );
-        this.year.addPropertyChangeListener("value", new PropertyChangeListener(){
+        this.year.addPropertyChangeListener(VALUE_PROPERTY_NAME, new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
                 if( propertyChangeEvent.getNewValue() == null ){
                     return;
@@ -99,7 +100,7 @@ public class DatePicker extends AbstractBoundWidget implements
             }
             
         });
-        Label next = new Label(">>");
+        final Label next = new Label(">>");
         next.addClickListener( new ClickListener(){
             public void onClick(Widget sender) {
                 Date current = calendar.getRenderDate();
@@ -124,9 +125,9 @@ public class DatePicker extends AbstractBoundWidget implements
             }
             
         });
-        this.calendar.addPropertyChangeListener("value", new PropertyChangeListener(){
+        this.calendar.addPropertyChangeListener(VALUE_PROPERTY_NAME, new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent evt) {
-                changes.firePropertyChange("value", evt.getOldValue(), evt.getNewValue() );
+                changes.firePropertyChange(VALUE_PROPERTY_NAME, evt.getOldValue(), evt.getNewValue()  );
             }
             
         });
@@ -213,14 +214,16 @@ public class DatePicker extends AbstractBoundWidget implements
     private void updateMonth(){
         this.month.setValue( Calendar.MONTHS_OF_YEAR_SHORT[ this.calendar.getRenderDate().getMonth() ]);
     }
-    private int indexOf( String[] values, String check ){
+    private int indexOf( final String[] values, final String check ){
+        int index = -1;
         for( int i=0; i < values.length; i++ ){
-            if( values[i] == check ){
-                return i;
+            if( values[i].equals( check ) ){
+                index = i;
+                break;
             }
             
         }
-        return -1;
+        return index;
     }
     
     /**

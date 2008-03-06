@@ -126,22 +126,14 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
 
     public int getAbsoluteLeft() {
-        int retValue;
-
-        retValue = this.grid.getAbsoluteLeft();
-
-        return retValue;
+        return this.grid.getAbsoluteLeft();
     }
 
     /**
      *
      */
     public int getAbsoluteTop() {
-        int retValue;
-
-        retValue = this.grid.getAbsoluteTop();
-
-        return retValue;
+        return this.grid.getAbsoluteTop();
     }
 
     /**
@@ -153,60 +145,49 @@ public class SoftButton extends Button implements SourcesMouseEvents,
     }
 
     public String getHTML() {
+        final String returnValue;
         try {
             if(this.content instanceof HTML) {
-                return ((HTML) this.content).getHTML();
+                returnValue = ((HTML) this.content).getHTML();
             } else {
-                return ((Label) this.content).getText();
+                returnValue = ((Label) this.content).getText();
             }
         } catch(ClassCastException cce) {
             throw new RuntimeException(cce);
         }
+        return returnValue;
     }
 
     public int getOffsetHeight() {
-        int retValue;
-
-        retValue = this.grid.getOffsetHeight();
-
-        return retValue;
+        return this.grid.getOffsetHeight();
     }
 
     public int getOffsetWidth() {
-        int retValue;
-
-        retValue = this.grid.getOffsetWidth();
-
-        return retValue;
+        return this.grid.getOffsetWidth();
     }
 
     public String getStyleName() {
-        String retValue;
-        retValue = this.grid.getStyleName();
-
-        return retValue;
+        return this.grid.getStyleName();
     }
 
     public int getTabIndex() {
-        int retValue;
-
-        retValue = this.softBase.getTabIndex();
-
-        return retValue;
+        return this.softBase.getTabIndex();
     }
 
     public String getText() {
+        final String returnValue;
         try {
             if(this.content instanceof HTML) {
-                return ((HTML) this.content).getHTML();
+                returnValue = ((HTML) this.content).getHTML();
             } else if(this.content instanceof Label) {
-                return ((Label) this.content).getText();
+                returnValue = ((Label) this.content).getText();
             } else {
-                return this.content.toString();
+                returnValue = this.content.toString();
             }
         } catch(ClassCastException cce) {
             throw new RuntimeException(cce);
         }
+        return returnValue;
     }
 
     public String getTitle() {
@@ -215,6 +196,19 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         retValue = this.softBase.getTitle();
 
         return retValue;
+    }
+
+
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        
+        final SoftButton other = (SoftButton) obj;
+        if (this.content != other.content && (this.content == null || !this.content.equals(other.content))) {
+            return false;
+        }
+        return true;
     }
 
     public int hashCode() {

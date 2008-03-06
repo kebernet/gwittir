@@ -33,7 +33,8 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
 
     /** Creates a new instance of AbstractCollectionContainer */
     public AbstractCollectionContainer(
-        HasWidgets base, BoundWidgetTypeFactory factory, ActionTypeFactory actionFactory) {
+        final HasWidgets base, final BoundWidgetTypeFactory factory, final ActionTypeFactory actionFactory
+    ) {
         super();
         this.base = base;
         this.setFactory(factory);
@@ -44,14 +45,16 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
 
         this.setActionFactory(actionFactory);
     }
-    
-     public AbstractCollectionContainer(
-        HasWidgets base, BoundWidgetTypeFactory factory, ActionTypeFactory actionFactory, Collection value) {
+
+    public AbstractCollectionContainer(
+        final HasWidgets base, final BoundWidgetTypeFactory factory, final ActionTypeFactory actionFactory,
+        final Collection value
+    ) {
         this(base, factory, actionFactory);
-        this.setValue( value );
+        this.setValue(value);
     }
 
-    public void setActionFactory(ActionTypeFactory actionFactory) {
+    public void setActionFactory(final ActionTypeFactory actionFactory) {
         this.actionFactory = actionFactory;
     }
 
@@ -59,7 +62,7 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
         return actionFactory;
     }
 
-    public void setFactory(BoundWidgetTypeFactory factory) {
+    public void setFactory(final BoundWidgetTypeFactory factory) {
         this.factory = factory;
     }
 
@@ -67,8 +70,8 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
         return factory;
     }
 
-    public void setValue(Object value) {
-        Collection old = this.value;
+    public void setValue(final Object value) {
+        final Collection old = this.value;
         this.value = (Collection) value;
         this.render();
         this.changes.firePropertyChange("value", old, value);
@@ -78,12 +81,12 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
         return this.value;
     }
 
-    public void add(Widget w) {
+    public void add(final Widget w) {
         this.base.add(w);
     }
 
     public void clear() {
-        this.clear();
+        this.base.clear();
 
         if (this.value != null) {
             this.value.clear();
@@ -94,7 +97,7 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
         return this.base.iterator();
     }
 
-    public boolean remove(Widget w) {
+    public boolean remove(final Widget w) {
         return this.base.remove(w);
     }
 
@@ -107,13 +110,10 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
 
         for (Iterator it = this.value.iterator(); it.hasNext();) {
             Introspectable o = (Introspectable) it.next();
-            BoundWidget w = this.getFactory()
-                                .getWidgetProvider(Introspector.INSTANCE.resolveClass(o))
-                                .get();
+            BoundWidget w = this.getFactory().getWidgetProvider(Introspector.INSTANCE.resolveClass(o)).get();
             w.setModel(o);
 
-            ActionProvider ap = this.getActionFactory().getActionProvider(
-                    Introspector.INSTANCE.resolveClass(w));
+            ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));
 
             if (ap != null) {
                 w.setAction(ap.get());

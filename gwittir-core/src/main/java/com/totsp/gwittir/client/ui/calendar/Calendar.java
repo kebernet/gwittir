@@ -34,16 +34,17 @@ import java.util.List;
 
 
 /**
- * This BoundWidget renders a Calendar on the screen, and 
+ * This BoundWidget renders a Calendar on the screen, and
  * supports a value property of Date.
  * @author cooper
  */
-public class Calendar extends AbstractBoundWidget implements Renderers,
-    SourcesCalendarEvents, SourcesCalendarDrawEvents {
+public class Calendar extends AbstractBoundWidget implements Renderers, SourcesCalendarEvents,
+    SourcesCalendarDrawEvents {
     /**
      * Milliseconds in a day.
      */
     public static final long ONE_DAY = 1000L * 60L * 60L * 24L;
+
     /**
      * Milliseconds in 28 days
      */
@@ -58,6 +59,7 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
     /** Creates a new instance of Calendar */
     public Calendar() {
         this.value = this.renderDate;
+
         for (int i = 0; i < 7; i++) {
             grid.setWidget(0, i, new Label(Calendar.DAYS_OF_WEEK_SHORT[i]));
             grid.getCellFormatter().setStyleName(0, i, "day");
@@ -66,74 +68,69 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
         grid.setCellSpacing(0);
         grid.setCellPadding(0);
         super.initWidget(grid);
+
         final Calendar instance = this;
         this.grid.addTableListener(
             new TableListener() {
                 public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
                     boolean cancelled = false;
 
-                    for (
-                        Iterator it = new ArrayList(eventListeners).iterator();
-                            it.hasNext();) {
-                        if (
-                            !((CalendarListener) it.next()).onDateClicked(
-                                    instance, currentDates[row - 1][cell])) {
+                    for (Iterator it = new ArrayList(eventListeners).iterator(); it.hasNext();) {
+                        if (!((CalendarListener) it.next()).onDateClicked(instance, currentDates[row - 1][cell])) {
                             cancelled = true;
 
                             break;
                         }
                     }
 
-                    if (
-                        !cancelled &&
-                            (
-                                currentDates[row - 1][cell].getMonth() == getRenderDate()
-                                                                                  .getMonth()
-                            )) {
+                    if (!cancelled && (currentDates[row - 1][cell].getMonth() == getRenderDate().getMonth())) {
                         setValue(currentDates[row - 1][cell]);
                     }
                 }
-            });
+            }
+        );
         this.setStyleName("gwittir-Calendar");
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public CalendarDrawListener[] getCalendarDrawListeners() {
         return (CalendarDrawListener[]) this.drawEventListeners.toArray(
-            new CalendarDrawListener[this.drawEventListeners.size()]);
+                new CalendarDrawListener[this.drawEventListeners.size()]
+            );
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public CalendarListener[] getCalendarListeners() {
-        return (CalendarListener[]) this.eventListeners.toArray(
-            new CalendarListener[this.eventListeners.size()]);
+        return (CalendarListener[]) this.eventListeners.toArray(new CalendarListener[this.eventListeners.size()]);
     }
 
     /**
-     * Replaces the Label containing the date in the Calendar's table with the widget 
+     * Replaces the Label containing the date in the Calendar's table with the widget
      * provided.
      * @param date The date to overwrite
      * @param widget The widget to place in the table.
      * @return boolean indicating if the date is currently drawn, and the operation succeeded.
      */
-    public boolean setDateWidget(Date date, Widget widget) {
+    public boolean setDateWidget(final Date date, final Widget widget) {
+        boolean returnValue = false;
+
         for (int row = 0; row < this.currentDates.length; row++) {
             for (int col = 0; col < this.currentDates[row].length; col++) {
-                if (this.currentDates.equals(date)) {
+                if (this.currentDates[row][col].equals(date)) {
                     this.grid.setWidget(row + 1, col, widget);
 
-                    return true;
+                    returnValue = true;
                 }
             }
         }
 
-        return false;
+        return returnValue;
     }
 
     /**
@@ -141,14 +138,15 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
      * will be rendering.
      * @param renderDate Date to render around.
      */
-    public void setRenderDate(Date renderDate) {
-        Date old = this.renderDate;
-        this.renderDate = renderDate;
+    public void setRenderDate(final Date renderDate) {
+        final Date old = this.renderDate;
+        this.renderDate = new Date(renderDate.getTime());
 
         if (!this.renderDate.equals(old)) {
-            if( this.isAttached() ){ 
+            if (this.isAttached()) {
                 this.render();
             }
+
             this.changes.firePropertyChange("renderDate", old, renderDate);
         }
     }
@@ -159,11 +157,11 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
      * @return Date to rendered around.
      */
     public Date getRenderDate() {
-        return renderDate;
+        return new Date(renderDate.getTime());
     }
 
     /**
-     * Sets the date value of the calendar. Will reset the render date to 
+     * Sets the date value of the calendar. Will reset the render date to
      * this value as well.
      * @param value Date balue of the Calendar
      */
@@ -171,9 +169,11 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
         Date old = this.value;
         this.value = (Date) value;
         this.setRenderDate(new Date(this.value.getYear(), this.value.getMonth(), 1));
-        if(this.isAttached() ){
+
+        if (this.isAttached()) {
             this.render();
         }
+
         this.changes.firePropertyChange("value", old, this.value);
     }
 
@@ -186,32 +186,32 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
     }
 
     /**
-     * 
-     * @param cdl 
+     *
+     * @param cdl
      */
     public void addCalendarDrawListener(CalendarDrawListener cdl) {
         this.drawEventListeners.add(cdl);
     }
 
     /**
-     * 
-     * @param l 
+     *
+     * @param l
      */
     public void addCalendarListener(CalendarListener l) {
         this.eventListeners.add(l);
     }
 
     /**
-     * 
-     * @param cdl 
+     *
+     * @param cdl
      */
     public void removeCalendarDrawListener(CalendarDrawListener cdl) {
         this.drawEventListeners.remove(cdl);
     }
 
     /**
-     * 
-     * @param l 
+     *
+     * @param l
      */
     public void removeCalendarListener(CalendarListener l) {
         this.eventListeners.remove(l);
@@ -221,13 +221,10 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
      * Renders/Rerenders the table based on the renderDate.
      */
     public void render() {
-        this.renderDate = new Date(
-                getRenderDate().getYear(), getRenderDate().getMonth(),
-                getRenderDate().getDate());
+        this.renderDate = new Date(getRenderDate().getYear(), getRenderDate().getMonth(), getRenderDate().getDate());
 
-        int month = getRenderDate().getMonth();
-        Date tempDate = new Date(
-                getRenderDate().getYear(), getRenderDate().getMonth(), 1);
+        //int month = getRenderDate().getMonth();
+        Date tempDate = new Date(getRenderDate().getYear(), getRenderDate().getMonth(), 1);
 
         while (tempDate.getDay() != 0) {
             tempDate = new Date(tempDate.getTime() - Calendar.ONE_DAY);
@@ -237,26 +234,25 @@ public class Calendar extends AbstractBoundWidget implements Renderers,
             for (int col = 0; col < 7; col++) {
                 this.currentDates[row][col] = tempDate;
 
-                if (tempDate.getMonth() != this.getRenderDate().getMonth()) {
-                    this.grid.getCellFormatter().setStyleName(row + 1, col, "empty");
-                    this.grid.clearCell(row + 1, col);
-                } else {
-                    this.grid.setWidget(
-                        row + 1, col, new Label(Integer.toString(tempDate.getDate())));
+                if (tempDate.getMonth() == this.getRenderDate().getMonth()) {
+                    this.grid.setWidget(row + 1, col, new Label(Integer.toString(tempDate.getDate())));
                     this.grid.getCellFormatter().setStyleName(row + 1, col, "date");
 
                     for (Iterator it = this.drawEventListeners.iterator(); it.hasNext();) {
                         String altStyle = ((CalendarDrawListener) it.next()).onCalendarDrawEvent(
-                                new CalendarDrawEvent(this, tempDate));
+                                    new CalendarDrawEvent(this, tempDate)
+                                );
 
                         if (altStyle != null) {
-                            this.grid.getCellFormatter().addStyleName(
-                                row + 1, col, altStyle);
+                            this.grid.getCellFormatter().addStyleName(row + 1, col, altStyle);
                         }
                     }
+                } else {
+                    this.grid.getCellFormatter().setStyleName(row + 1, col, "empty");
+                    this.grid.clearCell(row + 1, col);
                 }
 
-                tempDate = new Date(tempDate.getYear(), tempDate.getMonth(), tempDate.getDate() +1);
+                tempDate = new Date(tempDate.getYear(), tempDate.getMonth(), tempDate.getDate() + 1);
             }
         }
     }

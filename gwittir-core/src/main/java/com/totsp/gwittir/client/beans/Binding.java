@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.beans;
 
-import com.google.gwt.core.client.GWT;
 
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
@@ -44,7 +43,8 @@ import java.util.List;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class Binding {
-    private static final Introspector INTROSPECTOR = (Introspector) GWT.create(Introspector.class);
+    private static final Logger LOGGER = Logger.getLogger( "com.totsp.gwittir.client.beans");
+    private static final Introspector INTROSPECTOR = Introspector.INSTANCE;
     private BindingInstance left;
     private BindingInstance right;
     private List children;
@@ -260,6 +260,7 @@ public class Binding {
                     }
                 } catch (Exception e) {
                     valid = false;
+                    Binding.LOGGER.log( Level.WARN, null, e);
                 }
             }
 
@@ -280,6 +281,7 @@ public class Binding {
                     }
                 } catch (Exception e) {
                     valid = false;
+                    Binding.LOGGER.log(Level.WARN, null, e);
                 }
             }
         }
@@ -321,7 +323,7 @@ public class Binding {
 
             return valid;
         } catch (ValidationException ve) {
-            Logger.getAnonymousLogger().log(Level.INFO, "Invalid", ve);
+            Binding.LOGGER.log(Level.INFO, "Invalid", ve);
 
             return false;
         } catch (Exception e) {
@@ -371,6 +373,22 @@ public class Binding {
      */
     public BindingInstance getRight() {
         return this.right;
+    }
+
+
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        
+        final Binding other = (Binding) obj;
+        if (this.left != other.left && (this.left == null || !this.left.equals(other.left))) {
+            return false;
+        }
+        if (this.right != other.right && (this.right == null || !this.right.equals(other.right))) {
+            return false;
+        }
+        return true;
     }
 
     /**

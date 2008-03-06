@@ -43,6 +43,7 @@ public class OpacitySetterIE6 extends OpacitySetter {
      * A string containing number characters for comparison.
      */
     protected static final String NUMBERS = "1234567890.";
+    private static final String FILTER_STYLE_NAME = "filter";
 
     /** Creates a new instance of OpacitySetter */
     public OpacitySetterIE6() {
@@ -54,13 +55,13 @@ public class OpacitySetterIE6 extends OpacitySetter {
      * @return The current opacity between 0.0 and 1.0
      */
     public Double getOpacity(UIObject o) {
-        String str = DOM.getStyleAttribute(o.getElement(), "filter");
+        String str = DOM.getStyleAttribute(o.getElement(),FILTER_STYLE_NAME);
         str = parseOrReplace(str, null);
 
         if((str == null) || (str.length() == 0)) {
             return new Double(1.0);
         } else {
-            return new Double(Integer.parseInt(str) / 100);
+            return new Double(Double.parseDouble(str) / 100D);
         }
     }
 
@@ -70,7 +71,7 @@ public class OpacitySetterIE6 extends OpacitySetter {
      * @param o UIObject to inspect.
      */
     public void setOpacity(UIObject o, Double opacity) {
-        String filter = DOM.getStyleAttribute(o.getElement(), "filter");
+        String filter = DOM.getStyleAttribute(o.getElement(),FILTER_STYLE_NAME);
 
         if(filter == null) {
             filter = "";
@@ -78,10 +79,10 @@ public class OpacitySetterIE6 extends OpacitySetter {
 
         if(opacity != null) {
             filter = parseOrReplace(filter, "" + Math.round(opacity.doubleValue() * 100d));
-            DOM.setStyleAttribute(o.getElement(), "filter", filter);
+            DOM.setStyleAttribute(o.getElement(), FILTER_STYLE_NAME,filter);
         } else {
             filter = parseOrReplace(filter, "100");
-            DOM.setStyleAttribute(o.getElement(), "filter", filter);
+            DOM.setStyleAttribute(o.getElement(), FILTER_STYLE_NAME,filter);
         }
     }
 
@@ -118,7 +119,7 @@ public class OpacitySetterIE6 extends OpacitySetter {
         int opacityEnd = opacityStart + OPACITY.length() + 1;
 
         for(; NUMBERS.indexOf(filter.charAt(opacityEnd)) != -1; opacityEnd++) {
-            ;
+            // Empty loop.
         }
 
         if(replace == null) {

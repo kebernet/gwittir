@@ -20,7 +20,6 @@
 
 package com.totsp.gwittir.client.fx.ui;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
@@ -41,26 +40,27 @@ import java.util.Iterator;
 public class ReflectedImageGroup extends AbstractBoundWidget {
     
     private Collection value;
-    private double maxScalar = 1.25D;
-    private ReflectedImage[] images;
-    private int baseWidth;
-    private int baseHeight;
-    private double reflectHeight;
-    private double opacity;
-    private Grid grid = new Grid(1,3);
-    private FlexTable imagesPanel = new FlexTable();
+    final private double maxScalar = 1.25D;
+    private transient ReflectedImage[] images;
+    final private int baseWidth;
+    final private int baseHeight;
+    final private double reflectHeight;
+    final private double opacity;
+    final private Grid grid = new Grid(1,3);
+    final private FlexTable imagesPanel = new FlexTable();
     private Object selected;
     private int lastSelectedIndex = -1;
     
     /** Creates a new instance of ReflectedImageGroup */
     public ReflectedImageGroup(final int baseWidth,
             final int baseHeight, final double reflectHeight, final double opacity) {
+        super();
         this.baseWidth = baseWidth;
         this.baseHeight = baseHeight;
         this.reflectHeight = reflectHeight;
         this.opacity = opacity;
         this.imagesPanel.setHeight("100%");
-        int  padding = ((int)(baseHeight * maxScalar) - baseHeight )/4;
+        final int  padding = ((int)(baseHeight * maxScalar) - baseHeight )/4;
         this.grid.setCellSpacing( padding );
         this.grid.setHeight("100%");
         this.grid.setStyleName("gwittir-ReflectedFisheyeImageGroup");
@@ -155,7 +155,7 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
             return;
         }
         Object old = this.selected;
-        int index = 0;
+        
         Object[] arr = value.toArray();
         if( lastSelectedIndex != -1 ){
             this.imagesPanel.getCellFormatter()
@@ -166,8 +166,8 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
         this.selected = selected;
         
         boolean found = false;
-        
-        for( index =0 ; selected != null &&  index < arr.length; index++ ){
+        int index;
+        for( index = 0 ; selected != null &&  index < arr.length; index++ ){
             if( arr[index] == selected ){
                 found = true;
                 break;
