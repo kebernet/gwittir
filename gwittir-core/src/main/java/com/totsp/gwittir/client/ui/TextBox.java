@@ -39,7 +39,7 @@ import com.totsp.gwittir.client.action.Action;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled, SourcesKeyboardEvents, SourcesClickEvents {
+public class TextBox<B> extends AbstractBoundWidget<B, String> implements HasFocus, HasEnabled, SourcesKeyboardEvents, SourcesClickEvents {
     private com.google.gwt.user.client.ui.TextBox base = new com.google.gwt.user.client.ui.TextBox();
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private String old;
@@ -199,7 +199,7 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled
         return this.base.getTitle();
     }
     
-    public Object getValue() {
+    public String getValue() {
         try{
             return this.base.getText().length() == 0 ? null : this.base.getText();
         } catch(RuntimeException re){
@@ -303,9 +303,9 @@ public class TextBox extends AbstractBoundWidget implements HasFocus, HasEnabled
         this.base.setTitle(title);
     }
     
-    public void setValue(Object value) {
-        Object old = this.getValue();
-        this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) : ""+value);
+    public void setValue(B value) {
+        String old = this.getValue();
+        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
         if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
             this.changes.firePropertyChange("value", old, this.getValue());
         }

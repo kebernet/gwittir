@@ -110,7 +110,7 @@ public class RadioButton extends AbstractBoundWidget implements HasEnabled,
 
     private void init(String label) {
         this.base = new com.google.gwt.user.client.ui.RadioButton(label);
-        this.setRenderer(new ToBooleanRenderer());
+        this.setRenderer( ToBooleanRenderer.INSTANCE );
         super.initWidget(this.base);
         this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {

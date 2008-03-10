@@ -24,8 +24,12 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.JTypeParameter;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
@@ -44,63 +48,56 @@ import java.util.List;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class IntrospectorGenerator extends Generator {
-    String implementationName = com.totsp.gwittir.client.beans.Introspector.class.getSimpleName() +
-        "_Impl";
-    String packageName = com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName()
-                                                                          .substring(0,
-            com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName()
-                                                             .lastIndexOf("."));
+    String implementationName = com.totsp.gwittir.client.beans.Introspector.class.getSimpleName() + "_Impl";
+    String packageName = com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName().substring(
+            0,
+            com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName().lastIndexOf(".")
+        );
     String methodsImplementationName = "MethodsList";
+    JType objectType;
 
     /** Creates a new instance of IntrospectorGenerator */
     public IntrospectorGenerator() {
     }
 
     private boolean box(JType type, SourceWriter writer) {
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.INT)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.INT)) {
             writer.print("new Integer( ");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.LONG)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.LONG)) {
             writer.print("new Long( ");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.FLOAT)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.FLOAT)) {
             writer.print("new Float( ");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.DOUBLE)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.DOUBLE)) {
             writer.print("new Double( ");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.CHAR)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.CHAR)) {
             writer.print("new Character( ");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.BYTE)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.BYTE)) {
             writer.print("new Byte( ");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.BOOLEAN)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.BOOLEAN)) {
             writer.print("new Boolean( ");
 
             return true;
@@ -125,9 +122,7 @@ public class IntrospectorGenerator extends Generator {
 
         for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver info = (BeanResolver) it.next();
-            logger.branch(logger.DEBUG,
-                "Method Scanning: " + info.getType().getQualifiedSourceName(),
-                null);
+            logger.branch(logger.DEBUG, "Method Scanning: " + info.getType().getQualifiedSourceName(), null);
 
             try {
                 if (info.getProperties().size() == 0) {
@@ -150,8 +145,7 @@ public class IntrospectorGenerator extends Generator {
                     }
                 }
             } catch (Exception e) {
-                logger.log(logger.ERROR,
-                    "Unable to introspect class. Is class a bean?", e);
+                logger.log(logger.ERROR, "Unable to introspect class. Is class a bean?", e);
             }
         }
 
@@ -165,38 +159,45 @@ public class IntrospectorGenerator extends Generator {
         return results;
     }
 
-    public String generate(TreeLogger logger, GeneratorContext context,
-        String typeName) throws UnableToCompleteException {
-        List introspectables = this.getIntrospectableTypes(logger,
-                context.getTypeOracle());
+    public String generate(TreeLogger logger, GeneratorContext context, String typeName)
+        throws UnableToCompleteException {
+        try {
+            this.objectType = context.getTypeOracle().getType("java.lang.Object");
+        } catch (NotFoundException ex) {
+            logger.log(TreeLogger.ERROR, typeName, ex);
+
+            return null;
+        }
+
+        List introspectables = this.getIntrospectableTypes(logger, context.getTypeOracle());
 
         MethodWrapper[] methods = this.findMethods(logger, introspectables);
 
-        ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(this.packageName,
-                this.methodsImplementationName);
+        ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(
+                this.packageName,
+                this.methodsImplementationName
+            );
         mcf.addImport(com.totsp.gwittir.client.beans.Method.class.getCanonicalName());
 
-        PrintWriter methodsPrintWriter = context.tryCreate(logger,
-                this.packageName, this.methodsImplementationName);
+        PrintWriter methodsPrintWriter = context.tryCreate(logger, this.packageName, this.methodsImplementationName);
 
         if (methodsPrintWriter != null) {
-            SourceWriter methodsWriter = mcf.createSourceWriter(context,
-                    methodsPrintWriter);
+            SourceWriter methodsWriter = mcf.createSourceWriter(context, methodsPrintWriter);
             this.writeMethods(logger, methods, methodsWriter);
             methodsWriter.println("}");
-            context.commit( logger, methodsPrintWriter);
+            context.commit(logger, methodsPrintWriter);
         }
 
-        ClassSourceFileComposerFactory cfcf = new ClassSourceFileComposerFactory(this.packageName,
-                this.implementationName);
+        ClassSourceFileComposerFactory cfcf = new ClassSourceFileComposerFactory(
+                this.packageName, this.implementationName
+            );
         cfcf.addImplementedInterface(typeName);
         cfcf.addImport("java.util.HashMap");
         cfcf.addImport(com.totsp.gwittir.client.beans.Method.class.getCanonicalName());
         cfcf.addImport(com.totsp.gwittir.client.beans.Property.class.getCanonicalName());
         cfcf.addImport(com.totsp.gwittir.client.beans.BeanDescriptor.class.getCanonicalName());
 
-        PrintWriter printWriter = context.tryCreate(logger, packageName,
-                implementationName);
+        PrintWriter printWriter = context.tryCreate(logger, packageName, implementationName);
 
         if (printWriter == null) {
             return packageName + "." + implementationName;
@@ -205,22 +206,24 @@ public class IntrospectorGenerator extends Generator {
         SourceWriter writer = cfcf.createSourceWriter(context, printWriter);
         this.writeIntrospectables(logger, introspectables, methods, writer);
         this.writeResolver(introspectables, writer);
-        
+
         writer.println("public BeanDescriptor getDescriptor( Object object ){ ");
         writer.indent();
-        for(Iterator it = introspectables.iterator(); it.hasNext(); ){
+
+        for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver resolver = (BeanResolver) it.next();
-            writer.println("if( object instanceof " + resolver.getType().getQualifiedSourceName() +" ) {" );
+            writer.println("if( object instanceof " + resolver.getType().getQualifiedSourceName() + " ) {");
             writer.indent();
-            
+
             String name = resolver.getType().getQualifiedSourceName().replaceAll("\\.", "_");
-            logger.log( logger.DEBUG, "Writing : "+name, null);
-            writer.print( "return "+name+" == null ? "+name+" = ");
+            logger.log(logger.DEBUG, "Writing : " + name, null);
+            writer.print("return " + name + " == null ? " + name + " = ");
             this.writeBeanDescriptor(logger, resolver, methods, writer);
-            writer.print( ": "+name+";");
+            writer.print(": " + name + ";");
             writer.outdent();
             writer.println("}");
         }
+
         writer.println(" throw new IllegalArgumentException(\"Unknown type\"); ");
         writer.outdent();
         writer.println("}");
@@ -238,16 +241,19 @@ public class IntrospectorGenerator extends Generator {
 
         try {
             JClassType[] types = oracle.getTypes();
-            JClassType introspectable = oracle.getType(com.totsp.gwittir.client.beans.Introspectable.class.getCanonicalName());
+            JClassType introspectable = oracle.getType(
+                        com.totsp.gwittir.client.beans.Introspectable.class.getCanonicalName()
+                    );
 
             for (int i = 0; i < types.length; i++) {
-                logger.log(logger.SPAM,
-                    types[i] + " is assignable to " + introspectable + " " +
-                    types[i].isAssignableTo(introspectable) +
-                    " isInterface = " + types[i].isInterface(), null);
+                logger.log(
+                        logger.SPAM,
+                        types[i] + " is assignable to " + introspectable + " " +
+                        types[i].isAssignableTo(introspectable) + " isInterface = " + types[i].isInterface(),
+                        null
+                    );
 
-                if (types[i].isAssignableTo(introspectable) &&
-                        (types[i].isInterface() == null)) {
+                if (types[i].isAssignableTo(introspectable) && (types[i].isInterface() == null)) {
                     resolvers.add(new BeanResolver(logger, types[i]));
                 }
             }
@@ -288,50 +294,43 @@ public class IntrospectorGenerator extends Generator {
     }
 
     private boolean unbox(JType type, String reference, SourceWriter writer) {
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.INT)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.INT)) {
             writer.print("((Integer) " + reference + ").intValue()");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.LONG)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.LONG)) {
             writer.print("((Long) " + reference + ").longValue()");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.FLOAT)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.FLOAT)) {
             writer.print("((Float) " + reference + ").floatValue()");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.DOUBLE)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.DOUBLE)) {
             writer.print("((Double) " + reference + ").doubleValue()");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.CHAR)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.CHAR)) {
             writer.print("((Character) " + reference + ").charValue()");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.BYTE)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.BYTE)) {
             writer.print("((Byte) " + reference + ").byteValue()");
 
             return true;
         }
 
-        if ((type.isPrimitive() != null) &&
-                (type.isPrimitive() == JPrimitiveType.BOOLEAN)) {
+        if ((type.isPrimitive() != null) && (type.isPrimitive() == JPrimitiveType.BOOLEAN)) {
             writer.print("((Boolean) " + reference + ").booleanValue()");
 
             return true;
@@ -342,8 +341,9 @@ public class IntrospectorGenerator extends Generator {
         return false;
     }
 
-    private void writeBeanDescriptor(TreeLogger logger, BeanResolver info,
-        MethodWrapper[] methods, SourceWriter writer) {
+    private void writeBeanDescriptor(
+        TreeLogger logger, BeanResolver info, MethodWrapper[] methods, SourceWriter writer
+    ) {
         writer.println("new BeanDescriptor() { ");
         writer.indent();
         writer.println("private HashMap lookup;");
@@ -354,8 +354,7 @@ public class IntrospectorGenerator extends Generator {
         {
             writer.println("if( this.properties != null ) ");
             writer.indentln("return this.properties;");
-            writer.println("this.properties = new Property[" +
-                (info.getProperties().size()) + "];");
+            writer.println("this.properties = new Property[" + (info.getProperties().size()) + "];");
 
             Collection pds = info.getProperties().values();
             String[] propertyNames = new String[pds.size()];
@@ -377,9 +376,10 @@ public class IntrospectorGenerator extends Generator {
                     if (p.getReadMethod() == null) {
                         writer.println("null;");
                     } else {
-                        writer.println(this.packageName + "." +
-                            this.methodsImplementationName + ".METHOD_" +
-                            +this.find(methods, p.getReadMethod()) + ";");
+                        writer.println(
+                                this.packageName + "." + this.methodsImplementationName + ".METHOD_" +
+                                +this.find(methods, p.getReadMethod()) + ";"
+                            );
                     }
 
                     writer.print("Method writeMethod = ");
@@ -387,19 +387,21 @@ public class IntrospectorGenerator extends Generator {
                     if (p.getWriteMethod() == null) {
                         writer.println("null;");
                     } else {
-                        writer.println(this.packageName + "." +
-                            this.methodsImplementationName + ".METHOD_" +
-                            +this.find(methods, p.getWriteMethod()) + ";");
+                        writer.println(
+                                this.packageName + "." + this.methodsImplementationName + ".METHOD_" +
+                                +this.find(methods, p.getWriteMethod()) + ";"
+                            );
                     }
 
-                    logger.log(logger.SPAM,
-                        p.getName() + " " +
-                        p.getType().getQualifiedSourceName(), null);
-                    writer.println("this.properties[" + (i) +
-                        "] = new Property( \"" + p.getName() + "\", " +
-                        ((p.getType() != null)
-                        ? p.getType().getQualifiedSourceName() : "Object") +
-                        ".class,  readMethod, writeMethod );");
+                    logger.log(logger.DEBUG, p.getName() + " " + p.getType().getQualifiedSourceName(), null);
+                    JType ptype = this.resolveType(p.getType() );
+                    
+                    logger.log(logger.DEBUG, p.getName() + " (Erased) " + ptype.getQualifiedSourceName(), null);
+                    writer.println(
+                            "this.properties[" + (i) + "] = new Property( \"" + p.getName() + "\", " +
+                            ((p.getType() != null) ? ptype.getQualifiedSourceName(): "Object") +
+                            ".class,  readMethod, writeMethod );"
+                        );
                     writer.outdent();
                     writer.println("}");
                 }
@@ -429,8 +431,9 @@ public class IntrospectorGenerator extends Generator {
         writer.outdent();
         writer.println("}");
         writer.println(
-            "if( p == null ) throw new RuntimeException(\"Couldn't find property \"+name+\" for " +
-            info.getType().getQualifiedSourceName() + "\");");
+                "if( p == null ) throw new RuntimeException(\"Couldn't find property \"+name+\" for " +
+                info.getType().getQualifiedSourceName() + "\");"
+            );
         writer.println("else return p;");
         writer.outdent();
         writer.println("}");
@@ -439,14 +442,13 @@ public class IntrospectorGenerator extends Generator {
         writer.print("}");
     }
 
-    private void writeIntrospectables(TreeLogger logger, List introspectables,
-        MethodWrapper[] methods, SourceWriter writer) {
+    private void writeIntrospectables(
+        TreeLogger logger, List introspectables, MethodWrapper[] methods, SourceWriter writer
+    ) {
         for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver bean = (BeanResolver) it.next();
 
-            logger.branch(logger.DEBUG,
-                "Introspecting: " + bean.getType().getQualifiedSourceName(),
-                null);
+            logger.branch(logger.DEBUG, "Introspecting: " + bean.getType().getQualifiedSourceName(), null);
 
             try {
                 if (bean.getProperties().size() == 0) {
@@ -454,48 +456,48 @@ public class IntrospectorGenerator extends Generator {
                 }
 
                 writer.print("private static BeanDescriptor ");
-                writer.print(bean.getType().getQualifiedSourceName()
-                                 .replaceAll("\\.", "_"));
-                
+                writer.print(bean.getType().getQualifiedSourceName().replaceAll("\\.", "_"));
+
                 writer.println(" = null;");
             } catch (Exception e) {
-                logger.log(logger.ERROR,
-                    "Unable to introspect class. Is class a bean?", e);
+                logger.log(logger.ERROR, "Unable to introspect class. Is class a bean?", e);
             }
         }
     }
 
-    private void writeMethod(TreeLogger logger, MethodWrapper method,
-        SourceWriter writer) {
+    private void writeMethod(TreeLogger logger, MethodWrapper method, SourceWriter writer) {
+        JType ptype =  this.resolveType(method.getDeclaringType());
+        
         writer.println("new Method(){ ");
         writer.indent();
         writer.println("public String getName() {");
         writer.indentln("return \"" + method.getBaseMethod().getName() + "\";");
         writer.println(" }");
-        writer.println(
-            "public Object invoke( Object target, Object[] args ) throws Exception {");
+        writer.println("public Object invoke( Object target, Object[] args ) throws Exception {");
         writer.indent();
-        writer.println(method.getDeclaringType().getQualifiedSourceName() +
-            " casted =");
-        writer.println("(" +
-            method.getDeclaringType().getQualifiedSourceName() + ") target;");
-        logger.log(logger.SPAM,
-            "Method: " + method.getBaseMethod().getName() + " " +
-            method.getBaseMethod().getReturnType().getQualifiedSourceName(),
-            null);
+        writer.println(ptype.getQualifiedSourceName() + " casted =");
+        writer.println("(" + ptype.getQualifiedSourceName() + ") target;");
+        logger.log(
+                logger.SPAM,
+                "Method: " + method.getBaseMethod().getName() + " " +
+                method.getBaseMethod().getReturnType().getQualifiedSourceName(),
+                null
+            );
 
         if (!(method.getBaseMethod().getReturnType().isPrimitive() == JPrimitiveType.VOID)) {
             writer.print("return ");
         }
 
-        boolean boxed = this.box(method.getBaseMethod().getReturnType(), writer);
+        JType type = this.resolveType(method.getBaseMethod().getReturnType());
+
+        boolean boxed = this.box(type, writer);
         writer.print("casted." + method.getBaseMethod().getName() + "(");
 
         if (method.getBaseMethod().getParameters() != null) {
-            for (int j = 0; j < method.getBaseMethod().getParameters().length;
-                    j++) {
-                this.unbox(method.getBaseMethod().getParameters()[j].getType(),
-                    "args[" + j + "]", writer);
+            for (int j = 0; j < method.getBaseMethod().getParameters().length; j++) {
+                JType arg = this.resolveType(method.getBaseMethod().getParameters()[j].getType());
+                
+                this.unbox(arg, "args[" + j + "]", writer);
 
                 if (j != (method.getBaseMethod().getParameters().length - 1)) {
                     writer.print(", ");
@@ -511,8 +513,7 @@ public class IntrospectorGenerator extends Generator {
 
         writer.println(";");
 
-        if (method.getBaseMethod().getReturnType().getQualifiedSourceName()
-                      .equals("void")) {
+        if (method.getBaseMethod().getReturnType().getQualifiedSourceName().equals("void")) {
             writer.println("return null;");
         }
 
@@ -522,8 +523,7 @@ public class IntrospectorGenerator extends Generator {
         writer.println("};");
     }
 
-    private void writeMethods(TreeLogger logger, MethodWrapper[] methods,
-        SourceWriter writer) {
+    private void writeMethods(TreeLogger logger, MethodWrapper[] methods, SourceWriter writer) {
         for (int i = 0; i < methods.length; i++) {
             writer.print("public static final Method METHOD_" + i + " = ");
             writeMethod(logger, methods[i], writer);
@@ -536,14 +536,27 @@ public class IntrospectorGenerator extends Generator {
 
         for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver type = (BeanResolver) it.next();
-            writer.println("if( object instanceof " +
-                type.getType().getQualifiedSourceName() + " ) return " +
-                type.getType().getQualifiedSourceName() + ".class;");
+            writer.println(
+                    "if( object instanceof " + type.getType().getQualifiedSourceName() + " ) return " +
+                    type.getType().getQualifiedSourceName() + ".class;"
+                );
         }
 
-        writer.println(
-            "throw new RuntimeException( \"Object \"+object+\"could not be resolved.\" );");
+        writer.println("throw new RuntimeException( \"Object \"+object+\"could not be resolved.\" );");
         writer.outdent();
         writer.println("}");
+    }
+    
+    private JType resolveType(final JType type){
+        JType ret = type;
+        JParameterizedType pt = type.isParameterized();
+        if( pt != null ){
+            ret = pt.getRawType();
+        }
+        JTypeParameter tp = ret.isTypeParameter();
+        if( tp != null ){
+            ret =tp.getBaseType();
+        }
+        return ret;
     }
 }

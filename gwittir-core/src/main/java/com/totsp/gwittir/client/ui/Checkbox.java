@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HasFocus;
@@ -33,7 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Checkbox extends AbstractBoundWidget implements HasEnabled,
+public class Checkbox<B> extends AbstractBoundWidget<B, Boolean> implements HasEnabled,
     SourcesClickEvents, HasFocus, SourcesKeyboardEvents {
     
     private com.google.gwt.user.client.ui.CheckBox base;
@@ -103,13 +102,13 @@ public class Checkbox extends AbstractBoundWidget implements HasEnabled,
         return this.base.getTitle();
     }
 
-    public Object getValue() {
+    public Boolean getValue() {
         return this.isChecked() ? Boolean.TRUE : Boolean.FALSE;
     }
 
     private void init(String label) {
         this.base = new com.google.gwt.user.client.ui.CheckBox(label);
-        this.setRenderer(new ToBooleanRenderer());
+        this.setRenderer( (Renderer<Boolean, B>) ToBooleanRenderer.INSTANCE );
         super.initWidget(this.base);
         this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
@@ -192,16 +191,17 @@ public class Checkbox extends AbstractBoundWidget implements HasEnabled,
         this.base.setText(text);
     }
 
+    @Override
     public void setTitle(String title) {
         this.base.setTitle(title);
     }
 
-    public void setValue(Object value) {
-        Boolean old = (Boolean) this.getValue();
-        this.setChecked((value == null) ? false
-                                        : ((Boolean) this.getRenderer()
-                                                         .render(value))
-            .booleanValue());
+    public void setValue(B value) {
+        Boolean old =  this.getValue();
+        this.setChecked(value == null ? false
+                                        : this.getRenderer()
+                                              .render(value)
+                                              .booleanValue());
 
         if((old != this.getValue()) && !old.equals(this.getValue())) {
             this.changes.firePropertyChange("value", old, this.getValue());

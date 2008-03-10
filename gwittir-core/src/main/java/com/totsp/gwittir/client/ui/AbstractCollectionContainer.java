@@ -25,10 +25,11 @@ import java.util.Iterator;
  *
  * @author rcooper
  */
-public class AbstractCollectionContainer extends AbstractBoundWidget implements HasWidgets {
+public class AbstractCollectionContainer<T> extends
+        AbstractBoundWidget<Collection<T>, Collection<T>>implements HasWidgets {
     private ActionTypeFactory actionFactory;
     private BoundWidgetTypeFactory factory;
-    private Collection value;
+    private Collection<T> value;
     private HasWidgets base;
 
     /** Creates a new instance of AbstractCollectionContainer */
@@ -70,14 +71,14 @@ public class AbstractCollectionContainer extends AbstractBoundWidget implements 
         return factory;
     }
 
-    public void setValue(final Object value) {
-        final Collection old = this.value;
-        this.value = (Collection) value;
+    public void setValue(final Collection<T> value) {
+        final Collection<T> old = this.value;
+        this.value = value;
         this.render();
         this.changes.firePropertyChange("value", old, value);
     }
 
-    public Object getValue() {
+    public Collection<T> getValue() {
         return this.value;
     }
 

@@ -32,20 +32,20 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Button extends AbstractBoundWidget implements SourcesClickEvents, HasFocus {
+public class Button<B> extends AbstractBoundWidget<B, String> implements SourcesClickEvents, HasFocus {
     private final com.google.gwt.user.client.ui.Button base = new com.google.gwt.user.client.ui.Button();
-    private Object value;
+    private String value;
     
     /** Creates a new instance of Button */
     public Button() {
         this.init();
     }
 
-    public Button(String label) {
+    public Button(B label) {
         this.init();
         this.setValue(label);
     }
-    public Button(String label, ClickListener listener) {
+    public Button(B label, ClickListener listener) {
         this.init();
         this.setValue(label);
         this.addClickListener( listener );
@@ -116,7 +116,7 @@ public class Button extends AbstractBoundWidget implements SourcesClickEvents, H
         return retValue;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return this.value;
     }
 
@@ -168,9 +168,8 @@ public class Button extends AbstractBoundWidget implements SourcesClickEvents, H
         this.base.setHTML(html);
     }
 
-    public void setRenderer(Renderer renderer) {
+    public void setRenderer(Renderer<String, B> renderer) {
         super.setRenderer(renderer);
-        this.setValue(renderer.render(this.getValue()));
     }
 
     public void setTabIndex(int index) {
@@ -185,11 +184,11 @@ public class Button extends AbstractBoundWidget implements SourcesClickEvents, H
         this.base.setTitle(title);
     }
 
-    public void setValue(Object value) {
+    public void setValue(B value) {
         //GWT.log("Setting value "+ value, null );
         
-        Object old = this.value;
-        this.value = value;
+        String old = this.value;
+         
         this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) : ""+value);
         this.changes.firePropertyChange("value", old, value);
     }

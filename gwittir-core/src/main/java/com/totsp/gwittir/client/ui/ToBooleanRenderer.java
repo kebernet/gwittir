@@ -23,18 +23,21 @@ package com.totsp.gwittir.client.ui;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ToBooleanRenderer implements Renderer {
+public class ToBooleanRenderer implements Renderer<Boolean, Object> {
+    
+    public static final ToBooleanRenderer INSTANCE = new ToBooleanRenderer();
     
     /** Creates a new instance of ToBooleanRenderer */
-    public ToBooleanRenderer() {
+    private ToBooleanRenderer() {
+        super();
     }
 
-    public Object render(Object o) {
+    public Boolean render(Object o) {
         if( o == null ){
             return null;
         }
         if( o instanceof Boolean ){
-            return o;
+            return (Boolean) o;
         }
         return Boolean.valueOf( o.toString() );
     }
