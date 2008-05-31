@@ -16,14 +16,7 @@ public class GwtTestToStringBean extends GWTTestCase {
         return "com.totsp.gwittir.GwittirTest";
     }
 
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    
     public void testToString() {
         TestModel testModel = new TestModel();
         System.out.println(testModel.toString());

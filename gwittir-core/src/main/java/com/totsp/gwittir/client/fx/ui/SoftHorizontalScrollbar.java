@@ -211,11 +211,13 @@ public class SoftHorizontalScrollbar extends Composite {
 
         int barWidth = Math.round(currentWidth * pageSize);
         //GWT.log("Bar width " + barWidth, null);
-        this.bar.setWidth(barWidth + "px");
-
+        if(barWidth >=0 ){
+            this.bar.setWidth(barWidth + "px");
+        }
         int higherWidth = currentWidth - lowerWidth - barWidth;
-        this.higher.setWidth(higherWidth + "px");
-
+        if( higherWidth >= 0 ){
+            this.higher.setWidth(higherWidth + "px");
+        }
         this.lower.setHeight(this.getOffsetHeight() + "px");
         this.bar.setHeight(this.getOffsetHeight() + "px");
         this.higher.setHeight(this.getOffsetHeight() + "px");

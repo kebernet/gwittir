@@ -224,7 +224,7 @@ public class IntrospectorGenerator extends Generator {
             writer.println("}");
         }
 
-        writer.println(" throw new IllegalArgumentException(\"Unknown type\"); ");
+        writer.println(" throw new IllegalArgumentException(\"Unknown type\" + object.getClass() ); ");
         writer.outdent();
         writer.println("}");
         writer.outdent();

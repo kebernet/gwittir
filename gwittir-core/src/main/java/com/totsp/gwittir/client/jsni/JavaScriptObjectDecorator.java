@@ -170,26 +170,8 @@ public class JavaScriptObjectDecorator {
         return (jso == null) ? null : new JavaScriptObjectDecorator(jso);
     }
 
-    public void setLngProperty(String name, long value) {
-        this.setLngProperty(this.getObject(), name, value);
-    }
-
-    public long getLngProperty(String name) {
-        return this.getLngProperty(this.getObject(), name);
-    }
-
-    public void setLongProperty(String name, Long value) {
-        if (value == null) {
-            this.setNullObject(this.getObject(), name);
-        } else {
-            this.setLngProperty(this.getObject(), name, value.longValue());
-        }
-    }
-
-    public java.lang.Long getLongProperty(String name) {
-        return this.getLongProperty(this.getObject(), name);
-    }
-
+   
+    
     public void setObject(JavaScriptObject object) {
         this.object = object;
     }
@@ -328,22 +310,9 @@ public class JavaScriptObjectDecorator {
     }
     }-*/;
 
-    private native void setLngProperty(JavaScriptObject object, String name, long value) /*-{
-    object[ name ] = value;
-    }-*/;
+    
 
-    private native long getLngProperty(JavaScriptObject object, String name) /*-{
-    return object[ name ];
-    }-*/;
-
-    private native java.lang.Long getLongProperty(JavaScriptObject object, String name) /*-{
-    if( object[name] == null || object[name] == undefined ){
-    return null;
-    } else {
-    return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newLong(J)( object[ name ] );
-    }
-    }-*/;
-
+    
     private native void setNullObject(JavaScriptObject object, String name) /*-{
     object[name] = null;
     }-*/;
@@ -372,10 +341,7 @@ public class JavaScriptObjectDecorator {
     return new Object();
     }-*/;
 
-    private static java.lang.Long newLong(long value) {
-        return new java.lang.Long(value);
-    }
-
+    
     private native java.lang.Byte getByteProperty(JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
     return null;

@@ -204,9 +204,11 @@ public class SoftScrollbar extends Composite {
         int higherHeight = currentHeight - lowerHeight - barHeight;
         higherHeight = higherHeight < 0 ? 0 : higherHeight;
         this.higher.setHeight(higherHeight + "px");
-        this.lower.setWidth(this.getOffsetWidth() + "px");
-        this.bar.setWidth(this.getOffsetWidth() + "px");
-        this.higher.setWidth(this.getOffsetWidth() + "px");
+        if( this.getOffsetWidth() >= 0 ){
+            this.lower.setWidth(this.getOffsetWidth() + "px");
+            this.bar.setWidth(this.getOffsetWidth() + "px");
+            this.higher.setWidth(this.getOffsetWidth() + "px");
+        }
     }
 
     public void setBarWidget(Widget w) {

@@ -18,14 +18,6 @@ public class GwtTestEqualsHashCodeBean extends GWTTestCase {
         return "com.totsp.gwittir.GwittirTest";
     }
 
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testEquals() {
         Person person1 = new Person("first1", "last1", 25);
         Person person2 = new Person("first1", "last1", 25);

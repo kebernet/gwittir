@@ -21,12 +21,6 @@ public class GwtTestBinding extends GWTTestCase {
         return "com.totsp.gwittir.GwittirTest";
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     public void testBasicDotted() throws Exception {
         Person mark = new Person("Mark", "Lanford", 31);
         mark.setSpouse(new Person("Benay", "Krissel", 37));

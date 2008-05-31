@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 /**
@@ -419,7 +421,9 @@ public class Binding {
             return this.getBindableFromCollectionWithProperty((Collection) collectionOrArray,
                 descriminator.substring(0, equalsIndex),
                 descriminator.substring(equalsIndex + 1));
-        } else if (equalsIndex == -1) {
+        } else if( collectionOrArray instanceof Map ){
+            return this.getBindableAtMapKey((Map) collectionOrArray, descriminator);
+        }else if (equalsIndex == -1) {
             return ((Bindable[]) collectionOrArray)[Integer.parseInt(descriminator)];
         } else {
             return getBindableFromArrayWithProperty((Bindable[]) collectionOrArray,
@@ -478,6 +482,21 @@ public class Binding {
             stringValue);
     }
 
+    
+    private Bindable getBindableAtMapKey(Map map, String key){
+        Bindable result = null;
+        
+        for(Iterator it = map.entrySet().iterator(); it.hasNext(); ){
+            Entry e = (Entry) it.next();
+            if( e.getKey().toString().equals(key) ){
+                result = (Bindable) e.getValue();
+                break;
+            }
+        }
+        
+        return result;
+    }
+    
     private Bindable getBindableAtCollectionIndex(Collection collection,
         int index) {
         int i = 0;
@@ -648,7 +667,7 @@ public class Binding {
             try {
                 target.property.getMutatorMethod().invoke(target.object, args);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException( "Exception setting property: "+target.property.getName(), e);
             }
         }
 

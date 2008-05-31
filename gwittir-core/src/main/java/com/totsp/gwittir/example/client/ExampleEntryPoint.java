@@ -58,9 +58,11 @@ import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.ui.ContextMenuPanel;
+import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
+import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
 import com.totsp.gwittir.client.ui.Image;
 import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.ListBox;
 import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.calendar.Calendar;
@@ -70,7 +72,6 @@ import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
-import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
@@ -288,8 +289,14 @@ public class ExampleEntryPoint implements EntryPoint {
             }
             
         });*/
-        final BoundTable t = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
-                + BoundTable.ROW_HANDLE_MASK + BoundTable.NO_SELECT_COL_MASK, factory, cols);
+        final BoundTable t = new BoundTable(
+                BoundTable.HEADER_MASK
+                + BoundTable.SORT_MASK
+                + BoundTable.ROW_HANDLE_MASK 
+                + BoundTable.NO_SELECT_COL_MASK 
+                + BoundTable.NO_SELECT_CELL_MASK
+                + BoundTable.MULTIROWSELECT_MASK
+                + BoundTable.MULTI_REQUIRES_SHIFT, factory, cols);
         ArrayList list = new ArrayList();
         list.add(form.getValue());
         list.add( new MyClass() );
@@ -349,7 +356,7 @@ public class ExampleEntryPoint implements EntryPoint {
 
         });
         tablesPanel.add( hide );
-
+        /*
         BoundTable t2 = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
                 + BoundTable.ROW_HANDLE_MASK  + BoundTable.NO_SELECT_COL_MASK, cols);
         list = new ArrayList();
@@ -360,6 +367,7 @@ public class ExampleEntryPoint implements EntryPoint {
         t2.setValue( list );
 
         tablesPanel.add( t2 );
+         */
         tp.add(tablesPanel, "Bound Table");
         final Button alert = new Button("Alert Selection", new ClickListener(){
             public void onClick(final Widget e){
@@ -525,6 +533,36 @@ public class ExampleEntryPoint implements EntryPoint {
        
 
         tp.add( vp , "Flickr" );
+        
+        /*
+            ContextMenu example
+         */
+        
+        Label hasContext = new Label("RightClickMe");
+        GWT.log("Before constructor", null);
+        ContextMenuPanel ctx = new ContextMenuPanel(hasContext);
+        ctx.addMenuItemWidget( new Button("Item 1"));
+        ctx.addMenuItemWidget( new Button("Item 2"));
+        vp = new VerticalPanel();
+        //vp.add( ctx );
+        
+        Button ctxB = new MenuItem("Rick roll");
+        ctx = new ContextMenuPanel(ctxB);
+        ctx.addMenuItemWidget( new MenuItem("Item 1"));
+        ctx.addMenuItemWidget( new MenuItem("Item 2"));
+        SubMenu sub = new SubMenu("Sub");
+        sub.addMenuItemWidget( new MenuItem("Sub Item 1"));
+        sub.addMenuItemWidget( new MenuItem("Sub Item 2"));
+        
+        SubMenu sub2 = new SubMenu("Sub2");
+        sub2.addMenuItemWidget( new MenuItem("Sub2 Item 1"));
+        sub2.addMenuItemWidget( new MenuItem("Sub2 Item 2"));
+        sub.addMenuItemWidget(sub2);
+        ctx.addMenuItemWidget(sub);
+        vp.add( ctx );
+        tp.add( vp, "Context Menu");
+      
+        
     }
 
     private native void alertSelection() /*-{
