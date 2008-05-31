@@ -45,34 +45,37 @@ public class ListSorter {
     public static void sortOnProperty(List list, String propertyName,
         boolean ascending) throws Exception {
         Class currentClass = null;
-        ;
-
+        
         Property p = null;
-        HashMap cache = new HashMap();
+        HashMap<Class, Property> cache = new HashMap<Class, Property>();
 
         for(int i = 0; i < (list.size() - 1); i++) {
             for(int j = i + 1; j < list.size(); j++) {
                 Object o1 = list.get(i);
-
-                if(currentClass != INTRO.resolveClass(o1)) {
-                    p = (Property) cache.get(INTRO.resolveClass(o1));
+                Class o1Class = INTRO.resolveClass(o1);
+                if(currentClass != o1Class) {
+                    p = cache.get(o1Class);
 
                     if(p == null) {
                         p = INTRO.getDescriptor(o1).getProperty(propertyName);
+                        cache.put( o1Class, p);
                     }
+                    currentClass = o1Class;
                 }
 
                 Comparable oc1 = (Comparable) p.getAccessorMethod()
                                                .invoke(o1, null);
 
                 Object o2 = list.get(j);
-
-                if(currentClass != INTRO.resolveClass(o2)) {
-                    p = (Property) cache.get(INTRO.resolveClass(o2));
+                Class o2Class = INTRO.resolveClass(o2);
+                if(currentClass != o2Class) {
+                    p = cache.get(o2Class);
 
                     if(p == null) {
                         p = INTRO.getDescriptor(o2).getProperty(propertyName);
+                        cache.put( o2Class, p);
                     }
+                    currentClass = o2Class;
                 }
 
                 Comparable oc2 = (Comparable) p.getAccessorMethod()
