@@ -1,0 +1,4 @@
+<module>
+    <inherits name="com.googlecode.gwtx.java.Beans"/>
+    <inherits name="com.googlecode.gwtx.java.Util"/>
+</module>
