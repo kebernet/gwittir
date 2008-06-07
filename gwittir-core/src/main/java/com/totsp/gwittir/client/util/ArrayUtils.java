@@ -125,4 +125,16 @@ public class ArrayUtils {
         }
         return -1;
     }
+    
+    public static void copyArray(Object[] from, Object[] to){
+        for(int i=0; i < from.length; i++){
+            to[i] = from[i];
+        }
+    }
+    
+    public static void copyArray(int[] from, int[] to){
+        for(int i=0; i < from.length; i++){
+            to[i] = from[i];
+        }
+    }
 }

@@ -4,6 +4,7 @@
     <!-- Inherit the core Web Toolkit stuff.                  -->
     <inherits name='com.google.gwt.user.User'/>
     <inherits name='com.google.gwt.i18n.I18N'/>
+    <inherits name='com.googlecode.gwtx.Java'/>
     <source path="client" />
     <generate-with
         class="com.totsp.gwittir.rebind.beans.IntrospectorGenerator" >

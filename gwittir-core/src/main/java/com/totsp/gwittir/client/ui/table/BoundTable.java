@@ -166,7 +166,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     private Timer cleanUpCaches = new Timer() {
             public void run() {
                 if (value != null) {
-                    for (Iterator it = widgetCache.keySet().iterator();
+                    for (Iterator it = new ArrayList(widgetCache.keySet()).iterator();
                             it.hasNext();) {
                         Object o = it.next();
 
@@ -175,7 +175,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                         }
                     }
 
-                    for (Iterator it = bindingCache.keySet().iterator();
+                    for (Iterator it = new ArrayList(bindingCache.keySet()).iterator();
                             it.hasNext();) {
                         Object o = it.next();
 

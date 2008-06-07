@@ -4,9 +4,11 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -40,7 +42,7 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
         super();
         this.internal = internal;
         setWidget((Widget) internal);
-        this.sinkEvents(Event.MOUSEEVENTS);
+        this.sinkEvents(Event.MOUSEEVENTS | Event.ONMOUSEDOWN | Event.ONMOUSEUP );
         this.disableContext(this.getElement());
         this.disableSelect(this.getElement());
         this.panel.setStyleName("gwittir-ContextMenu");
@@ -116,15 +118,35 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
     public void hide() {
         this.popup.hide();
     }
+    
+    private int x;
+    private int y;
+    private Timer t = new Timer(){
+
+        @Override
+        public void run() {
+           popup.show();
+           popup.setPopupPosition(x, y);
+        }
+        
+    };
 
     @Override
     public void onBrowserEvent(Event event) {
         switch (DOM.eventGetType(event)) {
         case Event.ONMOUSEDOWN:
-
+            
+            GWT.log("Mouse down "+(DOM.eventGetButton(event) == Event.BUTTON_RIGHT), null);
+            GWT.log( ""+ DOM.eventGetButton(event) +" :: "+Event.BUTTON_LEFT +" "+Event.BUTTON_MIDDLE + " "+ Event.BUTTON_RIGHT, null);
+            
             if ((DOM.eventGetButton(event) == Event.BUTTON_RIGHT) ||
                     DOM.eventGetCtrlKey(event)) {
                 rightDown = true;
+                x = DOM.eventGetClientX(event);
+                y = DOM.eventGetClientY(event);
+                if((DOM.eventGetButton(event) == Event.BUTTON_RIGHT) ){
+                    t.schedule(5);
+                }
             } else {
                 rightDown = false;
             }
@@ -132,10 +154,9 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
             break;
 
         case Event.ONMOUSEUP:
-
+            GWT.log("Up!", null);
             if (rightDown) {
-                int x = DOM.eventGetClientX(event);
-                int y = DOM.eventGetClientY(event);
+                GWT.log("Was right", null);
                 this.popup.show();
                 this.popup.setPopupPosition(x, y);
                 DOM.eventCancelBubble(event, true);
@@ -146,6 +167,7 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
             break;
 
         default:
+            GWT.log("Got mouse event"+ DOM.eventGetTypeString(event), null);
             break;
         }
     }
@@ -200,7 +222,7 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
         }
 
         public MenuItem(String text, ClickListener listener) {
-            super();
+            super(text, listener);
         }
 
         void setMenu(final ContextMenuPanel panel) {

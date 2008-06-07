@@ -21,6 +21,7 @@ package com.totsp.gwittir.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -79,6 +80,7 @@ import com.totsp.gwittir.client.validator.PopupValidationFeedback;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.goda.time.DateTime;
 
 
 /**
@@ -562,6 +564,11 @@ public class ExampleEntryPoint implements EntryPoint {
         vp.add( ctx );
         tp.add( vp, "Context Menu");
       
+        
+        DateTime dt = new DateTime();
+        int month = dt.getMonthOfYear();
+        DateTimeFormat dtf = DateTimeFormat.getFormat("zzz");
+        GWT.log( month +" "+ dt+" "+dtf.format( new Date() ), null);
         
     }
 

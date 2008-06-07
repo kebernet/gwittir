@@ -5,6 +5,7 @@
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="com.googlecode.gwtx.Java"/>
     <inherits name="com.totsp.gwittir.LoggingInfo"/>
+    <inherits name='com.google.gwt.i18n.I18N'/>
     <source path="client" />
     <generate-with
         class="com.totsp.gwittir.rebind.beans.IntrospectorGenerator" >
