@@ -56,12 +56,15 @@ public abstract class AbstractTableWidget extends AbstractBoundWidget {
             // TODO Figure out some way to make this read only.
         }
 
+        
+
+
         binding = new Binding(widget, "value", field.getValidator(),
                 field.getFeedback(), target, field.getPropertyName(), null, null);
         widget.setModel(this.getValue());
 
-        if(field.getRenderer() != null) {
-            widget.setRenderer(field.getRenderer());
+        if(field.getConverter() != null) {
+            binding.getRight().converter = field.getConverter();
         }
 
         if(field.getComparator() != null) {

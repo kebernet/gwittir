@@ -22,10 +22,9 @@ import com.google.gwt.user.client.ui.SourcesMouseWheelEvents;
  *
  * @author rcooper
  */
-public class Image extends AbstractBoundWidget 
+public class Image extends AbstractBoundWidget<String>
         implements SourcesClickEvents, SourcesLoadEvents, 
         SourcesMouseEvents, SourcesMouseWheelEvents{
-    private Object value;
     private com.google.gwt.user.client.ui.Image base =
             new com.google.gwt.user.client.ui.Image();
     
@@ -35,7 +34,6 @@ public class Image extends AbstractBoundWidget
     public Image() {
         super.initWidget( base );
         this.setStyleName("gwittir-Image");
-        this.setRenderer( new ToStringRenderer() );
     }
 
     public Image(String value ){
@@ -43,14 +41,13 @@ public class Image extends AbstractBoundWidget
         this.setValue( value );
     }
     
-    public Object getValue() {
-        return this.value;
+    public String getValue() {
+        return base.getUrl();
     }
 
-    public void setValue(Object value) {
-        Object old = this.value;
-        this.value = value;
-        this.base.setUrl( (String) this.getRenderer().render(value) );
+    public void setValue(String value) {
+        Object old = base.getUrl();
+        base.setUrl(value);
         this.changes.firePropertyChange("value", old, value );
     }
 

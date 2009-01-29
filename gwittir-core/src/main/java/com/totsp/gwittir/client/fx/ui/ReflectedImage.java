@@ -37,9 +37,9 @@ import com.totsp.gwittir.client.ui.AbstractBoundWidget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ReflectedImage extends AbstractBoundWidget implements SourcesMouseEvents {
+public class ReflectedImage extends AbstractBoundWidget<String> implements SourcesMouseEvents {
     private Image base;
-    private Object value;
+    private String value;
     private Reflection reflect = (Reflection) GWT.create(Reflection.class);
     private Grid v = new Grid(2,1);
     private double opacity;
@@ -119,7 +119,7 @@ public class ReflectedImage extends AbstractBoundWidget implements SourcesMouseE
         return this.base.getUrl();
     }
     
-    public Object getValue() {
+    public String getValue() {
         return this.value;
     }
     
@@ -141,10 +141,10 @@ public class ReflectedImage extends AbstractBoundWidget implements SourcesMouseE
         this.changes.firePropertyChange("url", old, url);
     }
     
-    public void setValue(Object newValue) {
+    public void setValue(String newValue) {
         Object old = this.value;
         this.value = newValue;
-        this.setUrl((String) this.getRenderer().render(newValue));
+        this.setUrl(newValue);
         this.reflect.paint(this.base, this.getWidth(), this.getHeight(),
                 this.reflectHeight, this.opacity);
         this.changes.firePropertyChange("value", old, this.value);

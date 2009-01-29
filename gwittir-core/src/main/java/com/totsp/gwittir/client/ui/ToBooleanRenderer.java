@@ -23,7 +23,7 @@ package com.totsp.gwittir.client.ui;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ToBooleanRenderer implements Renderer<Boolean, Object> {
+public class ToBooleanRenderer implements Renderer<Object,Boolean> {
     
     public static final ToBooleanRenderer INSTANCE = new ToBooleanRenderer();
     

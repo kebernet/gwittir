@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Button<B> extends AbstractBoundWidget<B, String> implements SourcesClickEvents, HasFocus {
+public class Button extends AbstractBoundWidget<String> implements SourcesClickEvents, HasFocus {
     private final com.google.gwt.user.client.ui.Button base = new com.google.gwt.user.client.ui.Button();
     private String value;
     
@@ -41,11 +41,11 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
         this.init();
     }
 
-    public Button(B label) {
+    public Button(String label) {
         this.init();
         this.setValue(label);
     }
-    public Button(B label, ClickListener listener) {
+    public Button(String label, ClickListener listener) {
         this.init();
         this.setValue(label);
         this.addClickListener( listener );
@@ -63,10 +63,12 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
         this.base.addKeyboardListener(listener);
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
         changes.addPropertyChangeListener(l);
     }
 
+    @Override
     public void addPropertyChangeListener(String propertyName,
         PropertyChangeListener l) {
         changes.addPropertyChangeListener(propertyName, l);
@@ -80,10 +82,12 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
         return retValue;
     }
 
+    @Override
     public PropertyChangeListener[] getPropertyChangeListeners() {
         return changes.getPropertyChangeListeners();
     }
 
+    @Override
     public String getStyleName() {
         String retValue;
 
@@ -93,27 +97,16 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
     }
 
     public int getTabIndex() {
-        int retValue;
-
-        retValue = this.base.getTabIndex();
-
-        return retValue;
+       return this.base.getTabIndex();
     }
 
     public String getText() {
-        String retValue;
-
-        retValue = this.base.getText();
-
-        return retValue;
+        return this.base.getText();
     }
 
+    @Override
     public String getTitle() {
-        String retValue;
-
-        retValue = this.base.getTitle();
-
-        return retValue;
+        return this.base.getTitle();
     }
 
     public String getValue() {
@@ -131,7 +124,6 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
             };
 
         this.base.addClickListener(listener);
-        this.setRenderer(new ToStringRenderer());
         this.initWidget(this.base);
     }
 
@@ -147,10 +139,12 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
         this.base.removeKeyboardListener(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
         changes.removePropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(String propertyName,
         PropertyChangeListener l) {
         changes.removePropertyChangeListener(propertyName, l);
@@ -168,10 +162,7 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
         this.base.setHTML(html);
     }
 
-    public void setRenderer(Renderer<String, B> renderer) {
-        super.setRenderer(renderer);
-    }
-
+  
     public void setTabIndex(int index) {
         this.base.setTabIndex(index);
     }
@@ -180,16 +171,16 @@ public class Button<B> extends AbstractBoundWidget<B, String> implements Sources
         this.base.setText(text);
     }
 
+    @Override
     public void setTitle(String title) {
+        String old = this.base.getTitle();
         this.base.setTitle(title);
+        this.changes.firePropertyChange("title", old, title);
     }
 
-    public void setValue(B value) {
-        //GWT.log("Setting value "+ value, null );
-        
+    public void setValue(String value) {
         String old = this.value;
-         
-        this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) : ""+value);
+        this.setText(value);
         this.changes.firePropertyChange("value", old, value);
     }
 

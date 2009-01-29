@@ -31,16 +31,14 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface BoundWidget<B,V> extends Bindable, SourcesChangeEvents {
+public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
     public Action getAction();
 
     public Comparator getComparator();
 
     public Object getModel();
 
-    public Renderer<V, B> getRenderer();
-
-    public V getValue();
+    public T getValue();
 
     public void setAction(Action action);
 
@@ -48,7 +46,6 @@ public interface BoundWidget<B,V> extends Bindable, SourcesChangeEvents {
 
     public void setModel(Object model);
 
-    public void setRenderer(Renderer<V, B> renderer);
-
-    public void setValue(B value);
+    
+    public void setValue(T value);
 }

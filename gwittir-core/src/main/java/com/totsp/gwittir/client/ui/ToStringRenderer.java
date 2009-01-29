@@ -24,12 +24,15 @@ package com.totsp.gwittir.client.ui;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ToStringRenderer implements Renderer {
+public class ToStringRenderer implements Renderer<Object,String> {
+
+    public static final ToStringRenderer INSTANCE = new ToStringRenderer();
     /** Creates a new instance of ToStringRenderer */
-    public ToStringRenderer() {
+    private  ToStringRenderer() {
+        super();
     }
 
-    public Object render(Object o) {
+    public String render(Object o) {
         return (o == null) ? "" : o.toString();
     }
 }

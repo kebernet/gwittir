@@ -35,7 +35,7 @@ DOCUMENT ME!
  *
  * @author ccollins
  */
-public class RadioButton extends AbstractBoundWidget implements HasEnabled,
+public class RadioButton extends AbstractBoundWidget<Boolean> implements HasEnabled,
     SourcesClickEvents, HasFocus, SourcesKeyboardEvents {
     private com.google.gwt.user.client.ui.RadioButton base;
 
@@ -104,13 +104,12 @@ public class RadioButton extends AbstractBoundWidget implements HasEnabled,
         return this.base.getTitle();
     }
 
-    public Object getValue() {
+    public Boolean getValue() {
         return this.isChecked() ? Boolean.TRUE : Boolean.FALSE;
     }
 
     private void init(String label) {
         this.base = new com.google.gwt.user.client.ui.RadioButton(label);
-        this.setRenderer( ToBooleanRenderer.INSTANCE );
         super.initWidget(this.base);
         this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
@@ -204,10 +203,9 @@ public class RadioButton extends AbstractBoundWidget implements HasEnabled,
         this.base.setTitle(title);
     }
 
-    public void setValue(Object value) {
+    public void setValue(Boolean value) {
         Boolean old = (Boolean) this.getValue();
-        this.setChecked((value == null) ? false
-            : ((Boolean) this.getRenderer().render(value)).booleanValue());
+        this.setChecked(value);
 
         if ((old != this.getValue()) && !old.equals(this.getValue())) {
             this.changes.firePropertyChange("value", old, this.getValue());

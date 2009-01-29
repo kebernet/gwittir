@@ -27,7 +27,9 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.ui.AbstractBoundWidget;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.ui.AbstractBoundCollectionWidget;
+import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.ToStringRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +39,7 @@ import java.util.Iterator;
  *
  * @author cooper
  */
-public class ReflectedImageGroup extends AbstractBoundWidget {
+public class ReflectedImageGroup<T> extends AbstractBoundCollectionWidget<T,String> {
     
     private Collection value;
     final private double maxScalar = 1.25D;
@@ -69,17 +71,18 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
         this.grid.setWidget(0,1, imagesPanel );
         this.imagesPanel.setCellPadding(0);
         this.imagesPanel.setCellSpacing(2);
-        this.setRenderer( new ToStringRenderer() );
-         super.initWidget( grid );
+        Renderer<T, String> renderer = (Renderer<T, String>) ToStringRenderer.INSTANCE;
+        this.setRenderer( renderer );
+        super.initWidget( grid );
     }
     
     
-    public Object getValue() {
+    public Collection<T> getValue() {
         return this.value;
     }
     
-    public void setValue(Object value) {
-        this.value = (Collection) value;
+    public void setValue(Collection<T> value) {
+        this.value = value;
         this.changes.firePropertyChange( "value", null, value );
         this.render( this.value == null ? new ArrayList() : this.value );
     }
@@ -94,12 +97,12 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
         if( value == null ){
             return;
         }
-        Iterator it = value.iterator();
+        Iterator<T> it = value.iterator();
         final int maxSize = (int)(baseWidth*maxScalar) +4;
         this.imagesPanel.setWidth( maxSize * value.size() +"px");
         for( int i=0; it.hasNext(); i++ ){
             final int index = i;
-            final Object selectObject = it.next();
+            final T selectObject = it.next();
             this.images[i] = new ReflectedImage(
                     this.getRenderer().render( selectObject ).toString(),
                     this.baseWidth, this.baseHeight,
@@ -151,6 +154,7 @@ public class ReflectedImageGroup extends AbstractBoundWidget {
     }
     
     public void setSelected(Object selected) {
+        LOG.log( Level.WARN, selected + " :: " + selected.getClass(), null);
         if( selected == this.selected ){
             return;
         }

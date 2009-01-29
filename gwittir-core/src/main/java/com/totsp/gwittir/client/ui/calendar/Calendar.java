@@ -38,7 +38,7 @@ import java.util.List;
  * supports a value property of Date.
  * @author cooper
  */
-public class Calendar extends AbstractBoundWidget implements Renderers, SourcesCalendarEvents,
+public class Calendar extends AbstractBoundWidget implements DateRenderers, SourcesCalendarEvents,
     SourcesCalendarDrawEvents {
     /**
      * Milliseconds in a day.

@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Checkbox<B> extends AbstractBoundWidget<B, Boolean> implements HasEnabled,
+public class Checkbox extends AbstractBoundWidget<Boolean> implements HasEnabled,
     SourcesClickEvents, HasFocus, SourcesKeyboardEvents {
     
     private com.google.gwt.user.client.ui.CheckBox base;
@@ -108,7 +108,6 @@ public class Checkbox<B> extends AbstractBoundWidget<B, Boolean> implements HasE
 
     private void init(String label) {
         this.base = new com.google.gwt.user.client.ui.CheckBox(label);
-        this.setRenderer( (Renderer<Boolean, B>) ToBooleanRenderer.INSTANCE );
         super.initWidget(this.base);
         this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
@@ -196,13 +195,9 @@ public class Checkbox<B> extends AbstractBoundWidget<B, Boolean> implements HasE
         this.base.setTitle(title);
     }
 
-    public void setValue(B value) {
+    public void setValue(Boolean value) {
         Boolean old =  this.getValue();
-        this.setChecked(value == null ? false
-                                        : this.getRenderer()
-                                              .render(value)
-                                              .booleanValue());
-
+        this.setChecked(value);
         if((old != this.getValue()) && !old.equals(this.getValue())) {
             this.changes.firePropertyChange("value", old, this.getValue());
         }

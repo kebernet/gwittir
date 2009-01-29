@@ -30,7 +30,7 @@ DOCUMENT ME!
  *
  * @author ccollins
  */
-public class Hyperlink extends AbstractBoundWidget implements HasHTML,
+public class Hyperlink extends AbstractBoundWidget<String> implements HasHTML,
     SourcesClickEvents {
     private com.google.gwt.user.client.ui.Hyperlink base;
 
@@ -75,7 +75,7 @@ public class Hyperlink extends AbstractBoundWidget implements HasHTML,
         return this.base.getText();
     }
 
-    public Object getValue() {
+    public String getValue() {
         return (this.base.getText().length() == 0) ? null : this.base.getText();
     }
 
@@ -87,12 +87,10 @@ public class Hyperlink extends AbstractBoundWidget implements HasHTML,
         this.base.setHTML(html);
     }
 
-    public void setValue(Object value) {
+    public void setValue(String value) {
         //("Setting value "+ value, null );
         Object old = this.getValue();
-        this.setText((this.getRenderer() != null)
-            ? (String) this.getRenderer().render(value)
-            : ((value == null) ? "" : value.toString()));
+        this.setText(value);
 
         if ((this.getValue() != old) && (this.getValue() != null) &&
                 this.getValue().equals(old)) {

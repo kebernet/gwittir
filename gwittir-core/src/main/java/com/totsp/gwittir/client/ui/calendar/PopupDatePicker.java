@@ -22,9 +22,9 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.beans.Binding;
+import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.Renderer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Date;
@@ -36,17 +36,18 @@ import java.util.Date;
  * @author rcooper
  */
 public class PopupDatePicker extends AbstractBoundWidget
-        implements SourcesCalendarDrawEvents, SourcesCalendarEvents, Renderers, HasFocus, SourcesClickEvents {
+        implements SourcesCalendarDrawEvents, SourcesCalendarEvents, DateRenderers, HasFocus, SourcesClickEvents {
     DatePicker base = new DatePicker();
     Label label = new Label();
     Image icon = new Image(GWT.getModuleBaseURL()+"/calendar-icon.gif");
     FocusPanel fp = new FocusPanel();
     HorizontalPanel hp = new HorizontalPanel();
     PopupPanel pp = new PopupPanel(true);
+    private ConverterWrapper converter = new ConverterWrapper();
     /** Creates a new instance of PopupDatePicker */
     public PopupDatePicker() {
-        this.setRenderer( PopupDatePicker.SHORT_DATE_RENDERER );
-        Binding b = new Binding( label, "value", base, "value");
+        
+        Binding b = new Binding( label, "value", null, base, "value", converter);
         b.setLeft();
         b.bind();
         pp.setWidget(base);
@@ -108,7 +109,11 @@ public class PopupDatePicker extends AbstractBoundWidget
     public void setValue(Object value) {
         this.base.setValue(value);
     }
-    
+
+    public void setDateRenderer(Converter<Date,String> renderer){
+        this.converter.setImpl(renderer);
+    }
+
     /**
      *
      * @param cdl
@@ -157,28 +162,6 @@ public class PopupDatePicker extends AbstractBoundWidget
         return this.base.getCalendarListeners();
     }
     
-    
-    
-    /**
-     * Gets the current Renderer.
-     * Defaults to Renderers.SHORT_DATE_RENDERER.
-     *
-     * @return Current Renderer
-     */
-    public Renderer getRenderer() {
-        return this.label.getRenderer();
-    }
-    
-    /**
-     * Sets the current Renderer.
-     * Defaults to Renderers.SHORT_DATE_RENDERER.
-     *
-     * @param renderer Renderer to use.
-     */
-    public void setRenderer(Renderer renderer) {
-        this.label.setRenderer( renderer );
-    }
-    
     public void addFocusListener(FocusListener listener) {
         fp.addFocusListener( listener );
     }
@@ -220,5 +203,23 @@ public class PopupDatePicker extends AbstractBoundWidget
     public void removeKeyboardListener(KeyboardListener listener) {
         this.fp.removeKeyboardListener( listener );
     }
-    
+
+    private static class ConverterWrapper implements Converter<Date,String> {
+
+        private Converter<Date,String> impl = DateRenderers.SHORT_DATE_RENDERER;
+
+        public void setImpl(Converter<Date,String> newImpl){
+            if(impl == null ){
+                this.impl = DateRenderers.SHORT_DATE_RENDERER;
+            } else {
+                this.impl = newImpl;
+            }
+        }
+
+        public String convert(Date original) {
+            return impl.convert(original);
+        }
+
+    }
+
 }

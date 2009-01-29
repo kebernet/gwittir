@@ -657,6 +657,11 @@ public class Binding {
 
             this.lastException = null;
 
+            // Adding this to simplify simple toString conversions.
+            // TODO add a nice way to register global converter defaults
+            if( instance.converter == null && target.property.getType() == String.class && instance.property.getType() != String.class ){
+                instance.converter = Converter.TO_STRING_CONVERTER;
+            }
             if (instance.converter != null) {
                 value = instance.converter.convert(value);
             }
@@ -667,7 +672,8 @@ public class Binding {
             try {
                 target.property.getMutatorMethod().invoke(target.object, args);
             } catch (Exception e) {
-                throw new RuntimeException( "Exception setting property: "+target.property.getName(), e);
+                //throw new RuntimeException( "Exception setting property: "+target.property.getName(), e);
+                LOGGER.log( Level.ERROR, "Exception setting property: "+target.property.getName(), e);
             }
         }
 

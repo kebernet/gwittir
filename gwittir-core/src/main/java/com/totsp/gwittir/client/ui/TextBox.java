@@ -39,7 +39,7 @@ import com.totsp.gwittir.client.action.Action;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class TextBox<B> extends AbstractBoundWidget<B, String> implements HasFocus, HasEnabled, SourcesKeyboardEvents, SourcesClickEvents {
+public class TextBox extends AbstractBoundWidget<String> implements HasFocus, HasEnabled, SourcesKeyboardEvents, SourcesClickEvents {
     private com.google.gwt.user.client.ui.TextBox base = new com.google.gwt.user.client.ui.TextBox();
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private String old;
@@ -51,8 +51,6 @@ public class TextBox<B> extends AbstractBoundWidget<B, String> implements HasFoc
     public TextBox(final boolean updateOnKeypress) {
         final TextBox instance = this;
         old = base.getText();
-        this.setRenderer(new ToStringRenderer());
-        this.setComparator(SimpleComparator.INSTANCE);
         
         if(updateOnKeypress) {
             this.addKeyboardListener(new KeyboardListener() {
@@ -303,9 +301,9 @@ public class TextBox<B> extends AbstractBoundWidget<B, String> implements HasFoc
         this.base.setTitle(title);
     }
     
-    public void setValue(B value) {
+    public void setValue(String value) {
         String old = this.getValue();
-        this.setText( this.getRenderer() != null ? this.getRenderer().render(value) : ""+value);
+        this.setText(value);
         if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
             this.changes.firePropertyChange("value", old, this.getValue());
         }
@@ -331,9 +329,6 @@ public class TextBox<B> extends AbstractBoundWidget<B, String> implements HasFoc
         super.setModel(model);
     }
     
-    public void setRenderer(Renderer renderer) {
-        super.setRenderer(renderer);
-    }
     
     public void setAction(Action action) {
         super.setAction(action);

@@ -30,15 +30,15 @@ import java.util.List;
  *
  * @author kebernet
  */
-public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B, V> {
-    private BoundWidget<B, V> internal;
+public class ContextMenuPanel<T> extends SimplePanel implements BoundWidget<T> {
+    private BoundWidget<T> internal;
     private List<Widget> menuItems = new ArrayList<Widget>();
     protected PopupPanel popup = new PopupPanel(true, true);
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
     private VerticalPanel panel = new VerticalPanel();
     private boolean rightDown = false;
 
-    public ContextMenuPanel(BoundWidget<B, V> internal) {
+    public ContextMenuPanel(BoundWidget<T> internal) {
         super();
         this.internal = internal;
         setWidget((Widget) internal);
@@ -91,7 +91,7 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
         return null;
     }
 
-    public BoundWidget<B, V> getInternal() {
+    public BoundWidget<T> getInternal() {
         return this.internal;
     }
 
@@ -107,11 +107,8 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
         return this.changes.getPropertyChangeListeners();
     }
 
-    public Renderer<V, B> getRenderer() {
-        return null;
-    }
-
-    public V getValue() {
+  
+    public T getValue() {
         return internal.getValue();
     }
 
@@ -197,7 +194,7 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
     public void setComparator(Comparator comparator) {
     }
 
-    public void setInternal(BoundWidget<B, V> internal) {
+    public void setInternal(BoundWidget<T> internal) {
         this.remove((Widget) this.internal);
         super.setWidget((Widget) internal);
         this.changes.firePropertyChange("internal", this.internal,
@@ -208,10 +205,7 @@ public class ContextMenuPanel<B, V> extends SimplePanel implements BoundWidget<B
         internal.setModel(model);
     }
 
-    public void setRenderer(Renderer<V, B> renderer) {
-    }
-
-    public void setValue(B value) {
+    public void setValue(T value) {
         internal.setValue(value);
     }
 

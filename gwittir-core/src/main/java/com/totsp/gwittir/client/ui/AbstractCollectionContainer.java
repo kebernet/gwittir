@@ -17,6 +17,7 @@ import com.totsp.gwittir.client.ui.util.ActionProvider;
 import com.totsp.gwittir.client.ui.util.ActionTypeFactory;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -26,7 +27,7 @@ import java.util.Iterator;
  * @author rcooper
  */
 public class AbstractCollectionContainer<T> extends
-        AbstractBoundWidget<Collection<T>, Collection<T>>implements HasWidgets {
+        AbstractBoundWidget<Collection<T>>implements HasWidgets {
     private ActionTypeFactory actionFactory;
     private BoundWidgetTypeFactory factory;
     private Collection<T> value;
@@ -123,4 +124,6 @@ public class AbstractCollectionContainer<T> extends
             base.add((Widget) w);
         }
     }
+
+    
 }

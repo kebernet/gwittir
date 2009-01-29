@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -40,11 +41,12 @@ import java.util.Vector;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFocusEvents, SourcesChangeEvents {
+public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
+    implements HasFocus, SourcesFocusEvents, SourcesChangeEvents {
     public static final String VALUE_PROPERTY_NAME = "value";
-    private static final Logger LOGGER = Logger.getLogger( ListBox.class.toString() );
+    private static final Logger LOGGER = Logger.getLogger(ListBox.class.toString());
     private ArrayList selected = new ArrayList();
-    private Collection options = new ArrayList();
+    private Collection<T> options = new ArrayList();
     private com.google.gwt.user.client.ui.ListBox base;
     private Vector changeListeners = new Vector();
 
@@ -52,24 +54,20 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
     public ListBox() {
         super();
         this.base = new com.google.gwt.user.client.ui.ListBox();
-        this.setRenderer(new ToStringRenderer());
+        this.setRenderer(ToStringRenderer.INSTANCE);
         this.setComparator(SimpleComparator.INSTANCE);
-        this.base.addClickListener(
-            new ClickListener() {
+        this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
                     update();
                 }
-            }
-        );
-        this.base.addChangeListener(
-            new ChangeListener() {
+            });
+        this.base.addChangeListener(new ChangeListener() {
                 public void onChange(Widget sender) {
                     update();
                 }
 
                 // foo!
-            }
-        );
+            });
         super.initWidget(base);
     }
 
@@ -160,38 +158,27 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
     }
 
     public String getName() {
-        String retValue;
-
-        retValue = this.base.getName();
-
-        return retValue;
+        return this.base.getName();
     }
 
+    @Override
     public int getOffsetHeight() {
-        int retValue;
-
-        retValue = this.base.getOffsetHeight();
-
-        return retValue;
+        return this.base.getOffsetHeight();
     }
 
     public int getOffsetWidth() {
-        int retValue;
-
-        retValue = this.base.getOffsetWidth();
-
-        return retValue;
+        return this.base.getOffsetWidth();
     }
 
-    public void setOptions(Collection options) {
+    public void setOptions(Collection<T> options) {
         this.options = new ArrayList();
         base.clear();
 
         ArrayList newSelected = new ArrayList();
 
-        for (Iterator it = options.iterator(); it.hasNext();) {
-            Object item = it.next();
-            this.base.addItem((String) this.getRenderer().render(item));
+        for (Iterator<T> it = options.iterator(); it.hasNext();) {
+            T item = it.next();
+            this.base.addItem(this.getRenderer().render(item));
 
             if (contains(this.selected, item)) {
                 this.base.setItemSelected(this.base.getItemCount() - 1, true);
@@ -205,11 +192,12 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         this.selected = newSelected;
 
         if (this.isMultipleSelect()) {
-            changes.firePropertyChange( VALUE_PROPERTY_NAME, old,selected);
+            changes.firePropertyChange(VALUE_PROPERTY_NAME, old, selected);
         } else {
             Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
-            Object curr = (this.selected.size() == 0) ? null : this.selected.get(0);
-            changes.firePropertyChange( VALUE_PROPERTY_NAME, prev,curr);
+            Object curr = (this.selected.size() == 0) ? null
+                                                      : this.selected.get(0);
+            changes.firePropertyChange(VALUE_PROPERTY_NAME, prev, curr);
         }
 
         fireChangeListeners();
@@ -219,31 +207,32 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         return options;
     }
 
+    @Override
     public void setPixelSize(int width, int height) {
         this.base.setPixelSize(width, height);
     }
 
+    @Override
     public void setRenderer(Renderer renderer) {
         super.setRenderer(renderer);
         this.setOptions(this.options);
     }
 
     public int getSelectedIndex() {
-        int retValue;
-
-        retValue = this.base.getSelectedIndex();
-
-        return retValue;
+        return this.base.getSelectedIndex();
     }
 
+    @Override
     public void setSize(String width, String height) {
         this.base.setSize(width, height);
     }
 
+    @Override
     public void setStyleName(String style) {
         this.base.setStyleName(style);
     }
 
+    @Override
     public String getStyleName() {
         String retValue;
 
@@ -264,75 +253,42 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         return retValue;
     }
 
+    @Override
     public void setTitle(String title) {
         this.base.setTitle(title);
     }
 
+    @Override
     public String getTitle() {
-        String retValue;
-
-        retValue = this.base.getTitle();
-
-        return retValue;
+        return this.base.getTitle();
     }
 
-    public void setValue(Object value) {
+    public void setValue(Collection<T> value) {
         int i = 0;
         ArrayList old = this.selected;
         this.selected = new ArrayList();
 
-        if (value instanceof Collection) {
-            Collection c = (Collection) value;
+        for (Iterator<T> it = this.options.iterator(); it.hasNext(); i++) {
+            T item = it.next();
 
-            for (Iterator it = this.options.iterator(); it.hasNext(); i++) {
-                Object item = it.next();
-
-                if (contains(c, item)) {
-                    base.setItemSelected(i, true);
-                    this.selected.add(item);
-                } else {
-                    base.setItemSelected(i, false);
-                }
+            if (contains(this.getValue(), item)) {
+                base.setItemSelected(i, true);
+                this.selected.add(item);
+            } else {
+                base.setItemSelected(i, false);
             }
-        } else {
-            for (Iterator it = this.options.iterator(); it.hasNext(); i++) {
-                Object item = it.next();
-
-                if (this.getComparator().compare(value, item) == 0) {
-                    base.setItemSelected(i, true);
-                } else {
-                    base.setItemSelected(i, false);
-                }
-            }
-
-            this.selected.add(value);
         }
 
-        if (this.isMultipleSelect()) {
-            changes.firePropertyChange( VALUE_PROPERTY_NAME, old,selected);
-        } else {
-            Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
-            Object curr = (this.selected.size() == 0) ? null : this.selected.get(0);
-            changes.firePropertyChange( VALUE_PROPERTY_NAME, prev,curr);
-        }
+        changes.firePropertyChange(VALUE_PROPERTY_NAME, old, selected);
 
         fireChangeListeners();
     }
 
-    public Object getValue() {
-        final Object returnValue;
-        if (this.base.isMultipleSelect()) {
-            ListBox.LOGGER.log( Level.SPAM, "IsMultipleSelect. Returning collection", null);
+    public Collection<T> getValue() {
+        ListBox.LOGGER.log(Level.SPAM,
+            "IsMultipleSelect. Returning collection", null);
 
-            returnValue = this.selected;
-        } else if (this.selected.size() == 0) {
-            returnValue = null;
-        } else {
-            ListBox.LOGGER.log( Level.SPAM,"NotMultipleSelect. Returning first item", null);
-
-            returnValue = this.selected.get(0);
-        }
-        return returnValue;
+        return this.selected;
     }
 
     public void setVisibleItemCount(final int visibleItems) {
@@ -363,9 +319,9 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
         this.base.addFocusListener(listener);
     }
 
-    public void addItem(final Object o) {
+    public void addItem(final T o) {
         options.add(o);
-        this.base.addItem((String) this.getRenderer().render(o));
+        this.base.addItem(this.getRenderer().render(o));
     }
 
     public void addKeyboardListener(KeyboardListener listener) {
@@ -381,11 +337,10 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
             return false;
         }
 
-        
-
         final ListBox other = (ListBox) obj;
 
-        if ((this.options != other.options) && ((this.options == null) || !this.options.equals(other.options))) {
+        if ((this.options != other.options) &&
+                ((this.options == null) || !this.options.equals(other.options))) {
             return false;
         }
 
@@ -458,28 +413,23 @@ public class ListBox extends AbstractBoundWidget implements HasFocus, SourcesFoc
     }
 
     private void update() {
-        ArrayList selected = new ArrayList();
+        ArrayList newSelected = new ArrayList();
         Iterator it = this.options.iterator();
 
         for (int i = 0; (i < base.getItemCount()) && it.hasNext(); i++) {
             Object item = it.next();
 
             if (this.base.isItemSelected(i)) {
-                selected.add(item);
+                newSelected.add(item);
             }
         }
 
         ArrayList old = this.selected;
-        this.selected = selected;
+        this.selected = newSelected;
 
-        if (this.isMultipleSelect()) {
-            changes.firePropertyChange( VALUE_PROPERTY_NAME, old,selected);
-        } else {
-            Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
-            Object curr = (this.selected.size() == 0) ? null : this.selected.get(0);
-            changes.firePropertyChange( VALUE_PROPERTY_NAME, prev,curr);
-        }
-
+        
+        changes.firePropertyChange(VALUE_PROPERTY_NAME, old, newSelected);
+        
         fireChangeListeners();
     }
 }

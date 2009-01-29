@@ -19,7 +19,7 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
-import com.totsp.gwittir.client.ui.Renderer;
+import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
 import com.totsp.gwittir.client.validator.Validator;
@@ -34,7 +34,7 @@ import java.util.Comparator;
 public class Field {
     private BoundWidgetProvider cellProvider;
     private Comparator comparator;
-    private Renderer renderer;
+    private Converter converter;
     private String helpText;
     private String label;
     private String propertyName;
@@ -67,53 +67,53 @@ public class Field {
     }
 
     public Field(String propertyName, String label, String styleName,
-        Renderer renderer) {
+        Converter converter) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
-        this.renderer = renderer;
+        this.converter = converter;
     }
 
     public Field(String propertyName, String label, String styleName,
-        String helpText, Renderer renderer) {
+        String helpText, Converter converter) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
-        this.renderer = renderer;
+        this.converter = converter;
         this.helpText = helpText;
     }
 
     public Field(String propertyName, String label, String styleName,
-        Renderer renderer, Validator validator, ValidationFeedback feedback) {
+        Converter converter, Validator validator, ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.validator = validator;
         this.feedback = feedback;
-        this.renderer = renderer;
+        this.converter = converter;
     }
 
     public Field(String propertyName, String label, String styleName,
-        String helpText, Renderer renderer, Validator validator,
+        String helpText, Converter converter, Validator validator,
         ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.validator = validator;
         this.feedback = feedback;
-        this.renderer = renderer;
+        this.converter = converter;
         this.helpText = helpText;
     }
 
     public Field(String propertyName, String label, String styleName,
-        String helpText, Renderer renderer, Validator validator,
+        String helpText, Converter converter, Validator validator,
         ValidationFeedback feedback, Comparator comparator) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.validator = validator;
         this.feedback = feedback;
-        this.renderer = renderer;
+        this.converter = converter;
         this.helpText = helpText;
     }
 
@@ -157,8 +157,8 @@ public class Field {
         return propertyName;
     }
 
-    public Renderer getRenderer() {
-        return renderer;
+    public Converter getConverter() {
+        return converter;
     }
 
     public String getStyleName() {

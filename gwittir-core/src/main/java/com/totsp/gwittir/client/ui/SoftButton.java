@@ -326,7 +326,6 @@ public class SoftButton extends Button implements SourcesMouseEvents,
                     }
                 }
             });
-        this.setRenderer(new ToStringRenderer());
         this.initWidget(this.softBase);
         this.setStyleName(this.baseStyleName);
         this.setEnabled(true);
@@ -402,9 +401,7 @@ public class SoftButton extends Button implements SourcesMouseEvents,
         }
 
         Object old = this.getValue();
-        this.setText(
-            (this.getRenderer() != null)
-            ? (String) this.getRenderer().render(html) : ("" + html));
+        this.setText(html);
         this.changes.firePropertyChange("hTML", old, this.getValue());
     }
 

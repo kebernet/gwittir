@@ -19,11 +19,35 @@
  */
 package com.totsp.gwittir.client.beans;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface Converter {
-    Object convert(Object original);
+public interface Converter<T, C> {
+    C convert(T original);
+
+
+    public static final Converter<Object, String> TO_STRING_CONVERTER =
+            new Converter<Object, String>(){
+
+        public String convert(Object original) {
+            return original == null ? null : original.toString();
+        }
+
+    };
+
+    public static final Converter<Object, Collection> TO_COLLECTION_CONVERTER =
+            new Converter<Object, Collection>(){
+
+        public Collection convert(Object original) {
+            ArrayList ret = new ArrayList();
+            ret.add(original);
+            return ret;
+        }
+
+    };
 }

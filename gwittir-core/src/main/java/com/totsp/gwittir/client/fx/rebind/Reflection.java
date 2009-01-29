@@ -24,6 +24,8 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 
 /**
@@ -43,7 +45,13 @@ public class Reflection extends Widget {
     /** Creates a new instance of Reflection */
     public Reflection() {
         super();
-        super.setElement(panel.getElement());
+        
+        init();
+    }
+
+    protected void init(){
+        Logger.getAnonymousLogger().log( Level.SPAM, "Init default", null );
+        setElement(panel.getElement());
         panel.setWidget( canvas );
     }
 
@@ -85,5 +93,16 @@ public class Reflection extends Widget {
         ctx.setFillStyle( gradient );
         ctx.fillRect(0,0, this.baseWidth, reflectHeight );
         ctx.restore();
+    }
+
+    @Override
+    protected void setElement(Element e){
+         Logger.getAnonymousLogger().log( Level.SPAM, "Here", null );
+        try{
+            throw new Exception();
+        } catch(Exception ex){
+            Logger.getAnonymousLogger().log( Level.SPAM, "Call to setElement", ex );
+        }
+        super.setElement(e);
     }
 }

@@ -38,7 +38,7 @@
           return level;
         } catch(e){
           alert("Unexpected exception in log.level detection, using default: " + e);
-          return "level";
+          return "warn";
         }
 	]]>
     </property-provider>

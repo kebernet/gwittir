@@ -27,14 +27,12 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.action.Action;
-import com.totsp.gwittir.client.action.BindingAction;
 
-import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
 import com.totsp.gwittir.client.fx.MutationStrategy;
@@ -48,39 +46,40 @@ import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
 import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
-import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
-import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
+import com.totsp.gwittir.client.keyboard.KeyboardController;
 import com.totsp.gwittir.client.keyboard.KeyBinding;
 import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
-import com.totsp.gwittir.client.keyboard.KeyboardController;
 import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
 import com.totsp.gwittir.client.keyboard.Task;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.ui.Image;
+import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.client.action.Action;
+import com.totsp.gwittir.client.action.BindingAction;
+import com.totsp.gwittir.client.beans.Binding;
+import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
+import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
 import com.totsp.gwittir.client.ui.ContextMenuPanel;
 import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
 import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
-import com.totsp.gwittir.client.ui.Image;
-import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.Renderer;
-import com.totsp.gwittir.client.ui.TextBox;
-import com.totsp.gwittir.client.ui.calendar.Calendar;
-import com.totsp.gwittir.client.ui.calendar.CalendarListener;
-import com.totsp.gwittir.client.ui.calendar.DatePicker;
-import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
 import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.client.ui.calendar.*;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 import org.goda.time.DateTime;
+
 
 
 /**
@@ -135,7 +134,14 @@ public class ExampleEntryPoint implements EntryPoint {
         mcf[3] = new Field("lastName", "Last Name", null, "Somebody's last name.");
         mcf[4] = new Field("emailAddress", "Email Address", null, "Somebody's email.");
 
-        mcf[6] = new Field("price", "Price", null, "This is an decimal Value", null, DoubleValidator.INSTANCE, new PopupValidationFeedback(PopupValidationFeedback.BOTTOM));
+        Converter doubleConverter = new Converter<Double,String>(){
+
+            public String convert(Double original) {
+                return ""+original;
+            }
+        };
+
+        mcf[6] = new Field("price", "Price", null, "This is an decimal Value", doubleConverter, DoubleValidator.INSTANCE, new PopupValidationFeedback(PopupValidationFeedback.BOTTOM));
         mcf[7] = new Field("homeTown", "Home Town", null, "Somebody's place of origin.");
         mcf[8] = new Field("zipCode", "Postal Code", null, "A USPS Postal Code");
         mcf[9] = new Field("birthDate", "Birth Date", null, "Day of Birth");
@@ -521,14 +527,15 @@ public class ExampleEntryPoint implements EntryPoint {
         vp.add(mmsa);
 
         Image larger = new Image();
-        larger.setRenderer(
-            new Renderer() {
-                public Object render(Object o) {
-                    return ((FlickrPhoto) o).getNormal();
+        Converter converter =
+            new Converter<FlickrPhoto, String>() {
+                public String convert(FlickrPhoto o) {
+                    Logger.getAnonymousLogger().log(Level.WARN, o.getNormal(), null);
+                    return o.getNormal();
                 }
-            });
+            };
 
-        Binding bigBinding = new Binding(larger, "value", group, "selected");
+        Binding bigBinding = new Binding(larger, "value", null, group, "selected", converter);
         bigBinding.bind();
         vp.add(larger);
 

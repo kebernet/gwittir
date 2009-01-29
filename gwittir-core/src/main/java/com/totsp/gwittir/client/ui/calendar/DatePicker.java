@@ -86,7 +86,7 @@ public class DatePicker extends AbstractBoundWidget implements
         this.updateMonth();
         hp.add( this.month );
         this.updateYears();
-        this.year.setValue( Integer.toString( calendar.getRenderDate().getYear() + 1900 ) );
+        this.year.setValue( year.single(Integer.toString( calendar.getRenderDate().getYear() + 1900 )) );
         hp.add( this.year );
         this.year.addPropertyChangeListener(VALUE_PROPERTY_NAME, new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
@@ -207,12 +207,12 @@ public class DatePicker extends AbstractBoundWidget implements
             this.years.add( Integer.toString( i ) );
         }
         this.year.setOptions(this.years);
-        this.year.setValue( Integer.toString( this.calendar.getRenderDate().getYear() + 1900 ) );
+        this.year.setValue( this.year.single(Integer.toString( this.calendar.getRenderDate().getYear() + 1900 )) );
         LOG.log( Level.SPAM, Integer.toString( this.calendar.getRenderDate().getYear() + 1900 ), null );
         
     }
     private void updateMonth(){
-        this.month.setValue( Calendar.MONTHS_OF_YEAR_SHORT[ this.calendar.getRenderDate().getMonth() ]);
+        this.month.setValue( this.month.single(Calendar.MONTHS_OF_YEAR_SHORT[ this.calendar.getRenderDate().getMonth() ]));
     }
     private int indexOf( final String[] values, final String check ){
         int index = -1;

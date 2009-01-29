@@ -42,15 +42,15 @@ import com.totsp.gwittir.client.log.Logger;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public abstract class AbstractBoundWidget<B, V> extends Composite
-        implements BoundWidget<B, V>, KeyBoundWidget {
+public abstract class AbstractBoundWidget<T> extends Composite
+        implements BoundWidget<T>, KeyBoundWidget {
     protected static final Logger LOG = Logger.getLogger( ""+AbstractBoundWidget.class );
     private Action action;
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private Comparator comparator;
     private Object model;
     protected PropertyChangeSupport changes = new PropertyChangeSupport(this);
-    private Renderer<V, B> renderer;
+    
     private KeyBinding binding;
     private boolean bindingRegistered = false;
     
@@ -92,10 +92,8 @@ public abstract class AbstractBoundWidget<B, V> extends Composite
         return changes.getPropertyChangeListeners();
     }
     
-    public Renderer<V, B> getRenderer() {
-        return renderer;
-    }
     
+    @Override
     protected void onAttach() {
         if(this.getAction() instanceof BindingAction) {
             ((BindingAction) getAction()).set(this);
@@ -105,6 +103,7 @@ public abstract class AbstractBoundWidget<B, V> extends Composite
         this.changes.firePropertyChange("attached", false, true);
     }
     
+    @Override
     protected void onLoad(){
         super.onLoad();
         if(this.getAction() instanceof BindingAction) {
@@ -123,6 +122,7 @@ public abstract class AbstractBoundWidget<B, V> extends Composite
        
     }
     
+    @Override
     protected void onDetach() {
         super.onDetach();
         
@@ -174,10 +174,6 @@ public abstract class AbstractBoundWidget<B, V> extends Composite
             }
         }
         this.changes.firePropertyChange( "model", old, model );
-    }
-    
-    public void setRenderer(Renderer<V, B> renderer) {
-        this.renderer = renderer;
     }
     
     public KeyBinding getKeyBinding() {

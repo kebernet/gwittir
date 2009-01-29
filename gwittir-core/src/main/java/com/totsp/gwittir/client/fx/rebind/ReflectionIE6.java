@@ -31,14 +31,20 @@ import com.totsp.gwittir.client.log.Logger;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class ReflectionIE6 extends Reflection {
-    SimplePanel p = new SimplePanel();
-    Image image = new Image();
+    SimplePanel p;
+    Image image;
     
     /** Creates a new instance of ReflectionIE6 */
     public ReflectionIE6() {
         super();
+    }
+
+    protected void init(){
+        Logger.getAnonymousLogger().log( Level.SPAM, "Init IE6", null );
+        p = new SimplePanel();
+        image = new Image();
         p.add( image );
-        super.setElement( p.getElement() );
+        setElement( p.getElement() );
     }
     
     public void paint(Image base, int baseWidth, int baseHeight, double height, double opacity){

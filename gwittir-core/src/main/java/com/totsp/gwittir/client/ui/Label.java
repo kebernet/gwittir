@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentC
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class Label extends AbstractBoundWidget {
+public class Label extends AbstractBoundWidget<String> {
     private com.google.gwt.user.client.ui.Label base;
     
     /** Creates a new instance of Label */
@@ -56,6 +56,7 @@ public class Label extends AbstractBoundWidget {
         this.base.setWordWrap(wrap);
     }
     
+    @Override
     public void setVisible(boolean visible) {
         this.base.setVisible(visible);
     }
@@ -68,14 +69,17 @@ public class Label extends AbstractBoundWidget {
         this.base.removeMouseListener(listener);
     }
     
+    @Override
     public void setWidth(String width) {
         this.base.setWidth(width);
     }
     
+    @Override
     public void addStyleName(String style) {
         this.base.addStyleName(style);
     }
     
+    @Override
     public void removeStyleName(String style) {
         this.base.removeStyleName(style);
     }
@@ -84,6 +88,7 @@ public class Label extends AbstractBoundWidget {
         this.base.setHeight(height);
     }
     
+    @Override
     public void setStyleName(String style) {
         this.base.setStyleName(style);
     }
@@ -92,6 +97,7 @@ public class Label extends AbstractBoundWidget {
         this.base.setText(text);
     }
     
+    @Override
     public void setTitle(String title) {
         this.base.setTitle(title);
     }
@@ -108,14 +114,17 @@ public class Label extends AbstractBoundWidget {
         this.base.removeClickListener(listener);
     }
     
+    @Override
     public void unsinkEvents(int eventBitsToRemove) {
         this.base.unsinkEvents(eventBitsToRemove);
     }
     
+    @Override
     public void sinkEvents(int eventBitsToAdd) {
         this.base.sinkEvents(eventBitsToAdd);
     }
     
+    @Override
     public boolean isVisible() {
         boolean retValue;
         
@@ -130,6 +139,7 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public String getTitle() {
         String retValue;
         
@@ -144,6 +154,7 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public int getOffsetWidth() {
         int retValue;
         
@@ -151,6 +162,7 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public int getOffsetHeight() {
         int retValue;
         
@@ -165,6 +177,7 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public int getAbsoluteTop() {
         int retValue;
         
@@ -172,6 +185,7 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public int getAbsoluteLeft() {
         int retValue;
         
@@ -179,6 +193,7 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public String getStyleName() {
         String retValue;
         
@@ -186,26 +201,27 @@ public class Label extends AbstractBoundWidget {
         return retValue;
     }
     
+    @Override
     public void setPixelSize(int width, int height) {
         this.base.setPixelSize(width, height);
     }
     
+    @Override
     public void setSize(String width, String height) {
         this.base.setSize(width, height);
     }
 
-     public void setValue(Object value) {
+     public void setValue(String value) {
         //("Setting value "+ value, null );
         Object old = this.getValue();
-        this.setText( this.getRenderer() != null ? (String) this.getRenderer().render(value) :
-            value == null ? "" : value.toString() );
+        this.setText( value );
         if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
             this.changes.firePropertyChange("value", old, this.getValue());
         }
         
     }
 
-    public Object getValue() {
+    public String getValue() {
         return this.base.getText().length() == 0 ? null : this.base.getText();
     }
     

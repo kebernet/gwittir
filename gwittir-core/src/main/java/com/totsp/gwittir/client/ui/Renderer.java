@@ -24,6 +24,6 @@ package com.totsp.gwittir.client.ui;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface Renderer<V, B> {
-    public V render(B o);
+public interface Renderer<T, R> {
+    public R render(T o);
 }
