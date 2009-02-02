@@ -25,7 +25,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.JTypeParameter;
@@ -34,6 +33,8 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
+import com.totsp.gwittir.client.beans.SelfDescribed;
+import com.totsp.gwittir.client.beans.annotations.Introspectable;
 import java.io.PrintWriter;
 
 import java.util.ArrayList;
@@ -122,7 +123,7 @@ public class IntrospectorGenerator extends Generator {
 
         for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver info = (BeanResolver) it.next();
-            logger.branch(logger.DEBUG, "Method Scanning: " + info.getType().getQualifiedSourceName(), null);
+            logger.branch(TreeLogger.DEBUG, "Method Scanning: " + info.getType().getQualifiedSourceName(), null);
 
             try {
                 if (info.getProperties().size() == 0) {
@@ -145,7 +146,7 @@ public class IntrospectorGenerator extends Generator {
                     }
                 }
             } catch (Exception e) {
-                logger.log(logger.ERROR, "Unable to introspect class. Is class a bean?", e);
+                logger.log(TreeLogger.ERROR, "Unable to introspect class. Is class a bean?", e);
             }
         }
 
@@ -209,14 +210,14 @@ public class IntrospectorGenerator extends Generator {
 
         writer.println("public BeanDescriptor getDescriptor( Object object ){ ");
         writer.indent();
-
+        writer.println("if( object instanceof "+SelfDescribed.class.getCanonicalName()+" ) return ((SelfDescribed)object).__descriptor();");
         for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver resolver = (BeanResolver) it.next();
             writer.println("if( object instanceof " + resolver.getType().getQualifiedSourceName() + " ) {");
             writer.indent();
 
             String name = resolver.getType().getQualifiedSourceName().replaceAll("\\.", "_");
-            logger.log(logger.DEBUG, "Writing : " + name, null);
+            logger.log(TreeLogger.DEBUG, "Writing : " + name, null);
             writer.print("return " + name + " == null ? " + name + " = ");
             this.writeBeanDescriptor(logger, resolver, methods, writer);
             writer.print(": " + name + ";");
@@ -247,13 +248,18 @@ public class IntrospectorGenerator extends Generator {
 
             for (int i = 0; i < types.length; i++) {
                 logger.log(
-                        logger.SPAM,
+                        TreeLogger.SPAM,
                         types[i] + " is assignable to " + introspectable + " " +
-                        types[i].isAssignableTo(introspectable) + " isInterface = " + types[i].isInterface(),
+                        types[i].isAssignableTo(introspectable) + " isInterface = " + types[i].isInterface() +
+                        "isIntrospectable = "+isIntrospectable(logger,types[i]),
                         null
                     );
 
-                if (types[i].isAssignableTo(introspectable) && (types[i].isInterface() == null)) {
+
+
+                if (
+                        (isIntrospectable(logger, types[i]) ) ||
+                        (types[i].isAssignableTo(introspectable) && (types[i].isInterface() == null))) {
                     resolvers.add(new BeanResolver(logger, types[i]));
                 }
             }
@@ -287,10 +293,32 @@ public class IntrospectorGenerator extends Generator {
                 }
             }
         } catch (Exception e) {
-            logger.log(logger.ERROR, "Unable to finad Introspectable types.", e);
+            logger.log(TreeLogger.ERROR, "Unable to finad Introspectable types.", e);
         }
 
         return results;
+    }
+
+    private boolean isIntrospectable(TreeLogger logger, JType type){
+        if( type == null ) return false;
+        JClassType ct = type.isClassOrInterface();
+
+        if(ct != null){
+            logger.log(TreeLogger.ERROR, "type" + ct.getQualifiedSourceName() +" annotation "+ ct.getAnnotation(Introspectable.class), null);
+            if( ct.getAnnotation(Introspectable.class) != null ){
+                return true;
+            }
+            for( JClassType iface : ct.getImplementedInterfaces() ){
+                if( isIntrospectable(logger, iface) ){
+
+                    return true;
+                }
+            }
+            if( isIntrospectable(logger, ct.getSuperclass() ) ){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean unbox(JType type, String reference, SourceWriter writer) {
@@ -358,9 +386,9 @@ public class IntrospectorGenerator extends Generator {
 
             Collection pds = info.getProperties().values();
             String[] propertyNames = new String[pds.size()];
-            logger.log(logger.SPAM, "" + (pds == null), null);
+            logger.log(TreeLogger.SPAM, "" + (pds == null), null);
 
-            boolean foundClass = false;
+            //sboolean foundClass = false;
 
             if (pds != null) {
                 int i = 0;
@@ -393,10 +421,10 @@ public class IntrospectorGenerator extends Generator {
                             );
                     }
 
-                    logger.log(logger.DEBUG, p.getName() + " " + p.getType().getQualifiedSourceName(), null);
+                    logger.log(TreeLogger.DEBUG, p.getName() + " " + p.getType().getQualifiedSourceName(), null);
                     JType ptype = this.resolveType(p.getType() );
                     
-                    logger.log(logger.DEBUG, p.getName() + " (Erased) " + ptype.getQualifiedSourceName(), null);
+                    logger.log(TreeLogger.DEBUG, p.getName() + " (Erased) " + ptype.getQualifiedSourceName(), null);
                     writer.println(
                             "this.properties[" + (i) + "] = new Property( \"" + p.getName() + "\", " +
                             ((p.getType() != null) ? ptype.getQualifiedSourceName(): "Object") +
@@ -448,7 +476,7 @@ public class IntrospectorGenerator extends Generator {
         for (Iterator it = introspectables.iterator(); it.hasNext();) {
             BeanResolver bean = (BeanResolver) it.next();
 
-            logger.branch(logger.DEBUG, "Introspecting: " + bean.getType().getQualifiedSourceName(), null);
+            logger.branch(TreeLogger.DEBUG, "Introspecting: " + bean.getType().getQualifiedSourceName(), null);
 
             try {
                 if (bean.getProperties().size() == 0) {
@@ -460,7 +488,7 @@ public class IntrospectorGenerator extends Generator {
 
                 writer.println(" = null;");
             } catch (Exception e) {
-                logger.log(logger.ERROR, "Unable to introspect class. Is class a bean?", e);
+                logger.log(TreeLogger.ERROR, "Unable to introspect class. Is class a bean?", e);
             }
         }
     }
@@ -478,7 +506,7 @@ public class IntrospectorGenerator extends Generator {
         writer.println(ptype.getQualifiedSourceName() + " casted =");
         writer.println("(" + ptype.getQualifiedSourceName() + ") target;");
         logger.log(
-                logger.SPAM,
+                TreeLogger.SPAM,
                 "Method: " + method.getBaseMethod().getName() + " " +
                 method.getBaseMethod().getReturnType().getQualifiedSourceName(),
                 null

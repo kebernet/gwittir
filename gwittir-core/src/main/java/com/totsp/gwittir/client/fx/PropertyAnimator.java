@@ -32,7 +32,7 @@ import com.totsp.gwittir.client.beans.Property;
  */
 public class PropertyAnimator {
     private AnimationFinishedCallback callback;
-    private Introspectable target;
+    private Object target;
     private MutationStrategy strategy;
     private Object finalValue;
     private Object initialValue;
@@ -43,7 +43,7 @@ public class PropertyAnimator {
     private Timer timer;
     //TODO examine step time real results and increase animation time to match.
     /** Creates a new instance of PropertyAnimator */
-    public PropertyAnimator(Introspectable target, String propertyName,
+    public PropertyAnimator(Object target, String propertyName,
         Object initialValue, Object finalValue, MutationStrategy strategy,
         int duration, int stepTime, AnimationFinishedCallback callback) {
         this.target = target;
@@ -72,32 +72,32 @@ public class PropertyAnimator {
         this.stepTime = stepTime;
     }
 
-    public PropertyAnimator(Introspectable target, String propertyName,
+    public PropertyAnimator(Object target, String propertyName,
         Object finalValue, MutationStrategy strategy) {
         this(target, propertyName, null, finalValue, strategy, 1000, 50, null);
     }
 
-    public PropertyAnimator(Introspectable target, String propertyName,
+    public PropertyAnimator(Object target, String propertyName,
         Object finalValue, MutationStrategy strategy, int duration) {
         this(target, propertyName, null, finalValue, strategy, duration, 50,
             null);
     }
 
-    public PropertyAnimator(Introspectable target, String propertyName,
+    public PropertyAnimator(Object target, String propertyName,
         Object initialValue, Object finalValue, MutationStrategy strategy,
         int duration) {
         this(target, propertyName, initialValue, finalValue, strategy,
             duration, 50, null);
     }
 
-    public PropertyAnimator(Introspectable target, String propertyName,
+    public PropertyAnimator(Object target, String propertyName,
         Object finalValue, MutationStrategy strategy, int duration,
         AnimationFinishedCallback callback) {
         this(target, propertyName, null, finalValue, strategy, duration, 50,
             callback);
     }
 
-    public PropertyAnimator(Introspectable target, String propertyName,
+    public PropertyAnimator(Object target, String propertyName,
         Object initialValue, Object finalValue, MutationStrategy strategy,
         int duration, AnimationFinishedCallback callback) {
         this(target, propertyName, initialValue, finalValue, strategy,
