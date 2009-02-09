@@ -21,6 +21,8 @@ public class GwtTestEqualsHashCodeBean extends GWTTestCase {
     public void testEquals() {
         Person person1 = new Person("first1", "last1", 25);
         Person person2 = new Person("first1", "last1", 25);
+        System.out.println("\""+person1+"\"");
+        System.out.println("\""+person2+"\"");
         Assert.assertEquals(person1, person2);
 
         System.out.println("person1 - " + person1);

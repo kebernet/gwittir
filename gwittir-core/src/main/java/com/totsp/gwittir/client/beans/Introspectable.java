@@ -25,5 +25,6 @@ package com.totsp.gwittir.client.beans;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
+@Deprecated
 public interface Introspectable {
 }

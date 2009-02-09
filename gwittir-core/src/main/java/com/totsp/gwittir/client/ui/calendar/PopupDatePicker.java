@@ -35,7 +35,7 @@ import java.util.Date;
  * for selection.
  * @author rcooper
  */
-public class PopupDatePicker extends AbstractBoundWidget
+public class PopupDatePicker extends AbstractBoundWidget<Date>
         implements SourcesCalendarDrawEvents, SourcesCalendarEvents, DateRenderers, HasFocus, SourcesClickEvents {
     DatePicker base = new DatePicker();
     Label label = new Label();
@@ -98,7 +98,7 @@ public class PopupDatePicker extends AbstractBoundWidget
      * Current Date value.
      * @return Current Date value.
      */
-    public Object getValue() {
+    public Date getValue() {
         return this.base.getValue();
     }
     
@@ -106,7 +106,7 @@ public class PopupDatePicker extends AbstractBoundWidget
      * Current Date value.
      * @param value Current Date value.
      */
-    public void setValue(Object value) {
+    public void setValue(Date value) {
         this.base.setValue(value);
     }
 

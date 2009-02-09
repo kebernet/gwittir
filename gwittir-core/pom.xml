@@ -81,7 +81,7 @@
                     <compileTargets>
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTargets>
-                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                    <extraJvmArgs>-Xmx512m -Xms512m</extraJvmArgs>
                     <port>8088</port>
                     <!--extraTestArgs>-Dgwt.args="-help"</extraTestArgs-->
                 </configuration>

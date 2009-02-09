@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.totsp.gwittir.client.beans;
-
+import com.totsp.gwittir.client.beans.annotations.Introspectable;
 
 /** This is the interface requiring implementation for an object to be used with 
  * the Gwittir Binding framework.
@@ -28,5 +28,6 @@ package com.totsp.gwittir.client.beans;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface Bindable extends SourcesPropertyChangeEvents, Introspectable {
+@Introspectable
+public interface Bindable extends SourcesPropertyChangeEvents {
 }

@@ -4,10 +4,6 @@
  */
 package com.totsp.gwittir.client.beans;
 
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.SourcesChangeEvents;
-import com.google.gwt.user.client.ui.Widget;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 

@@ -53,13 +53,13 @@ import java.io.Serializable;
  */
 public class EqualsHashCodeBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Introspectable bean;
+    private Object bean;
 
     /**
      * Creates a new instance of EqualsHashCodeBean for the object passed in.
      * @param bean Object to provide methods for.
      */
-    public EqualsHashCodeBean(Introspectable bean) {
+    public EqualsHashCodeBean(Object bean) {
         this.bean = bean;
     }
 
@@ -74,7 +74,7 @@ public class EqualsHashCodeBean implements Serializable {
         boolean eq;
         if( bean1 == bean2 ){
             eq = true;
-        } else if ((bean2 == null) || !(bean2 instanceof Introspectable)) {
+        } else if ((bean2 == null)) {
             eq = false;
         } else if (!GWT.getTypeName(bean1).equals(GWT.getTypeName(bean2))) {
             eq = false;
@@ -84,9 +84,10 @@ public class EqualsHashCodeBean implements Serializable {
             try {
                 BeanDescriptor bd = Introspector.INSTANCE.getDescriptor(bean);
                 Property[] properties = bd.getProperties();
-
+                System.out.println(properties.length);
                 if (properties != null) {
                     for (int i = 0; eq && (i < properties.length); i++) {
+
                         Method pReadMethod = properties[i].getAccessorMethod();
 
                         if (pReadMethod != null) {
@@ -117,6 +118,7 @@ public class EqualsHashCodeBean implements Serializable {
      * @param obj Object to check
      * @return Equality.
      */
+    @Override
     public boolean equals(Object obj) {
         return beanEquals(obj);
     }
@@ -126,6 +128,7 @@ public class EqualsHashCodeBean implements Serializable {
      *
      * @return int hashCode value.
      */
+    @Override
     public int hashCode() {
         return beanHashCode();
     }

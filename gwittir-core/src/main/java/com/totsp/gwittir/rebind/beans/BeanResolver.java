@@ -23,6 +23,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 
+import com.totsp.gwittir.client.beans.annotations.Omit;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,23 +43,41 @@ public class BeanResolver {
     public BeanResolver(TreeLogger logger, JClassType type) {
         this.type = type;
         this.logger = logger;
-        this.logger = logger.branch(logger.DEBUG, "Inspecting type: " + type.getQualifiedSourceName(), null);
+        this.logger = logger.branch(TreeLogger.DEBUG, "Inspecting type: " + type.getQualifiedSourceName(), null);
         buildMethods(type);
         examineGetters();
         examineSetters();
-        logger.log(logger.DEBUG, "" + methodSet.size(), null);
+        logger.log(TreeLogger.DEBUG, "" + methodSet.size(), null);
 
         for (Iterator it = properties.keySet().iterator(); it.hasNext();) {
-            logger.log(logger.DEBUG, (String) it.next(), null);
+            logger.log(TreeLogger.DEBUG, (String) it.next(), null);
         }
 
         for (Iterator it = methodSet.iterator(); it.hasNext();) {
             MethodWrapper w = (MethodWrapper) it.next();
-            logger.log(logger.DEBUG, w.getDeclaringType().getQualifiedSourceName() + " " + w.toString(), null);
+            logger.log(TreeLogger.DEBUG, w.getDeclaringType().getQualifiedSourceName() + " " + w.toString(), null);
         }
     }
 
     private void buildMethods(JClassType type) {
+        
+        JMethod[] methods = type.getMethods();
+        logger = logger.branch(TreeLogger.DEBUG, type.getQualifiedSourceName() + " " + type.getMethods().length, null);
+
+        for (int i = 0; i < methods.length; i++) {
+            if (!methods[i].isPublic()) {
+                continue;
+            }
+
+            MethodWrapper w = new MethodWrapper(type, methods[i]);
+            if(methods[i].getAnnotation(Omit.class) != null ){
+                methodSet.remove(w);
+            } else {
+                logger.log(TreeLogger.DEBUG, w.getBaseMethod().getReadableDeclaration(), null);
+                methodSet.add(w);
+            }
+        }
+
         JClassType[] interfaces = type.getImplementedInterfaces();
 
         for (int i = 0; i < interfaces.length; i++) {
@@ -68,20 +87,7 @@ public class BeanResolver {
         if (type.getSuperclass() != null) {
             buildMethods(type.getSuperclass());
         } else {
-            logger.log(logger.DEBUG, "no supertype", null);
-        }
-
-        JMethod[] methods = type.getMethods();
-        logger = logger.branch(logger.DEBUG, type.getQualifiedSourceName() + " " + type.getMethods().length, null);
-
-        for (int i = 0; i < methods.length; i++) {
-            if (!methods[i].isPublic()) {
-                continue;
-            }
-
-            MethodWrapper w = new MethodWrapper(type, methods[i]);
-            logger.log(logger.DEBUG, w.getBaseMethod().getReadableDeclaration(), null);
-            methodSet.add(w);
+            logger.log(TreeLogger.DEBUG, "no supertype", null);
         }
     }
 
@@ -90,8 +96,8 @@ public class BeanResolver {
             MethodWrapper w = (MethodWrapper) it.next();
             String methodName = w.getBaseMethod().getName();
             Property p = null;
-
-            if (
+            
+            if ( 
                 methodName.startsWith("get") && (methodName.length() >= 4) &&
                     (methodName.charAt(3) == methodName.toUpperCase().charAt(3))
             ) {
@@ -118,7 +124,7 @@ public class BeanResolver {
             }
 
             p.setType(w.getBaseMethod().getReturnType());
-            logger.log(logger.DEBUG, "Found new property: " + p.getName(), null);
+            logger.log(TreeLogger.DEBUG, "Found new property: " + p.getName(), null);
             properties.put(p.getName(), p);
         }
     }
@@ -148,9 +154,9 @@ public class BeanResolver {
                     );
                 }
 
-                if (logger.isLoggable(logger.DEBUG)) {
+                if (logger.isLoggable(TreeLogger.DEBUG)) {
                     if (properties.get(p.getName()) == null) {
-                        logger.log(logger.DEBUG, "Found new property on setter: " + p.getName(), null);
+                        logger.log(TreeLogger.DEBUG, "Found new property on setter: " + p.getName(), null);
                     }
                 }
 
@@ -167,6 +173,7 @@ public class BeanResolver {
         return this.type;
     }
 
+    @Override
     public boolean equals(Object object) {
         if (object instanceof BeanResolver) {
             return ((BeanResolver) object).getType().getQualifiedSourceName()
@@ -176,10 +183,12 @@ public class BeanResolver {
         }
     }
 
+    @Override
     public int hashCode() {
         return this.getType().getQualifiedSourceName().hashCode();
     }
 
+    @Override
     public String toString() {
         return this.getType().getQualifiedSourceName();
     }

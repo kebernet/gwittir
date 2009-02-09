@@ -38,7 +38,7 @@ import java.util.List;
  * supports a value property of Date.
  * @author cooper
  */
-public class Calendar extends AbstractBoundWidget implements DateRenderers, SourcesCalendarEvents,
+public class Calendar extends AbstractBoundWidget<Date> implements DateRenderers, SourcesCalendarEvents,
     SourcesCalendarDrawEvents {
     /**
      * Milliseconds in a day.
@@ -165,9 +165,9 @@ public class Calendar extends AbstractBoundWidget implements DateRenderers, Sour
      * this value as well.
      * @param value Date balue of the Calendar
      */
-    public void setValue(Object value) {
+    public void setValue(Date value) {
         Date old = this.value;
-        this.value = (Date) value;
+        this.value = value;
         this.setRenderDate(new Date(this.value.getYear(), this.value.getMonth(), 1));
 
         if (this.isAttached()) {
@@ -181,7 +181,7 @@ public class Calendar extends AbstractBoundWidget implements DateRenderers, Sour
      * Returns the value of the last date clicked.
      * @return Returns the value of the last date clicked.
      */
-    public Object getValue() {
+    public Date getValue() {
         return this.value;
     }
 

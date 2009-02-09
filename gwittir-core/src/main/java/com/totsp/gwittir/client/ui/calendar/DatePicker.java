@@ -38,7 +38,7 @@ import java.util.List;
  * A wrapper around a Calendar that provides Month/Year navigation for selection.
  * @author cooper
  */
-public class DatePicker extends AbstractBoundWidget implements
+public class DatePicker extends AbstractBoundWidget<Date> implements
         SourcesCalendarDrawEvents, SourcesCalendarEvents {
     private static final String VALUE_PROPERTY_NAME = "value";
     
@@ -140,7 +140,7 @@ public class DatePicker extends AbstractBoundWidget implements
      * Returns the Date value of this Calendar.
      * @return Date value of this Calendar.
      */
-    public Object getValue() {
+    public Date getValue() {
         return this.calendar.getValue();
     }
     
@@ -148,7 +148,7 @@ public class DatePicker extends AbstractBoundWidget implements
      * Sets Date value of this Calendar.
      * @param value Date value of this Calendar.
      */
-    public void setValue(Object value) {
+    public void setValue(Date value) {
         this.calendar.setValue( value );
     }
     

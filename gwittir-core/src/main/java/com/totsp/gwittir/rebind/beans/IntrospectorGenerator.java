@@ -237,8 +237,8 @@ public class IntrospectorGenerator extends Generator {
     }
 
     private List getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
-        ArrayList results = new ArrayList();
-        HashSet resolvers = new HashSet();
+        ArrayList<BeanResolver> results = new ArrayList<BeanResolver>();
+        HashSet<BeanResolver> resolvers = new HashSet<BeanResolver>();
 
         try {
             JClassType[] types = oracle.getTypes();
@@ -246,21 +246,24 @@ public class IntrospectorGenerator extends Generator {
                         com.totsp.gwittir.client.beans.Introspectable.class.getCanonicalName()
                     );
 
-            for (int i = 0; i < types.length; i++) {
+            for (JClassType type : types) {
+                if(type.getQualifiedSourceName().endsWith("gwittir.client.ui.TextBox")){
                 logger.log(
-                        TreeLogger.SPAM,
-                        types[i] + " is assignable to " + introspectable + " " +
-                        types[i].isAssignableTo(introspectable) + " isInterface = " + types[i].isInterface() +
-                        "isIntrospectable = "+isIntrospectable(logger,types[i]),
+                        TreeLogger.WARN,
+                        type.getQualifiedSourceName() + " is assignable to " + introspectable + " " +
+                        type.isAssignableTo(introspectable) + " isInterface = " + type.isInterface() +
+                        "isIntrospectable = "+isIntrospectable(logger,type),
                         null
                     );
-
+                }
 
 
                 if (
-                        (isIntrospectable(logger, types[i]) ) ||
-                        (types[i].isAssignableTo(introspectable) && (types[i].isInterface() == null))) {
-                    resolvers.add(new BeanResolver(logger, types[i]));
+                        (isIntrospectable(logger, type)  ||
+                        type.isAssignableTo(introspectable) )
+                          && (type.isInterface() == null)) {
+
+                    resolvers.add(new BeanResolver(logger, type));
                 }
             }
 
@@ -295,16 +298,16 @@ public class IntrospectorGenerator extends Generator {
         } catch (Exception e) {
             logger.log(TreeLogger.ERROR, "Unable to finad Introspectable types.", e);
         }
-
+        for(BeanResolver rs:results){
+            logger.log(TreeLogger.ERROR, rs.toString());
+        }
         return results;
     }
 
     private boolean isIntrospectable(TreeLogger logger, JType type){
         if( type == null ) return false;
         JClassType ct = type.isClassOrInterface();
-
         if(ct != null){
-            logger.log(TreeLogger.ERROR, "type" + ct.getQualifiedSourceName() +" annotation "+ ct.getAnnotation(Introspectable.class), null);
             if( ct.getAnnotation(Introspectable.class) != null ){
                 return true;
             }

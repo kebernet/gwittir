@@ -19,7 +19,6 @@ package com.totsp.gwittir.client.util;
 import com.google.gwt.core.client.GWT;
 
 import com.totsp.gwittir.client.beans.BeanDescriptor;
-import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
@@ -58,14 +57,14 @@ import java.util.Stack;
  */
 public class ToStringBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Introspectable bean;
+    private Object bean;
     private Stack stack;
 
     /**
      * Constructs a new instance of ToStringBean
      * @param bean Introspectable object to create a toString for.
      */
-    public ToStringBean(Introspectable bean) {
+    public ToStringBean(Object bean) {
         this.bean = bean;
         this.stack = new Stack();
     }
@@ -74,6 +73,7 @@ public class ToStringBean implements Serializable {
      * returns a string value for the bean.
      * @return returns a string value for the bean.
      */
+    @Override
     public String toString() {
         String[] tsInfo = (String[]) ((stack.isEmpty()) ? null : stack.peek());
         String prefix;
@@ -97,8 +97,10 @@ public class ToStringBean implements Serializable {
             Property[] properties = bd.getProperties();
 
             if (properties != null) {
+                 //System.out.println(properties.length);
                 for (int i = 0; i < properties.length; i++) {
                     String pName = properties[i].getName();
+                    //System.out.println(pName);
                     Property p = bd.getProperty(pName);
                     Method m = p.getAccessorMethod();
 
