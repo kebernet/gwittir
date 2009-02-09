@@ -40,6 +40,17 @@ public interface Converter<T, C> {
 
     };
 
+    public static final Converter<Collection, Object> FROM_COLLECTION_CONVERTER =
+            new Converter<Collection, Object>(){
+
+        public Object convert(Collection original) {
+            if( original == null || original.size() == 0 ){
+                return null;
+            }
+            return original.iterator().next();
+        }
+    };
+
     public static final Converter<Object, Collection> TO_COLLECTION_CONVERTER =
             new Converter<Object, Collection>(){
 

@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.Label;
@@ -31,6 +32,7 @@ import com.totsp.gwittir.client.ui.ListBox;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -68,15 +70,15 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
         hp.add( back );
         month = new ListBox();
         final ArrayList months = new ArrayList();
-        for( int i=0; i < Calendar.MONTHS_OF_YEAR_SHORT.length; i++ ){
-            months.add( Calendar.MONTHS_OF_YEAR_SHORT[i]);
+        for( String monthString : Calendar.MONTHS_OF_YEAR_SHORT ){
+            months.add(monthString);
         }
         month.setOptions(months);
         month.addPropertyChangeListener(DatePicker.VALUE_PROPERTY_NAME, new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
                 Date current = calendar.getRenderDate();
                 current = new Date( current.getYear(),
-                        indexOf( Calendar.MONTHS_OF_YEAR_SHORT, (String) propertyChangeEvent.getNewValue() )
+                        indexOf( Calendar.MONTHS_OF_YEAR_SHORT, ""+ Converter.FROM_COLLECTION_CONVERTER.convert((Collection)propertyChangeEvent.getNewValue()) )
                         ,1);
                 calendar.setRenderDate( current );
             }
@@ -94,7 +96,7 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
                     return;
                 }
                 Date current = calendar.getRenderDate();
-                current = new Date( Integer.parseInt( propertyChangeEvent.getNewValue().toString() ) -1900, current.getMonth(), 1 );
+                current = new Date( Integer.parseInt( ((Collection)propertyChangeEvent.getNewValue()).iterator().next().toString() ) -1900, current.getMonth(), 1 );
                 LOG.log(Level.SPAM, current.toString(), null );
                 calendar.setRenderDate( current );
             }
