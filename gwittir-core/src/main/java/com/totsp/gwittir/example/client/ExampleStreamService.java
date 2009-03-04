@@ -6,7 +6,7 @@
 package com.totsp.gwittir.example.client;
 
 import com.totsp.gwittir.client.stream.StreamingService;
-import com.totsp.gwittir.client.stream.impl.StreamServiceIterator;
+import com.totsp.gwittir.client.stream.StreamServiceIterator;
 
 /**
  *

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.totsp.gwittir.client.stream.impl;
+package com.totsp.gwittir.client.stream;
 
 import java.util.Iterator;
 

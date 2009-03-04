@@ -25,7 +25,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 import com.totsp.gwittir.client.stream.StreamControl;
 import com.totsp.gwittir.client.stream.StreamServiceCallback;
 import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
-import com.totsp.gwittir.client.stream.impl.StreamServiceIterator;
+import com.totsp.gwittir.client.stream.StreamServiceIterator;
 
 import java.io.PrintWriter;
 

@@ -50,7 +50,7 @@ public abstract class StreamingServiceStub {
 
     public void onComplete(String name,StreamServiceCallback callback){
         callback.onComplete();
-        //cleanUp(name);
+        cleanUp(name);
     }
 
     private void cleanUp(String name){

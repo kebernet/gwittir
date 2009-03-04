@@ -4,13 +4,14 @@
  */
 package com.totsp.gwittir.service;
 
-import com.totsp.gwittir.client.stream.impl.StreamServiceIterator;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.RPCRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
+
+import com.totsp.gwittir.client.stream.StreamServiceIterator;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,8 +59,9 @@ public class StreamServiceServlet extends RemoteServiceServlet {
             while (iterator.hasNext()) {
                 try {
                     Object next = iterator.next();
-                    String obj = StreamServiceUtils.encodeResponse(next.getClass(), next, false, policy);
-                    System.out.println("Encoded response: "+obj);
+                    String obj = StreamServiceUtils.encodeResponse(next.getClass(),
+                            next, false, policy);
+                    System.out.println("Encoded response: " + obj);
                     out.println(SCRIPT_OPEN);
                     out.print(WINDOW_PARENT);
                     out.print(request.getParameter("c"));
@@ -100,12 +102,23 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     this.getClass(), this);
             onAfterRequestDeserialized(rpcRequest);
 
+            StreamServiceIterator iterator = null;
+
             try {
-                StreamServiceIterator iterator = (StreamServiceIterator) rpcRequest.getMethod()
-                                                                                   .invoke(this,
+                iterator = (StreamServiceIterator) rpcRequest.getMethod()
+                                                             .invoke(this,
                         rpcRequest.getParameters());
-                this.sendResults(rpcRequest.getMethod(), iterator,
-                    rpcRequest.getSerializationPolicy());
+
+                try {
+                    this.sendResults(rpcRequest.getMethod(), iterator,
+                        rpcRequest.getSerializationPolicy());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    if (iterator != null) {
+                        iterator.finalize();
+                    }
+                }
             } catch (IllegalArgumentException ex) {
                 throw new IncompatibleRemoteServiceException("", ex);
             } catch (InvocationTargetException ex) {
