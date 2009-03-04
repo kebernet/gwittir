@@ -23,13 +23,14 @@ package com.totsp.gwittir.example.client;
 import com.totsp.gwittir.client.beans.Bindable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class MyClass implements Bindable{
+public class MyClass implements Bindable, Serializable{
     
     
     private Integer someInteger;

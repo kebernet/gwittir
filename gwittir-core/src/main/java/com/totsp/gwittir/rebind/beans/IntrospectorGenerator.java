@@ -248,13 +248,13 @@ public class IntrospectorGenerator extends Generator {
 
             for (JClassType type : types) {
                 if(type.getQualifiedSourceName().endsWith("gwittir.client.ui.TextBox")){
-                logger.log(
-                        TreeLogger.WARN,
-                        type.getQualifiedSourceName() + " is assignable to " + introspectable + " " +
-                        type.isAssignableTo(introspectable) + " isInterface = " + type.isInterface() +
-                        "isIntrospectable = "+isIntrospectable(logger,type),
-                        null
-                    );
+//                logger.log(
+//                        TreeLogger.WARN,
+//                        type.getQualifiedSourceName() + " is assignable to " + introspectable + " " +
+//                        type.isAssignableTo(introspectable) + " isInterface = " + type.isInterface() +
+//                        "isIntrospectable = "+isIntrospectable(logger,type),
+//                        null
+//                    );
                 }
 
 
@@ -298,9 +298,9 @@ public class IntrospectorGenerator extends Generator {
         } catch (Exception e) {
             logger.log(TreeLogger.ERROR, "Unable to finad Introspectable types.", e);
         }
-        for(BeanResolver rs:results){
-            logger.log(TreeLogger.ERROR, rs.toString());
-        }
+//        for(BeanResolver rs:results){
+//            logger.log(TreeLogger.ERROR, rs.toString());
+//        }
         return results;
     }
 
@@ -391,8 +391,7 @@ public class IntrospectorGenerator extends Generator {
             String[] propertyNames = new String[pds.size()];
             logger.log(TreeLogger.SPAM, "" + (pds == null), null);
 
-            //sboolean foundClass = false;
-
+            
             if (pds != null) {
                 int i = 0;
 

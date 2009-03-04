@@ -119,6 +119,7 @@ public class EqualsHashCodeBean implements Serializable {
      * @return Equality.
      */
     @Override
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
         return beanEquals(obj);
     }

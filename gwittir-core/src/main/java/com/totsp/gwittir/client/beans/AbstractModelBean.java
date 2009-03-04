@@ -34,14 +34,17 @@ public abstract class AbstractModelBean implements Bindable {
     public AbstractModelBean() {
     }
 
+    @Override
     public String toString() {
         return this.toString.toString();
     }
 
+    @Override
     public boolean equals(Object obj) {
         return this.equalsHash.equals(obj);
     }
     
+    @Override
     public int hashCode(){
         return this.equalsHash.hashCode();
     }

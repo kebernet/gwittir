@@ -63,6 +63,8 @@ import com.totsp.gwittir.client.action.BindingAction;
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
 import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
+import com.totsp.gwittir.client.stream.StreamServiceCallback;
+import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
 import com.totsp.gwittir.client.ui.ContextMenuPanel;
 import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
 import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
@@ -94,6 +96,29 @@ public class ExampleEntryPoint implements EntryPoint {
     }
 
     public void onModuleLoad() {
+
+        ExampleStreamServiceAsync ser = (ExampleStreamServiceAsync) GWT.create(ExampleStreamService.class);
+        StreamingServiceStub stub = (StreamingServiceStub) ser;
+        stub.setServicePath(GWT.getModuleBaseURL()+"ExampleStreamService");
+        ser.getStrings(5, "foo", new StreamServiceCallback<MyClass>(){
+
+            public void onReceive(MyClass object) {
+                Window.alert("Got: "+object.getName());
+            }
+
+            public void onError(Throwable thrown) {
+                Window.alert("Thrown: "+thrown.toString());
+                GWT.log("", thrown);
+            }
+
+            public void onComplete() {
+                Window.alert("complete.");
+            }
+
+        });
+
+
+
         Logger log = Logger.getLogger(
                 "com.totsp.gwittir.example.client.ExampleEntryPoint");
         log.log(Level.ERROR, "startup", null);
