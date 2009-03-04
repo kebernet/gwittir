@@ -14,6 +14,6 @@ import com.totsp.gwittir.client.stream.StreamServiceCallback;
  */
 public interface ExampleStreamServiceAsync {
 
-    public StreamControl getStrings(int count, String name, StreamServiceCallback callback);
+    public StreamControl getResults(int count, String name, StreamServiceCallback callback);
 
 }

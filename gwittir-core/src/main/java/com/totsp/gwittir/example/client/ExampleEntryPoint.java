@@ -100,7 +100,7 @@ public class ExampleEntryPoint implements EntryPoint {
         ExampleStreamServiceAsync ser = (ExampleStreamServiceAsync) GWT.create(ExampleStreamService.class);
         StreamingServiceStub stub = (StreamingServiceStub) ser;
         stub.setServicePath(GWT.getModuleBaseURL()+"ExampleStreamService");
-        ser.getStrings(5, "foo", new StreamServiceCallback<MyClass>(){
+        ser.getResults(5, "foo", new StreamServiceCallback<MyClass>(){
 
             public void onReceive(MyClass object) {
                 Window.alert("Got: "+object.getName());

@@ -14,6 +14,6 @@ import java.util.Iterator;
 public interface StreamServiceIterator<T> extends Iterator<T> {
 
 
-    void finalize();
+    void close();
     
 }

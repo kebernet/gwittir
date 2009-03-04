@@ -16,7 +16,7 @@ import com.totsp.gwittir.service.StreamServiceServlet;
  */
 public class ExampleStreamServiceServlet extends StreamServiceServlet implements ExampleStreamService {
 
-    public StreamServiceIterator<MyClass> getStrings(final int count, final String name) {
+    public StreamServiceIterator<MyClass> getResults(final int count, final String name) {
         System.out.println( count + name );
         return new StreamServiceIterator<MyClass>(){
             int i=0;
@@ -36,8 +36,7 @@ public class ExampleStreamServiceServlet extends StreamServiceServlet implements
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
-            @Override
-            public void finalize(){
+            public void close(){
                 System.out.println("finalized.");
             }
 

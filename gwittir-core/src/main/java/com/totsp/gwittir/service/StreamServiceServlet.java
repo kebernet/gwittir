@@ -116,7 +116,7 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     throw new RuntimeException(e);
                 } finally {
                     if (iterator != null) {
-                        iterator.finalize();
+                        iterator.close();
                     }
                 }
             } catch (IllegalArgumentException ex) {

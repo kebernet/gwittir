@@ -14,6 +14,6 @@ import com.totsp.gwittir.client.stream.StreamServiceIterator;
  */
 public interface ExampleStreamService extends StreamingService {
 
-    public StreamServiceIterator<MyClass> getStrings(int count, String name);
+    public StreamServiceIterator<MyClass> getResults(int count, String name);
 
 }
