@@ -11,6 +11,11 @@
         <when-type-assignable
             class="com.totsp.gwittir.client.beans.Introspector" />
     </generate-with>
+    <generate-with
+        class="com.totsp.gwittir.rebind.stream.StreamClientGenerator" >
+        <when-type-assignable
+            class="com.totsp.gwittir.client.stream.StreamingService" />
+    </generate-with>
     <replace-with
         class="com.totsp.gwittir.client.fx.rebind.OpacitySetterIE6">
         <when-type-is 

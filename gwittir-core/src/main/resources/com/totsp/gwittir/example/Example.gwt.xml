@@ -13,5 +13,6 @@
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.totsp.gwittir.example.client.ExampleEntryPoint'/>
     <stylesheet src="example.css"/>
-    
+    <servlet path="/ExampleStreamService"
+     class="com.totsp.gwittir.example.server.ExampleStreamServiceServlet" />
 </module>
