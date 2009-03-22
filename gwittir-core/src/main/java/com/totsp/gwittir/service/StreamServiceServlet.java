@@ -61,6 +61,7 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     Object next = iterator.next();
                     String obj = StreamServiceUtils.encodeResponse(next.getClass(),
                             next, false, policy);
+
                     System.out.println("Encoded response: " + obj);
                     out.println(SCRIPT_OPEN);
                     out.print(WINDOW_PARENT);
@@ -70,6 +71,16 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                                         .replaceAll("\\+", "%20"));
                     out.println("\");");
                     out.println(SCRIPT_CLOSE);
+
+                    if (this.flushExtraAfterEachPush()) {
+                        out.print("<!--");
+
+                        for (int i = 0; i < 512; i++)
+                            out.print(" ");
+
+                        out.println("-->");
+                    }
+
                     out.flush();
                 } catch (SerializationException se) {
                     out.println(SCRIPT_OPEN);
@@ -95,12 +106,16 @@ public class StreamServiceServlet extends RemoteServiceServlet {
         }
     }
 
+    protected boolean flushExtraAfterEachPush() {
+        return true;
+    }
+
     @Override
     public String processCall(String payload) throws SerializationException {
         try {
             RPCRequest rpcRequest = StreamServiceUtils.decodeRequest(payload,
                     this.getClass(), this);
-            onAfterRequestDeserialized(rpcRequest);
+            //onAfterRequestDeserialized(rpcRequest);
 
             StreamServiceIterator iterator = null;
 

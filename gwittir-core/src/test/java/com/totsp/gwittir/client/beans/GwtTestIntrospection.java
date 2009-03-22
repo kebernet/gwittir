@@ -1,0 +1,38 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.totsp.gwittir.client.beans;
+
+import com.google.gwt.junit.client.GWTTestCase;
+import com.totsp.gwittir.client.testmodel.TestFileDeclaredIntrospection;
+
+/**
+ *
+ * @author kebernet
+ */
+public class GwtTestIntrospection extends GWTTestCase {
+
+    public String getModuleName() {
+        return "com.totsp.gwittir.GwittirTest";
+    }
+
+    public void testFileDeclared() throws Exception {
+        TestFileDeclaredIntrospection bean = new TestFileDeclaredIntrospection();
+        Property p = Introspector.INSTANCE.getDescriptor(bean).getProperty("stringProperty");
+        System.out.println( "String property: "+p);
+        assertTrue( p.getName().equals("stringProperty") );
+        p = Introspector.INSTANCE.getDescriptor(bean).getProperty("intProperty");
+        assertTrue( p.getName().equals("intProperty"));
+        try{
+            p = Introspector.INSTANCE.getDescriptor(bean).getProperty("doubleProperty");
+            fail();
+        }
+        catch(RuntimeException e) {
+            assertTrue( e != null );
+        }
+
+
+    }
+}

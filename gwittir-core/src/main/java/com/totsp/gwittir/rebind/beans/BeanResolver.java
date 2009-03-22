@@ -27,6 +27,7 @@ import com.totsp.gwittir.client.beans.annotations.Omit;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -34,10 +35,16 @@ import java.util.Iterator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class BeanResolver {
-    private HashMap properties = new HashMap(); /*<String name, Property>*/
-    private HashSet methodSet = new HashSet(); /*<MethodWrapper>*/
+    private HashMap<String, Property> properties = new HashMap<String, Property>(); /*<String name, Property>*/
+    private HashSet<MethodWrapper> methodSet = new HashSet<MethodWrapper>(); /*<MethodWrapper>*/
     private JClassType type;
     private TreeLogger logger;
+    private String[] filterProperties;
+
+    public BeanResolver(TreeLogger logger, JClassType type, String[] filterProperties){
+        this(logger, type);
+        this.filterProperties = filterProperties;
+    }
 
     /** Creates a new instance of BeanResolver */
     public BeanResolver(TreeLogger logger, JClassType type) {
@@ -165,7 +172,17 @@ public class BeanResolver {
         }
     }
 
-    public HashMap getProperties() {
+    Map<String, Property> getProperties() {
+        if( this.filterProperties != null ){
+            Map<String, Property> results = new HashMap<String, Property>();
+            for(String property : this.filterProperties ){
+                property = property.trim();
+                if( this.properties.containsKey( property) ){
+                    results.put(property, this.properties.get(property) );
+                }
+            }
+            return results;
+        }
         return this.properties;
     }
 

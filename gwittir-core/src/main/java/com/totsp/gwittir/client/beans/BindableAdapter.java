@@ -44,7 +44,7 @@ public abstract class BindableAdapter implements SourcesPropertyChangeEvents, Se
         initListener();
     }
 
-    private void initValues() {
+    protected void initValues() {
         try {
             for (Property p : this.properties) {
                 if (p.getAccessorMethod() != null) {
@@ -132,7 +132,7 @@ public abstract class BindableAdapter implements SourcesPropertyChangeEvents, Se
         return this.descriptor;
     }
 
-    private static class MethodWrapper implements Method {
+    protected static class MethodWrapper implements Method {
         private Method internal;
 
         MethodWrapper(Method internal) {

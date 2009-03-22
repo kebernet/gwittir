@@ -28,6 +28,11 @@ public class ExampleStreamServiceServlet extends StreamServiceServlet implements
                 i++;
                 MyClass mc = new MyClass();
                 mc.setName(name + i);
+                try{
+                    Thread.sleep(2000);
+                } catch(InterruptedException e){
+                    //Ignore.
+                }
                 return mc;
                
             }

@@ -256,7 +256,7 @@ public class JavaScriptObjectDecorator {
 
     private native void setDblProperty(
         JavaScriptObject object, String name, double value) /*-{
-    object[ name ] = value;
+        object[ name ] = value;
     }-*/;
 
     private native double getDblProperty(JavaScriptObject object, String name) /*-{
@@ -378,9 +378,9 @@ public class JavaScriptObjectDecorator {
 
     private native java.lang.Short getShortProperty(JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
-    return null;
+        return null;
     } else {
-    return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newShort(S)( object[ name ] );
+        return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newShort(S)( object[ name ] );
     }
     }-*/;
 
@@ -394,14 +394,14 @@ public class JavaScriptObjectDecorator {
 
     private native void setStringProperty(
         JavaScriptObject object, String name, String value) /*-{
-    object[ name ] = value;
+        object[ name ] = value;
     }-*/;
 
     private native String getStringProperty(JavaScriptObject object, String name) /*-{
     if( object[ name ] == null || object[ name ] == undefined ){
-    return null;
+        return null;
     } else {
-    return object[ name ];
+        return object[ name ];
     }
     }-*/;
 }

@@ -35,13 +35,18 @@ import com.google.gwt.user.rebind.SourceWriter;
 
 import com.totsp.gwittir.client.beans.SelfDescribed;
 import com.totsp.gwittir.client.beans.annotations.Introspectable;
+import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 
 /**
@@ -49,13 +54,14 @@ import java.util.List;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class IntrospectorGenerator extends Generator {
-    String implementationName = com.totsp.gwittir.client.beans.Introspector.class.getSimpleName() + "_Impl";
-    String packageName = com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName().substring(
+    private String implementationName = com.totsp.gwittir.client.beans.Introspector.class.getSimpleName() + "_Impl";
+    private String packageName = com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName().substring(
             0,
             com.totsp.gwittir.client.beans.Introspector.class.getCanonicalName().lastIndexOf(".")
         );
-    String methodsImplementationName = "MethodsList";
-    JType objectType;
+    private String methodsImplementationName = "MethodsList";
+    private JType objectType = null;
+  
 
     /** Creates a new instance of IntrospectorGenerator */
     public IntrospectorGenerator() {
@@ -130,11 +136,10 @@ public class IntrospectorGenerator extends Generator {
                     continue;
                 }
 
-                Collection pds = info.getProperties().values();
+                Collection<Property> pds = info.getProperties().values();
 
-                for (Iterator pit = pds.iterator(); pit.hasNext();) {
-                    Property p = (Property) pit.next();
-
+                for ( Property p : pds) {
+                   
                     if (p.getReadMethod() != null) {
                         p.getReadMethod().hashWithType = true;
                         methods.add(p.getReadMethod());
@@ -236,7 +241,7 @@ public class IntrospectorGenerator extends Generator {
         return packageName + "." + implementationName;
     }
 
-    private List getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
+    private List<BeanResolver> getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
         ArrayList<BeanResolver> results = new ArrayList<BeanResolver>();
         HashSet<BeanResolver> resolvers = new HashSet<BeanResolver>();
 
@@ -247,7 +252,7 @@ public class IntrospectorGenerator extends Generator {
                     );
 
             for (JClassType type : types) {
-                if(type.getQualifiedSourceName().endsWith("gwittir.client.ui.TextBox")){
+//                if(type.getQualifiedSourceName().endsWith("gwittir.client.ui.TextBox")){
 //                logger.log(
 //                        TreeLogger.WARN,
 //                        type.getQualifiedSourceName() + " is assignable to " + introspectable + " " +
@@ -255,7 +260,7 @@ public class IntrospectorGenerator extends Generator {
 //                        "isIntrospectable = "+isIntrospectable(logger,type),
 //                        null
 //                    );
-                }
+//                }
 
 
                 if (
@@ -270,7 +275,7 @@ public class IntrospectorGenerator extends Generator {
             // Do a crazy assed sort to make sure least
             // assignable types are at the bottom of the list
             results.addAll(resolvers);
-
+            results.addAll( this.getFileDeclaredTypes(logger, oracle) );
             boolean swap = true;
 
             while (swap) {
@@ -301,6 +306,35 @@ public class IntrospectorGenerator extends Generator {
 //        for(BeanResolver rs:results){
 //            logger.log(TreeLogger.ERROR, rs.toString());
 //        }
+        return results;
+    }
+
+    private List<BeanResolver> getFileDeclaredTypes(TreeLogger logger, TypeOracle oralce ) throws UnableToCompleteException {
+        ArrayList<BeanResolver> results = new ArrayList<BeanResolver>();
+        ClassLoader ctxLoader = Thread.currentThread().getContextClassLoader();
+        try{
+            Enumeration<URL> introspections = ctxLoader.getResources( "gwittir-introspection.properties");
+            while(introspections.hasMoreElements() ){
+                URL propsUrl = introspections.nextElement();
+                logger.log(TreeLogger.Type.INFO, "Loading: "+propsUrl.toString() );
+                Properties props = new Properties();
+                props.load( propsUrl.openStream() );
+                for(Entry entry : props.entrySet()){
+                    String className = entry.getKey().toString();
+                    String[] includedProps = entry.getValue().toString().split(",");
+                    JClassType type = oralce.findType(className);
+                    if(type == null ){
+                        logger.log(TreeLogger.Type.ERROR, "Unable to find type "+className+" declared in "+propsUrl);
+                        throw new UnableToCompleteException();
+                    }
+                    results.add( new BeanResolver(logger, type, includedProps));
+                }
+
+            }
+
+        } catch(IOException ioe){
+            logger.log(TreeLogger.Type.WARN, "Exception looking for properties files", ioe);
+        }
         return results;
     }
 
