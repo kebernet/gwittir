@@ -22,7 +22,7 @@ public class HistoryTokenizerTest extends TestCase {
      */
     public void testTokenize() {
         System.out.println("tokenize");
-        String token = "test1=someTest&test2=test~#038;2&test3=test3";
+        String token = "test1=someTest&test2=testu#038;2&test3=test3";
         HistoryTokenizer instance = new HistoryTokenizer(token);
         assertEquals(instance.getToken("test1"), "someTest" );
         assertEquals(instance.getToken("test2"), "test&2");
