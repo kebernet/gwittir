@@ -35,24 +35,24 @@ public class DOMStorage {
             return true;
      else return false; }-*/;
 
-    public static Store getSession() throws UnavailableException{
+    public static Storage getSession() throws UnavailableException{
         if(!available()){
             throw new UnavailableException();
         }
         return getNativeSession();
     }
 
-    private static native Store getNativeSession()
+    private static native Storage getNativeSession()
     /*-{ return $wnd.sessionStorage }-*/;
 
-    public static Store getLocal() throws UnavailableException{
+    public static Storage getLocal() throws UnavailableException{
         if(!available()){
             throw new UnavailableException();
         }
         return getNativeLocal();
     }
 
-    private static native Store getNativeLocal()
+    private static native Storage getNativeLocal()
     /*-{ 
      if($wnd.globalStorage)
         return $wnd.globalStorage[window.location.hostname];
