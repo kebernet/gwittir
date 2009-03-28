@@ -7,7 +7,7 @@ package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.Window;
 import com.totsp.gwittir.client.util.domstorage.DOMStorage;
-import com.totsp.gwittir.client.util.domstorage.Store;
+import com.totsp.gwittir.client.util.domstorage.Storage;
 import com.totsp.gwittir.client.util.domstorage.UnavailableException;
 
 /**
@@ -16,8 +16,8 @@ import com.totsp.gwittir.client.util.domstorage.UnavailableException;
  */
 public class DOMStorageTest {
 
-    private Store local;
-    private Store session;
+    private Storage local;
+    private Storage session;
 
     public DOMStorageTest() throws UnavailableException{
         this.local = DOMStorage.getLocal();
