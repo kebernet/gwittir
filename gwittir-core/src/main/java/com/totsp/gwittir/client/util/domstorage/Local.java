@@ -25,7 +25,9 @@ import com.google.gwt.core.client.JavaScriptObject;
  * (e.g. over multiple pages and browser sessions).
  *
  * This is no longer in the WhatWG spec. Replaced by localStorage. Localstorage
- * is not, however supported by Firefox yet.
+ * is not, however supported by Firefox yet. When called from the factory it will
+ * be returned as localStorage or globalStorage[window.location.hostName], whichever
+ * is available.
  * 
  * @author kebernet
  */
