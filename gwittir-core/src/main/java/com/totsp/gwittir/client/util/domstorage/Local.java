@@ -31,25 +31,28 @@ import com.google.gwt.core.client.JavaScriptObject;
  * 
  * @author kebernet
  */
-public class Local extends JavaScriptObject implements Storage {
+public class Local extends JavaScriptObject {
 
     protected Local(){
         
     }
 
     public native final String get(String key)
-    /*-{ return this[key]; }-*/;
+    /*-{ var val = this[key]; return val == undefined ? null : val;}-*/;
 
     public native final int length()
     /*-{ return this.length; }-*/;
 
     public native final String key(int index)
-    /*-{ return this.key(index); }-*/;
+    /*-{ var key = this.key(index); return key == undefined ? null : key; }-*/;
 
     public native final void clear()
     /*-{ this.clear(); return; }-*/;
 
     public native final void remove(String key)
-   /*-{ this.removeItem(key); return; }-*/;
+    /*-{ this.removeItem(key); return; }-*/;
+
+    public native final void set(String key, String value)
+    /*-{ this[key] = value; return; }-*/;
 
 }

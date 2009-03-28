@@ -26,29 +26,33 @@ package com.totsp.gwittir.client.util.domstorage;
  */
 public class DOMStorage {
 
-    private native boolean available()
+    private DOMStorage(){
+        
+    }
+
+    private static native boolean available()
     /*-{ if($wnd.sessionStorage && ($wnd.globalStorage || $wnd.localStorage))
             return true;
      else return false; }-*/;
 
-    public Session getSession() throws UnavailableException{
+    public static Storage getSession() throws UnavailableException{
         if(!available()){
             throw new UnavailableException();
         }
         return getNativeSession();
     }
 
-    private native Session getNativeSession()
+    private static native Storage getNativeSession()
     /*-{ return $wnd.sessionStorage }-*/;
 
-    public Local getLocal() throws UnavailableException{
+    public static Storage getLocal() throws UnavailableException{
         if(!available()){
             throw new UnavailableException();
         }
         return getNativeLocal();
     }
 
-    private native Local getNativeLocal()
+    private static native Storage getNativeLocal()
     /*-{ 
      if($wnd.globalStorage)
         return $wnd.globalStorage[$wnd.location.hostName];
