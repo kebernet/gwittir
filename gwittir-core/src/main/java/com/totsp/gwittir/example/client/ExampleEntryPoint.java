@@ -73,6 +73,7 @@ import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.client.util.StringUtil;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
@@ -95,7 +96,29 @@ public class ExampleEntryPoint implements EntryPoint {
     public ExampleEntryPoint() {
     }
 
-    public void onModuleLoad() {
+    public void onModuleLoad(){
+//        //DBTest.doInsert();
+//        byte[] b = StringUtil.toByteArray("Hello"); //"\u60A8\u597D");
+//
+//        String types = "";
+//        byte[] bytes = StringUtil.intToByteArray( (int) '\u597D' );
+//        for(byte bb : bytes){
+//            types+=bb+" ";
+//        }
+//        Window.alert( ""+types);
+
+        String s = "Hello World!"; //"\u60A8\u597D";
+        System.out.println(s);
+        byte[] b = StringUtil.toUtf16ByteArray(s);//"This ia test in english".getBytes();
+        String types = "";
+        for(byte bb : b){
+            types+=bb+" ";
+        }
+        Window.alert(types);
+        Window.alert( StringUtil.fromUtf16ByteArray(b));
+    }
+
+    public void xonModuleLoad() {
         final VerticalPanel streamPanel = new VerticalPanel();
         Button stream = new Button("Stream!");
         stream.addClickListener(new ClickListener() {

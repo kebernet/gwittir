@@ -433,13 +433,9 @@ public class MD5 {
 
 //     chars = new byte[s.length()];
 //     s.getBytes(0, s.length(), chars, 0);
-    try {
-	chars = s.getBytes("UTF-8");
-    } catch(java.io.UnsupportedEncodingException ex) {
-	// Should never happen
-	ex.printStackTrace();
-	chars = new byte[1];
-    }
+    
+	chars = StringUtil.toUtf8ByteArray(s);
+    
 
     Update(chars, chars.length);
   }
