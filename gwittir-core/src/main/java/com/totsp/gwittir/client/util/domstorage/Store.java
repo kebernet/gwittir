@@ -31,9 +31,9 @@ import com.google.gwt.core.client.JavaScriptObject;
  * 
  * @author kebernet
  */
-public class Local extends JavaScriptObject {
+public class Store extends JavaScriptObject {
 
-    protected Local(){
+    protected Store(){
         
     }
 
