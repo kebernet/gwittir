@@ -23,6 +23,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.totsp.gwittir.client.util.UnavailableException;
 
 /**
  *
@@ -30,17 +31,13 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class UserData {
 
-    public static final UserData INSTANCE = new UserData();
+    private static final UserData INSTANCE = new UserData();
 
     private Element element = null;
     private boolean loaded = false;
     private UserData(){
-        this.element = DOM.createElement("span");
-        DOM.setStyleAttribute(element, "behavior", "url(#default#userData)");
-        DOM.setStyleAttribute(element, "position", "absolute");
-        DOM.setStyleAttribute(element, "right", "0px");
-        DOM.setStyleAttribute(element, "bottom", "0px");
-        DOM.appendChild(RootPanel.getBodyElement(), element);
+        
+        this.element = createElement();
         Window.addWindowCloseListener(new WindowCloseListener(){
 
             public String onWindowClosing() {
@@ -54,14 +51,36 @@ public class UserData {
         });
     }
 
+    public static final UserData getInstance() throws UnavailableException{
+        if(!isAvailable(INSTANCE.element)){
+            throw new UnavailableException();
+        }
+        return INSTANCE;
+    }
+
+
+    private native Element createElement()
+    /*-{
+    var e = document.createElement('span');
+    e.style.behavior = 'url(#default#userData)';
+    document.body.appendChild(e);
+    return e;
+     }-*/;
+
+    private static native boolean isAvailable(Element e)/*-{
+        return true;
+        alert( e.save +" : "+e.load );
+        if(e.save && e.load) return true;
+        else return false;
+     }-*/;
 
     private native void load(Element e) /*-{
         e.load("gwittir");
      }-*/;
 
     private native String getNative(Element e, String key)/*-{
-        var ret e.getAttribute(key);
-        return ret == undefine ? null : ret;
+        var ret = e.getAttribute(key);
+        return ret == undefined ? null : ret;
      }-*/;
 
     public String get(String key){

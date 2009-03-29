@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.totsp.gwittir.client.util.domstorage;
+package com.totsp.gwittir.client.util;
 
 /**
  *
@@ -24,7 +24,7 @@ package com.totsp.gwittir.client.util.domstorage;
  */
 public class UnavailableException extends Exception {
 
-    UnavailableException(){
+    public UnavailableException(){
         super();
     }
 

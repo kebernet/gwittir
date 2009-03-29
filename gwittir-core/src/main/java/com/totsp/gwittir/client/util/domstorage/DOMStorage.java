@@ -18,6 +18,8 @@
 
 package com.totsp.gwittir.client.util.domstorage;
 
+import com.totsp.gwittir.client.util.UnavailableException;
+
 /**
  * A factory class for accessing the DOMStorage API.
  * https://developer.mozilla.org/En/DOM:Storage

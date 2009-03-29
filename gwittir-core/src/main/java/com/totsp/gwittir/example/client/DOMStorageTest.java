@@ -8,7 +8,7 @@ package com.totsp.gwittir.example.client;
 import com.google.gwt.user.client.Window;
 import com.totsp.gwittir.client.util.domstorage.DOMStorage;
 import com.totsp.gwittir.client.util.domstorage.Storage;
-import com.totsp.gwittir.client.util.domstorage.UnavailableException;
+import com.totsp.gwittir.client.util.UnavailableException;
 
 /**
  *

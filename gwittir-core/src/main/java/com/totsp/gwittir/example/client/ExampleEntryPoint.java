@@ -74,6 +74,7 @@ import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
 import com.totsp.gwittir.client.util.StringUtil;
+import com.totsp.gwittir.client.util.UnavailableException;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
@@ -96,7 +97,20 @@ public class ExampleEntryPoint implements EntryPoint {
     public ExampleEntryPoint() {
     }
 
+
     public void onModuleLoad(){
+        UserDataTest test;
+        try {
+            test = new UserDataTest();
+            test.saveValues();
+        } catch (UnavailableException ex) {
+            Window.alert(ex.toString());
+        }
+        
+    }
+
+
+    public void dbonModuleLoad(){
 //        //DBTest.doInsert();
 //        byte[] b = StringUtil.toByteArray("Hello"); //"\u60A8\u597D");
 //
