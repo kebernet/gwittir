@@ -19,10 +19,16 @@ package com.totsp.gwittir.client.util;
 
 
 /**
- *
+ * A utitlity class containing methods related to Strings.
  * @author kebernet
  */
 public class StringUtil {
+
+    /** Builds a String from a UTF-16 byte array
+     *
+     * @param bytes Array of double-byte sequences.
+     * @return UTF-16 String.
+     */
     public static String fromUtf16ByteArray(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         byte[] four = new byte[4];
@@ -38,6 +44,11 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /** Builds a String from a UTF-8 byte array
+     *
+     * @param bytes Array of single-byte sequences.
+     * @return UTF-8 String.
+     */
     public static String fromUtf8ByteArray(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         byte[] four = new byte[4];
@@ -52,6 +63,11 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * Converts a String to a UTF-16 byte array
+     * @param source String
+     * @return String as bytes with UTF-16 header.
+     */
     public static byte[] toUtf16ByteArray(String source) {
         byte[] bytes = new byte[(source.length() * 2) + 2];
         bytes[0] = -2;
@@ -68,6 +84,11 @@ public class StringUtil {
         return bytes;
     }
 
+    /**
+     * Converts a String to a UTF-8 byte array
+     * @param source String
+     * @return String as bytes
+     */
     public static byte[] toUtf8ByteArray(String source) {
         byte[] bytes = new byte[source.length()];
         byte[] four = new byte[4];
