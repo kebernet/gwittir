@@ -18,11 +18,9 @@
 
 package com.totsp.gwittir.client.util.userdata;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.totsp.gwittir.client.util.UnavailableException;
 
 /**
@@ -52,7 +50,7 @@ public class UserData {
     }
 
     public static final UserData getInstance() throws UnavailableException{
-        if(!isAvailable(INSTANCE.element)){
+        if(!isAvailable()){
             throw new UnavailableException();
         }
         return INSTANCE;
@@ -67,11 +65,8 @@ public class UserData {
     return e;
      }-*/;
 
-    private static native boolean isAvailable(Element e)/*-{
-        return true;
-        alert( e.save +" : "+e.load );
-        if(e.save && e.load) return true;
-        else return false;
+    private static native boolean isAvailable()/*-{
+        return navigator.userAgent.indexOf("MSIE") != -1;
      }-*/;
 
     private native void load(Element e) /*-{
