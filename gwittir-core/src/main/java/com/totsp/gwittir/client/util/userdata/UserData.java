@@ -18,46 +18,35 @@
 
 package com.totsp.gwittir.client.util.userdata;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.WindowCloseListener;
 import com.totsp.gwittir.client.util.UnavailableException;
 
 /**
  *
  * @author kebernet
  */
-public class UserData {
+public class UserData extends JavaScriptObject {
 
-    private static final UserData INSTANCE = new UserData();
-
-    private Element element = null;
-    private boolean loaded = false;
-    private UserData(){
-        
-        this.element = createElement();
-        Window.addWindowCloseListener(new WindowCloseListener(){
-
-            public String onWindowClosing() {
-                return null;
-            }
-
-            public void onWindowClosed() {
-                store(element);
-            }
-
-        });
+    protected UserData(){
     }
 
-    public static final UserData getInstance() throws UnavailableException{
+    public static final UserData getInstance(Element e) throws UnavailableException{
         if(!isAvailable()){
             throw new UnavailableException();
         }
-        return INSTANCE;
+        return getNativeInstance(e);
     }
 
+    public static final UserData getInstance() throws UnavailableException {
+        return getInstance(createElement());
+    }
 
-    private native Element createElement()
+    private static final native UserData getNativeInstance(Element e)
+    /*-{ e.style.behavior = 'url(#default#userData)'; return e; }-*/;
+
+
+    private static native Element createElement()
     /*-{
     var e = document.createElement('span');
     e.style.behavior = 'url(#default#userData)';
@@ -69,34 +58,21 @@ public class UserData {
         return navigator.userAgent.indexOf("MSIE") != -1;
      }-*/;
 
-    private native void load(Element e) /*-{
-        e.load("gwittir");
+    public native void load(String name) /*-{
+        this.load(name);
      }-*/;
 
-    private native String getNative(Element e, String key)/*-{
-        var ret = e.getAttribute(key);
-        return ret == undefined ? null : ret;
+    
+    public native String get(String key)/*-{
+        return this.getAttribute(key);
+    }-*/;
+
+
+    public native void set(String key, String value)/*-{
+        thiss.setAttribute(key, value);
      }-*/;
 
-    public String get(String key){
-        if(!loaded){
-            load(element);
-        }
-        return getNative(this.element, key);
-    }
-
-    public void set(String key, String value){
-        if(!loaded){
-            load(element);
-        }
-        setNative(this.element, key, value);
-    }
-
-    private native void setNative(Element e, String key, String value)/*-{
-        e.setAttribute(key, value);
-     }-*/;
-
-    private native void store(Element e)/*-{
-        e.save("gwittir");
+    public native void save(String name)/*-{
+        this.save(name);
     }-*/;
 }
