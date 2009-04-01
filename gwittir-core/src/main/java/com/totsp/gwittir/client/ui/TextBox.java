@@ -211,7 +211,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     }
     
     public void removeChangeListener(ChangeListener listener) {
-        this.changeListeners.add(listener);
+        this.base.removeChangeListener(listener);
     }
     
     public void removeClickListener(ClickListener listener) {
@@ -219,7 +219,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     }
     
     public void removeFocusListener(FocusListener listener) {
-        this.changeListeners.remove(listener);
+        this.base.removeFocusListener(listener);
     }
     
     public void removeKeyboardListener(KeyboardListener listener) {
@@ -304,7 +304,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     public void setValue(String value) {
         String old = this.getValue();
         this.setText(value);
-        if( this.getValue() != old && this.getValue() != null && this.getValue().equals( old ) ){
+        if( this.getValue() != old && this.getValue() != null && !this.getValue().equals( old ) ){
             this.changes.firePropertyChange("value", old, this.getValue());
         }
     }
