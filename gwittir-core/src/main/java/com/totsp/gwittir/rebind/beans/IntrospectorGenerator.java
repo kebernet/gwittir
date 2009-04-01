@@ -291,10 +291,8 @@ public class IntrospectorGenerator extends Generator {
                             results.set(i, check);
                             results.set(j, type);
 
-                            if (type.toString().equals(check.toString())) {
-                                results.remove(i);
-                            }
-
+							type = check;
+							
                             swap = true;
                         }
                     }
