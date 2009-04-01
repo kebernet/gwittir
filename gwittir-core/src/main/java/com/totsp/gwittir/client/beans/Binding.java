@@ -706,6 +706,8 @@ public class Binding {
                     propertyName);
             target.object = newInstance.object;
             target.nestedListener = newInstance.nestedListener;
+            target.nestedListener.target = target;
+            target.property = newInstance.property;
 
             if (lastSet == Boolean.TRUE) {
                 setLeft();
