@@ -38,7 +38,7 @@ public class StringLengthValidator implements Validator {
     }
 
     public Object validate(Object value) throws ValidationException {
-        if((value == null) || (value.toString().length() < min)) {
+        if((value == null) || (value.toString().length() < min) || (value.toString().length() > max)) {
             throw new ValidationException("Value must be at least " + min +
                 "and no more than " + max + " characters.",
                 StringLengthValidator.class);
