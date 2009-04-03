@@ -20,7 +20,6 @@
 package com.totsp.gwittir.client.fx;
 
 import com.google.gwt.user.client.Timer;
-import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;

@@ -5,7 +5,7 @@
 
 package com.totsp.gwittir.client.util.impl;
 
-import com.totsp.gwittir.client.util.WindowContext.WindowContextItem;
+import com.totsp.gwittir.client.util.WindowContextItem;
 import java.util.Map;
 
 /**
@@ -24,14 +24,16 @@ public class WindowContextPersisterHTML5 extends WindowContextPersister {
     }
 
     @Override
-    public Map<Class<? extends WindowContextItem>, WindowContextItem> getWindowContextData() {
+    public Map<String, String> getWindowContextData() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void storeWindowContextData(Map<Class<? extends WindowContextItem>, WindowContextItem> windowContextData) {
+    public void storeWindowContextData(Map<String, WindowContextItem> windowContextData) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    
 
 
 

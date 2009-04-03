@@ -15,30 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.util.impl;
 
-import com.totsp.gwittir.client.util.WindowContextItem;
-import java.util.Map;
+package com.totsp.gwittir.client.util;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
  *
  * @author kebernet
  */
-public class WindowContextPersisterFirefox extends WindowContextPersister {
-
-    @Override
-    public int getByteLimit() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Map<String, String> getWindowContextData() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void storeWindowContextData(Map<String, WindowContextItem> windowContextData) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public interface WindowContextItem extends IsSerializable {
 
 }

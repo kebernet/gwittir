@@ -19,11 +19,12 @@ public class UserDataTest {
 
     public UserDataTest() throws UnavailableException{
         this.local = UserData.getInstance();
-
+        local.load("gwittir");
         Window.alert( "Local[test]"+ local.get("test"));
     }
 
     public void saveValues(){
         local.set("test", "testValue!");
+        local.save("gwittir");
     }
 }

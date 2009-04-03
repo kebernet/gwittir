@@ -1,14 +1,34 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Created on August 3, 2007, 3:40 PM
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.util;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+
+import com.totsp.gwittir.client.util.impl.WindowContextPersister;
+import com.totsp.gwittir.client.util.impl.WindowContextSerializers;
+
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  *
@@ -16,44 +36,68 @@ import java.util.Map;
  */
 public class WindowContext {
 
-    private final Map<Class, WindowContextItem> items = new HashMap<Class, WindowContextItem>();
-    private final WindowCloseListener wcl = new WindowCloseListener(){
+    public static final WindowContextSerializers SERIALIZERS = (WindowContextSerializers) GWT.create(WindowContextSerializers.class);
 
-        public String onWindowClosing() {
-            return null;
-        }
 
-        public void onWindowClosed() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
+    public static final WindowContext INSTANCE = new WindowContext();
+    private final Map<String, Class<?extends WindowContextItem>> classes = new HashMap<String, Class<?extends WindowContextItem>>();
+    private final Map<String, WindowContextItem> items = new HashMap<String, WindowContextItem>();
+    private final Map<String, String> serializedItems = new HashMap<String, String>();
+    private final WindowContextPersister persister = (WindowContextPersister) GWT.create(WindowContextPersister.class);
+    private final WindowCloseListener wcl = new WindowCloseListener() {
+            public String onWindowClosing() {
+                return null;
+            }
 
-    };
+            public void onWindowClosed() {
+                persister.storeWindowContextData(items);
+            }
+        };
 
-    private WindowContext(){
+    private WindowContext() {
         super();
+        Window.addWindowCloseListener(wcl);
     }
 
-    public WindowContextItem get(Class<? extends WindowContextItem> clazz){
-        return items.get(clazz);
-    }
-
-    public void put(Class<? extends WindowContextItem> clazz, WindowContextItem item){
-        items.put(clazz, item);
-    }
-
-    
-    public static interface WindowContextItem extends IsSerializable {
+    public void initialize(){
 
     }
 
-    public static interface WindowContextListener {
+    public WindowContextItem get(Class<?extends WindowContextItem> clazz,
+        String key) {
+        WindowContextItem item = items.get(key);
 
-        void onStored();
+        if (item == null) {
+            String raw = serializedItems.get(key);
 
-        void onError(Throwable t);
+            if (raw == null) {
+                return null;
+            }
 
-        void onChange(Class<? extends WindowContextItem> clazz, WindowContextItem oldValue, WindowContextItem newValue );
+            SerializationStreamFactory factory = SERIALIZERS.getFactory(clazz);
+
+            try {
+                item = (WindowContextItem) factory.createStreamReader(raw)
+                                                  .readObject();
+            } catch (SerializationException ex) {
+                GWT.log("SerializationException reading item", ex);
+
+                return null;
+            }
+
+            items.put(key, item);
+        }
+
+        return item;
     }
 
+    public void put(String key, WindowContextItem item) {
+        items.put(key, item);
+    }
+
+    public static interface WindowContextCallback {
+
+        void onInitialized();
+    }
 
 }

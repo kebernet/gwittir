@@ -75,6 +75,7 @@ import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
 import com.totsp.gwittir.client.util.StringUtil;
 import com.totsp.gwittir.client.util.UnavailableException;
+import com.totsp.gwittir.client.util.WindowContext;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
@@ -99,16 +100,21 @@ public class ExampleEntryPoint implements EntryPoint {
 
 
     public void onModuleLoad(){
-        UserDataTest test;
-        try {
-            test = new UserDataTest();
-            test.saveValues();
-        } catch (UnavailableException ex) {
-            Window.alert(ex.toString());
-        }
-        
+        TestContextItem item = new TestContextItem();
+        item.setString("a string");
+        item.setIntPropert(42);
+        WindowContext.INSTANCE.put("Test", item);
     }
 
+    public void DOMonModuleLoad(){
+        try {
+            DOMStorageTest test = new DOMStorageTest();
+            test.saveValues();
+        } catch (UnavailableException ex) {
+           Window.alert("Unavailable");
+        }
+
+    }
 
     public void dbonModuleLoad(){
 //        //DBTest.doInsert();

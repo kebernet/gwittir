@@ -46,7 +46,7 @@ public class UserData extends JavaScriptObject {
     /*-{ e.style.behavior = 'url(#default#userData)'; return e; }-*/;
 
 
-    private static native Element createElement()
+    private static final native Element createElement()
     /*-{
     var e = document.createElement('span');
     e.style.behavior = 'url(#default#userData)';
@@ -54,25 +54,25 @@ public class UserData extends JavaScriptObject {
     return e;
      }-*/;
 
-    private static native boolean isAvailable()/*-{
+    private static final native boolean isAvailable()/*-{
         return navigator.userAgent.indexOf("MSIE") != -1;
      }-*/;
 
-    public native void load(String name) /*-{
+    public native final void load(String name) /*-{
         this.load(name);
      }-*/;
 
     
-    public native String get(String key)/*-{
+    public native final String get(String key)/*-{
         return this.getAttribute(key);
     }-*/;
 
 
-    public native void set(String key, String value)/*-{
+    public native final void set(String key, String value)/*-{
         thiss.setAttribute(key, value);
      }-*/;
 
-    public native void save(String name)/*-{
+    public native final void save(String name)/*-{
         this.save(name);
     }-*/;
 }
