@@ -9,6 +9,7 @@
 
 package test.destination;
 
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -21,7 +22,8 @@ public class ABean {
     public int intProperty;
     public String[] arrayProperty;
     public BBean[][] beanArray;
-    public Map<String, BBean> beanMap; 
+    public Map<String, BBean> beanMap;
+    public HashSet<String> stringSet;
     /** Creates a new instance of ABean */
     public ABean() {
     }

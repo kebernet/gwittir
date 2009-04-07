@@ -10,6 +10,7 @@
 package test.source;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -23,6 +24,7 @@ public class ABean {
     private BBean[][] beanArray;
     private Map<String, BBean> beanMap;
     public char charProperty;
+    public Set<String> stringSet;
     /** Creates a new instance of ABean */
     public ABean() {
     }

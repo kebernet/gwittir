@@ -193,6 +193,13 @@ public class BeanMapping {
                     instances, mappings, (List) bean, list);
             return list;
         } else if(
+                isInterface(Set.class, bean.getClass() )) {
+            Set list = (Set) resolveSetType(
+                    bean.getClass(), bean.getClass()).newInstance();
+            convertCollection(
+                    instances, mappings, (Set) bean, list);
+            return list;
+        } else if(
                 isInterface(Collection.class, bean.getClass() ) ) {
             Collection collection = (Collection) resolveCollecitonType(
                     bean.getClass(), bean.getClass() ).newInstance();
@@ -268,6 +275,14 @@ public class BeanMapping {
                             instances, mappings, (List) valueObject, list);
                     f.set(dest, list);
                 } else if(
+                        isInterface(Set.class, valueClass) &&
+                        isInterface(Set.class, valueDestinationClass)) {
+                    Set set = (Set) resolveSetType(
+                            valueClass, valueDestinationClass).newInstance();
+                    convertCollection(
+                            instances, mappings, (Set) valueObject, set);
+                    f.set(dest, set);
+                } else if(
                         isInterface(Collection.class, valueClass) &&
                         isInterface(Collection.class, valueDestinationClass)) {
                     Collection collection = (Collection) resolveCollecitonType(
@@ -307,6 +322,14 @@ public class BeanMapping {
                     convertCollection(
                             instances, mappings, (List) valueObject, list);
                     pd.getWriteMethod().invoke(dest, list);
+                } else if(
+                        isInterface(Set.class, valueClass) &&
+                        isInterface(Set.class, valueDestinationClass)) {
+                    Set set = (Set) resolveSetType(
+                            valueClass, valueDestinationClass).newInstance();
+                    convertCollection(
+                            instances, mappings, (Set) valueObject, set);
+                    pd.getWriteMethod().invoke(dest, set);
                 } else if(
                         isInterface(Collection.class, valueClass) &&
                         isInterface(Collection.class, valueDestinationClass)) {

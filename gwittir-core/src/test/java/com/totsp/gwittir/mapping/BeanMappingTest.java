@@ -23,9 +23,11 @@ package com.totsp.gwittir.mapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import junit.framework.TestCase;
 
 /**
@@ -119,5 +121,22 @@ public class BeanMappingTest extends TestCase {
         test.destination.ABean aa = (test.destination.ABean) BeanMapping.convert(mappings, a);
         assertEquals( a.charProperty, aa.getCharProperty());
     }
-    
+
+    public void testSet() throws Exception {
+        test.source.ABean a = new test.source.ABean();
+        HashSet<String> set = new HashSet<String>();
+        set.add("the");
+        set.add("quick");
+        set.add("brown");
+        set.add("fox");
+        Set<String> control = new HashSet<String>(set);
+        a.stringSet = set;
+        Properties mappings = new Properties();
+        mappings.setProperty( "test.source.*", "test.destination.*");
+
+        test.destination.ABean aa = (test.destination.ABean) BeanMapping.convert(mappings, a);
+        assertEquals(control, aa.stringSet);
+
+
+    }
 }
