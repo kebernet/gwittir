@@ -25,6 +25,7 @@ public class ABean {
     private Map<String, BBean> beanMap;
     public char charProperty;
     public Set<String> stringSet;
+    public long propertyNotOnDestination = Long.MAX_VALUE;
     /** Creates a new instance of ABean */
     public ABean() {
     }

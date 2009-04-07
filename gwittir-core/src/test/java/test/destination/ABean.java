@@ -24,6 +24,7 @@ public class ABean {
     public BBean[][] beanArray;
     public Map<String, BBean> beanMap;
     public HashSet<String> stringSet;
+    public Long attributeNotOnSource = Long.MAX_VALUE;
     /** Creates a new instance of ABean */
     public ABean() {
     }
