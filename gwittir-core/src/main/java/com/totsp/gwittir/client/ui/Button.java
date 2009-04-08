@@ -123,8 +123,8 @@ public class Button extends AbstractBoundWidget<String> implements SourcesClickE
                 }
             };
 
-        this.base.addClickListener(listener);
         this.initWidget(this.base);
+        this.base.addClickListener(listener);
     }
 
     public void removeClickListener(ClickListener listener) {

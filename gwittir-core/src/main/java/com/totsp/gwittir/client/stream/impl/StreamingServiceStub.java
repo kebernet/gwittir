@@ -25,9 +25,9 @@ public abstract class StreamingServiceStub {
         String id = "_cb__" + System.currentTimeMillis();
         StreamControlImpl control = new StreamControlImpl(id, callback);
         this.setUp(id, callback);
-
+        
         Element iframe = this.createIframe(id);
-        DOM.appendChild(RootPanel.getBodyElement(), iframe);
+        
 
         Element form = this.createForm(id, payload);
         DOM.appendChild(RootPanel.getBodyElement(), form);
@@ -57,6 +57,9 @@ public abstract class StreamingServiceStub {
         Element frame = DOM.getElementById(name + "frame");
         DOM.removeChild(DOM.getParent(frame), frame);
 
+        Element div = DOM.getElementById(name + "div");
+        DOM.removeChild(DOM.getParent(div), div);
+
         Element form = DOM.getElementById(name + "form");
         DOM.removeChild(DOM.getParent(form), form);
     }
@@ -68,7 +71,7 @@ public abstract class StreamingServiceStub {
     private native void setUp(String name, StreamServiceCallback callback) /*-{
     instance = this;
     $wnd[name] = function(input){
-        instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onReceive(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
+    	instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onReceive(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
     };
     $wnd[name+"E"] = function(input){
         instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onError(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
@@ -90,7 +93,6 @@ public abstract class StreamingServiceStub {
 
     private Element createForm(String id, String payload) {
         Element form = DOM.createForm();
-        DOM.setStyleAttribute(form, "display", "hidden");
         DOM.setStyleAttribute(form, "position", "absolute");
         DOM.setStyleAttribute(form, "top", "0px");
         DOM.setStyleAttribute(form, "right", "0px");
@@ -114,19 +116,15 @@ public abstract class StreamingServiceStub {
         return form;
     }
 
-    private Element createIframe(String id) {
-        Element iframe = DOM.createIFrame();
-        DOM.setElementProperty(iframe, "id", id + "frame");
-        DOM.setElementProperty(iframe, "width", "0px");
-        DOM.setElementProperty(iframe, "height", "0px");
-        DOM.setStyleAttribute(iframe, "position", "absolute");
-        DOM.setStyleAttribute(iframe, "top", "0px");
-        DOM.setStyleAttribute(iframe, "right", "0px");
-        DOM.setStyleAttribute(iframe, "border", "0px solid white");
-
-        return iframe;
-    }
-
+    private native Element createIframe(String id)/*-{
+        var style = " style='position:absolute; top:0px; right:0px; border:0px solid white; width:0px; height:0px' ";
+    	var div = $doc.createElement("div");
+    	div.id = id+"div";
+    	$doc.body.appendChild(div);
+    	div.innerHTML = "<iframe id='"+id+"frame' name='"+id+
+    		"frame' "+style+"></iframe>";
+    }-*/;
+    
     protected class StreamControlImpl extends StreamControl {
         String name;
         StreamServiceCallback callback;

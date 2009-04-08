@@ -19,17 +19,73 @@
  */
 package com.totsp.gwittir.example.client;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.goda.time.DateTime;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-
-
-
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
-import com.totsp.gwittir.example.client.TestContextItem.SomethingElse;
-import java.util.ArrayList;
-import rocket.serialization.client.ObjectInputStream;
-import rocket.serialization.client.ObjectOutputStream;
-import rocket.serialization.client.SerializationFactory;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.action.Action;
+import com.totsp.gwittir.client.action.BindingAction;
+import com.totsp.gwittir.client.beans.Binding;
+import com.totsp.gwittir.client.beans.Converter;
+import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
+import com.totsp.gwittir.client.fx.MutationStrategy;
+import com.totsp.gwittir.client.fx.OpacityWrapper;
+import com.totsp.gwittir.client.fx.PropertyAnimator;
+import com.totsp.gwittir.client.fx.rebind.Dimensions;
+import com.totsp.gwittir.client.fx.ui.ReflectedImage;
+import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
+import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
+import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
+import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
+import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
+import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
+import com.totsp.gwittir.client.keyboard.KeyBinding;
+import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
+import com.totsp.gwittir.client.keyboard.KeyboardController;
+import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
+import com.totsp.gwittir.client.keyboard.Task;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
+import com.totsp.gwittir.client.stream.StreamServiceCallback;
+import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
+import com.totsp.gwittir.client.ui.BoundWidget;
+import com.totsp.gwittir.client.ui.Button;
+import com.totsp.gwittir.client.ui.ContextMenuPanel;
+import com.totsp.gwittir.client.ui.Image;
+import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.client.ui.Renderer;
+import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
+import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
+import com.totsp.gwittir.client.ui.calendar.Calendar;
+import com.totsp.gwittir.client.ui.calendar.CalendarListener;
+import com.totsp.gwittir.client.ui.calendar.DatePicker;
+import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
+import com.totsp.gwittir.client.ui.table.BoundTable;
+import com.totsp.gwittir.client.ui.table.Field;
+import com.totsp.gwittir.client.ui.table.GridForm;
+import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.client.validator.DoubleValidator;
+import com.totsp.gwittir.client.validator.IntegerValidator;
+import com.totsp.gwittir.client.validator.PopupValidationFeedback;
+
+
 
 
 /**
@@ -44,77 +100,7 @@ public class ExampleEntryPoint implements EntryPoint {
     }
 
 
-    public void onModuleLoad(){
-        final TestContextItem item = new TestContextItem();
-         item.setString("A String");
-         item.setIntPropert(42);
-         SomethingElse se = new SomethingElse();
-         se.setWorld("WORLD!");
-         ArrayList list = new ArrayList();
-         list.add(se);
-         item.setSomethings(list);
-          final SerializationFactory factory = (SerializationFactory) GWT.create(RocketTest.class);
-          ObjectOutputStream outputStream = factory.createObjectOutputStream();
-          outputStream.writeObject(item);
-          Window.alert(outputStream.getText());
-          ObjectInputStream inputStream = factory.createObjectInputStream(outputStream.getText());
-          TestContextItem item2= (TestContextItem) inputStream.readObject();
-          Window.alert(item2.getString() +" "+ item2.getIntPropert()+ ((SomethingElse)item2.getSomethings().get(0)).getWorld());
-
-          
-//        WindowContext.INSTANCE.initialize( new WindowContextCallback(){
-//
-//            public void onInitialized() {
-//                //Window.alert(""+WindowContext.INSTANCE.get(TestContextItem.class, "Test"));
-               ;
-//                WindowContext.INSTANCE.put("Test", item);
-//                WindowContext.INSTANCE.flush();
-//                echo(item);
-//            }
-//
-//            private native void echo(Object o )/*-{
-//             var str = "";
-//             for(x in o){
-//                   str += x + " = " + o +"\n";
-//             }
-//             alert(str);
-//             }-*/;
-//        });
-    }
-/*
-    public void DOMonModuleLoad(){
-        try {
-            DOMStorageTest test = new DOMStorageTest();
-            test.saveValues();
-        } catch (UnavailableException ex) {
-           Window.alert("Unavailable");
-        }
-
-    }
-
-    public void dbonModuleLoad(){
-//        //DBTest.doInsert();
-//        byte[] b = StringUtil.toByteArray("Hello"); //"\u60A8\u597D");
-//
-//        String types = "";
-//        byte[] bytes = StringUtil.intToByteArray( (int) '\u597D' );
-//        for(byte bb : bytes){
-//            types+=bb+" ";
-//        }
-//        Window.alert( ""+types);
-
-        String s = "Hello World!"; //"\u60A8\u597D";
-        System.out.println(s);
-        byte[] b = StringUtil.toUtf16ByteArray(s);//"This ia test in english".getBytes();
-        String types = "";
-        for(byte bb : b){
-            types+=bb+" ";
-        }
-        Window.alert(types);
-        Window.alert( StringUtil.fromUtf16ByteArray(b));
-    }
-
-    public void xonModuleLoad() {
+    public void onModuleLoad() {
         final VerticalPanel streamPanel = new VerticalPanel();
         Button stream = new Button("Stream!");
         stream.addClickListener(new ClickListener() {
@@ -126,6 +112,7 @@ public class ExampleEntryPoint implements EntryPoint {
                     ser.getResults(5, "foo",
                         new StreamServiceCallback<MyClass>() {
                             public void onReceive(MyClass object) {
+                            	Window.alert("here");
                                 streamPanel.add( new Label("Got: " + object.getName()));
                             }
 
@@ -536,12 +523,12 @@ public class ExampleEntryPoint implements EntryPoint {
         vp = new VerticalPanel();
         vp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-        SoftScrollArea mmsa = null; /*new SoftScrollArea();
-        mmsa.setWidget(new Image(GWT.getModuleBaseURL() + "crested_butte.jpg"));
-        mmsa.setWidth( "600px");
-        mmsa.setHeight( "100px");
-        mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
-        vp.add( mmsa );
+//        SoftScrollArea mmsa = new SoftScrollArea();
+//        mmsa.setWidget(new Image(GWT.getModuleBaseURL() + "crested_butte.jpg"));
+//        mmsa.setWidth( "600px");
+//        mmsa.setHeight( "100px");
+//        mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
+//        vp.add( mmsa );
 
         TextBox box = new TextBox(false);
         Label title = new Label();
@@ -593,7 +580,7 @@ public class ExampleEntryPoint implements EntryPoint {
         images.setLeft();
         images.bind();
 
-        mmsa = new SoftScrollArea();
+        SoftScrollArea mmsa = new SoftScrollArea();
         mmsa.addMouseListener(mmsa.MOUSE_MOVE_SCROLL_LISTENER);
         mmsa.setHeight("190px");
         mmsa.setWidth("800px");
