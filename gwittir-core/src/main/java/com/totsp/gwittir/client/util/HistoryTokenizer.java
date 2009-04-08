@@ -48,10 +48,10 @@ public class HistoryTokenizer {
                 if ((nameVal.length == 1) && (nameVal[0].length() > 0)) {
                     tokens.put(nameVal[0], "");
                 } else {
-                    tokens.put(nameVal[0].replaceAll("u#038;", "&")
-                                         .replaceAll("u#061;", "="),
-                        nameVal[1].replaceAll("u#038;", "&")
-                                  .replaceAll("u#061;", "="));
+                    tokens.put(nameVal[0].replaceAll("u!038;", "&")
+                                         .replaceAll("u!061;", "="),
+                        nameVal[1].replaceAll("u!038;", "&")
+                                  .replaceAll("u!061;", "="));
                 }
             }
         }
@@ -115,13 +115,13 @@ public class HistoryTokenizer {
         StringBuilder sb = new StringBuilder();
 
         for (Entry<String, String> entry : this.tokens.entrySet()) {
-            sb = sb.append(entry.getKey().replaceAll("&", "u#038;")
-                                .replaceAll("=", "u#061;"));
+            sb = sb.append(entry.getKey().replaceAll("&", "u!038;")
+                                .replaceAll("=", "u!061;"));
 
             if (entry.getValue().length() > 0) {
                 sb = sb.append("=")
-                       .append(entry.getValue().replaceAll("&", "u#038;")
-                                    .replaceAll("=", "u#061;"));
+                       .append(entry.getValue().replaceAll("&", "u!038;")
+                                    .replaceAll("=", "u!061;"));
             }
 
             sb = sb.append("&");

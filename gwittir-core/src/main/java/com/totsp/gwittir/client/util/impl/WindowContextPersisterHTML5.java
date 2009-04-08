@@ -5,6 +5,7 @@
 
 package com.totsp.gwittir.client.util.impl;
 
+import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 import com.totsp.gwittir.client.util.WindowContextItem;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  *
  * @author kebernet
  */
-public class WindowContextPersisterHTML5 extends WindowContextPersister {
+public class WindowContextPersisterHTML5 extends AbstractWindowContextPersister {
 
     @Override
     public int getByteLimit() {
@@ -30,6 +31,11 @@ public class WindowContextPersisterHTML5 extends WindowContextPersister {
 
     @Override
     public void storeWindowContextData(Map<String, WindowContextItem> windowContextData) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void init(WindowContextCallback listener) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

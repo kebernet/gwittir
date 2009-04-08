@@ -15,8 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.util.impl;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.client.rpc.SerializationStreamFactory;
+import com.google.gwt.user.client.rpc.SerializationStreamWriter;
+import com.totsp.gwittir.client.util.WindowContext;
 import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 import com.totsp.gwittir.client.util.WindowContextItem;
 import java.util.Map;
@@ -25,26 +30,21 @@ import java.util.Map;
  *
  * @author kebernet
  */
-public class WindowContextPersisterFirefox extends AbstractWindowContextPersister {
+public abstract class AbstractWindowContextPersister implements WindowContextPersister {
 
-    @Override
-    public int getByteLimit() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public abstract void init(WindowContextCallback listener);
+    
+    public abstract int getByteLimit();
 
-    @Override
-    public Map<String, String> getWindowContextData() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public abstract Map<String, String> getWindowContextData();
 
-    @Override
-    public void storeWindowContextData(Map<String, WindowContextItem> windowContextData) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public abstract void storeWindowContextData(Map<String, WindowContextItem> windowContextData);
 
-    @Override
-    public void init(WindowContextCallback listener) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected String serializeObject(WindowContextItem item) throws SerializationException {
+        SerializationStreamFactory factory = WindowContext.SERIALIZERS.getFactory(item);
+        SerializationStreamWriter writer = factory.createStreamWriter();
+        writer.writeObject(item);
+        return writer.toString();
     }
 
 }

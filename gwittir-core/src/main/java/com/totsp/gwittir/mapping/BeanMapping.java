@@ -303,7 +303,7 @@ public class BeanMapping {
                 } else {
                     continue;
                 }
-            } else {
+            } else { // Destination accessor is a property
                 PropertyDescriptor pd = (PropertyDescriptor) destinationAccessor;
                 valueDestinationClass = pd.getPropertyType();
                 

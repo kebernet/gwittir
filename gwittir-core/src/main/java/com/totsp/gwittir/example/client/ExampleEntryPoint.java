@@ -21,70 +21,15 @@ package com.totsp.gwittir.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
+
+
+
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-
-import com.totsp.gwittir.client.action.Action;
-import com.totsp.gwittir.client.action.BindingAction;
-import com.totsp.gwittir.client.beans.Binding;
-import com.totsp.gwittir.client.beans.Converter;
-import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
-import com.totsp.gwittir.client.fx.MutationStrategy;
-import com.totsp.gwittir.client.fx.OpacityWrapper;
-import com.totsp.gwittir.client.fx.PropertyAnimator;
-import com.totsp.gwittir.client.fx.rebind.Dimensions;
-import com.totsp.gwittir.client.fx.ui.ReflectedImage;
-import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
-import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
-import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
-import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
-import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
-import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
-import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
-import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
-import com.totsp.gwittir.client.keyboard.KeyBinding;
-import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
-import com.totsp.gwittir.client.keyboard.KeyboardController;
-import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
-import com.totsp.gwittir.client.keyboard.Task;
-import com.totsp.gwittir.client.log.Level;
-import com.totsp.gwittir.client.log.Logger;
-import com.totsp.gwittir.client.stream.StreamServiceCallback;
-import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
-import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.ContextMenuPanel;
-import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
-import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
-import com.totsp.gwittir.client.ui.Image;
-import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.Renderer;
-import com.totsp.gwittir.client.ui.TextBox;
-import com.totsp.gwittir.client.ui.calendar.*;
-import com.totsp.gwittir.client.ui.table.BoundTable;
-import com.totsp.gwittir.client.ui.table.Field;
-import com.totsp.gwittir.client.ui.table.GridForm;
-import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
-import com.totsp.gwittir.client.util.StringUtil;
-import com.totsp.gwittir.client.util.UnavailableException;
-import com.totsp.gwittir.client.util.WindowContext;
-import com.totsp.gwittir.client.validator.DoubleValidator;
-import com.totsp.gwittir.client.validator.IntegerValidator;
-import com.totsp.gwittir.client.validator.PopupValidationFeedback;
-
-import org.goda.time.DateTime;
-
+import com.totsp.gwittir.example.client.TestContextItem.SomethingElse;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import rocket.serialization.client.ObjectInputStream;
+import rocket.serialization.client.ObjectOutputStream;
+import rocket.serialization.client.SerializationFactory;
 
 
 /**
@@ -100,12 +45,43 @@ public class ExampleEntryPoint implements EntryPoint {
 
 
     public void onModuleLoad(){
-        TestContextItem item = new TestContextItem();
-        item.setString("a string");
-        item.setIntPropert(42);
-        WindowContext.INSTANCE.put("Test", item);
-    }
+        final TestContextItem item = new TestContextItem();
+         item.setString("A String");
+         item.setIntPropert(42);
+         SomethingElse se = new SomethingElse();
+         se.setWorld("WORLD!");
+         ArrayList list = new ArrayList();
+         list.add(se);
+         item.setSomethings(list);
+          final SerializationFactory factory = (SerializationFactory) GWT.create(RocketTest.class);
+          ObjectOutputStream outputStream = factory.createObjectOutputStream();
+          outputStream.writeObject(item);
+          Window.alert(outputStream.getText());
+          ObjectInputStream inputStream = factory.createObjectInputStream(outputStream.getText());
+          TestContextItem item2= (TestContextItem) inputStream.readObject();
+          Window.alert(item2.getString() +" "+ item2.getIntPropert()+ ((SomethingElse)item2.getSomethings().get(0)).getWorld());
 
+          
+//        WindowContext.INSTANCE.initialize( new WindowContextCallback(){
+//
+//            public void onInitialized() {
+//                //Window.alert(""+WindowContext.INSTANCE.get(TestContextItem.class, "Test"));
+               ;
+//                WindowContext.INSTANCE.put("Test", item);
+//                WindowContext.INSTANCE.flush();
+//                echo(item);
+//            }
+//
+//            private native void echo(Object o )/*-{
+//             var str = "";
+//             for(x in o){
+//                   str += x + " = " + o +"\n";
+//             }
+//             alert(str);
+//             }-*/;
+//        });
+    }
+/*
     public void DOMonModuleLoad(){
         try {
             DOMStorageTest test = new DOMStorageTest();
@@ -376,18 +352,18 @@ public class ExampleEntryPoint implements EntryPoint {
         VerticalPanel tablesPanel = new VerticalPanel();
         ChangeMarkedTypeFactory factory = new ChangeMarkedTypeFactory();
 
-        /*factory.add( "name", new BoundWidgetProvider(){
-            public BoundWidget get() {
-                ListBox listBox = new ListBox();
-                ArrayList options = new ArrayList();
-                options.add( "Foo" );
-                options.add( "Bar" );
-                options.add( "Baz" );
-                listBox.setOptions( options );
-                return listBox;
-            }
-
-        });*/
+//        factory.add( "name", new BoundWidgetProvider(){
+//            public BoundWidget get() {
+//                ListBox listBox = new ListBox();
+//                ArrayList options = new ArrayList();
+//                options.add( "Foo" );
+//                options.add( "Bar" );
+//                options.add( "Baz" );
+//                listBox.setOptions( options );
+//                return listBox;
+//            }
+//
+//        });
         final BoundTable t = new BoundTable(BoundTable.HEADER_MASK +
                 BoundTable.SORT_MASK + BoundTable.ROW_HANDLE_MASK +
                 BoundTable.NO_SELECT_COL_MASK + BoundTable.NO_SELECT_CELL_MASK +
@@ -463,18 +439,18 @@ public class ExampleEntryPoint implements EntryPoint {
                     }
                 });
         tablesPanel.add(hide);
-        /*
-        BoundTable t2 = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
-                + BoundTable.ROW_HANDLE_MASK  + BoundTable.NO_SELECT_COL_MASK, cols);
-        list = new ArrayList();
-        list.add( new MyClass() );
-        list.add( new MyClass() );
-        list.add( new MyClass() );
-        list.add( new MyClass() );
-        t2.setValue( list );
-
-        tablesPanel.add( t2 );
-         */
+        
+//        BoundTable t2 = new BoundTable(BoundTable.HEADER_MASK + BoundTable.SORT_MASK
+//                + BoundTable.ROW_HANDLE_MASK  + BoundTable.NO_SELECT_COL_MASK, cols);
+//        list = new ArrayList();
+//        list.add( new MyClass() );
+//        list.add( new MyClass() );
+//        list.add( new MyClass() );
+//        list.add( new MyClass() );
+//        t2.setValue( list );
+//
+//        tablesPanel.add( t2 );
+        
         tp.add(tablesPanel, "Bound Table");
 
         final Button alert = new Button("Alert Selection",
@@ -565,7 +541,7 @@ public class ExampleEntryPoint implements EntryPoint {
         mmsa.setWidth( "600px");
         mmsa.setHeight( "100px");
         mmsa.addMouseListener( mmsa.MOUSE_MOVE_SCROLL_LISTENER );
-        vp.add( mmsa );*/
+        vp.add( mmsa );
 
         TextBox box = new TextBox(false);
         Label title = new Label();
@@ -641,9 +617,7 @@ public class ExampleEntryPoint implements EntryPoint {
 
         tp.add(vp, "Flickr");
 
-        /*
-            ContextMenu example
-         */
+       
         Label hasContext = new Label("RightClickMe");
         GWT.log("Before constructor", null);
 

@@ -4,6 +4,8 @@
     <!-- Inherit the core Web Toolkit stuff.                  -->
     <inherits name='com.google.gwt.user.User'/>
     <inherits name='com.google.gwt.i18n.I18N'/>
+    <inherits name='com.google.gwt.gears.Gears'/>
+    <inherits name='rocket.serialization.Serialization' />
     <inherits name='com.googlecode.gwtx.Java'/>
     <source path="client" />
     <generate-with
@@ -34,6 +36,45 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    
+    <generate-with
+        class="com.totsp.gwittir.rebind.window.WindowContextSerializersGenerator" >
+        <when-type-assignable
+            class="com.totsp.gwittir.client.util.impl.WindowContextSerializers" />
+    </generate-with>
+
+    <define-property name="gwittir.windowcontext" values="gears,firefox" />
+    <property-provider name="gwittir.windowcontext">
+        <![CDATA[
+        if (typeof GearsFactory != undefined) {
+            return "gears";
+        }
+        try {
+          new ActiveXObject('Gears.Factory');
+          return "gears";
+        } catch (e) {
+          if ((typeof navigator.mimeTypes != 'undefined')
+               && navigator.mimeTypes["application/x-googlegears"]) {
+            return "gears";
+          }
+        }
+
+	return "firefox";
+        ]]>
+    </property-provider>
+    <replace-with
+        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterGears">
+        <when-type-is
+            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+        <when-property-is name="gwittir.windowcontext" value="gears"/>
+    </replace-with>
+    <replace-with
+        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterFirefox">
+        <when-type-is
+            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+        <when-property-is name="gwittir.windowcontext" value="firefox"/>
+    </replace-with>
+
+
+    <set-property name="user.agent" value="safari" />
     
 </module>

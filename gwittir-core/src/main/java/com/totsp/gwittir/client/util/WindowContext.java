@@ -46,11 +46,12 @@ public class WindowContext {
     private final WindowContextPersister persister = (WindowContextPersister) GWT.create(WindowContextPersister.class);
     private final WindowCloseListener wcl = new WindowCloseListener() {
             public String onWindowClosing() {
+                flush();
                 return null;
             }
 
             public void onWindowClosed() {
-                persister.storeWindowContextData(items);
+                
             }
         };
 
@@ -59,8 +60,20 @@ public class WindowContext {
         Window.addWindowCloseListener(wcl);
     }
 
-    public void initialize(){
+    public void flush(){
+        persister.storeWindowContextData(items);
+    }
 
+    public void initialize(final WindowContextCallback callback){
+        WindowContextCallback internalCallback =new WindowContextCallback(){
+
+            public void onInitialized() {
+                serializedItems.putAll( persister.getWindowContextData() );
+                callback.onInitialized();
+            }
+
+        };
+        persister.init(internalCallback);
     }
 
     public WindowContextItem get(Class<?extends WindowContextItem> clazz,
@@ -75,13 +88,12 @@ public class WindowContext {
             }
 
             SerializationStreamFactory factory = SERIALIZERS.getFactory(clazz);
-
+            Window.alert("RAW DATA:"+raw);
             try {
                 item = (WindowContextItem) factory.createStreamReader(raw)
                                                   .readObject();
             } catch (SerializationException ex) {
-                GWT.log("SerializationException reading item", ex);
-
+                Window.alert(""+ex);
                 return null;
             }
 

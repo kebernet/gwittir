@@ -38,4 +38,5 @@ public interface BeanDescriptor {
      * @return Property instance or null
      */
     Property getProperty(String name);
+   
 }

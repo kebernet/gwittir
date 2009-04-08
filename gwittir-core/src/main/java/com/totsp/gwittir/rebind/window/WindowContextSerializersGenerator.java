@@ -39,17 +39,7 @@ public class WindowContextSerializersGenerator extends Generator {
         String typeName) throws UnableToCompleteException {
         List<JClassType> contextItems = null;
 
-        try {
-            contextItems = this.getWindowContextItemTypes(context);
-
-            for (JClassType type : contextItems) {
-                this.generateServices(logger, context,
-                    type.getQualifiedSourceName());
-            }
-        } catch (NotFoundException ex) {
-            logger.log(TreeLogger.ERROR, "Unexpected not found exception", ex);
-            return null;
-        }
+        
 
         String packageName = "com.totsp.gwittir.client.util.impl";
         String className = "WindowContextSerializers_Impl";
@@ -58,6 +48,7 @@ public class WindowContextSerializersGenerator extends Generator {
         mcf.addImport(Map.class.getCanonicalName());
         mcf.addImport(HashMap.class.getCanonicalName());
         mcf.addImport(GWT.class.getCanonicalName());
+        mcf.addImport(AsyncCallback.class.getCanonicalName());
         mcf.addImport(SerializationStreamFactory.class.getCanonicalName());
         mcf.addImplementedInterface(WindowContextSerializers.class.getCanonicalName());
         PrintWriter pw = context.tryCreate(logger, packageName, className);
@@ -68,6 +59,19 @@ public class WindowContextSerializersGenerator extends Generator {
         }
 
         SourceWriter sw = mcf.createSourceWriter(context, pw);
+
+        try {
+            contextItems = this.getWindowContextItemTypes(context);
+
+            for (JClassType type : contextItems) {
+                this.generateServices(logger, context, sw,
+                    type.getQualifiedSourceName());
+            }
+        } catch (NotFoundException ex) {
+            logger.log(TreeLogger.ERROR, "Unexpected not found exception", ex);
+            throw new UnableToCompleteException();
+        }
+
         sw.println( "public WindowContextSerializers_Impl(){super();}");
         sw.println(
             "private final static Map<Class, SerializationStreamFactory> FACTORIES = new HashMap<Class, SerializationStreamFactory>();");
@@ -76,9 +80,6 @@ public class WindowContextSerializersGenerator extends Generator {
         sw.indent();
 
         for (JClassType type : contextItems) {
-            String servicePackage = type.getQualifiedSourceName() + "_impls";
-            String serviceClass = type.getSimpleSourceName() +
-                "_RemoteService";
             sw.print("if( object instanceof ");
             sw.print(type.getQualifiedSourceName());
             sw.print("){");
@@ -105,9 +106,7 @@ public class WindowContextSerializersGenerator extends Generator {
         sw.indent();
 
         for (JClassType type : contextItems) {
-            String servicePackage = type.getQualifiedSourceName() + "_impls";
-            String serviceClass = type.getSimpleSourceName() +
-                "_RemoteService";
+            String serviceClass = type.getQualifiedSourceName().replaceAll("\\.", "_") + "_RemoteService";
             sw.print("if( clazz == ");
             sw.print(type.getQualifiedSourceName());
             sw.print(".class){");
@@ -117,8 +116,6 @@ public class WindowContextSerializersGenerator extends Generator {
             sw.println("if(factory == null) {");
             sw.indent();
             sw.print("factory = (SerializationStreamFactory) GWT.create( ");
-            sw.print(servicePackage);
-            sw.print(".");
             sw.print(serviceClass);
             sw.println(".class);");
             sw.println("FACTORIES.put(clazz, factory);");
@@ -183,11 +180,11 @@ public class WindowContextSerializersGenerator extends Generator {
     }
 
 
-    public String generateServices(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
+    public String generateServices(TreeLogger logger, GeneratorContext context, SourceWriter sw, String typeName) throws UnableToCompleteException {
         try {
             JClassType type = context.getTypeOracle().getType(typeName);
-            this.generateRemoteService(logger, context, type);
-            this.generateAsyncService(logger, context, type);
+            this.generateRemoteService(logger, sw, type);
+            this.generateAsyncService(logger, sw, type);
         } catch (NotFoundException ex) {
             logger.log(TreeLogger.Type.WARN, typeName+" not found.");
             return typeName;
@@ -196,47 +193,26 @@ public class WindowContextSerializersGenerator extends Generator {
         return null;
     }
 
-    private void generateRemoteService(TreeLogger logger, GeneratorContext context, JClassType type){
-        String packageName = type.getQualifiedSourceName() + "_impls";
-        String className = type.getSimpleSourceName() + "_RemoteService";
-        ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(packageName,
-                className);
-        mcf.makeInterface();
-        mcf.addImplementedInterface(
-            "com.google.gwt.user.client.rpc.RemoteService");
-
-        PrintWriter pw = context.tryCreate(logger, packageName, className);
-        if( pw == null ){
-           return;
-        }
-        SourceWriter sw = mcf.createSourceWriter(context, pw);
+    private void generateRemoteService(TreeLogger logger, SourceWriter sw, JClassType type){
+        String className = type.getQualifiedSourceName().replaceAll("\\.", "_") + "_RemoteService";
+        
+        sw.println("public static interface "+className+" extends com.google.gwt.user.client.rpc.RemoteService {");
         sw.print( "public ");
         sw.print( type.getQualifiedSourceName() );
         sw.print( " get(");
         sw.print( type.getQualifiedSourceName() );
         sw.println( " param); ");
         sw.println("}");
-        context.commit(logger, pw);
     }
 
-    private void generateAsyncService(TreeLogger logger, GeneratorContext context, JClassType type){
-        String packageName = type.getQualifiedSourceName() + "_impls";
-        String className = type.getSimpleSourceName() + "_RemoteServiceAsync";
-        ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(packageName,
-                className);
-        mcf.makeInterface();
-        mcf.addImport(AsyncCallback.class.getCanonicalName());
-        PrintWriter pw = context.tryCreate(logger, packageName, className);
-        if( pw == null ){
-           return;
-        }
-        SourceWriter sw = mcf.createSourceWriter(context, pw);
+    private void generateAsyncService(TreeLogger logger, SourceWriter sw, JClassType type){
+        String className = type.getQualifiedSourceName().replaceAll("\\.", "_") + "_RemoteServiceAsync";
+        sw.println("public static interface "+className+"{");
         sw.print( "public void get(");
         sw.print( type.getQualifiedSourceName() );
         sw.print( " param, AsyncCallback<");
         sw.print( type.getQualifiedSourceName() );
         sw.println( "> callback );");
         sw.println("}");
-        context.commit(logger, pw);
     }
 }

@@ -19,11 +19,12 @@
 package com.totsp.gwittir.client.util;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import java.io.Serializable;
 
 /**
  *
  * @author kebernet
  */
-public interface WindowContextItem extends IsSerializable {
+public interface WindowContextItem extends IsSerializable, Serializable {
 
 }
