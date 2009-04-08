@@ -17,9 +17,9 @@
  */
 package com.totsp.gwittir.client.util.impl;
 
-import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
-import com.totsp.gwittir.client.util.WindowContextItem;
 import java.util.Map;
+
+import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 
 /**
  *
@@ -38,7 +38,7 @@ public class WindowContextPersisterFirefox extends AbstractWindowContextPersiste
     }
 
     @Override
-    public void storeWindowContextData(Map<String, WindowContextItem> windowContextData) {
+    public void storeWindowContextData(Map<String, String> windowContextData) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

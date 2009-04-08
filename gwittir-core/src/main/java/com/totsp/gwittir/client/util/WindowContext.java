@@ -17,99 +17,67 @@
  */
 package com.totsp.gwittir.client.util;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.WindowCloseListener;
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.client.rpc.SerializationStreamFactory;
-
-import com.totsp.gwittir.client.util.impl.WindowContextPersister;
-import com.totsp.gwittir.client.util.impl.WindowContextSerializers;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.WindowCloseListener;
+import com.totsp.gwittir.client.util.impl.WindowContextPersister;
 
 /**
- *
+ * 
  * @author kebernet
  */
 public class WindowContext {
 
-    public static final WindowContextSerializers SERIALIZERS = (WindowContextSerializers) GWT.create(WindowContextSerializers.class);
+	public static final WindowContext INSTANCE = new WindowContext();
+	private final Map<String, String> data = new HashMap<String, String>();
+	private final WindowContextPersister persister = (WindowContextPersister) GWT
+			.create(WindowContextPersister.class);
+	private final WindowCloseListener wcl = new WindowCloseListener() {
+		public String onWindowClosing() {
+			flush();
+			return null;
+		}
 
+		public void onWindowClosed() {
 
-    public static final WindowContext INSTANCE = new WindowContext();
-    private final Map<String, Class<?extends WindowContextItem>> classes = new HashMap<String, Class<?extends WindowContextItem>>();
-    private final Map<String, WindowContextItem> items = new HashMap<String, WindowContextItem>();
-    private final Map<String, String> serializedItems = new HashMap<String, String>();
-    private final WindowContextPersister persister = (WindowContextPersister) GWT.create(WindowContextPersister.class);
-    private final WindowCloseListener wcl = new WindowCloseListener() {
-            public String onWindowClosing() {
-                flush();
-                return null;
-            }
+		}
+	};
 
-            public void onWindowClosed() {
-                
-            }
-        };
+	private WindowContext() {
+		super();
+		Window.addWindowCloseListener(wcl);
+	}
 
-    private WindowContext() {
-        super();
-        Window.addWindowCloseListener(wcl);
-    }
+	public void flush() {
+		persister.storeWindowContextData(data);
+	}
 
-    public void flush(){
-        persister.storeWindowContextData(items);
-    }
+	public void initialize(final WindowContextCallback callback) {
+		WindowContextCallback internalCallback = new WindowContextCallback() {
 
-    public void initialize(final WindowContextCallback callback){
-        WindowContextCallback internalCallback =new WindowContextCallback(){
+			public void onInitialized() {
+				data.putAll(persister.getWindowContextData());
+				callback.onInitialized();
+			}
 
-            public void onInitialized() {
-                serializedItems.putAll( persister.getWindowContextData() );
-                callback.onInitialized();
-            }
+		};
+		persister.init(internalCallback);
+	}
 
-        };
-        persister.init(internalCallback);
-    }
+	public String get(String key) {
+		return data.get(key);
+	}
 
-    public WindowContextItem get(Class<?extends WindowContextItem> clazz,
-        String key) {
-        WindowContextItem item = items.get(key);
+	public void put(String key, String item) {
+		data.put(key, item);
+	}
 
-        if (item == null) {
-            String raw = serializedItems.get(key);
+	public static interface WindowContextCallback {
 
-            if (raw == null) {
-                return null;
-            }
-
-            SerializationStreamFactory factory = SERIALIZERS.getFactory(clazz);
-            Window.alert("RAW DATA:"+raw);
-            try {
-                item = (WindowContextItem) factory.createStreamReader(raw)
-                                                  .readObject();
-            } catch (SerializationException ex) {
-                Window.alert(""+ex);
-                return null;
-            }
-
-            items.put(key, item);
-        }
-
-        return item;
-    }
-
-    public void put(String key, WindowContextItem item) {
-        items.put(key, item);
-    }
-
-    public static interface WindowContextCallback {
-
-        void onInitialized();
-    }
+		void onInitialized();
+	}
 
 }

@@ -69,7 +69,7 @@ public class UserData extends JavaScriptObject {
 
 
     public native final void set(String key, String value)/*-{
-        thiss.setAttribute(key, value);
+        this.setAttribute(key, value);
      }-*/;
 
     public native final void save(String name)/*-{

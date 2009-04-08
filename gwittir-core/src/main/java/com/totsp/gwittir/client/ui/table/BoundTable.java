@@ -143,7 +143,11 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
      * Determines whether buttons for row handles/selection should be present.
      */
     public static final int ROW_HANDLE_MASK = 1024;
+    /**
+     * Determines whether multi-selection requires shift-clicking
+     */
     public static final int MULTI_REQUIRES_SHIFT = 2048;
+    
     private static final String DEFAULT_STYLE = "default";
     private static final String NAV_STYLE = "nav";
     private Binding topBinding;

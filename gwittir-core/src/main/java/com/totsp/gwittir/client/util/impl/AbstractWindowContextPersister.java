@@ -18,13 +18,9 @@
 
 package com.totsp.gwittir.client.util.impl;
 
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.client.rpc.SerializationStreamFactory;
-import com.google.gwt.user.client.rpc.SerializationStreamWriter;
-import com.totsp.gwittir.client.util.WindowContext;
-import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
-import com.totsp.gwittir.client.util.WindowContextItem;
 import java.util.Map;
+
+import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 
 /**
  *
@@ -38,13 +34,6 @@ public abstract class AbstractWindowContextPersister implements WindowContextPer
 
     public abstract Map<String, String> getWindowContextData();
 
-    public abstract void storeWindowContextData(Map<String, WindowContextItem> windowContextData);
-
-    protected String serializeObject(WindowContextItem item) throws SerializationException {
-        SerializationStreamFactory factory = WindowContext.SERIALIZERS.getFactory(item);
-        SerializationStreamWriter writer = factory.createStreamWriter();
-        writer.writeObject(item);
-        return writer.toString();
-    }
+    public abstract void storeWindowContextData(Map<String, String> windowContextData);
 
 }

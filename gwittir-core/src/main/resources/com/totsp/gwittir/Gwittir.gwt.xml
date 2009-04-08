@@ -35,29 +35,34 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    <generate-with
-        class="com.totsp.gwittir.rebind.window.WindowContextSerializersGenerator" >
-        <when-type-assignable
-            class="com.totsp.gwittir.client.util.impl.WindowContextSerializers" />
-    </generate-with>
-
-    <define-property name="gwittir.windowcontext" values="gears,firefox" />
+    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
-        if (typeof GearsFactory != undefined) {
+        /*if (typeof GearsFactory != undefined) {
+        	alert("GearsFactory");
             return "gears";
         }
         try {
-          new ActiveXObject('Gears.Factory');
+          var gears = new ActiveXObject('Gears.Factory');
+          var db = gears.create('beta.database');
+          db.open('database-test');
+          alert("ActiveX");
+            
           return "gears";
         } catch (e) {
           if ((typeof navigator.mimeTypes != 'undefined')
                && navigator.mimeTypes["application/x-googlegears"]) {
+               alert("GearsMime");
+            
             return "gears";
           }
+        }*/
+        if(navigator.userAgent.indexOf("MSIE" != -1) ) {
+            
+        	return "userdata";
         }
 
-	return "firefox";
+	    return "domstorage";
         ]]>
     </property-provider>
     <replace-with
@@ -70,7 +75,13 @@
         class="com.totsp.gwittir.client.util.impl.WindowContextPersisterFirefox">
         <when-type-is
             class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
-        <when-property-is name="gwittir.windowcontext" value="firefox"/>
+        <when-property-is name="gwittir.windowcontext" value="domstorage"/>
+    </replace-with>
+    <replace-with
+        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterMSIE">
+        <when-type-is
+            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+        <when-property-is name="gwittir.windowcontext" value="userdata"/>
     </replace-with>
 
 </module>

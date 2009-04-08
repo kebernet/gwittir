@@ -81,6 +81,8 @@ import com.totsp.gwittir.client.ui.table.BoundTable;
 import com.totsp.gwittir.client.ui.table.Field;
 import com.totsp.gwittir.client.ui.table.GridForm;
 import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.client.util.WindowContext;
+import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 import com.totsp.gwittir.client.validator.DoubleValidator;
 import com.totsp.gwittir.client.validator.IntegerValidator;
 import com.totsp.gwittir.client.validator.PopupValidationFeedback;
@@ -101,6 +103,16 @@ public class ExampleEntryPoint implements EntryPoint {
 
 
     public void onModuleLoad() {
+    	WindowContext.INSTANCE.initialize(new WindowContextCallback(){
+
+			public void onInitialized() {
+				Window.alert(WindowContext.INSTANCE.get("TestValue"));
+		    	WindowContext.INSTANCE.put("TestValue", "I am saved to the window context");
+			}
+    		
+    	});	
+    	
+    	
         final VerticalPanel streamPanel = new VerticalPanel();
         Button stream = new Button("Stream!");
         stream.addClickListener(new ClickListener() {

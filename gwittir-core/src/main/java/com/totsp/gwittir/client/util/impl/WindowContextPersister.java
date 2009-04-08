@@ -5,10 +5,9 @@
 
 package com.totsp.gwittir.client.util.impl;
 
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
-import com.totsp.gwittir.client.util.WindowContextItem;
 import java.util.Map;
+
+import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 
 /**
  *
@@ -22,6 +21,6 @@ public interface WindowContextPersister {
 
     Map<String, String> getWindowContextData();
 
-    void storeWindowContextData(Map<String, WindowContextItem> windowContextData);
+    void storeWindowContextData(Map<String, String> windowContextData);
 
 }
