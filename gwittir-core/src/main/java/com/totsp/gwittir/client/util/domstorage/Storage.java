@@ -38,13 +38,13 @@ public class Storage extends JavaScriptObject {
     }
 
     public native final String get(String key)
-    /*-{ var val = this[key]; return val == undefined ? null : val;}-*/;
+    /*-{ var val = this.getItem(key); return val == undefined ? null : val.toString();}-*/;
 
     public native final int length()
     /*-{ return this.length; }-*/;
 
     public native final String key(int index)
-    /*-{ var key = this.key(index); return key == undefined ? null : key; }-*/;
+    /*-{ var key = this.key(index); return key == undefined ? null : key.toString(); }-*/;
 
     public native final void clear()
     /*-{ this.clear(); return; }-*/;
@@ -53,6 +53,6 @@ public class Storage extends JavaScriptObject {
     /*-{ this.removeItem(key); return; }-*/;
 
     public native final void set(String key, String value)
-    /*-{ this[key] = value; return; }-*/;
+    /*-{ this.setItem(key, value); return; }-*/;
 
 }

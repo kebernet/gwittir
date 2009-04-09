@@ -57,7 +57,6 @@ public class WindowContextPersisterGears extends AbstractWindowContextPersister 
 		for (Entry<String, String> entry : windowContextData.entrySet()) {
 			try {
 				String[] vals = new String[] { entry.getKey(), entry.getValue() };
-				Window.alert(vals[0] + "::" + vals[1]);
 				db
 						.execute(
 								"INSERT INTO windowcontext (key, value) VALUES( ? , ? )",

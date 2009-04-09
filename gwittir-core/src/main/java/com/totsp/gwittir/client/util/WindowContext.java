@@ -23,14 +23,24 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.util.impl.WindowContextPersister;
 
 /**
+ * The WindowContext class is a front end for abstract client storage, allowing for the storage of
+ * key/value pairs that persist on the client between browser sessions.
  * 
- * @author kebernet
+ * It is built on top of the other persistence systems in the client.util package and fails down (with
+ * availablility from Gears to MSIE UserData, to FireFox/Opera DOMStorage (and in the future to Flash LSO).
+ * 
+ * @author <a href="cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class WindowContext {
 
+	/** 
+	 * The static instance of the WindowContext object.
+	 */
 	public static final WindowContext INSTANCE = new WindowContext();
 	private final Map<String, String> data = new HashMap<String, String>();
 	private final WindowContextPersister persister = (WindowContextPersister) GWT
@@ -51,11 +61,27 @@ public class WindowContext {
 		Window.addWindowCloseListener(wcl);
 	}
 
+	/** 
+	 * Immediately writes the values in the context to whatever the persistent store is. This
+	 * will happen automatically during onWindowClosing(); Final storage may or may not be synchronous
+	 * to the call of the flush() method.
+	 */
 	public void flush() {
 		persister.storeWindowContextData(data);
 	}
 
+	/**
+	 * Initializes the WindowContext. Takes in a call back that will be notified when the
+	 * initialization procedure is complete. This will *always* take place off the execution 
+	 * context of the call to initialize, whether the individual persistence mechanism is asynchronous
+	 * or not.
+	 * 
+	 * Calls to initialize after the first will be ignored.
+	 * 
+	 * @param callback WindowContextCallback to notify when the WindowContext has been initialized. 
+	 */
 	public void initialize(final WindowContextCallback callback) {
+		Logger.getLogger(WindowContext.class.toString()).log( Level.INFO, "Got persister :"+persister.getClass(), null);
 		WindowContextCallback internalCallback = new WindowContextCallback() {
 
 			public void onInitialized() {
@@ -67,16 +93,34 @@ public class WindowContext {
 		persister.init(internalCallback);
 	}
 
+	/**
+	 * Gets the value of a key
+	 * @param key The key value to lookup
+	 * @return a value or null
+	 */
 	public String get(String key) {
 		return data.get(key);
 	}
 
+	/**
+	 * Inserts a new value into the dataset
+	 * @param key the key to insert. Keys should contain ONLY alphanumeric characters.
+	 * @param item the new value to insert.
+	 */
 	public void put(String key, String item) {
+		assert key.matches("[a-zA-Z0-9]*") : "Illegal character in the key";
 		data.put(key, item);
 	}
 
+	/**
+	 * An interface to implement to receive notification of when the WindowContext has been initialized.
+	 * 
+	 */
 	public static interface WindowContextCallback {
 
+		/**
+		 * Called asynchronously when the WindowContext is ready for use.
+		 */
 		void onInitialized();
 	}
 

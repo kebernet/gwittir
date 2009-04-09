@@ -22,7 +22,7 @@ import com.totsp.gwittir.client.util.html5db.TransactionTask;
  */
 public class DBTest {
     public static void doInsert() {
-        Database db = Databases.openDatabase("Gwittir", "1.0",
+        Database db = Databases.openDatabase("gwittir-windowcontext", "1.0",
                 "This is the gwittir test db", 512000);
         db.run(new TransactionTask() {
                 public void run(Transaction tx) {

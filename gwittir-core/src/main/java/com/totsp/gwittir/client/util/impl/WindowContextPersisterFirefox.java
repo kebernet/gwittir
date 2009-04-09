@@ -17,9 +17,19 @@
  */
 package com.totsp.gwittir.client.util.impl;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
+import com.totsp.gwittir.client.util.UnavailableException;
 import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
+import com.totsp.gwittir.client.util.domstorage.DOMStorage;
+import com.totsp.gwittir.client.util.domstorage.Storage;
 
 /**
  *
@@ -27,24 +37,48 @@ import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
  */
 public class WindowContextPersisterFirefox extends AbstractWindowContextPersister {
 
+	private Storage local;
+	
     @Override
     public int getByteLimit() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return 128000;
     }
 
     @Override
     public Map<String, String> getWindowContextData() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Map<String, String> results = new HashMap<String, String>();
+        for( int i=0; i < local.length(); i++ ){
+        	String key = local.key(i);
+        	try{
+        		String value= local.get(key);
+        		results.put( key, value);
+        	} catch(Exception e){
+        		Logger.getAnonymousLogger().log(Level.WARN, "Exception reading key"+key, null);
+        	}
+        }
+        return results;
     }
 
     @Override
     public void storeWindowContextData(Map<String, String> windowContextData) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for(Entry<String, String> entry : windowContextData.entrySet() ){
+        	local.set(entry.getKey(), entry.getValue() );
+        }
     }
 
     @Override
-    public void init(WindowContextCallback listener) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void init(final WindowContextCallback listener) {
+    	try {
+			local = DOMStorage.getLocal();
+			DeferredCommand.addCommand( new Command(){
+				public void execute() {
+					listener.onInitialized();
+				}
+			});
+			
+		} catch (UnavailableException e) {
+			Logger.getAnonymousLogger().log(Level.ERROR, "Unable to get DOMStorage session", e);
+		}
     }
 
 }

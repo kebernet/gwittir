@@ -35,11 +35,10 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata" />
+    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata,html5" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
-        /*if (typeof GearsFactory != undefined) {
-        	alert("GearsFactory");
+        if (typeof GearsFactory != 'undefined') {
             return "gears";
         }
         try {
@@ -52,17 +51,20 @@
         } catch (e) {
           if ((typeof navigator.mimeTypes != 'undefined')
                && navigator.mimeTypes["application/x-googlegears"]) {
-               alert("GearsMime");
-            
             return "gears";
           }
-        }*/
-        if(navigator.userAgent.indexOf("MSIE" != -1) ) {
-            
+        }
+        if(navigator.userAgent.indexOf("MSIE") != -1 ) {
         	return "userdata";
         }
-
-	    return "domstorage";
+        if(navigator.userAgent.indexOf("Safari") != -1 ){
+        	return "html5";
+        }
+		if(window.globalStorage || window.localStorage){
+	    	return "domstorage";
+	   	}
+	   	alert("Did not find a local storage type.");
+	   	return "unknown";
         ]]>
     </property-provider>
     <replace-with
@@ -82,6 +84,12 @@
         <when-type-is
             class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="userdata"/>
+    </replace-with>
+    <replace-with
+        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterHTML5">
+        <when-type-is
+            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+        <when-property-is name="gwittir.windowcontext" value="html5"/>
     </replace-with>
 
 </module>
