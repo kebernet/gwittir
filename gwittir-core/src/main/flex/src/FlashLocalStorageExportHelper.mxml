@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is a helper for units that would not compile by them selves, namely 
+	 actionscript classes.
+	 
+	 WARNING! THIS IS A GENERATED FILE, AND WILL BE RE-GENERATED EACH TIME THE 
+	 AJAXBRIDGE APPLICATION IS RUN. YOU SHOULD NOT ADD CUSTOM CODE TO THIS FILE.
+ -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="*" 
+	layout="absolute" height="100%" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import com.totsp.gwittir.FlashLocalStorageExport
+
+			// Force the compiler to link our exported AS class:
+			public var ajxBrdg:Array = [ FlashLocalStorageExport ];
+		]]>
+	</mx:Script>
+	<fab:FABridge xmlns:fab="bridge.*" />
+</mx:Application>

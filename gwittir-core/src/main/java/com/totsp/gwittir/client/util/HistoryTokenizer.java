@@ -37,11 +37,15 @@ public class HistoryTokenizer {
     public HistoryTokenizer() {
         this(History.getToken());
     }
+    
+    public HistoryTokenizer(Map<String, String> tokens){
+    	this.tokens = tokens;
+    }
 
-    HistoryTokenizer(String anchor) {
-        if (anchor != null) {
+    public HistoryTokenizer(String anchor) {
+        if (anchor != null && anchor.trim().length() > 0) {
             String[] values = anchor.split("&");
-
+            
             for (String value : values) {
                 String[] nameVal = value.split("=");
 
@@ -57,6 +61,10 @@ public class HistoryTokenizer {
         }
     }
 
+    public Map<String, String> getTokensMap(){
+    	return tokens;
+    }
+    
     public Set<Entry<String, String>> getEntries() {
         return tokens.entrySet();
     }
@@ -111,7 +119,7 @@ public class HistoryTokenizer {
         return hash;
     }
 
-    String tokenize() {
+    public String tokenize() {
         StringBuilder sb = new StringBuilder();
 
         for (Entry<String, String> entry : this.tokens.entrySet()) {

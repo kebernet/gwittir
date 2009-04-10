@@ -35,7 +35,7 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata,html5" />
+    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata,html5,name	" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
         if (typeof GearsFactory != 'undefined') {
@@ -63,8 +63,7 @@
 		if(window.globalStorage || window.localStorage){
 	    	return "domstorage";
 	   	}
-	   	alert("Did not find a local storage type.");
-	   	return "unknown";
+	   	return "name";
         ]]>
     </property-provider>
     <replace-with
@@ -91,5 +90,14 @@
             class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="html5"/>
     </replace-with>
-
+    
+    <replace-with
+        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterName">
+        <when-type-is
+            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+        <when-property-is name="gwittir.windowcontext" value="name"/>
+    </replace-with>
+	
+	<servlet class="com.totsp.gwittir.service.test.MacShellPersisterServlet"
+		path="/MacShellPersister" />
 </module>

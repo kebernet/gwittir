@@ -26,6 +26,7 @@ import com.google.gwt.user.client.WindowCloseListener;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.util.impl.WindowContextPersister;
+import com.totsp.gwittir.client.util.impl.WindowContextPersisterMacShell;
 
 /**
  * The WindowContext class is a front end for abstract client storage, allowing for the storage of
@@ -43,7 +44,7 @@ public class WindowContext {
 	 */
 	public static final WindowContext INSTANCE = new WindowContext();
 	private final Map<String, String> data = new HashMap<String, String>();
-	private final WindowContextPersister persister = (WindowContextPersister) GWT
+	private WindowContextPersister persister = (WindowContextPersister) GWT
 			.create(WindowContextPersister.class);
 	private final WindowCloseListener wcl = new WindowCloseListener() {
 		public String onWindowClosing() {
@@ -81,6 +82,10 @@ public class WindowContext {
 	 * @param callback WindowContextCallback to notify when the WindowContext has been initialized. 
 	 */
 	public void initialize(final WindowContextCallback callback) {
+		if(!GWT.isScript() && getUserAgent().indexOf("WebKit") != -1){
+			this.persister = new WindowContextPersisterMacShell();
+			GWT.log("WARNING: You are in hosted mode on Safari. Defaulting to the WindowName persister because HTML5 won't work in hosted mode!", null);
+		}
 		Logger.getLogger(WindowContext.class.toString()).log( Level.INFO, "Got persister :"+persister.getClass(), null);
 		WindowContextCallback internalCallback = new WindowContextCallback() {
 
@@ -123,5 +128,8 @@ public class WindowContext {
 		 */
 		void onInitialized();
 	}
+	
+	public static native String getUserAgent()
+	/*-{return navigator.userAgent; }-*/;
 
 }

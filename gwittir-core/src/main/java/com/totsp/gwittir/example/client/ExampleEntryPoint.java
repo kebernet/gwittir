@@ -107,7 +107,7 @@ public class ExampleEntryPoint implements EntryPoint {
 
 			public void onInitialized() {
 				Window.alert(WindowContext.INSTANCE.get("TestValue"));
-		    	WindowContext.INSTANCE.put("TestValue", "I am saved to the window context");
+				WindowContext.INSTANCE.put("TestValue", "I am saved to the window context");
 			}
     		
     	});	

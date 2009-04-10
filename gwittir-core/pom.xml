@@ -52,7 +52,7 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
             <version>1.5.3</version>
-            <classifier>windows</classifier>
+            <classifier>mac</classifier>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
@@ -92,7 +92,7 @@
                     <logLevel>INFO</logLevel>
                     <style>PRETTY</style>
                     <gen>target/gwtgen</gen>
-                    <runTarget>com.totsp.gwittir.example.Example/index_strict.html?log.level=spam</runTarget>
+                    <runTarget>com.totsp.gwittir.example.Example/index_strict.html?log.level=debug</runTarget>
                     <compileTargets>
                         <param>com.totsp.gwittir.example.Example</param>
                     </compileTargets>
