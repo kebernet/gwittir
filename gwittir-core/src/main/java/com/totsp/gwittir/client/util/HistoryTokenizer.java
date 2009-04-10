@@ -17,13 +17,14 @@
  */
 package com.totsp.gwittir.client.util;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.History;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
+
+import com.google.gwt.user.client.History;
+import com.totsp.gwittir.client.log.Level;
+import com.totsp.gwittir.client.log.Logger;
 
 
 /**
@@ -135,7 +136,7 @@ public class HistoryTokenizer {
             sb = sb.append("&");
         }
 
-        GWT.log("Tokenizing history" + sb.toString(), null);
+        Logger.getLogger(HistoryTokenizer.class.toString()).log(Level.SPAM, "Tokenizing history" + sb.toString(), null);
 
         return sb.toString();
     }

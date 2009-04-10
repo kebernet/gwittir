@@ -5,8 +5,6 @@
 
 package com.totsp.gwittir.client.util;
 
-import com.google.gwt.user.server.rpc.RPC;
-import com.totsp.gwittir.example.client.TestContextItem;
 import junit.framework.TestCase;
 
 /**
@@ -34,17 +32,6 @@ public class HistoryTokenizerTest extends TestCase {
         assertEquals(instance, new HistoryTokenizer(result));
     }
 
-    public static interface com_totsp_gwittir_example_client_TestContextItem_RemoteService extends com.google.gwt.user.client.rpc.RemoteService {
-  public com.totsp.gwittir.example.client.TestContextItem get(com.totsp.gwittir.example.client.TestContextItem param);
-  }
-
-    public void testSer() throws Exception {
-        TestContextItem item = new TestContextItem();
-        item.setIntPropert(42);
-        item.setString("A String");
-        String ser = RPC.encodeResponseForSuccess(com_totsp_gwittir_example_client_TestContextItem_RemoteService.class.getMethod("get", TestContextItem.class ), item);
-        System.out.println(ser );
-        System.out.println("5|0|4|file:///Users/kebernet/Documents/code/gwittir/gwittir/gwittir-core/target/gwittir-core-0.5-SNAPSHOT/com.totsp.gwittir.example.Example/|FC9E3E3D86D542434EE8607058698D78|com.totsp.gwittir.example.client.TestContextItem/4168296061|a string|1|2|3|42|4|");
-    }
+    
 
 }

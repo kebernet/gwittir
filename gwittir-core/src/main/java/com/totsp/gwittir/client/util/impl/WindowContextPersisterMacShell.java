@@ -44,7 +44,7 @@ public class WindowContextPersisterMacShell extends AbstractWindowContextPersist
 
 	@Override
 	public void storeWindowContextData(Map<String, String> windowContextData) {
-		MacShellServiceAsync.Util.INSTANCE.store(this.values, new AsyncCallback<Object>(){
+		MacShellServiceAsync.Util.INSTANCE.store(windowContextData, new AsyncCallback<Object>(){
 
 			public void onFailure(Throwable caught) {
 				Window.alert("Failed to store.");

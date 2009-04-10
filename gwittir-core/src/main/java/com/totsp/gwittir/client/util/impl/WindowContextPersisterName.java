@@ -39,9 +39,9 @@ public class WindowContextPersisterName extends AbstractWindowContextPersister {
 	}
 	
 	private static native String getWindowName()
-	/*-{ var name = $wnd.name; return name == undefined ?  null : name;}-*/;
+	/*-{ var name = $wnd.name; alert(name); return name == undefined ?  null : name;}-*/;
 
 	private static native void setWindowName(String name)
-	/*-{ $wnd.name = name; return; }-*/;
+	/*-{ alert(name); $wnd.name = name; return; }-*/;
 	
 }

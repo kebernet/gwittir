@@ -35,9 +35,10 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata,html5,name	" />
+    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata,html5,name" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
+        
         if (typeof GearsFactory != 'undefined') {
             return "gears";
         }
