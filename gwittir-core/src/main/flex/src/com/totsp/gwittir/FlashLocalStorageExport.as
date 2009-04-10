@@ -23,7 +23,7 @@ import mx.controls.TextArea;
 			ExternalInterface.addCallback("setLocal", setLocal );
 			ExternalInterface.addCallback("flushAll", flushAll );
 			ExternalInterface.addCallback("flush", flush );
-			ExternalInterface.call("y");
+			ExternalInterface.call("FlashLocalStorageExportRegistered");
 		}
 	
 		public function getLocal(name:String):Object{
