@@ -46,7 +46,7 @@ profile for GWT - something along the lines of what is shown below
 BUILD/RUN
 ---------
 
-"mvn clean gwt:gwt"
+"mvn clean gwt-maven:gwt"
 
 You may run into missing deps for JTA and JDBC. 
 These are older versions of these projects that Sun required 
