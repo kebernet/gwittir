@@ -14,6 +14,6 @@ import com.totsp.gwittir.client.ui.*;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface BoundWidgetProvider {
-    public BoundWidget get();
+public interface BoundWidgetProvider<T extends BoundWidget<?>> {
+    public T get();
 }

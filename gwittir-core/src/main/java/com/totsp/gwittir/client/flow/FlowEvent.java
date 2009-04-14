@@ -27,8 +27,8 @@ import com.totsp.gwittir.client.ui.BoundWidget;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class FlowEvent {
-    private BoundWidget fromWidget;
-    private BoundWidget toWidget;
+    private BoundWidget<?> fromWidget;
+    private BoundWidget<?> toWidget;
     private FlowContext context;
     private Object fromModel;
     private Object toModel;
@@ -36,8 +36,8 @@ public class FlowEvent {
     private String toName;
 
     /** Creates a new instance of FlowEvent */
-    public FlowEvent(FlowContext context, BoundWidget fromWidget,
-        Object fromModel, String fromName, BoundWidget toWidget,
+    public FlowEvent(FlowContext context, BoundWidget<?> fromWidget,
+        Object fromModel, String fromName, BoundWidget<?> toWidget,
         Object toModel, String toName) {
         this.context = context;
         this.fromWidget = fromWidget;
@@ -60,7 +60,7 @@ public class FlowEvent {
         return fromName;
     }
 
-    public BoundWidget getFromWidget() {
+    public BoundWidget<?> getFromWidget() {
         return fromWidget;
     }
 
@@ -72,7 +72,7 @@ public class FlowEvent {
         return toName;
     }
 
-    public BoundWidget getToWidget() {
+    public BoundWidget<?> getToWidget() {
         return toWidget;
     }
 }

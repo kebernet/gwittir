@@ -20,156 +20,132 @@
 
 package com.totsp.gwittir.example.client;
 
-import com.totsp.gwittir.client.beans.Bindable;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.totsp.gwittir.client.beans.AbstractModelBean;
+
 /**
- *
- * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * 
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
+ *         Cooper</a>
  */
-public class MyClass implements Bindable, Serializable{
-    
-    
-    private Integer someInteger;
-    private String name;
-    private String emailAddress;
-    private String firstName;
-    private String lastName;
-    private double price;
-    private String homeTown;
-    private String zipCode;
-    private Date birthDate = new Date( 74, 9, 02 );
-    private boolean active = true;
-    
-    private transient PropertyChangeSupport changes = new PropertyChangeSupport(this);
-    
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        this.changes.addPropertyChangeListener(l);
-    }
-    
-    public void addPropertyChangeListener(String propertyName,
-            PropertyChangeListener l) {
-        this.changes.addPropertyChangeListener(propertyName, l);
-    }
-    public PropertyChangeListener[] getPropertyChangeListeners() {
-        return this.changes.getPropertyChangeListeners();
-    }
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        this.changes.removePropertyChangeListener(l);
-    }
-    
-    public void removePropertyChangeListener(String propertyName,
-            PropertyChangeListener l) {
-        this.changes.removePropertyChangeListener(propertyName, l);
-    }
-    
-    /** Creates a new instance of MyClass */
-    public MyClass() {
-    }
+public class MyClass extends AbstractModelBean implements IsSerializable {
 
-    public Integer getSomeInteger() {
-        return someInteger;
-    }
+	private Integer someInteger;
+	private String name;
+	private String emailAddress;
+	private String firstName;
+	private String lastName;
+	private double price;
+	private String homeTown;
+	private String zipCode;
+	private Date birthDate = new Date(74, 9, 02);
+	private boolean active = true;
 
-    public void setSomeInteger(Integer someInteger) {
-        Integer old = this.someInteger;
-        this.someInteger = someInteger;
-        this.changes.firePropertyChange( "someInteger", old, someInteger );
-    }
+	/** Creates a new instance of MyClass */
+	public MyClass() {
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Integer getSomeInteger() {
+		return someInteger;
+	}
 
-    public void setName(String name) {
-        String old = this.name;
-        this.name = name;
-        this.changes.firePropertyChange("name", old, name);
-    }
+	public void setSomeInteger(Integer someInteger) {
+		Integer old = this.someInteger;
+		this.someInteger = someInteger;
+		this.changeSupport.firePropertyChange("someInteger", old, someInteger);
+	}
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setEmailAddress(String emailAddress) {
-        String old = this.emailAddress;
-        this.emailAddress = emailAddress;
-        this.changes.firePropertyChange("emailAddress", old, emailAddress );
-    }
+	public void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		this.changeSupport.firePropertyChange("name", old, name);
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 
-    public void setFirstName(String firstName) {
-        String old = this.firstName;
-        this.firstName = firstName;
-        this.changes.firePropertyChange("firstName", old, firstName);
-    }
+	public void setEmailAddress(String emailAddress) {
+		String old = this.emailAddress;
+		this.emailAddress = emailAddress;
+		this.changeSupport
+				.firePropertyChange("emailAddress", old, emailAddress);
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setLastName(String lastName) {
-        String old = this.lastName;
-        this.lastName = lastName;
-        this.changes.firePropertyChange("lastName", old, lastName);
-    }
+	public void setFirstName(String firstName) {
+		String old = this.firstName;
+		this.firstName = firstName;
+		this.changeSupport.firePropertyChange("firstName", old, firstName);
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setPrice(double price) {
-        Double old = new Double( this.price  );
-        this.price = price;
-        this.changes.firePropertyChange("price", old, new Double(price));
-    }
+	public void setLastName(String lastName) {
+		String old = this.lastName;
+		this.lastName = lastName;
+		this.changeSupport.firePropertyChange("lastName", old, lastName);
+	}
 
-    public String getHomeTown() {
-        return homeTown;
-    }
+	public double getPrice() {
+		return price;
+	}
 
-    public void setHomeTown(String homeTown) {
-        String old = this.homeTown;
-        this.homeTown = homeTown;
-        this.changes.firePropertyChange("homeTown", old, homeTown );
-    }
+	public void setPrice(double price) {
+		Double old = new Double(this.price);
+		this.price = price;
+		this.changeSupport.firePropertyChange("price", old, new Double(price));
+	}
 
-    public String getZipCode() {
-        return zipCode;
-    }
+	public String getHomeTown() {
+		return homeTown;
+	}
 
-    public void setZipCode(String zipCode) {
-        String old = this.zipCode;
-        this.zipCode = zipCode;
-        this.changes.firePropertyChange("zipCode", old, zipCode );
-    }
+	public void setHomeTown(String homeTown) {
+		String old = this.homeTown;
+		this.homeTown = homeTown;
+		this.changeSupport.firePropertyChange("homeTown", old, homeTown);
+	}
 
-    public Date getBirthDate() {
-        return birthDate;
-    }
+	public String getZipCode() {
+		return zipCode;
+	}
 
-    public void setBirthDate(Date birthDate) {
-        Date old = this.birthDate;
-        this.birthDate = birthDate;
-        this.changes.firePropertyChange("birthDate", old, birthDate);
-    }
+	public void setZipCode(String zipCode) {
+		String old = this.zipCode;
+		this.zipCode = zipCode;
+		this.changeSupport.firePropertyChange("zipCode", old, zipCode);
+	}
 
-    public boolean isActive() {
-        return active;
-    }
+	public Date getBirthDate() {
+		return birthDate;
+	}
 
-    public void setActive(boolean active) {
-        boolean old = this.active;
-        this.active = active;
-        this.changes.firePropertyChange("active", old, active);
-    }
+	public void setBirthDate(Date birthDate) {
+		Date old = this.birthDate;
+		this.birthDate = birthDate;
+		this.changeSupport.firePropertyChange("birthDate", old, birthDate);
+	}
 
-   
-    
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		boolean old = this.active;
+		this.active = active;
+		this.changeSupport.firePropertyChange("active", old, active);
+	}
+
 }

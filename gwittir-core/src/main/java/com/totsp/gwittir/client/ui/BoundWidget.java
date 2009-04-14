@@ -1,5 +1,5 @@
 /*
- * GwailsWidget.java
+ * BoundWidget.java
  *
  * Created on April 12, 2007, 12:42 PM
  *
@@ -34,7 +34,7 @@ import java.util.Comparator;
 public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
     public Action getAction();
 
-    public Comparator getComparator();
+    public Comparator<BoundWidget<T>> getComparator();
 
     public Object getModel();
 
@@ -42,10 +42,9 @@ public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
 
     public void setAction(Action action);
 
-    public void setComparator(Comparator comparator);
+    public void setComparator(Comparator<BoundWidget<T>> comparator);
 
     public void setModel(Object model);
-
     
     public void setValue(T value);
 }

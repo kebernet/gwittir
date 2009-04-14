@@ -175,7 +175,7 @@ public class IntrospectorGenerator extends Generator {
             return null;
         }
 
-        List introspectables = this.getIntrospectableTypes(logger, context.getTypeOracle());
+        List<BeanResolver> introspectables = this.getIntrospectableTypes(logger, context.getTypeOracle());
 
         MethodWrapper[] methods = this.findMethods(logger, introspectables);
 
@@ -215,9 +215,9 @@ public class IntrospectorGenerator extends Generator {
 
         writer.println("public BeanDescriptor getDescriptor( Object object ){ ");
         writer.indent();
+        writer.println("if( object == null ) throw new NullPointerException(\"Attempt to introspect null object\");");
         writer.println("if( object instanceof "+SelfDescribed.class.getCanonicalName()+" ) return ((SelfDescribed)object).__descriptor();");
-        for (Iterator it = introspectables.iterator(); it.hasNext();) {
-            BeanResolver resolver = (BeanResolver) it.next();
+        for (BeanResolver resolver : introspectables) {
             writer.println("if( object instanceof " + resolver.getType().getQualifiedSourceName() + " ) {");
             writer.indent();
 

@@ -8,18 +8,17 @@
  */
 package com.totsp.gwittir.client.flow;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.HasWidget;
-
-import java.util.HashMap;
-import java.util.Iterator;
 
 
 /**
@@ -27,7 +26,7 @@ import java.util.Iterator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class FlowController {
-    static final HashMap /*<Widget, FlowContext>*/ contexts = new HashMap();
+    static final HashMap<Object, FlowContext> contexts = new HashMap<Object, FlowContext>();
     static HistoryManager manager = null;
     static final HistoryListener hl = new HistoryListener() {
             public void onHistoryChanged(String historyToken) {
@@ -56,7 +55,7 @@ public class FlowController {
         }
 
         Object panel = contextRoot;
-        BoundWidget widget = context.get(name);
+        BoundWidget<?> widget = context.get(name);
 
         if(widget == null) {
             return call(contextRoot.getParent(), name, model);
@@ -64,29 +63,29 @@ public class FlowController {
         if( model != null ){
             widget.setModel(model);
         }
-        BoundWidget old = null;
+        BoundWidget<?> old = null;
         
 
         if( panel instanceof SimplePanel ){
             SimplePanel sp = (SimplePanel) panel;
             if( sp.getWidget() instanceof BoundWidget ){
-                old = (BoundWidget) sp.getWidget();
+                old = (BoundWidget<?>) sp.getWidget();
             }
             sp.setWidget( (Widget) widget );
         } else if( panel instanceof HasWidget ){
             HasWidget hw = (HasWidget) panel;
             if( hw.getWidget() instanceof BoundWidget ){
-                old = (BoundWidget) hw.getWidget();
+                old = (BoundWidget<?>) hw.getWidget();
             }
             hw.setWidget( (Widget) widget );
         } else if( panel instanceof HasWidgets ){
             HasWidgets hw = (HasWidgets) panel;
-            Iterator it = hw.iterator();
+            Iterator<Widget> it = hw.iterator();
             while(it.hasNext()) {
                 Object next = it.next();
 
                 if(next instanceof BoundWidget) {
-                    old = (BoundWidget) next;
+                    old = (BoundWidget<?>) next;
 
                     break;
                 }

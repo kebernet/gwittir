@@ -19,13 +19,12 @@
  */
 package com.totsp.gwittir.client.flow;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
-import java.util.ArrayList;
-
-import java.util.HashMap;
-import java.util.Iterator;
 
 
 /**
@@ -34,34 +33,34 @@ import java.util.Iterator;
  */
 public class FlowContext {
     private String fromName = null;
-    private final HashMap actions = new HashMap();
-    private final HashMap destinations = new HashMap();
-    private ArrayList listeners = new ArrayList();
+    private final HashMap<String,Action> actions = new HashMap<String,Action>();
+    private final HashMap<String,BoundWidgetProvider<?>> destinations = new HashMap<String,BoundWidgetProvider<?>>();
+    private ArrayList<FlowEventListener> listeners = new ArrayList<FlowEventListener>();
     /** Creates a new instance of FlowContext */
     public FlowContext() {
         super();
     }
 
-    public FlowContext add(String name, BoundWidget widget) {
-        destinations.put(name, widget);
+    public <T> FlowContext add(String name, BoundWidget<T> widget) {
+        destinations.put( name, new SimpleProvider<BoundWidget<T>>(widget));
 
         return this;
     }
 
-    public FlowContext add(String name, BoundWidgetProvider provider) {
+    public FlowContext add(String name, BoundWidgetProvider<?> provider) {
         destinations.put(name, provider);
 
         return this;
     }
 
-    public FlowContext add(String name, BoundWidget widget, Action action) {
+    public FlowContext add(String name, BoundWidget<?> widget, Action action) {
         add(name, widget);
         actions.put(name, action);
 
         return this;
     }
 
-    public FlowContext add(String name, BoundWidgetProvider provider,
+    public FlowContext add(String name, BoundWidgetProvider<?> provider,
         Action action) {
         add(name, provider);
         actions.put(name, action);
@@ -69,15 +68,12 @@ public class FlowContext {
         return this;
     }
 
-    public BoundWidget get(String name) {
+    public BoundWidget<?> get(String name) {
         Object value = destinations.get(name);
-        BoundWidget ret;
+        BoundWidget<?> ret;
 
-        if(value instanceof BoundWidgetProvider) {
-            ret = ((BoundWidgetProvider) value).get();
-        } else {
-            ret = (BoundWidget) destinations.get(name);
-        }
+        ret = ((BoundWidgetProvider<?>) value).get();
+        
 
         if((ret != null) && (actions.get(name) != null)) {
             ret.setAction((Action) actions.get(name));
@@ -86,12 +82,12 @@ public class FlowContext {
         return ret;
     }
     
-    void fireEvents( String toName, BoundWidget toWidget, BoundWidget fromWidget ){
+    void fireEvents( String toName, BoundWidget<?> toWidget, BoundWidget<?> fromWidget ){
         FlowEvent e = new FlowEvent( this, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
                 this.fromName,
                 toWidget, toWidget == null ? null : toWidget.getModel(), toName);
-        for(Iterator i = this.listeners.iterator(); i.hasNext(); ){
-                ((FlowEventListener) i.next()).onFlowEvent( e );
+        for(FlowEventListener listener : this.listeners ){
+                listener.onFlowEvent( e );
         }
         this.fromName = toName;
     }
@@ -108,5 +104,18 @@ public class FlowContext {
         FlowEventListener[] listeners = new FlowEventListener[this.listeners.size() ];
         this.listeners.toArray((Object[]) listeners);
         return listeners;
+    }
+    
+    private static class SimpleProvider<T extends BoundWidget<?>> implements BoundWidgetProvider<T> {
+
+    	private T widget;
+    	public SimpleProvider(T widget){
+    		this.widget = widget;
+    	}
+    	
+		public T get() {
+			return this.widget;
+		}
+    	
     }
 }
