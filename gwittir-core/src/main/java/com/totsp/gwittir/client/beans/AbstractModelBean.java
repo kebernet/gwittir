@@ -27,9 +27,9 @@ DOCUMENT ME!
  * @author ccollins
  */
 public abstract class AbstractModelBean implements Bindable {
-    private final ToStringBean toString = new ToStringBean(this);
-    private final EqualsHashCodeBean equalsHash = new EqualsHashCodeBean(this);
-    protected final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+    private transient final ToStringBean toString = new ToStringBean(this);
+    private transient final EqualsHashCodeBean equalsHash = new EqualsHashCodeBean(this);
+    protected transient final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     
     public AbstractModelBean() {
     }
