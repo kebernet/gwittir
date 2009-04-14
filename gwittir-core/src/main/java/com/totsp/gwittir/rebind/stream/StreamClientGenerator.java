@@ -62,7 +62,7 @@ public class StreamClientGenerator extends Generator {
         return className;
     }
 
-    private String generateImplementation(TreeLogger logger,
+    protected String generateImplementation(TreeLogger logger,
         GeneratorContext context, JClassType type) throws UnableToCompleteException {
         String packageName = type.getQualifiedSourceName() + "_impls";
         String className = type.getSimpleSourceName() + "_StreamServiceImpl";
@@ -103,91 +103,7 @@ public class StreamClientGenerator extends Generator {
         sw.println( "\";");
         sw.println("public SerializationStreamFactory getStreamFactory() { return SERIALIZER; }");
         for (JMethod method : type.getMethods()) {
-            if (!(method.getReturnType() instanceof JClassType)) {
-                logger.log(TreeLogger.Type.ERROR,
-                    method.getReturnType().getQualifiedSourceName() +
-                    " is not a class type.", null);
-                throw new UnableToCompleteException();
-            }
-
-            JClassType returnType = (JClassType) method.getReturnType();
-
-            if (!returnType.isAssignableTo(this.streamServiceIterator)) {
-                logger.log(TreeLogger.Type.ERROR,
-                    returnType.getQualifiedSourceName() +
-                    " is not assignable to " +
-                    this.streamServiceIterator.getQualifiedSourceName());
-                throw new UnableToCompleteException();
-            }
-
-            String parameterType = "java.io.Serializable";
-            JGenericType generic = returnType.isGenericType();
-
-            if ((generic != null) && (generic.getTypeParameters().length > 1)) {
-                logger.log(TreeLogger.Type.ERROR, "WTF scoob?");
-                throw new UnableToCompleteException();
-            } else if (generic != null) {
-                parameterType = generic.getTypeParameters()[0].getQualifiedSourceName();
-            }
-
-            sw.println("public "+StreamControl.class.getCanonicalName()+" " + method.getName() + " (");
-
-            boolean first = true;
-
-            for (JParameter param : method.getParameters()) {
-                if (!first) {
-                    sw.print(", ");
-                } else {
-                    first = false;
-                }
-
-                sw.print(param.getType().getQualifiedSourceName());
-                sw.print(" ");
-                sw.print(param.getName());
-            }
-            sw.println(" , StreamServiceCallback callback");
-            sw.println(") {");
-            sw.indent();
-            sw.println("try{");
-                sw.indent();
-            sw.println( "ClientSerializationStreamWriter streamWriter = (ClientSerializationStreamWriter) SERIALIZER.createStreamWriter();");
-            sw.println( "streamWriter.writeString(REMOTE_SERVICE_INTERFACE_NAME);");
-            sw.println( "streamWriter.writeString(\""+ method.getName() +"\");");
-            sw.println( "streamWriter.writeInt("+method.getParameters().length+");" );
-            for(JParameter param : method.getParameters() ){
-                sw.println( "streamWriter.writeString(\""+ this.getJSNIType(param.getType())+"\");");
-            }
-            for(JParameter param : method.getParameters() ){
-                sw.println("streamWriter."+ this.getWriteCallName(param.getType()) +"("+param.getName()+");");
-            }
-            /*
-             ClientSerializationStreamWriter streamWriter = createStreamWriter();
-    // createStreamWriter() prepared the stream
-    streamWriter.writeString(REMOTE_SERVICE_INTERFACE_NAME);
-    streamWriter.writeString("getStrings");
-    streamWriter.writeInt(1);
-    streamWriter.writeString("I");
-    streamWriter.writeInt(count);
-
-    String payload = streamWriter.toString();*/
-
-            sw.outdent();
-            try{
-                JMethod asyncMethod = this.getAsyncMethod(asyncType, method);
-                String callbackParam = asyncMethod.getParameters()[asyncMethod.getParameters().length-1].getName();
-                
-                sw.println("return invoke(streamWriter.toString(),"+callbackParam+");");
-                sw.outdent();
-                sw.println("}catch(Exception se){");
-                sw.indent();
-                sw.println("throw new RuntimeException(se);");
-                sw.outdent();
-                sw.println("}");
-            } catch(UnableToCompleteException e){
-                logger.log(TreeLogger.Type.ERROR, "Unabel to find matching async method for "+ method.getReadableDeclaration());
-                throw e;
-            }
-            sw.println("}");
+        	writeMethod(logger, sw, asyncType, method);
         }
 
         sw.outdent();
@@ -197,7 +113,85 @@ public class StreamClientGenerator extends Generator {
         return packageName + "." + className;
     }
 
-    private JMethod getAsyncMethod( JClassType asyncType, JMethod syncMethod ) throws UnableToCompleteException{
+    protected void writeMethod(TreeLogger logger, SourceWriter sw, JClassType asyncType, JMethod method ) throws UnableToCompleteException{
+    	if (!(method.getReturnType() instanceof JClassType)) {
+            logger.log(TreeLogger.Type.ERROR,
+                method.getReturnType().getQualifiedSourceName() +
+                " is not a class type.", null);
+            throw new UnableToCompleteException();
+        }
+
+        JClassType returnType = (JClassType) method.getReturnType();
+
+        if (!returnType.isAssignableTo(this.streamServiceIterator)) {
+            logger.log(TreeLogger.Type.ERROR,
+                returnType.getQualifiedSourceName() +
+                " is not assignable to " +
+                this.streamServiceIterator.getQualifiedSourceName());
+            throw new UnableToCompleteException();
+        }
+
+//        String parameterType = "java.io.Serializable";
+//        JGenericType generic = returnType.isGenericType();
+//
+//        if ((generic != null) && (generic.getTypeParameters().length > 1)) {
+//            logger.log(TreeLogger.Type.ERROR, "WTF scoob?");
+//            throw new UnableToCompleteException();
+//        } else if (generic != null) {
+//            parameterType = generic.getTypeParameters()[0].getQualifiedSourceName();
+//        }
+
+        sw.println("public "+StreamControl.class.getCanonicalName()+" " + method.getName() + " (");
+
+        boolean first = true;
+
+        for (JParameter param : method.getParameters()) {
+            if (!first) {
+                sw.print(", ");
+            } else {
+                first = false;
+            }
+
+            sw.print(param.getType().getQualifiedSourceName());
+            sw.print(" ");
+            sw.print(param.getName());
+        }
+        sw.println(" , StreamServiceCallback callback");
+        sw.println(") {");
+        sw.indent();
+        sw.println("try{");
+            sw.indent();
+        sw.println( "ClientSerializationStreamWriter streamWriter = (ClientSerializationStreamWriter) SERIALIZER.createStreamWriter();");
+        sw.println( "streamWriter.writeString(REMOTE_SERVICE_INTERFACE_NAME);");
+        sw.println( "streamWriter.writeString(\""+ method.getName() +"\");");
+        sw.println( "streamWriter.writeInt("+method.getParameters().length+");" );
+        for(JParameter param : method.getParameters() ){
+            sw.println( "streamWriter.writeString(\""+ this.getJSNIType(param.getType())+"\");");
+        }
+        for(JParameter param : method.getParameters() ){
+            sw.println("streamWriter."+ this.getWriteCallName(param.getType()) +"("+param.getName()+");");
+        }
+        sw.outdent();
+        try{
+            JMethod asyncMethod = this.getAsyncMethod(asyncType, method);
+            String callbackParam = asyncMethod.getParameters()[asyncMethod.getParameters().length-1].getName();
+            
+            sw.println("return invoke(streamWriter.toString(),"+callbackParam+");");
+            sw.outdent();
+            sw.println("}catch(Exception se){");
+            sw.indent();
+            sw.println("throw new RuntimeException(se);");
+            sw.outdent();
+            sw.println("}");
+        } catch(UnableToCompleteException e){
+            logger.log(TreeLogger.Type.ERROR, "Unabel to find matching async method for "+ method.getReadableDeclaration());
+            throw e;
+        }
+        sw.println("}");
+    }
+    
+    
+    protected JMethod getAsyncMethod( JClassType asyncType, JMethod syncMethod ) throws UnableToCompleteException{
         for(JMethod sourceMethod : asyncType.getMethods() ){
 
             if( sourceMethod.getName(). equals(syncMethod.getName() )
