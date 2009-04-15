@@ -21,11 +21,16 @@
 package com.totsp.gwittir.client.flow;
 
 /**
- *
+ * An interface called whenever the FlowController changes activities in a context
+ * 
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface FlowEventListener {
     
+	/**
+	 * Called when a flow event happens
+	 * @param evt the event that occurred
+	 */
     public void onFlowEvent(FlowEvent evt);
     
 }

@@ -21,7 +21,8 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.HasWidget;
 
 
-/**
+/** The FlowController class is used to register FlowContexts to Widget maps for
+ * page to page or wizard style application flows. See the package doc for details.
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
@@ -40,6 +41,13 @@ public class FlowController {
         History.addHistoryListener(hl);
     }
 
+    /**
+     *  Calls a new flow context name, from the sender context with the given object model.
+     * @param sender The lowest level widget to begin looking for the name
+     * @param name The activity name to look for
+     * @param model The model object to pass to the registered BoundWidget
+     * @return boolean indicating whether the call resulted in a state change.
+     */
     public static boolean call(Widget sender, String name, Object model) {
         Widget contextRoot = sender;
         FlowContext context = (FlowContext) contexts.get(contextRoot);
@@ -102,6 +110,13 @@ public class FlowController {
         return true;
     }
 
+    /**
+     * Finds the first managed widget/panel from a source widget that has a name
+     * mapped in its flow context
+     * @param widget The low-level widget to search from
+     * @param name The name to search a flow context for
+     * @return the Managed widget that matches first.
+     */
     public static Widget findContextWidget(Widget widget, String name) {
         Widget contextRoot = widget;
         FlowContext context = (FlowContext) contexts.get(contextRoot);
@@ -114,6 +129,12 @@ public class FlowController {
         return contextRoot;
     }
     
+    /**
+     * Find the FlowContext with a name mapping from the low level widget
+     * @param widget Widget to begin searching from
+     * @param name activity name to find
+     * @return a FlowContext or null.
+     */
     public static FlowContext findContext(Widget widget, String name){
         Widget contextRoot = widget;
         FlowContext context = (FlowContext) contexts.get(contextRoot);
@@ -126,22 +147,45 @@ public class FlowController {
         return context;
     }
 
+    /**
+     * Returns the current HistoryManager implementation
+     * @return the current HistoryManager implementation
+     */
     public static HistoryManager getHistoryManager() {
         return FlowController.manager;
     }
 
+    /**
+     * Registers a managed widget with the given FlowContext
+     * @param container the widget to manage
+     * @param context The FlowContext it maps to.
+     */
     public static void setFlowContext(HasWidgets container, FlowContext context) {
         contexts.put(container, context);
     }
     
+    /**
+     * Registers a managed widget with the given FlowContext
+     * @param container the widget to manage
+     * @param context The FlowContext it maps to.
+     */
     public static void setFlowContext(HasWidget container, FlowContext context) {
         contexts.put(container, context);
     }
 
+    /** Registers a history manager for the FlowController globally.
+     * 
+     * @param manager A history manager implementation
+     */
     public static void setHistoryManager(HistoryManager manager) {
         FlowController.manager = manager;
     }
 
+    /** Unregisters a FlowContext for a manage widget
+     * 
+     * @param container Container to unregister
+     * @return boolean if there was a change.
+     */
     public static boolean unsetFlowContext(Panel container) {
         return contexts.remove(container) != null;
     }

@@ -17,6 +17,10 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.util.HistoryTokenizer;
 
 /**
+ * A simple history manager that creates an inline List for each state change
+ * in the flow controller.
+ * 
+ * This class will provide basic back-forward support without deep linking.
  * 
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
  *         Cooper</a>
@@ -31,6 +35,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 	}
 
 	public void apply(String historyToken) {
+		Logger.getLogger(SimpleSessionHistoryManager.class.toString()).log(Level.DEBUG, "Apply "+historyToken, null);
 		HistoryTokenizer tok = new HistoryTokenizer(historyToken);
 
 		if ((tok.getToken("s") == null)
@@ -65,6 +70,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 
 	public void transition(String name, BoundWidget<?> old,
 			BoundWidget<?> current) {
+		Logger.getLogger(SimpleSessionHistoryManager.class.toString()).log(Level.DEBUG, "Got state change to "+name, null);
 		if (ignoreNext) {
 			return;
 		}
@@ -86,7 +92,9 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 				"Transitioning to state: " + currentState + " of "
 						+ states.size(), null);
 		HistoryTokenizer tok = new HistoryTokenizer();
+		tok.begin();
 		tok.setToken("s", Integer.toString(currentState));
+		tok.commit();
 	}
 
 	private static class State {

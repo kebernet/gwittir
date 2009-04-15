@@ -27,7 +27,12 @@ import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 
 
-/**
+/** A FlowContext is a registry of BoundWidgets or BoundWidgetProviders and Actions to activity names.
+ * Each .add() method returns this, so you can use a builder pattern:
+ * FlowContext context = new FlowContext()
+ * 								.add()
+ * 								.add()
+ * 								.add();
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
@@ -41,18 +46,41 @@ public class FlowContext {
         super();
     }
 
-    public <T> FlowContext add(String name, BoundWidget<T> widget) {
-        destinations.put( name, new SimpleProvider<BoundWidget<T>>(widget));
+    /** Adds a BoundWidget to a given activity name
+     * 
+     * @param name The activity name to register
+     * @param widget The BoundWidget to use
+     * @return this (builder pattern)
+     */
+    public FlowContext add(String name, BoundWidget<?> widget) {
+        destinations.put( name, new SimpleProvider<BoundWidget<?>>(widget));
 
         return this;
     }
 
+    /** Adds a BoundWidgetProvider for a given activity name.
+     * This method should be used where the BoundWidget needs to be recreated
+     * with each activity call (not a singleton). Optionally you can use a 
+     * Singleton provider to delay initialization of the BoundWidget until it
+     * is needed.
+     * 
+     * @param name The activity name to register
+     * @param provider The BoundWidgetProvider to use
+     * @return this (builder pattern)
+     */
     public FlowContext add(String name, BoundWidgetProvider<?> provider) {
         destinations.put(name, provider);
 
         return this;
     }
 
+    /** Adds a BoundWidget with an Action mapping
+     * 
+     * @param name The activity name to register
+     * @param widget The BoundWidget to use
+     * @param action The Action to register with the BoundWidget
+     * @return this (builder pattern)
+     */
     public FlowContext add(String name, BoundWidget<?> widget, Action action) {
         add(name, widget);
         actions.put(name, action);
@@ -60,6 +88,13 @@ public class FlowContext {
         return this;
     }
 
+    /** Adds a BoundWidgetProvider with an Action
+     * 
+     * @param name The activity name to register
+     * @param provider The BoundWidgetProvider to use
+     * @param action The Action to register with the BoundWidget
+     * @return this (builder pattern)
+     */
     public FlowContext add(String name, BoundWidgetProvider<?> provider,
         Action action) {
         add(name, provider);
@@ -68,6 +103,11 @@ public class FlowContext {
         return this;
     }
 
+    /** Returns a BoundWidget instance for a given activity name
+     * 
+     * @param name The activity name to lookup
+     * @return BoundWidget or null
+     */
     public BoundWidget<?> get(String name) {
         Object value = destinations.get(name);
         BoundWidget<?> ret;
@@ -92,14 +132,26 @@ public class FlowContext {
         this.fromName = toName;
     }
     
+    /** Adds a FlowEventListener
+     * 
+     * @param l Listener
+     */
     public void addFlowEventListener( FlowEventListener l ){
         this.listeners.add( l );
     }
     
+    /** Removes a FlowEventListener
+     * 
+     * @param l listener
+     */
     public void removeFlowEventListener( FlowEventListener l ){
         this.listeners.remove( l );
     }
     
+    /** Returns the currently registered FlowEventListeners
+     * 
+     * @return the currently registered FlowEventListeners
+     */
     public FlowEventListener[] getFlowEventListeners(){
         FlowEventListener[] listeners = new FlowEventListener[this.listeners.size() ];
         this.listeners.toArray((Object[]) listeners);
