@@ -572,8 +572,12 @@ public class Binding {
         }
 
         instance.object = object;
-        instance.property = INTROSPECTOR.getDescriptor(object)
-                                        .getProperty(propertyName);
+        try{
+        	instance.property = INTROSPECTOR.getDescriptor(object)
+                                        	.getProperty(propertyName);
+        } catch(NullPointerException e){
+        	throw new RuntimeException("Exception getting property "+propertyName, e );
+        }
         instance.nestedListener = rtpcl;
 
         return instance;

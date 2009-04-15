@@ -8,87 +8,91 @@
  */
 package com.totsp.gwittir.client.flow;
 
-import com.google.gwt.user.client.History;
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
-
 import com.totsp.gwittir.client.ui.BoundWidget;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.totsp.gwittir.client.util.HistoryTokenizer;
 
 /**
- *
- * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * 
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
+ *         Cooper</a>
  */
-public class SimpleSessionHistoryManager extends AbstractHistoryManager {
-    private ArrayList states = new ArrayList();
-    private boolean ignoreNext = false;
-    private int currentState = -1;
+public class SimpleSessionHistoryManager implements HistoryManager {
+	private ArrayList<State> states = new ArrayList<State>();
+	private boolean ignoreNext = false;
+	private int currentState = -1;
 
-    /** Creates a new instance of SimpleSessionHistoryManager */
-    public SimpleSessionHistoryManager() {
-    }
+	/** Creates a new instance of SimpleSessionHistoryManager */
+	public SimpleSessionHistoryManager() {
+	}
 
-    public void apply(String historyToken) {
-        HashMap values = this.parseHistoryToken(historyToken);
+	public void apply(String historyToken) {
+		HistoryTokenizer tok = new HistoryTokenizer(historyToken);
 
-        if((values.get("s") == null) ||
-                (Integer.parseInt(values.get("s").toString()) == currentState)) {
-            return;
-        }
+		if ((tok.getToken("s") == null)
+				|| (Integer.parseInt(tok.getToken("s").toString()) == currentState)) {
+			return;
+		}
 
-        int targetState = Integer.parseInt(values.get("s").toString());
-        Logger.getAnonymousLogger().log( Level.SPAM,"Repositioning to state: " + targetState + " of " +
-            states.size() + "from " + currentState, null);
+		int targetState = Integer.parseInt(tok.getToken("s").toString());
+		Logger.getAnonymousLogger().log(
+				Level.SPAM,
+				"Repositioning to state: " + targetState + " of "
+						+ states.size() + "from " + currentState, null);
 
-        for(int i = currentState; i != targetState;
-                i = (i > targetState) ? (i - 1) : (i + 1)) {
-            Logger.getAnonymousLogger().log( Level.SPAM,"\tCalling intermediate state " + i, null);
-            callState(i);
-        }
+		for (int i = currentState; i != targetState; i = (i > targetState) ? (i - 1)
+				: (i + 1)) {
+			Logger.getAnonymousLogger().log(Level.SPAM,
+					"\tCalling intermediate state " + i, null);
+			callState(i);
+		}
 
-        callState(targetState);
+		callState(targetState);
 
-        currentState = targetState;
-    }
+		currentState = targetState;
+	}
 
-    private void callState(int index) {
-        State state = (State) states.get(index);
-        ignoreNext = true;
-        FlowController.call(state.context, state.name, state.model);
-        ignoreNext = false;
-    }
+	private void callState(int index) {
+		State state = (State) states.get(index);
+		ignoreNext = true;
+		FlowController.call(state.context, state.name, state.model);
+		ignoreNext = false;
+	}
 
-    public void transition(String name, BoundWidget old, BoundWidget current) {
-        if(ignoreNext) {
-            return;
-        }
+	public void transition(String name, BoundWidget<?> old,
+			BoundWidget<?> current) {
+		if (ignoreNext) {
+			return;
+		}
 
-        State state = new State();
-        state.context = FlowController.findContextWidget((Widget) current, name);
-        state.name = name;
-        state.model = current.getModel();
-        currentState++;
+		State state = new State();
+		state.context = FlowController
+				.findContextWidget((Widget) current, name);
+		state.name = name;
+		state.model = current.getModel();
+		currentState++;
 
-        while(states.size() < (currentState + 1)) {
-            states.add(null);
-        }
+		while (states.size() < (currentState + 1)) {
+			states.add(null);
+		}
 
-        states.set(currentState, state);
-        Logger.getAnonymousLogger().log( Level.INFO,"Transitioning to state: " + currentState + " of " +
-            states.size(), null);
+		states.set(currentState, state);
+		Logger.getAnonymousLogger().log(
+				Level.INFO,
+				"Transitioning to state: " + currentState + " of "
+						+ states.size(), null);
+		HistoryTokenizer tok = new HistoryTokenizer();
+		tok.setToken("s", Integer.toString(currentState));
+	}
 
-        HashMap values = this.parseHistoryToken(History.getToken());
-        values.put("s", Integer.toString(currentState));
-        History.newItem(this.generateHistoryToken(values));
-    }
+	private static class State {
+		Object model;
+		String name;
+		Widget context;
+	}
 
-    private static class State {
-        Object model;
-        String name;
-        Widget context;
-    }
 }

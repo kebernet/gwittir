@@ -19,7 +19,9 @@
  */
 package com.totsp.gwittir.client.ui.util;
 
-import com.totsp.gwittir.client.ui.BoundWidget;
+import java.util.Date;
+import java.util.HashMap;
+
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Checkbox;
 import com.totsp.gwittir.client.ui.Hyperlink;
@@ -27,9 +29,6 @@ import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.RadioButton;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
-import java.util.Date;
-
-import java.util.HashMap;
 
 
 /**
@@ -38,50 +37,50 @@ import java.util.HashMap;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class BoundWidgetTypeFactory {
-    public static final BoundWidgetProvider CHECKBOX_PROVIDER = new BoundWidgetProvider() {
-            public BoundWidget get() {
+    public static final BoundWidgetProvider<Checkbox> CHECKBOX_PROVIDER = new BoundWidgetProvider<Checkbox>() {
+            public Checkbox get() {
                 return new Checkbox();
             }
         };
 
-    public static final BoundWidgetProvider TEXTBOX_PROVIDER = new BoundWidgetProvider() {
-            public BoundWidget get() {
+    public static final BoundWidgetProvider<TextBox> TEXTBOX_PROVIDER = new BoundWidgetProvider<TextBox>() {
+            public TextBox get() {
                 return new TextBox();
             }
         };
 
-    public static final BoundWidgetProvider LABEL_PROVIDER = new BoundWidgetProvider() {
-            public BoundWidget get() {
+    public static final BoundWidgetProvider<Label> LABEL_PROVIDER = new BoundWidgetProvider<Label>() {
+            public Label get() {
                 return new Label();
             }
         };
 
-    public static final BoundWidgetProvider BUTTON_PROVIDER = new BoundWidgetProvider() {
-            public BoundWidget get() {
+    public static final BoundWidgetProvider<Button> BUTTON_PROVIDER = new BoundWidgetProvider<Button>() {
+            public Button get() {
                 return new Button();
             }
         };
 
-    public static final BoundWidgetProvider RADIOBUTTON_PROVIDER = new BoundWidgetProvider() {
-            public BoundWidget get() {
+    public static final BoundWidgetProvider<RadioButton> RADIOBUTTON_PROVIDER = new BoundWidgetProvider<RadioButton>() {
+            public RadioButton get() {
                 return new RadioButton();
             }
         };
 
-    public static final BoundWidgetProvider HYPERLINK_PROVIDER = new BoundWidgetProvider() {
-            public BoundWidget get() {
+    public static final BoundWidgetProvider<Hyperlink> HYPERLINK_PROVIDER = new BoundWidgetProvider<Hyperlink>() {
+            public Hyperlink get() {
                 return new Hyperlink();
             }
         };
         
-   public static final BoundWidgetProvider POPUP_DATE_PICKER_PROVIDER = new BoundWidgetProvider(){
-        public BoundWidget get() {
+   public static final BoundWidgetProvider<PopupDatePicker> POPUP_DATE_PICKER_PROVIDER = new BoundWidgetProvider<PopupDatePicker>(){
+        public PopupDatePicker get() {
             return new PopupDatePicker();
         }
         
    };
 
-    HashMap registry = new HashMap();
+    HashMap<Object, BoundWidgetProvider<?>> registry = new HashMap<Object, BoundWidgetProvider<?>>();
 
     public BoundWidgetTypeFactory(boolean defaults) {
         super();
@@ -107,21 +106,21 @@ public class BoundWidgetTypeFactory {
         super();
     }
 
-    public void add(Class type, BoundWidgetProvider provider) {
+    public void add(Class<?> type, BoundWidgetProvider<?> provider) {
         registry.put(type, provider);
     }
 
-    public void add(String propertyName, BoundWidgetProvider provider) {
+    public void add(String propertyName, BoundWidgetProvider<?> provider) {
         registry.put(propertyName, provider);
     }
 
-    public BoundWidgetProvider getWidgetProvider(Class type) {
-        return (BoundWidgetProvider) registry.get(type);
+    public BoundWidgetProvider<?> getWidgetProvider(Class<?> type) {
+        return registry.get(type);
     }
 
-    public BoundWidgetProvider getWidgetProvider(String propertyName, Class type) {
+    public BoundWidgetProvider<?> getWidgetProvider(String propertyName, Class<?> type) {
         return registry.containsKey(propertyName)
-        ? (BoundWidgetProvider) registry.get(propertyName)
-        : (BoundWidgetProvider) registry.get(type);
+        ? registry.get(propertyName)
+        :  registry.get(type);
     }
 }
