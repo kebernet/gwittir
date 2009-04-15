@@ -26,6 +26,6 @@ import com.totsp.gwittir.client.ui.BoundWidget;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
  *         Cooper</a>
  */
-public interface Action<T> {
-	public void execute(BoundWidget<T> widget);
+public interface Action<T extends BoundWidget<?>> {
+	public void execute(T widget);
 }

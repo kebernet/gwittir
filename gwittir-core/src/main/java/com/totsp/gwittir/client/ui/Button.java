@@ -118,7 +118,7 @@ public class Button extends AbstractBoundWidget<String> implements SourcesClickE
         ClickListener listener = new ClickListener() {
                 public void onClick(Widget sender) {
                     if(getAction() != null) {
-                        getAction().execute(instance);
+                        getAction().execute( instance);
                     }
                 }
             };

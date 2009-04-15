@@ -38,8 +38,8 @@ import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
  */
 public class FlowContext {
     private String fromName = null;
-    private final HashMap<String,Action> actions = new HashMap<String,Action>();
-    private final HashMap<String,BoundWidgetProvider<?>> destinations = new HashMap<String,BoundWidgetProvider<?>>();
+    private final HashMap<String,Action<?>> actions = new HashMap<String,Action<?>>();
+    private final HashMap<String,BoundWidgetProvider<? extends BoundWidget<?>>> destinations = new HashMap<String,BoundWidgetProvider<? extends BoundWidget<?>>>();
     private ArrayList<FlowEventListener> listeners = new ArrayList<FlowEventListener>();
     /** Creates a new instance of FlowContext */
     public FlowContext() {
@@ -108,15 +108,15 @@ public class FlowContext {
      * @param name The activity name to lookup
      * @return BoundWidget or null
      */
-    public BoundWidget<?> get(String name) {
-        Object value = destinations.get(name);
-        BoundWidget<?> ret;
+    public <T> BoundWidget<T> get(String name) {
+        BoundWidgetProvider<BoundWidget<T>> value =  (BoundWidgetProvider<BoundWidget<T>>) destinations.get(name);
+        BoundWidget<T> ret;
 
-        ret = ((BoundWidgetProvider<?>) value).get();
+        ret = value.get();
         
 
         if((ret != null) && (actions.get(name) != null)) {
-            ret.setAction((Action) actions.get(name));
+            ret.setAction(  (Action<BoundWidget<T>>) actions.get(name) );
         }
 
         return ret;
