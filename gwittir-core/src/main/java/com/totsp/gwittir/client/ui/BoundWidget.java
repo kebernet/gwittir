@@ -32,7 +32,7 @@ import java.util.Comparator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
-    public Action getAction();
+    public Action<T> getAction();
 
     public Comparator<BoundWidget<T>> getComparator();
 
@@ -40,7 +40,7 @@ public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
 
     public T getValue();
 
-    public void setAction(Action action);
+    public void setAction(Action<T> action);
 
     public void setComparator(Comparator<BoundWidget<T>> comparator);
 

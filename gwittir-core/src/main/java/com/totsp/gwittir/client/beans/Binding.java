@@ -49,7 +49,7 @@ public class Binding {
     private static final Introspector INTROSPECTOR = Introspector.INSTANCE;
     private BindingInstance left;
     private BindingInstance right;
-    private List children;
+    private List<Binding> children;
 
     /**
      *  TRUE = left; FALSE = right;
@@ -75,7 +75,7 @@ public class Binding {
      * @param feedback A feedback implementation for validation errors.
      * @param modelProperty The property on the Widgets model object to bind to.
      */
-    public Binding(BoundWidget widget, Validator validator,
+    public <T> Binding(BoundWidget<T> widget, Validator validator,
         ValidationFeedback feedback, String modelProperty) {
         this(widget, "value", validator, feedback,
             (Bindable) widget.getModel(), "modelProperty", null, null);
@@ -175,7 +175,7 @@ public class Binding {
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
-            Binding child = (Binding) children.get(i);
+            Binding child = children.get(i);
             child.setRight();
         }
 
@@ -198,7 +198,7 @@ public class Binding {
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
-            Binding child = (Binding) children.get(i);
+            Binding child = children.get(i);
             child.setLeft();
         }
 
@@ -226,7 +226,7 @@ public class Binding {
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
-            Binding child = (Binding) children.get(i);
+            Binding child = children.get(i);
             child.bind();
         }
 
@@ -237,8 +237,8 @@ public class Binding {
      * Returns a list of child Bindings.
      * @return List of child bindings.
      */
-    public List getChildren() {
-        return children = (children == null) ? new ArrayList() : children;
+    public List<Binding> getChildren() {
+        return children = (children == null) ? new ArrayList<Binding>() : children;
     }
 
     public boolean validate() {
@@ -289,7 +289,7 @@ public class Binding {
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
-            Binding child = (Binding) children.get(i);
+            Binding child = children.get(i);
             valid = valid & child.isValid();
         }
 
@@ -319,7 +319,7 @@ public class Binding {
             boolean valid = true;
 
             for (int i = 0; (children != null) && (i < children.size()); i++) {
-                Binding child = (Binding) children.get(i);
+                Binding child = children.get(i);
                 valid = valid & child.isValid();
             }
 
@@ -354,7 +354,7 @@ public class Binding {
         }
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
-            Binding child = (Binding) children.get(i);
+            Binding child = children.get(i);
             child.unbind();
         }
 

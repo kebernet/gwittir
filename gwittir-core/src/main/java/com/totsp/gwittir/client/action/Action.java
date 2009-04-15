@@ -21,11 +21,11 @@ package com.totsp.gwittir.client.action;
 
 import com.totsp.gwittir.client.ui.BoundWidget;
 
-
 /**
- *
- * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
+ * 
+ * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
+ *         Cooper</a>
  */
-public interface Action {
-    public void execute(BoundWidget model);
+public interface Action<T> {
+	public void execute(BoundWidget<T> widget);
 }

@@ -43,7 +43,7 @@ import com.totsp.gwittir.client.log.Logger;
 public abstract class AbstractBoundWidget<T> extends Composite
         implements BoundWidget<T>, KeyBoundWidget {
     protected static final Logger LOG = Logger.getLogger( ""+AbstractBoundWidget.class );
-    private Action action;
+    private Action<T> action;
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
     private Comparator comparator;
     private Object model;
@@ -74,7 +74,7 @@ public abstract class AbstractBoundWidget<T> extends Composite
         changeListeners.fireChange(this);
     }
     
-    public Action getAction() {
+    public Action<T> getAction() {
         return action;
     }
     
@@ -94,7 +94,7 @@ public abstract class AbstractBoundWidget<T> extends Composite
     @Override
     protected void onAttach() {
         if(this.getAction() instanceof BindingAction) {
-            ((BindingAction) getAction()).set(this);
+            ((BindingAction<T>) getAction()).set(this);
             
         }
         super.onAttach();
@@ -105,7 +105,7 @@ public abstract class AbstractBoundWidget<T> extends Composite
     protected void onLoad(){
         super.onLoad();
         if(this.getAction() instanceof BindingAction) {
-            ((BindingAction) getAction()).bind(this);
+            ((BindingAction<T>) getAction()).bind(this);
         }
         if( this.binding != null ){
             try{
@@ -126,7 +126,7 @@ public abstract class AbstractBoundWidget<T> extends Composite
         
         if(this.getAction() instanceof BindingAction &&
                 (this.getModel() != null)) {
-            ((BindingAction) getAction()).unbind(this);
+            ((BindingAction<T>) getAction()).unbind(this);
         }
         if( this.binding != null && this.bindingRegistered ){
             KeyboardController.INSTANCE.unregister(this.binding);
@@ -147,7 +147,7 @@ public abstract class AbstractBoundWidget<T> extends Composite
         changes.removePropertyChangeListener(propertyName, l);
     }
     
-    public void setAction(Action action) {
+    public void setAction(Action<T> action) {
         this.action = action;
     }
     
@@ -159,16 +159,16 @@ public abstract class AbstractBoundWidget<T> extends Composite
         Object old = this.getModel();
         if(this.getAction() instanceof BindingAction &&
                 (this.getModel() != null)) {
-            ((BindingAction) getAction()).unbind(this);
+            ((BindingAction<T>) getAction()).unbind(this);
         }
         
         this.model = model;
         
         if(this.getAction() instanceof BindingAction) {
-            ((BindingAction) getAction()).set(this);
+            ((BindingAction<T>) getAction()).set(this);
             
             if(this.isAttached() && (this.getModel() != null)) {
-                ((BindingAction) getAction()).bind(this);
+                ((BindingAction<T>) getAction()).bind(this);
             }
         }
         this.changes.firePropertyChange( "model", old, model );

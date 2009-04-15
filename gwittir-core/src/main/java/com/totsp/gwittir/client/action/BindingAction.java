@@ -27,10 +27,10 @@ import com.totsp.gwittir.client.ui.BoundWidget;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface BindingAction extends Action {
-    public void bind(BoundWidget widget);
+public interface BindingAction<T> extends Action<T> {
+    public void bind(BoundWidget<T> widget);
 
-    public void set(BoundWidget widget);
+    public void set(BoundWidget<T> widget);
 
-    public void unbind(BoundWidget widget);
+    public void unbind(BoundWidget<T> widget);
 }
