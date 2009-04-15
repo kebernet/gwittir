@@ -362,3 +362,28 @@ body {
     text-align: center;
 }
 
+.gwittir-FlowTabPanel {
+	
+}
+.gwittir-FlowTabPanel-left {
+	background-color: black;
+	width: 2px;
+}
+.gwittir-FlowTabPanel-right {
+	background-color: black;	
+	width: 2px;
+}
+.gwittir-FlowTabPanel-spacer {
+	background-color: silver;
+	width: 2px;
+}
+.gwittir-FlowTabPanel-tab {
+	background-color: silver;
+	border: 1px solid gray;
+	color: gray;
+}
+.gwittir-FlowTabPanel-tabactive {
+	background-color: white;
+	border: 0px solid white;
+	color: black;
+}

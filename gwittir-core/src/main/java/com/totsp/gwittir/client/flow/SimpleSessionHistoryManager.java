@@ -26,6 +26,7 @@ import com.totsp.gwittir.client.util.HistoryTokenizer;
  *         Cooper</a>
  */
 public class SimpleSessionHistoryManager implements HistoryManager {
+	private static final Logger LOGGER = Logger.getLogger(SimpleSessionHistoryManager.class.toString());
 	private ArrayList<State> states = new ArrayList<State>();
 	private boolean ignoreNext = false;
 	private int currentState = -1;
@@ -35,7 +36,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 	}
 
 	public void apply(String historyToken) {
-		Logger.getLogger(SimpleSessionHistoryManager.class.toString()).log(Level.DEBUG, "Apply "+historyToken, null);
+		LOGGER.log(Level.DEBUG, "Apply "+historyToken, null);
 		HistoryTokenizer tok = new HistoryTokenizer(historyToken);
 
 		if ((tok.getToken("s") == null)
@@ -44,14 +45,14 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 		}
 
 		int targetState = Integer.parseInt(tok.getToken("s").toString());
-		Logger.getAnonymousLogger().log(
+		LOGGER.log(
 				Level.SPAM,
 				"Repositioning to state: " + targetState + " of "
 						+ states.size() + "from " + currentState, null);
 
 		for (int i = currentState; i != targetState; i = (i > targetState) ? (i - 1)
 				: (i + 1)) {
-			Logger.getAnonymousLogger().log(Level.SPAM,
+			LOGGER.log(Level.SPAM,
 					"\tCalling intermediate state " + i, null);
 			callState(i);
 		}
@@ -70,7 +71,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 
 	public void transition(String name, BoundWidget<?> old,
 			BoundWidget<?> current) {
-		Logger.getLogger(SimpleSessionHistoryManager.class.toString()).log(Level.DEBUG, "Got state change to "+name, null);
+		LOGGER.log(Level.DEBUG, "Got state change to "+name, null);
 		if (ignoreNext) {
 			return;
 		}
@@ -87,8 +88,8 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 		}
 
 		states.set(currentState, state);
-		Logger.getAnonymousLogger().log(
-				Level.INFO,
+		LOGGER.log(
+				Level.SPAM,
 				"Transitioning to state: " + currentState + " of "
 						+ states.size(), null);
 		HistoryTokenizer tok = new HistoryTokenizer();
