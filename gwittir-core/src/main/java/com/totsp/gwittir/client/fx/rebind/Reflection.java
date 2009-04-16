@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.fx.rebind;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
@@ -45,14 +46,14 @@ public class Reflection extends Widget {
     /** Creates a new instance of Reflection */
     public Reflection() {
         super();
-        
         init();
     }
 
     protected void init(){
-        Logger.getAnonymousLogger().log( Level.SPAM, "Init default", null );
-        setElement(panel.getElement());
-        panel.setWidget( canvas );
+        Logger.getAnonymousLogger().log( Level.DEBUG, "Init default Reflection", null );
+        //panel.setWidget( canvas );
+        setElement(canvas.getElement());
+        
     }
 
     public void paint(Image base, int baseWidth, int baseHeight, double height, double opacity) {
@@ -77,6 +78,7 @@ public class Reflection extends Widget {
     }
 
     private void paint() {
+    	GWT.log("Paint!"+this.baseWidth+"x"+this.baseHeight, null);
         int reflectHeight = (int) Math.round(baseHeight * height);
         Canvas.Context ctx = canvas.getContext();
         ctx.save();
@@ -104,5 +106,10 @@ public class Reflection extends Widget {
             Logger.getAnonymousLogger().log( Level.SPAM, "Call to setElement", ex );
         }
         super.setElement(e);
+    }
+    
+    public void onAttach(){
+    	super.onAttach();
+    	GWT.log("Attached "+canvas.toString(), null);
     }
 }

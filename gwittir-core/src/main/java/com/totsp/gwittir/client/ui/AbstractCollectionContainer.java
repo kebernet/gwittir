@@ -8,18 +8,17 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.ui.util.ActionProvider;
 import com.totsp.gwittir.client.ui.util.ActionTypeFactory;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 
 /**
@@ -38,14 +37,11 @@ public class AbstractCollectionContainer<T> extends
         final HasWidgets base, final BoundWidgetTypeFactory factory, final ActionTypeFactory actionFactory
     ) {
         super();
+        assert factory != null : "You must provide a BoundWidgetTypeFactory.";
         this.base = base;
         this.setFactory(factory);
-
-        if (this.getFactory() == null) {
-            throw new NullPointerException("You must provide a BoundWidgetTypeFactory.");
-        }
-
         this.setActionFactory(actionFactory);
+        initWidget((Widget)base);
     }
 
     public AbstractCollectionContainer(
@@ -95,7 +91,7 @@ public class AbstractCollectionContainer<T> extends
         }
     }
 
-    public Iterator iterator() {
+    public Iterator<Widget> iterator() {
         return this.base.iterator();
     }
 

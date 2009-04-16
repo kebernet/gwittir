@@ -28,7 +28,6 @@ import com.google.gwt.user.client.ui.LoadListener;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.fx.rebind.Reflection;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 
@@ -47,13 +46,16 @@ public class ReflectedImage extends AbstractBoundWidget<String> implements Sourc
     private int baseHeight;
     private int baseWidth;
     
+    
     /** Creates a new instance of ReflectedImage */
     public ReflectedImage(String url, final int baseWidth,
             final int baseHeight, final double reflectHeight, final double opacity) {
         this.value = url;
         this.base = new Image(url);
+        
         this.base.addLoadListener(new LoadListener() {
             public void onLoad(Widget sender) {
+            	GWT.log("Reflecting", null);
                 reflect.paint(base, baseWidth, baseHeight, reflectHeight,
                         opacity);
                 v.setWidget(1,0,reflect);
@@ -84,7 +86,7 @@ public class ReflectedImage extends AbstractBoundWidget<String> implements Sourc
             public void onLoad(Widget sender) {
                 reflect.paint(base, baseWidth, baseHeight, reflectHeight,
                         opacity);
-                v.setWidget(0,1,reflect);
+                v.setWidget(1,0,reflect);
             }
             
             public void onError(Widget sender) {
@@ -164,5 +166,16 @@ public class ReflectedImage extends AbstractBoundWidget<String> implements Sourc
     
     public void removeMouseListener(MouseListener listener) {
         this.base.addMouseListener( listener );
+    }
+    
+    public void onAttach(){
+    	super.onAttach();
+    	try{
+    		this.reflect.paint(this.base, this.getWidth(), this.getHeight(),
+                    this.reflectHeight, this.opacity);
+    		v.setWidget(1,0,reflect);
+    	} catch(Exception e){
+    		GWT.log(null, e);
+    	}
     }
 }

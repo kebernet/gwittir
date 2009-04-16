@@ -10,10 +10,11 @@
     <inherits name='com.totsp.gwittir.Logging' />
     <inherits name='com.totsp.gwittir.skins.basic.Basic' />
     <inherits name='org.goda.Time' />
-    
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.totsp.gwittir.example.client.ExampleEntryPoint'/>
     <stylesheet src="example.css"/>
     <servlet path="/ExampleStreamService"
      class="com.totsp.gwittir.example.server.ExampleStreamServiceServlet" />
+     <servlet path="/ReadSourceService"
+     class="com.totsp.gwittir.example.server.ReadSourceServiceServlet" />
 </module>

@@ -84,7 +84,6 @@ public class EqualsHashCodeBean implements Serializable {
             try {
                 BeanDescriptor bd = Introspector.INSTANCE.getDescriptor(bean);
                 Property[] properties = bd.getProperties();
-                System.out.println(properties.length);
                 if (properties != null) {
                     for (int i = 0; eq && (i < properties.length); i++) {
 
