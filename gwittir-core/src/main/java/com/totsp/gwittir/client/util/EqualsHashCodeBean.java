@@ -70,15 +70,14 @@ public class EqualsHashCodeBean implements Serializable {
      */
     static long total =0;
     public boolean beanEquals(Object obj) {
-    	long incept = System.currentTimeMillis();
-        Object bean1 = bean;
+    	Object bean1 = bean;
         Object bean2 = obj;
         boolean eq;
         if( bean1 == bean2 ){
             eq = true;
         } else if ((bean2 == null)) {
             eq = false;
-        } else if (!GWT.getTypeName(bean1).equals(GWT.getTypeName(bean2))) {
+        } else if (!bean1.getClass().getName().equals(bean2.getClass().getName())) {
             eq = false;
         } else {
             eq = true;
@@ -102,9 +101,6 @@ public class EqualsHashCodeBean implements Serializable {
                 throw new RuntimeException("Could not execute equals()", ex);
             }
         }
-        long time = System.currentTimeMillis() - incept;
-        total+=time;
-        GWT.log("eq in "+time+"("+total+")", null);
         
         return eq;
     }

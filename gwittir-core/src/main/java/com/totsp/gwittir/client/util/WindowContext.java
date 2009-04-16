@@ -19,6 +19,7 @@ package com.totsp.gwittir.client.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -117,6 +118,10 @@ public class WindowContext {
 		data.put(key, item);
 	}
 
+	public Set<String> keySet(){
+		return data.keySet();
+	}
+	
 	/**
 	 * An interface to implement to receive notification of when the WindowContext has been initialized.
 	 * 
