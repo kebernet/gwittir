@@ -366,24 +366,51 @@ body {
 	
 }
 .gwittir-FlowTabPanel-left {
-	background-color: black;
-	width: 2px;
+	width: 7px;
+    background-image: url( images/TabBarFirst.png );
+    background-position: top left;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #555555;
+    
 }
 .gwittir-FlowTabPanel-right {
-	background-color: black;	
-	width: 2px;
+	width: 7px;
+    background-image: url( images/TabBarRest.png );
+    background-position: top right;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid #555555;
 }
 .gwittir-FlowTabPanel-spacer {
-	background-color: silver;
-	width: 2px;
+	width: 0px;
 }
 .gwittir-FlowTabPanel-tab {
-	background-color: silver;
-	border: 1px solid gray;
-	color: gray;
+	border-top: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #ACACAC;
+    color: #222222;
+    font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+    cursor: default;
+    font-size: 80%;
+    padding-left: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 7px;
+    background-image: url( images/GradientToSilver.png );
 }
 .gwittir-FlowTabPanel-tabactive {
-	background-color: white;
-	border: 0px solid white;
-	color: black;
+	border-top: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #ACACAC;
+    color: #222222;
+    font-family: "Lucida Grande", Geneva, Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+    cursor: default;
+    font-size: 80%;
+    padding-left: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 7px;
+    background-image: url( images/GradientToSilver.png );
+	background-image: url( images/GradientToPaleBlue.png );
 }

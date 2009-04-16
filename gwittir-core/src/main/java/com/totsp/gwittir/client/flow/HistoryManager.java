@@ -31,5 +31,5 @@ public interface HistoryManager {
      * @param old the old BoundWidget being transitioned from
      * @param current the new BoundWidget being transitioned to.
      */
-    public void transition(String name, BoundWidget<?> old, BoundWidget<?> current);
+    public void transition(FlowEvent event);
 }

@@ -37,29 +37,29 @@ public class FlowExamplePanel extends SimplePanel {
 		}
 		
 		//Create a bindingAction for our views
-		BindingAction bindingAction = new BindingAction(){
+		BindingAction<BoundWidget<?>> bindingAction = new BindingAction<BoundWidget<?>> (){
 			
 			private Binding b;
 			
-			public void bind(BoundWidget widget) {
+			public void bind(BoundWidget<?>  widget) {
 				if(widget instanceof Page)
 					b.bind();
 				
 			}
 
-			public void set(BoundWidget widget) {
+			public void set(BoundWidget<?> widget) {
 				if(widget instanceof Page){
 					b = new Binding( widget, "label.value", widget, "model.emailAddress");
 					b.setLeft();
 				}
 			}
 
-			public void unbind(BoundWidget widget) {
+			public void unbind(BoundWidget<?> widget) {
 				if(widget instanceof Page)
 					b.unbind();
 			}
 
-			public void execute(BoundWidget widget) {
+			public void execute(BoundWidget<?> widget) {
 				if( widget instanceof Button ){
 					Button b = (Button) widget;
 					Page p = (Page) ((Widget) widget).getParent().getParent();

@@ -108,8 +108,4 @@ public class Reflection extends Widget {
         super.setElement(e);
     }
     
-    public void onAttach(){
-    	super.onAttach();
-    	GWT.log("Attached "+canvas.toString(), null);
-    }
 }

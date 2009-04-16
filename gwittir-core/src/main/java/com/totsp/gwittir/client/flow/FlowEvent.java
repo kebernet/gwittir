@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.flow;
 
+import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.ui.BoundWidget;
 
 
@@ -34,9 +35,10 @@ public class FlowEvent {
     private Object toModel;
     private String fromName;
     private String toName;
+    private Widget managedWidget;
 
     /** Creates a new instance of FlowEvent */
-    public FlowEvent(FlowContext context, BoundWidget<?> fromWidget,
+    public FlowEvent(FlowContext context, Widget managedWidget, BoundWidget<?> fromWidget,
         Object fromModel, String fromName, BoundWidget<?> toWidget,
         Object toModel, String toName) {
         this.context = context;
@@ -46,6 +48,7 @@ public class FlowEvent {
         this.toWidget = toWidget;
         this.toModel = toModel;
         this.toName = toName;
+        this.managedWidget = managedWidget;
     }
 
     /**
@@ -102,5 +105,9 @@ public class FlowEvent {
      */
     public BoundWidget<?> getToWidget() {
         return toWidget;
+    }
+    
+    public Widget getManagedWidget(){
+    	return this.managedWidget;
     }
 }

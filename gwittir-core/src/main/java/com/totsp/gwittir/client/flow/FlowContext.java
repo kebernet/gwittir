@@ -22,6 +22,7 @@ package com.totsp.gwittir.client.flow;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.Action;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
@@ -122,14 +123,15 @@ public class FlowContext {
         return ret;
     }
     
-    void fireEvents( String toName, BoundWidget<?> toWidget, BoundWidget<?> fromWidget ){
-        FlowEvent e = new FlowEvent( this, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
+    FlowEvent fireEvents( Widget managedWidget, String toName, BoundWidget<?> toWidget, BoundWidget<?> fromWidget ){
+        FlowEvent e = new FlowEvent( this, managedWidget, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
                 this.fromName,
                 toWidget, toWidget == null ? null : toWidget.getModel(), toName);
         for(FlowEventListener listener : this.listeners ){
                 listener.onFlowEvent( e );
         }
         this.fromName = toName;
+        return e;
     }
     
     /** Adds a FlowEventListener

@@ -10,6 +10,7 @@ package com.totsp.gwittir.client.flow;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
@@ -27,10 +28,10 @@ import com.totsp.gwittir.client.util.HistoryTokenizer;
  */
 public class SimpleSessionHistoryManager implements HistoryManager {
 	private static final Logger LOGGER = Logger.getLogger(SimpleSessionHistoryManager.class.toString());
-	private ArrayList<State> states = new ArrayList<State>();
+	private ArrayList<FlowEvent> states = new ArrayList<FlowEvent>();
 	private boolean ignoreNext = false;
 	private int currentState = -1;
-
+	
 	/** Creates a new instance of SimpleSessionHistoryManager */
 	public SimpleSessionHistoryManager() {
 	}
@@ -49,59 +50,51 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 				Level.SPAM,
 				"Repositioning to state: " + targetState + " of "
 						+ states.size() + "from " + currentState, null);
-
-		for (int i = currentState; i != targetState; i = (i > targetState) ? (i - 1)
-				: (i + 1)) {
-			LOGGER.log(Level.SPAM,
-					"\tCalling intermediate state " + i, null);
-			callState(i);
-		}
-
-		callState(targetState);
-
-		currentState = targetState;
-	}
-
-	private void callState(int index) {
-		State state = (State) states.get(index);
-		ignoreNext = true;
-		FlowController.call(state.context, state.name, state.model);
-		ignoreNext = false;
-	}
-
-	public void transition(String name, BoundWidget<?> old,
-			BoundWidget<?> current) {
-		LOGGER.log(Level.DEBUG, "Got state change to "+name, null);
-		if (ignoreNext) {
+		if(targetState >= states.size() ){
+			tok.setToken("s", ""+(states.size() -1));
 			return;
 		}
-
-		State state = new State();
-		state.context = FlowController
-				.findContextWidget((Widget) current, name);
-		state.name = name;
-		state.model = current.getModel();
-		currentState++;
-
-		while (states.size() < (currentState + 1)) {
-			states.add(null);
+		callState(targetState);
+		currentState = targetState;
+	}
+	
+	private void callState(int index) {
+		ignoreNext = true;
+		if(currentState > index ){
+			for(int i = currentState; i > index;	i--){
+				FlowEvent state = states.get(i);
+				
+				FlowController.call( state.getManagedWidget(), 
+						state.getFromName(), 
+						state.getFromModel() );
+			}
+		} else {
+			for(int i = currentState+1; i <= index; i++ ){
+				FlowEvent state = states.get(i);
+				FlowController.call( state.getManagedWidget(), 
+						state.getToName(), 
+						state.getToModel() );
+			}
 		}
+		ignoreNext = false;
+			
+	}
 
-		states.set(currentState, state);
-		LOGGER.log(
-				Level.SPAM,
-				"Transitioning to state: " + currentState + " of "
-						+ states.size(), null);
+	public void transition(FlowEvent event) {
+		if(ignoreNext)
+			return;
+		currentState++;
+		if( currentState == states.size() ){
+			states.add(event);
+		} else {
+			states.set(currentState, event);
+		}
 		HistoryTokenizer tok = new HistoryTokenizer();
 		tok.begin();
 		tok.setToken("s", Integer.toString(currentState));
 		tok.commit();
 	}
 
-	private static class State {
-		Object model;
-		String name;
-		Widget context;
-	}
+
 
 }

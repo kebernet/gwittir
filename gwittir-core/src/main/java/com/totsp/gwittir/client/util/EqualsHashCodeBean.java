@@ -68,7 +68,9 @@ public class EqualsHashCodeBean implements Serializable {
      * @param obj Object to check.
      * @return Equality
      */
+    static long total =0;
     public boolean beanEquals(Object obj) {
+    	long incept = System.currentTimeMillis();
         Object bean1 = bean;
         Object bean2 = obj;
         boolean eq;
@@ -100,16 +102,20 @@ public class EqualsHashCodeBean implements Serializable {
                 throw new RuntimeException("Could not execute equals()", ex);
             }
         }
-
+        long time = System.currentTimeMillis() - incept;
+        total+=time;
+        GWT.log("eq in "+time+"("+total+")", null);
+        
         return eq;
     }
 
     /**
-     * Returns a hashCode based on the toString() of the bean.
+     * Returns a hashCode for the beans.
      * @return integer hashCode.
      */
     public int beanHashCode() {
-        return bean.toString().hashCode();
+    	//TODO make this something meaningful. the toString() op was way too slow.
+        return super.hashCode();
     }
 
     /**

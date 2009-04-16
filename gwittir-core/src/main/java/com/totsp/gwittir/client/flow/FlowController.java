@@ -49,6 +49,17 @@ public class FlowController {
      * @return boolean indicating whether the call resulted in a state change.
      */
     public static boolean call(Widget sender, String name, Object model) {
+    	return call(sender, name, model, true);
+    }
+    
+    /**
+     *  Calls a new flow context name, from the sender context with the given object model.
+     * @param sender The lowest level widget to begin looking for the name
+     * @param name The activity name to look for
+     * @param model The model object to pass to the registered BoundWidget
+     * @return boolean indicating whether the call resulted in a state change.
+     */
+    public static boolean call(Widget sender, String name, Object model, boolean fireEvents) {
         Widget contextRoot = sender;
         FlowContext context = (FlowContext) contexts.get(contextRoot);
 
@@ -102,11 +113,12 @@ public class FlowController {
             hw.add((Widget) widget );
         }
 
-        if(FlowController.manager != null) {
-            manager.transition(name, old, widget);
+        if(fireEvents){
+	        FlowEvent event = context.fireEvents(contextRoot, name, widget, old );
+	        if(FlowController.manager != null) {
+	            manager.transition(event);
+	        }
         }
-        context.fireEvents( name, widget, old );
-
         return true;
     }
 

@@ -3,6 +3,7 @@ package com.totsp.gwittir.client.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SourcesTableEvents;
@@ -41,9 +42,11 @@ public class FlowTabPanel extends Composite {
 		table.addCell(0);
 		table.getCellFormatter()
 				.setStyleName(0, 0, GWITTIR_FLOW_TAB_PANEL_LEFT);
+		table.setWidget(0,0, new Image(GWT.getModuleBaseURL()+"clear.cache.gif"));
 		table.addCell(0);
 		table.getCellFormatter().setStyleName(0, 1,
 				GWITTIR_FLOW_TAB_PANEL_RIGHT);
+		table.setWidget(0,1, new Image(GWT.getModuleBaseURL()+"clear.cache.gif"));
 		table.addTableListener(this.listener);
 		super.initWidget(table);
 		this.setStyleName("gwittir-FlowTabPanel");
@@ -73,6 +76,9 @@ public class FlowTabPanel extends Composite {
 			table.insertCell(0, right);
 			table.getCellFormatter().setStyleName(0, right,
 					GWITTIR_FLOW_TAB_PANEL_SPACER);
+			Image i = new Image(GWT.getModuleBaseURL()+"clear.cache.gif");
+			i.setWidth("0px");
+			table.setWidget(0,right, i);
 			right++;
 		}
 		table.insertCell(0, right);
