@@ -69,7 +69,7 @@ public class ViewSourcePanel extends AbstractBoundWidget<Object> {
 		panel.add(toggle);
 		panel.add(managed);
 		panel.setCellHorizontalAlignment(toggle, HasHorizontalAlignment.ALIGN_RIGHT);
-		FlowController.call(managed, "main", null, true);
+		FlowController.call(managed, "main", null, false);
 		
 	}
 	public Object getValue() {

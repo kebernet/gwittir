@@ -63,7 +63,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 		if(currentState > index ){
 			for(int i = currentState; i > index;	i--){
 				FlowEvent state = states.get(i);
-				
+				LOGGER.log(Level.DEBUG, "calling "+state.getFromName(), null);
 				FlowController.call( state.getManagedWidget(), 
 						state.getFromName(), 
 						state.getFromModel() );
@@ -80,7 +80,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 			
 	}
 
-	public void transition(FlowEvent event) {
+	public void transition(FlowEvent event, boolean appendHistory) {
 		if(ignoreNext)
 			return;
 		currentState++;
@@ -89,10 +89,12 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 		} else {
 			states.set(currentState, event);
 		}
-		HistoryTokenizer tok = new HistoryTokenizer();
-		tok.begin();
-		tok.setToken("s", Integer.toString(currentState));
-		tok.commit();
+		if(appendHistory){
+			HistoryTokenizer tok = new HistoryTokenizer();
+			tok.begin();
+			tok.setToken("s", Integer.toString(currentState));
+			tok.commit();
+		}
 	}
 
 

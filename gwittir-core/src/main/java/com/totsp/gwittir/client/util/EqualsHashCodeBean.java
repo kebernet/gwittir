@@ -16,15 +16,12 @@
  */
 package com.totsp.gwittir.client.util;
 
-import com.google.gwt.core.client.GWT;
+import java.io.Serializable;
 
 import com.totsp.gwittir.client.beans.BeanDescriptor;
-import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
-
-import java.io.Serializable;
 
 
 /**

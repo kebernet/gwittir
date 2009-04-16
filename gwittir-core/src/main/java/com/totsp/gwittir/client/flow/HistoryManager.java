@@ -26,10 +26,10 @@ public interface HistoryManager {
     public void apply(String historyToken);
 
     /**
-     * Called when the flow controller stransitions between states.
+     * Called when the flow controller transitions between states.
      * @param name name of the new state
      * @param old the old BoundWidget being transitioned from
      * @param current the new BoundWidget being transitioned to.
      */
-    public void transition(FlowEvent event);
+    public void transition(FlowEvent event, boolean appendHistory);
 }

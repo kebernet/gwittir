@@ -123,15 +123,19 @@ public class FlowContext {
         return ret;
     }
     
-    FlowEvent fireEvents( Widget managedWidget, String toName, BoundWidget<?> toWidget, BoundWidget<?> fromWidget ){
-        FlowEvent e = new FlowEvent( this, managedWidget, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
+    FlowEvent createEvent(Widget managedWidget, String toName, BoundWidget<?> toWidget, BoundWidget<?> fromWidget ){
+    	FlowEvent e = new FlowEvent( this, managedWidget, fromWidget, fromWidget == null ? null : fromWidget.getModel(),
                 this.fromName,
                 toWidget, toWidget == null ? null : toWidget.getModel(), toName);
+    	this.fromName = e.getToName();
+    	return e;
+    }
+    
+    void fireEvent( FlowEvent e ){
+        
         for(FlowEventListener listener : this.listeners ){
                 listener.onFlowEvent( e );
         }
-        this.fromName = toName;
-        return e;
     }
     
     /** Adds a FlowEventListener

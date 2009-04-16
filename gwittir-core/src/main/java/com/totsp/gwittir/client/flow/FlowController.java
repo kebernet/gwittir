@@ -112,13 +112,14 @@ public class FlowController {
             hw.clear();
             hw.add((Widget) widget );
         }
-
+        FlowEvent event = context.createEvent(contextRoot, name, widget, old );
         if(fireEvents){
-	        FlowEvent event = context.fireEvents(contextRoot, name, widget, old );
-	        if(FlowController.manager != null) {
-	            manager.transition(event);
-	        }
+	        context.fireEvent(event);
         }
+	        
+	    manager.transition(event, fireEvents);
+	      
+        
         return true;
     }
 
