@@ -55,8 +55,7 @@ public class ReflectedImage extends AbstractBoundWidget<String> implements Sourc
         
         this.base.addLoadListener(new LoadListener() {
             public void onLoad(Widget sender) {
-            	GWT.log("Reflecting", null);
-                reflect.paint(base, baseWidth, baseHeight, reflectHeight,
+            	reflect.paint(base, baseWidth, baseHeight, reflectHeight,
                         opacity);
                 v.setWidget(1,0,reflect);
             }

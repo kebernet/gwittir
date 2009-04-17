@@ -1618,38 +1618,40 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                     }
                 }
             }
-        } else { //if ((this.masks & BoundTable.NO_SELECT_ROW_MASK) == 0) {
-
-            if (this.selectedRowLastIndex != -1) {
-                this.getRowFormatter()
-                    .setStyleName(this.selectedRowLastIndex,
-                    this.selectedRowLastStyle);
-
-                if ((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
-                    this.removeNestedWidget(this.selectedRowLastIndex);
-
-                    if (this.selectedRowLastIndex < row) {
-                        row--;
-                    }
-                }
-            }
-
-            String currentStyle = table.getRowFormatter().getStyleName(row);
-
-            if ((currentStyle == null) || !currentStyle.equals("selected")) {
-                this.selectedRowLastStyle = currentStyle;
-            }
-
-            if ((this.selectedRowLastStyle == null) ||
-                    (this.selectedRowLastStyle.length() == 0)) {
-                this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
-            }
-
-            table.getRowFormatter().setStyleName(row, "selected");
-
-            if ((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
-                this.insertNestedWidget(row);
-            }
+        } else { 
+        	if ((this.masks & BoundTable.NO_SELECT_ROW_MASK) == 0) {
+	
+	            if (this.selectedRowLastIndex != -1) {
+	                this.getRowFormatter()
+	                    .setStyleName(this.selectedRowLastIndex,
+	                    this.selectedRowLastStyle);
+	
+	                if ((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
+	                    this.removeNestedWidget(this.selectedRowLastIndex);
+	
+	                    if (this.selectedRowLastIndex < row) {
+	                        row--;
+	                    }
+	                }
+	            }
+	
+	            String currentStyle = table.getRowFormatter().getStyleName(row);
+	
+	            if ((currentStyle == null) || !currentStyle.equals("selected")) {
+	                this.selectedRowLastStyle = currentStyle;
+	            }
+	
+	            if ((this.selectedRowLastStyle == null) ||
+	                    (this.selectedRowLastStyle.length() == 0)) {
+	                this.selectedRowLastStyle = BoundTable.DEFAULT_STYLE;
+	            }
+	
+	            table.getRowFormatter().setStyleName(row, "selected");
+	
+	            if ((this.masks & BoundTable.INSERT_WIDGET_MASK) > 0) {
+	                this.insertNestedWidget(row);
+	            }
+        	}
         }
 
         this.selectedRowLastIndex = (this.selectedRowLastIndex == row) ? (-1)

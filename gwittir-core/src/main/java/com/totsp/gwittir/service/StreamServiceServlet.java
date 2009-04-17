@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 
 import java.net.URLEncoder;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,6 +36,8 @@ public class StreamServiceServlet extends RemoteServiceServlet {
     public static final String WINDOW_PARENT = "window.parent.";
     protected static final String SCRIPT_OPEN = "<script type=\"text/javascript\">";
 
+    
+    
     @Override
     public String readContent(HttpServletRequest request) {
         return request.getParameter("r");

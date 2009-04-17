@@ -46,13 +46,13 @@
             <artifactId>gwt-servlet</artifactId>
             <version>1.5.3</version>
             <type>jar</type>
-            <scope>provided</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
             <version>1.5.3</version>
-            <classifier>mac</classifier>
+            <classifier>windows</classifier>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
@@ -84,7 +84,7 @@
                 <configuration>
                     <gwtVersion>1.5.3</gwtVersion>
                     <logLevel>INFO</logLevel>
-                    <style>PRETTY</style>
+                    <style>OBF</style>
                     <gen>target/gwtgen</gen>
                     <runTarget>com.totsp.gwittir.example.Example/index_strict.html?log.level=debug</runTarget>
                     <compileTargets>
@@ -97,8 +97,8 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>compile</goal>
-                            <goal>test</goal>
+                           <!--   <goal>compile</goal>
+                            <goal>test</goal>-->
                         </goals>
                     </execution>
                 </executions>

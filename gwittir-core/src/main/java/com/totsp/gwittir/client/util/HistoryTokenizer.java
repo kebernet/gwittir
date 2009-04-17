@@ -136,8 +136,6 @@ public class HistoryTokenizer {
             sb = sb.append("&");
         }
 
-        Logger.getLogger(HistoryTokenizer.class.toString()).log(Level.SPAM, "Tokenizing history" + sb.toString(), null);
-
         return sb.toString();
     }
 

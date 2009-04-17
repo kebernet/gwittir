@@ -39,7 +39,7 @@ public class PopupDatePicker extends AbstractBoundWidget<Date>
         implements SourcesCalendarDrawEvents, SourcesCalendarEvents, DateRenderers, HasFocus, SourcesClickEvents {
     DatePicker base = new DatePicker();
     Label label = new Label();
-    Image icon = new Image(GWT.getModuleBaseURL()+"/calendar-icon.gif");
+    Image icon = new Image(GWT.getModuleBaseURL()+"calendar-icon.gif");
     FocusPanel fp = new FocusPanel();
     HorizontalPanel hp = new HorizontalPanel();
     PopupPanel pp = new PopupPanel(true);

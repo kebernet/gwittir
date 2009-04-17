@@ -45,11 +45,11 @@ public class ChangeMarkerListener implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        if( factory.isMarking() && propertyChangeEvent.getSource() instanceof Widget ){
+    	if( propertyChangeEvent.getSource() instanceof Widget ){
             Widget widget = (Widget) propertyChangeEvent.getSource();
             if(propertyChangeEvent.getPropertyName().equals("value") ){
                 valueHasChanged = true;
-                if( widget.isAttached() ){
+                if( factory.isMarking() && widget.isAttached() ){
                     showMarker( widget );
                 }
                 if(widget instanceof BoundWidget ){
@@ -66,7 +66,7 @@ public class ChangeMarkerListener implements PropertyChangeListener {
                 }
             } else if( propertyChangeEvent.getPropertyName().equals("attached") ){
                 Boolean att = (Boolean) propertyChangeEvent.getNewValue();
-                if( att.booleanValue() && valueHasChanged ){
+                if( factory.isMarking() && att.booleanValue() && valueHasChanged ){
                     showMarker(widget);
                 } else {
                     hideMarker(widget);

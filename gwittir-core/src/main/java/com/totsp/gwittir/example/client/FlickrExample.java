@@ -78,11 +78,8 @@ public class FlickrExample extends BoundVerticalPanel<Object>{
         add(mmsa);
 
         Image larger = new Image();
-        Converter converter = new Converter<FlickrPhoto, String>() {
+        Converter<FlickrPhoto, String> converter = new Converter<FlickrPhoto, String>() {
                 public String convert(FlickrPhoto o) {
-                    Logger.getAnonymousLogger()
-                          .log(Level.WARN, o.getNormal(), null);
-
                     return o.getNormal();
                 }
             };

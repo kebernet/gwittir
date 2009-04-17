@@ -154,7 +154,7 @@ public class ReflectedImageGroup<T> extends AbstractBoundCollectionWidget<T,Stri
     }
     
     public void setSelected(Object selected) {
-        LOG.log( Level.WARN, selected + " :: " + selected.getClass(), null);
+        LOG.log( Level.SPAM, selected + " :: " + selected.getClass(), null);
         if( selected == this.selected ){
             return;
         }
