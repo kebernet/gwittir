@@ -44,6 +44,7 @@ public class PopupDatePicker extends AbstractBoundWidget<Date>
     HorizontalPanel hp = new HorizontalPanel();
     PopupPanel pp = new PopupPanel(true);
     private ConverterWrapper converter = new ConverterWrapper();
+    private boolean hasFirstSet = false;
     /** Creates a new instance of PopupDatePicker */
     public PopupDatePicker() {
         
@@ -87,7 +88,11 @@ public class PopupDatePicker extends AbstractBoundWidget<Date>
         });
         this.base.addPropertyChangeListener("value", new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent evt) {
-                changes.firePropertyChange("value", evt.getOldValue(), evt.getNewValue() );
+            	if(!hasFirstSet){
+            		hasFirstSet=true;
+            	} else {
+            		changes.firePropertyChange("value", evt.getOldValue(), evt.getNewValue() );
+            	}
             }
             
         });
