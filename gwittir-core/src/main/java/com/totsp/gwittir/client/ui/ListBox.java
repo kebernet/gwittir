@@ -270,8 +270,8 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
 
         for (Iterator<T> it = this.options.iterator(); it.hasNext(); i++) {
             T item = it.next();
-
-            if (contains(this.getValue(), item)) {
+            
+            if (contains(value, item)) {
                 base.setItemSelected(i, true);
                 this.selected.add(item);
             } else {

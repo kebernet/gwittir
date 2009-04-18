@@ -20,6 +20,14 @@
 
 package com.totsp.gwittir.client.ui.calendar;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -29,12 +37,6 @@ import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.ListBox;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * A wrapper around a Calendar that provides Month/Year navigation for selection.
@@ -88,11 +90,12 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
         this.updateMonth();
         hp.add( this.month );
         this.updateYears();
+        GWT.log("INit to:"+Integer.toString( calendar.getRenderDate().getYear() + 1900 ), null);
         this.year.setValue( year.single(Integer.toString( calendar.getRenderDate().getYear() + 1900 )) );
         hp.add( this.year );
         this.year.addPropertyChangeListener(VALUE_PROPERTY_NAME, new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if( propertyChangeEvent.getNewValue() == null ){
+                if( propertyChangeEvent.getNewValue() == null || ((Collection)propertyChangeEvent.getNewValue()).size() == 0){
                     return;
                 }
                 Date current = calendar.getRenderDate();
