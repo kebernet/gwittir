@@ -171,11 +171,13 @@ public abstract class AbstractBoundWidget<T> extends Composite implements
 			this.cleanupAction();
 		}
 		this.action = action;
-		if (this.action != null) {
+		// Check to see if action is not null and model has been set
+		if (this.action != null && this.model != null) {
 			this.setupAction();
-		}
-		if (this.isAttached()) {
-			this.activateAction();
+			// If attached do the binding
+			if (this.isAttached()) {
+				this.activateAction();
+			}
 		}
 	}
 
