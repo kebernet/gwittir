@@ -92,6 +92,8 @@ public abstract class AbstractBoundWidget<T> extends Composite implements
 
 	@Override
 	protected void onAttach() {
+	//Call cleanup action to remove any bindings just in case there are other bindings.
+		this.cleanupAction();
 		this.setupAction();
 		super.onAttach();
 		this.changes.firePropertyChange("attached", false, true);
