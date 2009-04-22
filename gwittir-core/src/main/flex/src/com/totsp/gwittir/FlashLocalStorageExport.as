@@ -22,6 +22,8 @@ import mx.controls.TextArea;
 			ExternalInterface.addCallback("getLocal", getLocal );
 			ExternalInterface.addCallback("setLocal", setLocal );
 			ExternalInterface.addCallback("flushAll", flushAll );
+			ExternalInterface.addCallback("set", this.set);
+			ExternalInterface.addCallback("get", this.get );
 			ExternalInterface.addCallback("flush", flush );
 			ExternalInterface.call("FlashLocalStorageExportRegistered");
 		}
