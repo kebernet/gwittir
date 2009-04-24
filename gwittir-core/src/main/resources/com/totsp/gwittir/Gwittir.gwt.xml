@@ -67,7 +67,7 @@
 	   	var hasFlash = false;
 		if (navigator.plugins && navigator.plugins.length){
 			for(x in navigator.plugins ){
-				if(x.indexOf("Shockwave Flash") != -1){
+				if(navigator.plugins[x].name.indexOf("Shockwave Flash") != -1){
 					hasFlash = true;
 					break;
 				}
