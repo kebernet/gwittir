@@ -50,7 +50,6 @@ public class FlashStorage extends JavaScriptObject {
 	private static native final void registerCallback(final StartupCallback callback)
 	/*-{ 
 		var old = $wnd.FlashLocalStorageExportRegistered;
-		
 		$wnd.FlashLocalStorageExportRegistered = function(){
 			@com.totsp.gwittir.client.util.flashstorage.FlashStorage::delayCallback(Lcom/totsp/gwittir/client/util/flashstorage/StartupCallback;)(callback);
 //			if(old != 'undefined'){
@@ -59,6 +58,7 @@ public class FlashStorage extends JavaScriptObject {
 		} 
 	}-*/;
 	
+	@SuppressWarnings("unused")
 	private static final void delayCallback(final StartupCallback callback){
 		DeferredCommand.addCommand( new Command(){
 
@@ -92,9 +92,6 @@ public class FlashStorage extends JavaScriptObject {
 	}-*/;
 	
 	private native final JavaScriptObject getLocalNative(String name)/*-{
-		
-		alert(this.getLocal);
-		
 		var result = this.getLocal(name);
 		return result == null ? new Object(): result;
 	}-*/;
