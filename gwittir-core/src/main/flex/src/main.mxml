@@ -7,6 +7,6 @@
 			
 			var storage:FlashLocalStorageExport = new FlashLocalStorageExport(log);
 			
-		]]>
+		]]>  
 	</mx:initialize>
 </mx:Application>

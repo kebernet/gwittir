@@ -99,6 +99,26 @@
         <when-property-is name="gwittir.windowcontext" value="name"/>
     </replace-with>
 	
+	
+	<replace-with
+        class="com.totsp.gwittir.client.ui.rebind.FlashElementFactoryEmbed">
+        <when-type-is
+            class="com.totsp.gwittir.client.ui.rebind.FlashElementFactory" />
+        <when-property-is name="user.agent" value="gecko"/>
+    </replace-with>
+    <replace-with
+        class="com.totsp.gwittir.client.ui.rebind.FlashElementFactoryEmbed">
+        <when-type-is
+            class="com.totsp.gwittir.client.ui.rebind.FlashElementFactory" />
+        <when-property-is name="user.agent" value="gecko1_8"/>
+    </replace-with>
+    <replace-with
+        class="com.totsp.gwittir.client.ui.rebind.FlashElementFactoryEmbed">
+        <when-type-is
+            class="com.totsp.gwittir.client.ui.rebind.FlashElementFactory" />
+        <when-property-is name="user.agent" value="ie6"/>
+    </replace-with>
+    
 	<servlet class="com.totsp.gwittir.service.test.MacShellPersisterServlet"
 		path="/MacShellPersister" />
 </module>

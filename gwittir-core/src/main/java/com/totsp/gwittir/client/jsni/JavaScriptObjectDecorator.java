@@ -7,6 +7,9 @@
  */
 package com.totsp.gwittir.client.jsni;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 
@@ -403,5 +406,17 @@ public class JavaScriptObjectDecorator {
     } else {
         return object[ name ];
     }
+    }-*/;
+    
+    public Set<String> getProperties(){
+    	HashSet<String> props = new HashSet<String>();
+    	this.getProperties(this.object, props);
+    	return props;
+    }
+    
+    private native void getProperties(JavaScriptObject object, Set toFill)/*-{
+    	for(x in object){
+    		toFill.@java.util.Set::add(Ljava/lang/Object;)(x.toString());
+    	}	
     }-*/;
 }

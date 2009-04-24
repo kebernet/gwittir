@@ -22,8 +22,8 @@ import mx.controls.TextArea;
 			ExternalInterface.addCallback("getLocal", getLocal );
 			ExternalInterface.addCallback("setLocal", setLocal );
 			ExternalInterface.addCallback("flushAll", flushAll );
-			ExternalInterface.addCallback("set", this.set);
-			ExternalInterface.addCallback("get", this.get );
+			ExternalInterface.addCallback("set", this.setValue);
+			ExternalInterface.addCallback("get", this.getValue );
 			ExternalInterface.addCallback("flush", flush );
 			ExternalInterface.call("FlashLocalStorageExportRegistered");
 		}
@@ -86,11 +86,11 @@ import mx.controls.TextArea;
    			this.log.text+= "\t"+name+" status:"+status;
 	   }
 	   
-	   public function set(name:String, key:String, value:String):void{
+	   public function setValue(name:String, key:String, value:String):void{
 	   		var so:SharedObject = this.sharedObjects[name];
 	   		so.data[key] = value;
 	   }
-	   public function get(name, key):String{
+	   public function getValue(name, key):String{
 	   		var so:SharedObject = this.sharedObjects[name];
 	   		return so.data[key];
 	   }

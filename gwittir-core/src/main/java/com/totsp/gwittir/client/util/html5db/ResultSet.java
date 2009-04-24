@@ -36,9 +36,11 @@ public class ResultSet extends JavaScriptObject {
 
     public final JavaScriptObjectDecorator[] getRows(){
         JavaScriptObjectDecorator[] result = new JavaScriptObjectDecorator[this.getRowCount()];
-        JavaScriptObjectDecorator instance = new JavaScriptObjectDecorator(this).getJavaScriptObjectProperty("rows");
-        for(int i=0; i < result.length; i++ ){
-            result[i] = instance.getJavaScriptObjectProperty(Integer.toString(i));
+        if( this.getRowCount() > 0){
+        	JavaScriptObjectDecorator instance = new JavaScriptObjectDecorator(this).getJavaScriptObjectProperty("rows");
+        	for(int i=0; i < result.length; i++ ){
+	            result[i] = instance.getJavaScriptObjectProperty(Integer.toString(i));
+	        }
         }
         return result;
     }

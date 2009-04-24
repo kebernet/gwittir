@@ -19,16 +19,19 @@
  */
 package com.totsp.gwittir.example.client;
 
+import java.util.Map;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.totsp.gwittir.client.flow.FlowContext;
-import com.totsp.gwittir.client.flow.FlowController;
-import com.totsp.gwittir.client.flow.SimpleSessionHistoryManager;
-import com.totsp.gwittir.client.ui.FlowTabPanel;
-import com.totsp.gwittir.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.util.WindowContext;
 import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
+import com.totsp.gwittir.client.util.flashstorage.FlashStorage;
+import com.totsp.gwittir.client.util.flashstorage.StartupCallback;
 
 
 
@@ -57,7 +60,7 @@ public class ExampleEntryPoint implements EntryPoint {
     public void start() {
     	
     	
-    	
+    	/*
     	FlowController.setHistoryManager(new SimpleSessionHistoryManager());
     	
     	FlowContext context = new FlowContext();
@@ -87,7 +90,34 @@ public class ExampleEntryPoint implements EntryPoint {
         
         RootPanel.get().add(tabs);
         RootPanel.get().add(sp);
+        */;
         
+        FlashStorage.initialize(new StartupCallback(){
+
+			public void onStart() {
+				try{
+				FlashStorage storage = FlashStorage.getInstance();
+				Map<String, String> vals = storage.getLocal("gwittir");
+				Window.alert(vals.get("test"));
+				vals.put("test", "test");
+				storage.setLocal("gwittir", vals);
+				storage.flushAll();
+				} catch(Exception e){
+					GWT.log(null, e);
+				}
+			}
+        	
+        });
+        
+        Button b = new Button("click", new ClickListener(){
+
+			public void onClick(Widget sender) {
+				FlashStorage storage = FlashStorage.getInstance();
+				Map<String, String> vals = storage.getLocal("gwittir");
+			}
+        	
+        });
+        RootPanel.get().add(b);
     }
 
     
