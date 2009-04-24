@@ -24,9 +24,9 @@ package com.totsp.gwittir.client.ui;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ToStringRenderer implements Renderer<Object,String> {
+public class ToStringRenderer<T> implements Renderer<T,String> {
 
-    public static final ToStringRenderer INSTANCE = new ToStringRenderer();
+    public static final ToStringRenderer<Object> INSTANCE = new ToStringRenderer<Object>();
     /** Creates a new instance of ToStringRenderer */
     private  ToStringRenderer() {
         super();
