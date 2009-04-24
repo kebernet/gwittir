@@ -35,7 +35,7 @@
             class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
-    <define-property name="gwittir.windowcontext" values="gears,domstorage,userdata,html5,name" />
+    <define-property name="gwittir.windowcontext" values="domstorage,userdata,html5,flash,name" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
         
@@ -64,14 +64,34 @@
 		if(window.globalStorage || window.localStorage){
 	    	return "domstorage";
 	   	}
+	   	var hasFlash = false;
+		if (navigator.plugins && navigator.plugins.length){
+			for(x in navigator.plugins ){
+				if(x.indexOf("Shockwave Flash") != -1){
+					hasFlash = true;
+					break;
+				}
+			}
+		} else if (navigator.mimeTypes && navigator.mimeTypes.length){
+			x = navigator.mimeTypes['application/x-shockwave-flash'];
+			if (x && x.enabledPlugin)
+				hasFlash = true;
+		} else if( window.ActiveXObject ){
+			 if(eval("new ActiveXObject(\"ShockwaveFlash.ShockwaveFlash.9\");")){
+			 	hasFlash = true;
+			 } else if(eval("new ActiveXObject(\"ShockwaveFlash.ShockwaveFlash.10\");")){
+			 	hasFlash = true;
+			 }
+		}
+		if( hasFlash ) return "flash";
 	   	return "name";
         ]]>
     </property-provider>
     <replace-with
-        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterGears">
+        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterFlash">
         <when-type-is
             class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
-        <when-property-is name="gwittir.windowcontext" value="gears"/>
+        <when-property-is name="gwittir.windowcontext" value="flash"/>
     </replace-with>
     <replace-with
         class="com.totsp.gwittir.client.util.impl.WindowContextPersisterFirefox">

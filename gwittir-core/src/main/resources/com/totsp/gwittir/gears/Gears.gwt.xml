@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+	<inherits name='com.totsp.gwittir.Gwittir' />
+    <inherits name='com.google.gwt.gears.Gears'/>
+    <extend-property name="gwittir.windowcontext" values="gears" />
+    <replace-with
+        class="com.totsp.gwittir.gears.client.util.impl.WindowContextPersisterGears">
+        <when-type-is
+            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+        <when-property-is name="gwittir.windowcontext" value="gears"/>
+    </replace-with>
+</module>

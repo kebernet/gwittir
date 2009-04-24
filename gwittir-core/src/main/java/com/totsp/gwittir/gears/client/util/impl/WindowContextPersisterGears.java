@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.totsp.gwittir.client.util.impl;
+package com.totsp.gwittir.gears.client.util.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
+import com.totsp.gwittir.client.util.impl.AbstractWindowContextPersister;
 
 /**
  * 
