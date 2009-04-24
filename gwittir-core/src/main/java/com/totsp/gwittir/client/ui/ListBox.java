@@ -45,16 +45,17 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
     implements HasFocus, SourcesFocusEvents, SourcesChangeEvents {
     public static final String VALUE_PROPERTY_NAME = "value";
     private static final Logger LOGGER = Logger.getLogger(ListBox.class.toString());
-    private ArrayList selected = new ArrayList();
-    private Collection<T> options = new ArrayList();
+    private ArrayList<T> selected = new ArrayList<T>();
+    private Collection<T> options = new ArrayList<T>();
     private com.google.gwt.user.client.ui.ListBox base;
-    private Vector changeListeners = new Vector();
+    private Vector<ChangeListener> changeListeners = new Vector<ChangeListener>();
 
     /** Creates a new instance of ListBox */
-    public ListBox() {
+    @SuppressWarnings("unchecked")
+	public ListBox() {
         super();
         this.base = new com.google.gwt.user.client.ui.ListBox();
-        this.setRenderer(ToStringRenderer.INSTANCE);
+        this.setRenderer((Renderer<T, String>) ToStringRenderer.INSTANCE);
         this.setComparator(SimpleComparator.INSTANCE);
         this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
@@ -143,8 +144,8 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
         this.base.setMultipleSelect(multiple);
 
         if (this.selected.size() > 1) {
-            Object o = this.selected.get(0);
-            this.selected = new ArrayList();
+            T o = this.selected.get(0);
+            this.selected = new ArrayList<T>();
             this.selected.add(o);
         }
     }
@@ -171,10 +172,10 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
     }
 
     public void setOptions(Collection<T> options) {
-        this.options = new ArrayList();
+        this.options = new ArrayList<T>();
         base.clear();
 
-        ArrayList newSelected = new ArrayList();
+        ArrayList<T> newSelected = new ArrayList<T>();
 
         for (Iterator<T> it = options.iterator(); it.hasNext();) {
             T item = it.next();
@@ -188,7 +189,7 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
             this.options.add(item);
         }
 
-        ArrayList old = this.selected;
+        ArrayList<T> old = this.selected;
         this.selected = newSelected;
 
         if (this.isMultipleSelect()) {
@@ -203,7 +204,7 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
         fireChangeListeners();
     }
 
-    public Collection getOptions() {
+    public Collection<T> getOptions() {
         return options;
     }
 
@@ -213,7 +214,7 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
     }
 
     @Override
-    public void setRenderer(Renderer renderer) {
+    public void setRenderer(Renderer<T, String> renderer) {
         super.setRenderer(renderer);
         this.setOptions(this.options);
     }
@@ -265,8 +266,8 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
 
     public void setValue(Collection<T> value) {
         int i = 0;
-        ArrayList old = this.selected;
-        this.selected = new ArrayList();
+        ArrayList<T> old = this.selected;
+        this.selected = new ArrayList<T>();
 
         for (Iterator<T> it = this.options.iterator(); it.hasNext(); i++) {
             T item = it.next();
@@ -336,15 +337,19 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
         if (obj == null) {
             return false;
         }
+        try{
+        	final ListBox<?> other = (ListBox<?>) obj;
 
-        final ListBox other = (ListBox) obj;
-
-        if ((this.options != other.options) &&
-                ((this.options == null) || !this.options.equals(other.options))) {
-            return false;
+	        if ((this.options != other.options) &&
+	                ((this.options == null) || !this.options.equals(other.options))) {
+	            return false;
+	        }
+	
+	        return true;
+	        }
+        catch(ClassCastException e){
+        	return false;
         }
-
-        return true;
     }
 
     public int hashCode() {
@@ -363,11 +368,12 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
         this.base.removeFocusListener(listener);
     }
 
-    public void removeItem(final Object o) {
+    @SuppressWarnings("unchecked")
+	public void removeItem(final Object o) {
         int i = 0;
 
-        for (Iterator it = this.options.iterator(); it.hasNext(); i++) {
-            Object option = it.next();
+        for (Iterator<T> it = this.options.iterator(); it.hasNext(); i++) {
+            T option = it.next();
 
             if (this.getComparator().compare(option, o) == 0) {
                 this.options.remove(option);
@@ -389,9 +395,10 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
         this.base.removeStyleName(style);
     }
 
-    protected boolean contains(final Collection c, final Object o) {
-        for (Iterator it = c.iterator(); it.hasNext();) {
-            Object next = it.next();
+    @SuppressWarnings("unchecked")
+	protected boolean contains(final Collection<T> c, final T o) {
+        for (Iterator<T> it = c.iterator(); it.hasNext();) {
+            T next = it.next();
 
             if (this.getComparator().compare(o, next) == 0) {
                 return true;
@@ -402,8 +409,8 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
     }
 
     private void fireChangeListeners() {
-        for (Iterator it = this.changeListeners.iterator(); it.hasNext();) {
-            ChangeListener l = (ChangeListener) it.next();
+        for (Iterator<ChangeListener> it = this.changeListeners.iterator(); it.hasNext();) {
+            ChangeListener l = it.next();
             l.onChange(this);
         }
 
@@ -413,18 +420,18 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
     }
 
     private void update() {
-        ArrayList newSelected = new ArrayList();
-        Iterator it = this.options.iterator();
+        ArrayList<T> newSelected = new ArrayList<T>();
+        Iterator<T> it = this.options.iterator();
 
         for (int i = 0; (i < base.getItemCount()) && it.hasNext(); i++) {
-            Object item = it.next();
+            T item = it.next();
 
             if (this.base.isItemSelected(i)) {
                 newSelected.add(item);
             }
         }
 
-        ArrayList old = this.selected;
+        ArrayList<T> old = this.selected;
         this.selected = newSelected;
 
         
