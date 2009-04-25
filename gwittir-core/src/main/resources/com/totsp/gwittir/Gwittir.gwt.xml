@@ -4,7 +4,6 @@
     <!-- Inherit the core Web Toolkit stuff.                  -->
     <inherits name='com.google.gwt.user.User'/>
     <inherits name='com.google.gwt.i18n.I18N'/>
-    <inherits name='com.google.gwt.gears.Gears'/>
     <inherits name='com.googlecode.gwtx.Java'/>
     <source path="client" />
     <generate-with
@@ -38,28 +37,31 @@
     <define-property name="gwittir.windowcontext" values="domstorage,userdata,html5,flash,name" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
-        
-        if (typeof GearsFactory != 'undefined') {
-            return "gears";
-        }
-        try {
-          var gears = new ActiveXObject('Gears.Factory');
-          var db = gears.create('beta.database');
-          db.open('database-test');
-          alert("ActiveX");
-            
-          return "gears";
-        } catch (e) {
-          if ((typeof navigator.mimeTypes != 'undefined')
-               && navigator.mimeTypes["application/x-googlegears"]) {
-            return "gears";
-          }
-        }
+            if(
+             (navigator.userAgent.indexOf("Macintosh") != -1 &&  // trying to detect hosted mode here
+             	navigator.userAgent.indexOf("WebKit") != -1)
+              || navigator.userAgent.indexOf("Safari") != -1 ){
+        		return "html5";
+        	}
+	        if (typeof GearsFactory != "undefined") {
+	            return "gears";
+	        }
+	        try {
+	          var gears = new ActiveXObject('Gears.Factory');
+	          var db = gears.create('beta.database');
+	          db.open('database-test');
+	          alert("ActiveX");
+	            
+	          return "gears";
+	        } catch (e) {
+	          if ((typeof navigator.mimeTypes != 'undefined')
+	               && navigator.mimeTypes["application/x-googlegears"]) {
+	            return "gears";
+	          }
+	        }
+        	
         if(navigator.userAgent.indexOf("MSIE") != -1 ) {
         	return "userdata";
-        }
-        if(navigator.userAgent.indexOf("Safari") != -1 ){
-        	return "html5";
         }
 		if(window.globalStorage || window.localStorage){
 	    	return "domstorage";
@@ -85,6 +87,7 @@
 		}
 		if( hasFlash ) return "flash";
 	   	return "name";
+	   	
         ]]>
     </property-provider>
     <replace-with

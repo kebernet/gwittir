@@ -49,7 +49,7 @@ public class Reflection extends Widget {
     }
 
     protected void init(){
-        Logger.getAnonymousLogger().log( Level.DEBUG, "Init default Reflection", null );
+        Logger.getAnonymousLogger().log( Level.SPAM, "Init default Reflection", null );
         //panel.setWidget( canvas );
         setElement(canvas.getElement());
         
