@@ -19,7 +19,6 @@
  */
 package com.totsp.gwittir.client.fx.rebind;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
@@ -78,8 +77,7 @@ public class Reflection extends Widget {
     }
 
     private void paint() {
-    	GWT.log("Paint!"+this.baseWidth+"x"+this.baseHeight, null);
-        int reflectHeight = (int) Math.round(baseHeight * height);
+    	int reflectHeight = (int) Math.round(baseHeight * height);
         Canvas.Context ctx = canvas.getContext();
         ctx.save();
         ctx.clearRect(0, 0, this.baseWidth, reflectHeight );
@@ -91,7 +89,7 @@ public class Reflection extends Widget {
         ctx.setGlobalCompositeOperation("destination-out");
         Canvas.LinearGradient gradient = ctx.createLinearGradient(0,0, 0, reflectHeight );
         gradient.addColorStop(1, "rgba(255, 255, 255, 1.0)");
-	gradient.addColorStop(0, "rgba(255, 255, 255, "+(1-this.opacity)+")");
+        gradient.addColorStop(0, "rgba(255, 255, 255, "+(1-this.opacity)+")");
         ctx.setFillStyle( gradient );
         ctx.fillRect(0,0, this.baseWidth, reflectHeight );
         ctx.restore();

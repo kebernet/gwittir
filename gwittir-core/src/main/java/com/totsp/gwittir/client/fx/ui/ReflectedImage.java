@@ -174,7 +174,6 @@ public class ReflectedImage extends AbstractBoundWidget<String> implements Sourc
                     this.reflectHeight, this.opacity);
     		v.setWidget(1,0,reflect);
     	} catch(Exception e){
-    		GWT.log(null, e);
     	}
     }
 }
