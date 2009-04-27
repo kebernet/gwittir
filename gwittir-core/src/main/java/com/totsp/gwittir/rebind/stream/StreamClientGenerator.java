@@ -103,7 +103,7 @@ public class StreamClientGenerator extends Generator {
         sw.println( "\";");
         sw.println("public SerializationStreamFactory getStreamFactory() { return SERIALIZER; }");
         for (JMethod method : type.getMethods()) {
-        	writeMethod(logger, sw, asyncType, method);
+        	writeMethod(logger, sw, asyncType, method, StreamServiceCallback.class);
         }
 
         sw.outdent();
@@ -113,16 +113,16 @@ public class StreamClientGenerator extends Generator {
         return packageName + "." + className;
     }
 
-    protected void writeMethod(TreeLogger logger, SourceWriter sw, JClassType asyncType, JMethod method ) throws UnableToCompleteException{
+    protected void writeMethod(TreeLogger logger, SourceWriter sw, JClassType asyncType, JMethod method , Class<?> callbackType) throws UnableToCompleteException{
     	if (!(method.getReturnType() instanceof JClassType)) {
             logger.log(TreeLogger.Type.ERROR,
                 method.getReturnType().getQualifiedSourceName() +
                 " is not a class type.", null);
             throw new UnableToCompleteException();
         }
-
+    	
         JClassType returnType = (JClassType) method.getReturnType();
-
+        
         if (!returnType.isAssignableTo(this.streamServiceIterator)) {
             logger.log(TreeLogger.Type.ERROR,
                 returnType.getQualifiedSourceName() +
@@ -156,7 +156,7 @@ public class StreamClientGenerator extends Generator {
             sw.print(" ");
             sw.print(param.getName());
         }
-        sw.println(" , StreamServiceCallback callback");
+        sw.println(" , "+callbackType.getCanonicalName()+" callback");
         sw.println(") {");
         sw.indent();
         sw.println("try{");
@@ -214,7 +214,7 @@ public class StreamClientGenerator extends Generator {
 
     }
 
-    private String getJSNIType(JType type){
+    protected String getJSNIType(JType type){
        if (type.isArray() != null ){
             return type.getJNISignature().replaceAll("/", ".");
        } else if( type.getJNISignature().length() > 1 ){
@@ -224,7 +224,7 @@ public class StreamClientGenerator extends Generator {
        }
     }
 
-    private String getWriteCallName(JType type){
+    protected String getWriteCallName(JType type){
         if( getJSNIType(type).length() == 1){
             String typeName = type.toString();
             return "write"+typeName.substring(0,1).toUpperCase() + typeName.substring(1, typeName.length() );
@@ -235,7 +235,7 @@ public class StreamClientGenerator extends Generator {
         }
     }
 
-    private void generateRemoteService(TreeLogger logger,
+    protected void generateRemoteService(TreeLogger logger,
         GeneratorContext context, JClassType type)
         throws UnableToCompleteException {
         String packageName = type.getQualifiedSourceName() + "_impls";
@@ -323,13 +323,13 @@ public class StreamClientGenerator extends Generator {
         }
     }
 
-    private String determineParameterType(JType type){
+    protected String determineParameterType(JType type){
         String parameterType = type.toString();;
         parameterType = parameterType.substring( parameterType.indexOf("<")+1, parameterType.lastIndexOf(">"));
         return parameterType;
     }
 
-    private void generateRemoteServiceAsync(TreeLogger logger,
+    protected void generateRemoteServiceAsync(TreeLogger logger,
         GeneratorContext context, JClassType type)
         throws UnableToCompleteException {
         String packageName = type.getQualifiedSourceName() + "_impls";

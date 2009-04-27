@@ -31,7 +31,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author kebernet
  */
 public class StreamServiceServlet extends RemoteServiceServlet {
-    public static final String SCRIPT_CLOSE = "</script>";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9185972219157797813L;
+	public static final String SCRIPT_CLOSE = "</script>";
     public static final String UTF8 = "UTF-8";
     public static final String WINDOW_PARENT = "window.parent.";
     protected static final String SCRIPT_OPEN = "<script type=\"text/javascript\">";
