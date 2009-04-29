@@ -47,6 +47,7 @@ public class WindowContext {
 	private final Map<String, String> data = new HashMap<String, String>();
 	private WindowContextPersister persister = (WindowContextPersister) GWT
 			.create(WindowContextPersister.class);
+	private boolean initialized = false;
 	private final WindowCloseListener wcl = new WindowCloseListener() {
 		public String onWindowClosing() {
 			flush();
@@ -92,6 +93,7 @@ public class WindowContext {
 
 			public void onInitialized() {
 				data.putAll(persister.getWindowContextData());
+				initialized = true;
 				callback.onInitialized();
 			}
 
@@ -137,4 +139,8 @@ public class WindowContext {
 	public static native String getUserAgent()
 	/*-{return navigator.userAgent; }-*/;
 
+	
+	public boolean isInitialized(){
+		return this.initialized;
+	}
 }
