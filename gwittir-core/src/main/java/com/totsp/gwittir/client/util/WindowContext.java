@@ -48,6 +48,7 @@ public class WindowContext {
 	private WindowContextPersister persister = (WindowContextPersister) GWT
 			.create(WindowContextPersister.class);
 	private boolean initialized = false;
+	private boolean dirty = false;
 	private final WindowCloseListener wcl = new WindowCloseListener() {
 		public String onWindowClosing() {
 			flush();
@@ -62,15 +63,32 @@ public class WindowContext {
 	private WindowContext() {
 		super();
 		Window.addWindowCloseListener(wcl);
+		this.instrumentModuleFrame();
 	}
 
+	private native void instrumentModuleFrame() /*-{
+		var instance = this;
+		if($wnd != window){
+			window.onunload = function(){
+				try{
+					instance.@com.totsp.gwittir.client.util.WindowContext::flush()();
+				} catch(e) {
+					alert(e);
+				}
+			}
+		}
+	}-*/;
+	
 	/** 
 	 * Immediately writes the values in the context to whatever the persistent store is. This
 	 * will happen automatically during onWindowClosing(); Final storage may or may not be synchronous
 	 * to the call of the flush() method.
 	 */
 	public void flush() {
-		persister.storeWindowContextData(data);
+		if(dirty){
+			persister.storeWindowContextData(data);
+			dirty=false;
+		}
 	}
 
 	/**
@@ -118,6 +136,7 @@ public class WindowContext {
 	public void put(String key, String item) {
 		assert key.matches("[a-zA-Z0-9]*") : "Illegal character in the key";
 		data.put(key, item);
+		dirty = true;
 	}
 
 	public Set<String> keySet(){

@@ -40,7 +40,7 @@
             if(
              (navigator.userAgent.indexOf("Macintosh") != -1 &&  // trying to detect hosted mode here
              	navigator.userAgent.indexOf("WebKit") != -1)
-              || navigator.userAgent.indexOf("Safari") != -1 ){
+              || (navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 )){
         		return "html5";
         	}
 	        if (typeof GearsFactory != "undefined") {
