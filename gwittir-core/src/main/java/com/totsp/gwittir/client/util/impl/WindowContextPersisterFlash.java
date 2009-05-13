@@ -7,6 +7,7 @@ package com.totsp.gwittir.client.util.impl;
 
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 import com.totsp.gwittir.client.util.flashstorage.FlashStorage;
 import com.totsp.gwittir.client.util.flashstorage.StartupCallback;
@@ -37,6 +38,7 @@ public class WindowContextPersisterFlash extends AbstractWindowContextPersister 
 
 			public void onStart() {
 				storage = FlashStorage.getInstance();
+				GWT.log("FlashStorage initialized.", null);
 				listener.onInitialized();
 			}
 			

@@ -43,15 +43,17 @@ public class WindowContext {
 	/** 
 	 * The static instance of the WindowContext object.
 	 */
+	private static final Logger LOG = Logger.getLogger(WindowContext.class.getName() );
 	public static final WindowContext INSTANCE = new WindowContext();
 	private final Map<String, String> data = new HashMap<String, String>();
 	private WindowContextPersister persister = (WindowContextPersister) GWT
 			.create(WindowContextPersister.class);
 	private boolean initialized = false;
-	private boolean dirty = false;
+	private int flushed = 0;
 	private final WindowCloseListener wcl = new WindowCloseListener() {
 		public String onWindowClosing() {
 			flush();
+			flushed = 1;
 			return null;
 		}
 
@@ -63,20 +65,24 @@ public class WindowContext {
 	private WindowContext() {
 		super();
 		Window.addWindowCloseListener(wcl);
-		this.instrumentModuleFrame();
+		Window.setStatus(this.instrumentModuleFrame());
+				
 	}
 
-	private native void instrumentModuleFrame() /*-{
+	private native String instrumentModuleFrame() /*-{
 		var instance = this;
 		if($wnd != window){
 			window.onunload = function(){
 				try{
+					//alert("flush");
 					instance.@com.totsp.gwittir.client.util.WindowContext::flush()();
 				} catch(e) {
 					alert(e);
 				}
 			}
+			
 		}
+		return $wnd.__gwittir_storage;
 	}-*/;
 	
 	/** 
@@ -85,9 +91,9 @@ public class WindowContext {
 	 * to the call of the flush() method.
 	 */
 	public void flush() {
-		if(dirty){
+		if(flushed != 1){
 			persister.storeWindowContextData(data);
-			dirty=false;
+			LOG.log(Level.INFO, "Flushed "+data.size()+" items.", null);
 		}
 	}
 
@@ -104,14 +110,15 @@ public class WindowContext {
 	public void initialize(final WindowContextCallback callback) {
 		if(!GWT.isScript() && getUserAgent().indexOf("WebKit") != -1){
 			this.persister = new WindowContextPersisterMacShell();
-			GWT.log("WARNING: You are in hosted mode on Safari. Defaulting to the WindowName persister because HTML5 won't work in hosted mode!", null);
+			LOG.log(Level.WARN, "***You are in hosted mode on Safari. Defaulting to the WindowName persister because HTML5 won't work in hosted mode!***", null);
 		}
-		Logger.getLogger(WindowContext.class.toString()).log( Level.INFO, "Got persister :"+persister.getClass(), null);
+		LOG.log( Level.INFO, "Got persister :"+persister.getClass(), null);
 		WindowContextCallback internalCallback = new WindowContextCallback() {
 
 			public void onInitialized() {
 				data.putAll(persister.getWindowContextData());
 				initialized = true;
+				LOG.log(Level.DEBUG, "Initialized.", null);
 				callback.onInitialized();
 			}
 
@@ -135,8 +142,8 @@ public class WindowContext {
 	 */
 	public void put(String key, String item) {
 		assert key.matches("[a-zA-Z0-9]*") : "Illegal character in the key";
+		LOG.log(Level.DEBUG, "set ["+key+":"+item+"]", null);
 		data.put(key, item);
-		dirty = true;
 	}
 
 	public Set<String> keySet(){

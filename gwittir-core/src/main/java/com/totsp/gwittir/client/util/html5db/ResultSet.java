@@ -32,7 +32,7 @@ public class ResultSet extends JavaScriptObject {
         
     }
 
-    public final native int getRowCount()/*-{ return this.rows.length }-*/;
+    public final native int getRowCount()/*-{ return this.rows ? this.rows.length : 0; }-*/;
 
     public final JavaScriptObjectDecorator[] getRows(){
         JavaScriptObjectDecorator[] result = new JavaScriptObjectDecorator[this.getRowCount()];
