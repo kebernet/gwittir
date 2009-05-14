@@ -18,7 +18,7 @@ import java.beans.PropertyChangeListener;
 public class GwtTestBinding extends GWTTestCase {
 
     public String getModuleName() {
-        return "com.totsp.gwittir.GwittirTest";
+        return "com.totsp.gwittir.Gwittir";
     }
 
     public void testBasicDotted() throws Exception {

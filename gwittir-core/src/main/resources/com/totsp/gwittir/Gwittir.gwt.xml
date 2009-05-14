@@ -37,25 +37,6 @@
     <define-property name="gwittir.windowcontext" values="domstorage,userdata,html5,flash,name" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
-            
-	        if (typeof GearsFactory != "undefined") {
-	        	window.__gwittir_storage = "gears";
-	            return "gears";
-	        }
-	        try {
-	          var gears = new ActiveXObject('Gears.Factory');
-	          var db = gears.create('beta.database');
-	          db.open('database-test');
-	          alert("ActiveX");
-	          window.__gwittir_storage = "gears";  	
-	          return "gears";
-	        } catch (e) {
-	          if ((typeof navigator.mimeTypes != 'undefined')
-	               && navigator.mimeTypes["application/x-googlegears"]) {
-	            window.__gwittir_storage = "gears";
-	            return "gears";
-	          }
-	        }
 	        if(
              (navigator.userAgent.indexOf("Macintosh") != -1 &&  // trying to detect hosted mode here
              	navigator.userAgent.indexOf("WebKit") != -1)
@@ -67,7 +48,7 @@
 	            window.__gwittir_storage = "userdata";
 	        	return "userdata";
         	}
-	    	var hasFlash = false;
+	   /* 	var hasFlash = false;
 		if (navigator.plugins && navigator.plugins.length){
 			for(x in navigator.plugins ){
 				if(navigator.plugins[x].name.indexOf("Shockwave Flash") != -1){
@@ -88,12 +69,14 @@
 		}
 		if( hasFlash ) {
 		    window.__gwittir_storage = "flash";
+		    alert("flash");
 			return "flash";
-		}    
+		}    */
         
         
 		if(window.globalStorage || window.localStorage){
 		    window.__gwittir_storage = "domstorage";
+		    alert("domstorage");
 	    	return "domstorage";
 	   	}
 	   
