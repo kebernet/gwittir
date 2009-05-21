@@ -48,7 +48,15 @@
 	            window.__gwittir_storage = "userdata";
 	        	return "userdata";
         	}
-	   /* 	var hasFlash = false;
+	   
+        
+        
+		if(window.globalStorage || window.localStorage){
+		    window.__gwittir_storage = "domstorage";
+		    return "domstorage";
+	   	}
+	   	
+	   	var hasFlash = false;
 		if (navigator.plugins && navigator.plugins.length){
 			for(x in navigator.plugins ){
 				if(navigator.plugins[x].name.indexOf("Shockwave Flash") != -1){
@@ -69,16 +77,8 @@
 		}
 		if( hasFlash ) {
 		    window.__gwittir_storage = "flash";
-		    alert("flash");
-			return "flash";
-		}    */
-        
-        
-		if(window.globalStorage || window.localStorage){
-		    window.__gwittir_storage = "domstorage";
-		    alert("domstorage");
-	    	return "domstorage";
-	   	}
+		    return "flash";
+		}
 	   
 	   	return "name";
 	   	

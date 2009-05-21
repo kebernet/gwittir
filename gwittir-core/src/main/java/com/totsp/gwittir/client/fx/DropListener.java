@@ -18,5 +18,5 @@ import com.google.gwt.user.client.ui.Widget;
 public interface DropListener {
     
     public boolean onDrop( Widget dropped );
-    
+    public boolean onHover( Widget hovered );
 }
