@@ -28,15 +28,17 @@ import com.totsp.gwittir.client.validator.Validator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class NotNullValidator implements Validator {
+    
     public static final NotNullValidator INSTANCE = new NotNullValidator();
-
+    
     /** Creates a new instance of NotNullValidator */
     private NotNullValidator() {
     }
 
     public Object validate(Object value) throws ValidationException {
-        if (value == null) {
-            throw new ValidationException("Value cannot be empty.", NotNullValidator.class);
+        if(value == null) {
+            throw new ValidationException("Value cannot be empty.",
+                NotNullValidator.class);
         }
 
         return value;

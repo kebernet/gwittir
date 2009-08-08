@@ -16,23 +16,37 @@ package com.totsp.gwittir.client.beans;
 
 import com.totsp.gwittir.client.util.EqualsHashCodeBean;
 import com.totsp.gwittir.client.util.ToStringBean;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 
 /**
- *
+ * 
 DOCUMENT ME!
  *
  * @author ccollins
  */
 public abstract class AbstractModelBean implements Bindable {
-    protected final transient PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
-    private final transient EqualsHashCodeBean equalsHash = new EqualsHashCodeBean(this);
-    private final transient ToStringBean toString = new ToStringBean(this);
-
+    private transient final ToStringBean toString = new ToStringBean(this);
+    private transient final EqualsHashCodeBean equalsHash = new EqualsHashCodeBean(this);
+    protected transient final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+    
     public AbstractModelBean() {
+    }
+
+    @Override
+    public String toString() {
+        return this.toString.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.equalsHash.equals(obj);
+    }
+    
+    @Override
+    public int hashCode(){
+        return this.equalsHash.hashCode();
     }
 
     public PropertyChangeListener[] getPropertyChangeListeners() {
@@ -43,30 +57,17 @@ public abstract class AbstractModelBean implements Bindable {
         this.changeSupport.addPropertyChangeListener(propertyName, l);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        this.changeSupport.addPropertyChangeListener(l);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this.equalsHash.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.equalsHash.hashCode();
-    }
-
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
         this.changeSupport.removePropertyChangeListener(propertyName, l);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        this.changeSupport.addPropertyChangeListener(l);
     }
 
     public void removePropertyChangeListener(PropertyChangeListener l) {
         this.changeSupport.removePropertyChangeListener(l);
     }
-
-    @Override
-    public String toString() {
-        return this.toString.toString();
-    }
+    
+    
 }

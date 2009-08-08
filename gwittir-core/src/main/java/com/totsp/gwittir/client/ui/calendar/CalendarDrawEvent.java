@@ -17,19 +17,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.ui.calendar;
 
 import java.util.Date;
-
 
 /**
  * An event indicating a date has been drawn on a calendar.
  * @author cooper
  */
 public class CalendarDrawEvent {
-    private Date date;
+    
     private SourcesCalendarDrawEvents source;
-
+    private Date date;
+    
+    
     /**
      * Creates a new instance of CalendarDrawEvent
      * @param source Source calendar
@@ -41,18 +43,19 @@ public class CalendarDrawEvent {
     }
 
     /**
-     * The date rendered.
-     * @return  The date rendered.
-     */
-    public Date getDate() {
-        return date;
-    }
-
-    /**
      * Returns the source Calendar for the event.
      * @return The object that fired the event.
      */
     public SourcesCalendarDrawEvents getSource() {
         return source;
     }
+
+    /**
+     * The date rendered.
+     * @return  The date rendered.
+     */
+    public Date getDate() {
+        return date;
+    }
+    
 }

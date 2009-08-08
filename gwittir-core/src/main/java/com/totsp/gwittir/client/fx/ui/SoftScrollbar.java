@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SoftScrollbar extends Composite {
+    VerticalPanel vertical = new VerticalPanel();
     FocusPanel barTarget = new FocusPanel();
     FocusPanel higherTarget = new FocusPanel();
     FocusPanel lowerTarget = new FocusPanel();
@@ -52,7 +53,6 @@ public class SoftScrollbar extends Composite {
     SimplePanel higher = new SimplePanel();
     SimplePanel lower = new SimplePanel();
     SoftScrollArea target;
-    VerticalPanel vertical = new VerticalPanel();
     private MouseListener barListener = new MouseListenerAdapter() {
             boolean inDrag = false;
             int start;
@@ -71,10 +71,14 @@ public class SoftScrollbar extends Composite {
             }
 
             public void onMouseMove(Widget sender, int x, int y) {
-                if (inDrag) {
-                    float newPercent = (float) ((y - start) + lower.getOffsetHeight()) / (float) base.getOffsetHeight();
-                    int newPosition = Math.round(
-                            (target.getOffsetHeight() + target.getMaxScrollPosition()) * newPercent) + x;
+                if(inDrag) {
+                    float newPercent = (float) (
+                            (y - start) + lower.getOffsetHeight()
+                        ) / (float) base.getOffsetHeight();
+                    int newPosition = Math.round((
+                                target.getOffsetHeight()
+                                + target.getMaxScrollPosition()
+                            ) * newPercent) + x;
                     target.setScrollPosition(newPosition);
                 }
             }
@@ -82,9 +86,13 @@ public class SoftScrollbar extends Composite {
 
     private MouseListener higherListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
-                float newPercent = (float) (y + lower.getOffsetHeight() + bar.getOffsetHeight()) / (float) base.getOffsetHeight();
-                int newPosition = Math.round((target.getOffsetHeight() + target.getMaxScrollPosition()) * newPercent) -
-                    (target.getOffsetHeight() / 2);
+                float newPercent = (float) (
+                        y + lower.getOffsetHeight() + bar.getOffsetHeight()
+                    ) / (float) base.getOffsetHeight();
+                int newPosition = Math.round((
+                            target.getOffsetHeight()
+                            + target.getMaxScrollPosition()
+                        ) * newPercent) - (target.getOffsetHeight() / 2);
 
                 target.setScrollPosition(newPosition);
             }
@@ -93,8 +101,10 @@ public class SoftScrollbar extends Composite {
     private MouseListener lowerListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
                 float newPercent = (float) y / (float) base.getOffsetHeight();
-                int newPosition = Math.round((target.getOffsetHeight() + target.getMaxScrollPosition()) * newPercent) -
-                    (target.getOffsetHeight() / 2);
+                int newPosition = Math.round((
+                            target.getOffsetHeight()
+                            + target.getMaxScrollPosition()
+                        ) * newPercent) - (target.getOffsetHeight() / 2);
                 target.setScrollPosition(newPosition);
             }
         };
@@ -110,6 +120,7 @@ public class SoftScrollbar extends Composite {
         this.target = target;
         this.base = new SimplePanel();
 
+        
         this.base.setWidget(vertical);
         super.initWidget(this.base);
         this.higherTarget.setWidget(this.higher);
@@ -130,51 +141,6 @@ public class SoftScrollbar extends Composite {
         DOM.setStyleAttribute(this.barTarget.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.higherTarget.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.getElement(), "overflow", "hidden");
-    }
-
-    public void setBarWidget(Widget w) {
-        this.bar.setWidget(w);
-        DOM.setStyleAttribute(this.bar.getElement(), "overflow", "hidden");
-    }
-
-    public void setHigherWidget(Widget w) {
-        this.higher.setWidget(w);
-        DOM.setStyleAttribute(this.higher.getElement(), "overflow", "hidden");
-    }
-
-    public void setLowerWidget(Widget w) {
-        this.lower.setWidget(w);
-        DOM.setStyleAttribute(this.lower.getElement(), "overflow", "hidden");
-    }
-
-    public void refresh() {
-        int currentHeight = this.getOffsetHeight();
-
-        float pageSize = (float) target.getOffsetHeight() / (float) (
-                target.getMaxScrollPosition() + target.getOffsetHeight()
-            );
-
-        //GWT.log("Page sisze " + pageSize, null);
-        float scrollPercentage = (float) target.getScrollPosition() / (target.getMaxScrollPosition() + 1);
-
-        int lowerHeight = Math.round((currentHeight - Math.round((float) currentHeight * pageSize)) * scrollPercentage);
-        lowerHeight = (lowerHeight == 0) ? 1
-                                         : lowerHeight; // Fixes MSIE;
-        this.lower.setHeight(lowerHeight + "px");
-
-        int barHeight = Math.round(currentHeight * pageSize);
-        this.bar.setHeight(barHeight + "px");
-
-        int higherHeight = currentHeight - lowerHeight - barHeight;
-        higherHeight = (higherHeight < 0) ? 0
-                                          : higherHeight;
-        this.higher.setHeight(higherHeight + "px");
-
-        if (this.getOffsetWidth() >= 0) {
-            this.lower.setWidth(this.getOffsetWidth() + "px");
-            this.bar.setWidth(this.getOffsetWidth() + "px");
-            this.higher.setWidth(this.getOffsetWidth() + "px");
-        }
     }
 
     protected MouseListener getBarListener() {
@@ -213,5 +179,50 @@ public class SoftScrollbar extends Composite {
         this.lowerTarget.removeMouseListener(this.getLowerListener());
         this.higherTarget.removeMouseListener(this.getHigherListener());
         this.barTarget.removeMouseListener(this.getBarListener());
+    }
+
+    public void refresh() {
+        int currentHeight = this.getOffsetHeight();
+
+        float pageSize = (float) target.getOffsetHeight() / (float) (
+                target.getMaxScrollPosition() + target.getOffsetHeight()
+            );
+
+        //GWT.log("Page sisze " + pageSize, null);
+        float scrollPercentage = (float) target.getScrollPosition() / (
+                target.getMaxScrollPosition() + 1
+            );
+
+        int lowerHeight = Math.round((
+                    currentHeight
+                    - Math.round((float) currentHeight * pageSize)
+                ) * scrollPercentage);
+        lowerHeight = lowerHeight == 0 ? 1 : lowerHeight; // Fixes MSIE;
+        this.lower.setHeight(lowerHeight + "px");
+        int barHeight = Math.round(currentHeight * pageSize);
+        this.bar.setHeight(barHeight + "px");
+        int higherHeight = currentHeight - lowerHeight - barHeight;
+        higherHeight = higherHeight < 0 ? 0 : higherHeight;
+        this.higher.setHeight(higherHeight + "px");
+        if( this.getOffsetWidth() >= 0 ){
+            this.lower.setWidth(this.getOffsetWidth() + "px");
+            this.bar.setWidth(this.getOffsetWidth() + "px");
+            this.higher.setWidth(this.getOffsetWidth() + "px");
+        }
+    }
+
+    public void setBarWidget(Widget w) {
+        this.bar.setWidget(w);
+        DOM.setStyleAttribute(this.bar.getElement(), "overflow", "hidden");
+    }
+
+    public void setHigherWidget(Widget w) {
+        this.higher.setWidget(w);
+        DOM.setStyleAttribute(this.higher.getElement(), "overflow", "hidden");
+    }
+
+    public void setLowerWidget(Widget w) {
+        this.lower.setWidget(w);
+        DOM.setStyleAttribute(this.lower.getElement(), "overflow", "hidden");
     }
 }

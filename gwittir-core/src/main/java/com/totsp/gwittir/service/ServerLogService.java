@@ -6,13 +6,16 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-package com.totsp.gwittir.service;
 
+package com.totsp.gwittir.service;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface ServerLogService {
-    public void log(int level, String logger, String message, String exceptionMessage);
+
+    public void log( int level, String logger, String message, String exceptionMessage );
+
+
 }

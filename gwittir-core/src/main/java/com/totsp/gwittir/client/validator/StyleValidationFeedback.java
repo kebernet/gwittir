@@ -17,56 +17,52 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.validator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.UIObject;
-
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
-
 import java.util.HashMap;
-
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class StyleValidationFeedback extends AbstractValidationFeedback {
-    private HashMap previousStyles = new HashMap();
+    
     private String styleName;
-
+    private HashMap previousStyles = new HashMap();
     /** Creates a new instance of StyleValidationFeedback */
     public StyleValidationFeedback(String styleName) {
         this.styleName = styleName;
     }
-
+    
     public void handleException(Object source, ValidationException exception) {
         UIObject object = (UIObject) source;
-        String previousStyle = ((object.getStyleName() == null) || (object.getStyleName()
-                                                                          .length() == 0)) ? "default"
-                                                                                           : object.getStyleName();
-
-        if (!this.previousStyles.containsKey(source)) {
-            this.previousStyles.put(source, previousStyle);
-        }
-
-        Logger.getAnonymousLogger()
-              .log(Level.SPAM, "Previous style: " + previousStyle, null);
-        object.setStyleName(this.styleName);
-        Logger.getAnonymousLogger()
-              .log(Level.SPAM, "Current style: " + object.getStyleName(), null);
+        String previousStyle =  object.getStyleName() == null ||
+                object.getStyleName().length() == 0 ?
+                    "default" :
+                    object.getStyleName();
+        if( !this.previousStyles.containsKey(source) )
+            this.previousStyles.put( source, previousStyle );
+        Logger.getAnonymousLogger().log( Level.SPAM,  "Previous style: "+ previousStyle, null );
+        object.setStyleName( this.styleName );
+        Logger.getAnonymousLogger().log( Level.SPAM,  "Current style: "+ object.getStyleName(), null );
     }
-
+    
     public void resolve(Object source) {
         UIObject object = (UIObject) source;
         String previousStyle = (String) this.previousStyles.get(source);
-
-        if (previousStyle != null) {
-            GWT.log("Reverting to style:" + previousStyle, null);
-            object.setStyleName(previousStyle);
-            GWT.log(object.toString(), null);
-            this.previousStyles.remove(source);
+        if( previousStyle != null ){
+            GWT.log( "Reverting to style:" + previousStyle, null  );
+            object.setStyleName( previousStyle );
+            GWT.log( object.toString(), null  );
+            this.previousStyles.remove( source );
         }
     }
+    
+    
+    
 }

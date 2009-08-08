@@ -17,18 +17,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.flow;
 
+package com.totsp.gwittir.client.flow;
 
 /**
  * An interface called whenever the FlowController changes activities in a context
- *
+ * 
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface FlowEventListener {
-    /**
-     * Called when a flow event happens
-     * @param evt the event that occurred
-     */
+    
+	/**
+	 * Called when a flow event happens
+	 * @param evt the event that occurred
+	 */
     public void onFlowEvent(FlowEvent evt);
+    
 }

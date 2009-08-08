@@ -37,7 +37,8 @@ public class Property {
      * @param accessorMethod The accessor method for the property.
      * @param mutatorMethod The mutator method for the property.
      */
-    public Property(String name, Class type, Method accessorMethod, Method mutatorMethod) {
+    public Property(String name, Class type, Method accessorMethod,
+        Method mutatorMethod) {
         this.name = name;
         this.accessorMethod = accessorMethod;
         this.mutatorMethod = mutatorMethod;

@@ -28,207 +28,203 @@ import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.SourcesKeyboardEvents;
 import com.google.gwt.user.client.ui.Widget;
 
-
 /**
- *
+ * 
  DOCUMENT ME!
- *
+ * 
  * @author ccollins
  */
-public class RadioButton extends AbstractBoundWidget<Boolean> implements HasEnabled, SourcesClickEvents, HasFocus,
-    SourcesKeyboardEvents {
-    private com.google.gwt.user.client.ui.RadioButton base;
+public class RadioButton extends AbstractBoundWidget<Boolean> implements
+		HasEnabled, SourcesClickEvents, HasFocus, SourcesKeyboardEvents {
+	private com.google.gwt.user.client.ui.RadioButton base;
 
-    /** Creates a new instance of RadioButton */
-    public RadioButton() {
-        super();
-        init(null);
-    }
+	/** Creates a new instance of RadioButton */
+	public RadioButton() {
+		super();
+		init(null);
+	}
 
-    public RadioButton(String group) {
-        super();
-        init(group);
-    }
+	public RadioButton(String group) {
+		super();
+		init(group);
+	}
 
-    public RadioButton(String group, String label) {
-        super();
-        init(group);
-        setText(label);
-    }
+	public RadioButton(String group, String label) {
+		super();
+		init(group);
+		setText(label);
+	}
 
-    public RadioButton(String group, boolean value) {
-        super();
-        init(group);
-        this.setChecked(value);
-    }
+	public RadioButton(String group, boolean value) {
+		super();
+		init(group);
+		this.setChecked(value);
+	}
 
-    public RadioButton(String group, String label, boolean value) {
-        super();
-        init(group);
-        setText(label);
-        this.setChecked(value);
-    }
+	public RadioButton(String group, String label, boolean value) {
+		super();
+		init(group);
+		setText(label);
+		this.setChecked(value);
+	}
 
-    public int getAbsoluteLeft() {
-        return this.base.getAbsoluteLeft();
-    }
+	public void addClickListener(ClickListener listener) {
+		this.base.addClickListener(listener);
+	}
 
-    public int getAbsoluteTop() {
-        return this.base.getAbsoluteTop();
-    }
+	public void addFocusListener(FocusListener listener) {
+		this.base.addFocusListener(listener);
+	}
 
-    public void setAccessKey(char key) {
-        this.base.setAccessKey(key);
-    }
+	public void addKeyboardListener(KeyboardListener listener) {
+		this.base.addKeyboardListener(listener);
+	}
 
-    public boolean isAttached() {
-        return this.base.isAttached();
-    }
+	public void addStyleName(String style) {
+		this.base.addStyleName(style);
+	}
 
-    public void setChecked(boolean checked) {
-        this.base.setChecked(checked);
-    }
+	public int getAbsoluteLeft() {
+		return this.base.getAbsoluteLeft();
+	}
 
-    public boolean isChecked() {
-        return this.base.isChecked();
-    }
+	public int getAbsoluteTop() {
+		return this.base.getAbsoluteTop();
+	}
 
-    public void setEnabled(boolean enabled) {
-        this.base.setEnabled(enabled);
-    }
+	public String getHTML() {
+		return this.base.getHTML();
+	}
 
-    public boolean isEnabled() {
-        return this.base.isEnabled();
-    }
+	public String getName() {
+		return this.base.getName();
+	}
 
-    public void setFocus(boolean focused) {
-        this.base.setFocus(focused);
-    }
+	public String getStyleName() {
+		return this.base.getStyleName();
+	}
 
-    public void setHTML(String html) {
-        this.base.setHTML(html);
-    }
+	public int getTabIndex() {
+		return this.base.getTabIndex();
+	}
 
-    public String getHTML() {
-        return this.base.getHTML();
-    }
+	public String getText() {
+		return this.base.getText();
+	}
 
-    public void setHeight(String height) {
-        this.base.setHeight(height);
-    }
+	public String getTitle() {
+		return this.base.getTitle();
+	}
 
-    public void setName(String name) {
-        this.base.setName(name);
-    }
+	public Boolean getValue() {
+		return this.isChecked() ? Boolean.TRUE : Boolean.FALSE;
+	}
 
-    public String getName() {
-        return this.base.getName();
-    }
+	private void init(String group) {
+		this.base = new com.google.gwt.user.client.ui.RadioButton(group);
+		super.initWidget(this.base);
+		this.base.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+				Boolean old = isChecked() ? Boolean.FALSE : Boolean.TRUE;
+				changes.firePropertyChange("value", old, getValue());
+			}
+		});
+	}
 
-    public void setPixelSize(int width, int height) {
-        this.base.setPixelSize(width, height);
-    }
+	public boolean isAttached() {
+		return this.base.isAttached();
+	}
 
-    public void setSize(String width, String height) {
-        this.base.setSize(width, height);
-    }
+	public boolean isChecked() {
+		return this.base.isChecked();
+	}
 
-    public void setStyleName(String style) {
-        this.base.setStyleName(style);
-    }
+	public boolean isEnabled() {
+		return this.base.isEnabled();
+	}
 
-    public String getStyleName() {
-        return this.base.getStyleName();
-    }
+	public void onBrowserEvent(Event event) {
+		this.base.onBrowserEvent(event);
+	}
 
-    public void setTabIndex(int index) {
-        this.base.setTabIndex(index);
-    }
+	public void removeClickListener(ClickListener listener) {
+		this.base.removeClickListener(listener);
+	}
 
-    public int getTabIndex() {
-        return this.base.getTabIndex();
-    }
+	public void removeFocusListener(FocusListener listener) {
+		this.base.removeFocusListener(listener);
+	}
 
-    public void setText(String text) {
-        this.base.setText(text);
-    }
+	public void removeKeyboardListener(KeyboardListener listener) {
+		this.base.removeKeyboardListener(listener);
+	}
 
-    public String getText() {
-        return this.base.getText();
-    }
+	public void removeStyleName(String style) {
+		this.base.removeStyleName(style);
+	}
 
-    public void setTitle(String title) {
-        this.base.setTitle(title);
-    }
+	public void setAccessKey(char key) {
+		this.base.setAccessKey(key);
+	}
 
-    public String getTitle() {
-        return this.base.getTitle();
-    }
+	public void setChecked(boolean checked) {
+		this.base.setChecked(checked);
+	}
 
-    public void setValue(Boolean value) {
-        Boolean old = (Boolean) this.getValue();
-        this.setChecked(value);
+	public void setEnabled(boolean enabled) {
+		this.base.setEnabled(enabled);
+	}
 
-        if ((old != this.getValue()) && !old.equals(this.getValue())) {
-            this.changes.firePropertyChange("value", old, this.getValue());
-        }
-    }
+	public void setFocus(boolean focused) {
+		this.base.setFocus(focused);
+	}
 
-    public Boolean getValue() {
-        return this.isChecked() ? Boolean.TRUE
-                                : Boolean.FALSE;
-    }
+	public void setHTML(String html) {
+		this.base.setHTML(html);
+	}
 
-    public void setWidth(String width) {
-        this.base.setWidth(width);
-    }
+	public void setHeight(String height) {
+		this.base.setHeight(height);
+	}
 
-    public void addClickListener(ClickListener listener) {
-        this.base.addClickListener(listener);
-    }
+	public void setName(String name) {
+		this.base.setName(name);
+	}
 
-    public void addFocusListener(FocusListener listener) {
-        this.base.addFocusListener(listener);
-    }
+	public void setPixelSize(int width, int height) {
+		this.base.setPixelSize(width, height);
+	}
 
-    public void addKeyboardListener(KeyboardListener listener) {
-        this.base.addKeyboardListener(listener);
-    }
+	public void setSize(String width, String height) {
+		this.base.setSize(width, height);
+	}
 
-    public void addStyleName(String style) {
-        this.base.addStyleName(style);
-    }
+	public void setStyleName(String style) {
+		this.base.setStyleName(style);
+	}
 
-    public void onBrowserEvent(Event event) {
-        this.base.onBrowserEvent(event);
-    }
+	public void setTabIndex(int index) {
+		this.base.setTabIndex(index);
+	}
 
-    public void removeClickListener(ClickListener listener) {
-        this.base.removeClickListener(listener);
-    }
+	public void setText(String text) {
+		this.base.setText(text);
+	}
 
-    public void removeFocusListener(FocusListener listener) {
-        this.base.removeFocusListener(listener);
-    }
+	public void setTitle(String title) {
+		this.base.setTitle(title);
+	}
 
-    public void removeKeyboardListener(KeyboardListener listener) {
-        this.base.removeKeyboardListener(listener);
-    }
+	public void setValue(Boolean value) {
+		Boolean old = (Boolean) this.getValue();
+		this.setChecked(value);
 
-    public void removeStyleName(String style) {
-        this.base.removeStyleName(style);
-    }
+		if ((old != this.getValue()) && !old.equals(this.getValue())) {
+			this.changes.firePropertyChange("value", old, this.getValue());
+		}
+	}
 
-    private void init(String group) {
-        this.base = new com.google.gwt.user.client.ui.RadioButton(group);
-        super.initWidget(this.base);
-        this.base.addClickListener(
-            new ClickListener() {
-                public void onClick(Widget sender) {
-                    Boolean old = isChecked() ? Boolean.FALSE
-                                              : Boolean.TRUE;
-                    changes.firePropertyChange("value", old, getValue());
-                }
-            });
-    }
+	public void setWidth(String width) {
+		this.base.setWidth(width);
+	}
 }

@@ -7,10 +7,10 @@
  */
 package com.totsp.gwittir.client.jsni;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import com.google.gwt.core.client.JavaScriptObject;
 
 
 /**
@@ -37,7 +37,7 @@ public class JavaScriptObjectDecorator {
 
     /**
      * Creates a new JavaScript Array object wrapped in a decorator.
-     * @return
+     * @return 
      */
     public static native JavaScriptObject newArray() /*-{
     return new Array();
@@ -170,10 +170,11 @@ public class JavaScriptObjectDecorator {
     public JavaScriptObjectDecorator getJavaScriptObjectProperty(String name) {
         JavaScriptObject jso = this.getJavaScriptObjectProperty(this.getObject(), name);
 
-        return (jso == null) ? null
-                             : new JavaScriptObjectDecorator(jso);
+        return (jso == null) ? null : new JavaScriptObjectDecorator(jso);
     }
 
+   
+    
     public void setObject(JavaScriptObject object) {
         this.object = object;
     }
@@ -184,13 +185,6 @@ public class JavaScriptObjectDecorator {
      */
     public JavaScriptObject getObject() {
         return object;
-    }
-
-    public Set<String> getProperties() {
-        HashSet<String> props = new HashSet<String>();
-        this.getProperties(this.object, props);
-
-        return props;
     }
 
     public void setShortProperty(String name, Short value) {
@@ -229,7 +223,8 @@ public class JavaScriptObjectDecorator {
     return object;
     }-*/;
 
-    private native void setBoolProperty(JavaScriptObject object, String name, boolean value) /*-{
+    private native void setBoolProperty(
+        JavaScriptObject object, String name, boolean value) /*-{
     object[ name ] = value;
     }-*/;
 
@@ -237,7 +232,8 @@ public class JavaScriptObjectDecorator {
     return object[ name ];
     }-*/;
 
-    private native java.lang.Boolean getBooleanProperty(JavaScriptObject object, String name) /*-{
+    private native java.lang.Boolean getBooleanProperty(
+        JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
@@ -261,8 +257,9 @@ public class JavaScriptObjectDecorator {
     return object[ name ];
     }-*/;
 
-    private native void setDblProperty(JavaScriptObject object, String name, double value) /*-{
-    object[ name ] = value;
+    private native void setDblProperty(
+        JavaScriptObject object, String name, double value) /*-{
+        object[ name ] = value;
     }-*/;
 
     private native double getDblProperty(JavaScriptObject object, String name) /*-{
@@ -293,7 +290,8 @@ public class JavaScriptObjectDecorator {
     return object[ name ];
     }-*/;
 
-    private native java.lang.Integer getIntegerProperty(JavaScriptObject object, String name) /*-{
+    private native java.lang.Integer getIntegerProperty(
+        JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
@@ -301,11 +299,13 @@ public class JavaScriptObjectDecorator {
     }
     }-*/;
 
-    private native void setJavaScriptObjectProperty(JavaScriptObject object, String name, JavaScriptObject value) /*-{
+    private native void setJavaScriptObjectProperty(
+        JavaScriptObject object, String name, JavaScriptObject value) /*-{
     object[ name ] = value;
     }-*/;
 
-    private native JavaScriptObject getJavaScriptObjectProperty(JavaScriptObject object, String name) /*-{
+    private native JavaScriptObject getJavaScriptObjectProperty(
+        JavaScriptObject object, String name) /*-{
     if( object[ name ] == null || object[ name ] == undefined ){
     return null;
     } else {
@@ -313,6 +313,9 @@ public class JavaScriptObjectDecorator {
     }
     }-*/;
 
+    
+
+    
     private native void setNullObject(JavaScriptObject object, String name) /*-{
     object[name] = null;
     }-*/;
@@ -324,10 +327,6 @@ public class JavaScriptObjectDecorator {
     private native short getShtProperty(JavaScriptObject object, String name) /*-{
     return object[ name ];
     }-*/;
-
-    private static java.lang.Byte newByte(byte value) {
-        return new java.lang.Byte(value);
-    }
 
     private static java.lang.Double newDouble(double value) {
         return new java.lang.Double(value);
@@ -341,6 +340,11 @@ public class JavaScriptObjectDecorator {
         return new java.lang.Integer(value);
     }
 
+    private native JavaScriptObject newJSO() /*-{
+    return new Object();
+    }-*/;
+
+    
     private native java.lang.Byte getByteProperty(JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
     return null;
@@ -349,19 +353,25 @@ public class JavaScriptObjectDecorator {
     }
     }-*/;
 
-    private native java.lang.Character getCharacterProperty(JavaScriptObject object, String name) /*-{
-    if( object[name] == null || object[name] == undefined ){
-    return null;
-    } else {
-    return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newCharacter(C)( object[ name ] );
-    }
-    }-*/;
-
-    private native java.lang.Double getDoubleProperty(JavaScriptObject object, String name) /*-{
+    private native java.lang.Double getDoubleProperty(
+        JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
     return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newDouble(D)( object[ name ] );
+    }
+    }-*/;
+
+    private static java.lang.Byte newByte(byte value) {
+        return new java.lang.Byte(value);
+    }
+
+    private native java.lang.Character getCharacterProperty(
+        JavaScriptObject object, String name) /*-{
+    if( object[name] == null || object[name] == undefined ){
+    return null;
+    } else {
+    return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newCharacter(C)( object[ name ] );
     }
     }-*/;
 
@@ -371,9 +381,9 @@ public class JavaScriptObjectDecorator {
 
     private native java.lang.Short getShortProperty(JavaScriptObject object, String name) /*-{
     if( object[name] == null || object[name] == undefined ){
-    return null;
+        return null;
     } else {
-    return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newShort(S)( object[ name ] );
+        return @com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator::newShort(S)( object[ name ] );
     }
     }-*/;
 
@@ -381,29 +391,32 @@ public class JavaScriptObjectDecorator {
         return new java.lang.Boolean(value);
     }
 
-    private native JavaScriptObject newJSO() /*-{
-    return new Object();
-    }-*/;
-
     private static java.lang.Short newShort(short value) {
         return new java.lang.Short(value);
     }
 
-    private native void getProperties(JavaScriptObject object, Set toFill) /*-{
-    for(x in object){
-    toFill.@java.util.Set::add(Ljava/lang/Object;)(x.toString());
-    }
-    }-*/;
-
-    private native void setStringProperty(JavaScriptObject object, String name, String value) /*-{
-    object[ name ] = value;
+    private native void setStringProperty(
+        JavaScriptObject object, String name, String value) /*-{
+        object[ name ] = value;
     }-*/;
 
     private native String getStringProperty(JavaScriptObject object, String name) /*-{
     if( object[ name ] == null || object[ name ] == undefined ){
-    return null;
+        return null;
     } else {
-    return object[ name ];
+        return object[ name ];
     }
+    }-*/;
+    
+    public Set<String> getProperties(){
+    	HashSet<String> props = new HashSet<String>();
+    	this.getProperties(this.object, props);
+    	return props;
+    }
+    
+    private native void getProperties(JavaScriptObject object, Set toFill)/*-{
+    	for(x in object){
+    		toFill.@java.util.Set::add(Ljava/lang/Object;)(x.toString());
+    	}	
     }-*/;
 }

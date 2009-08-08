@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.stream.StreamServiceCallback;
 import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
 import com.totsp.gwittir.client.ui.BoundVerticalPanel;
@@ -12,23 +11,23 @@ import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
-
 public class StreamingExample extends BoundVerticalPanel<Object> {
-    public StreamingExample() {
-        super(new BoundWidgetTypeFactory(), null);
 
-        Button stream = new Button("Stream!");
-        stream.addClickListener(
-            new ClickListener() {
+	
+	public StreamingExample(){
+		super(new BoundWidgetTypeFactory(),null);
+		
+		Button stream = new Button("Stream!");
+        stream.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
                     ExampleStreamServiceAsync ser = (ExampleStreamServiceAsync) GWT.create(ExampleStreamService.class);
                     StreamingServiceStub stub = (StreamingServiceStub) ser;
-                    stub.setServicePath(GWT.getModuleBaseURL() + "ExampleStreamService");
-                    ser.getResults(
-                        5, "foo",
+                    stub.setServicePath(GWT.getModuleBaseURL() +
+                        "ExampleStreamService");
+                    ser.getResults(5, "foo",
                         new StreamServiceCallback<MyClass>() {
                             public void onReceive(MyClass object) {
-                                add(new Label("Got: " + object.getName()));
+                            	add( new Label("Got: " + object.getName()));
                             }
 
                             public void onError(Throwable thrown) {
@@ -36,12 +35,12 @@ public class StreamingExample extends BoundVerticalPanel<Object> {
                             }
 
                             public void onComplete() {
-                                add(new Label("complete."));
+                                add( new Label("complete."));
                             }
                         });
                 }
             });
-
+        
         add(stream);
-    }
+	}
 }

@@ -24,7 +24,6 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 
@@ -37,11 +36,11 @@ public class Reflection extends Widget {
     private Canvas canvas = new Canvas();
     private Element element = canvas.getElement();
     private Image base;
-    private SimplePanel panel = new SimplePanel();
     private double height;
     private double opacity;
-    private int baseHeight;
     private int baseWidth;
+    private int baseHeight;
+    private SimplePanel panel = new SimplePanel();
 
     /** Creates a new instance of Reflection */
     public Reflection() {
@@ -49,14 +48,19 @@ public class Reflection extends Widget {
         init();
     }
 
+    protected void init(){
+        Logger.getAnonymousLogger().log( Level.SPAM, "Init default Reflection", null );
+        //panel.setWidget( canvas );
+        setElement(canvas.getElement());
+        
+    }
+
     public void paint(Image base, int baseWidth, int baseHeight, double height, double opacity) {
         this.height = height;
         this.opacity = opacity;
-
-        if (this.base != null) {
+        if( this.base != null ){
             paint();
         }
-
         this.base = base;
         this.baseWidth = baseWidth;
         this.baseHeight = baseHeight;
@@ -72,45 +76,34 @@ public class Reflection extends Widget {
         paint();
     }
 
-    @Override
-    protected void setElement(Element e) {
-        Logger.getAnonymousLogger()
-              .log(Level.SPAM, "Here", null);
-
-        try {
-            throw new Exception();
-        } catch (Exception ex) {
-            Logger.getAnonymousLogger()
-                  .log(Level.SPAM, "Call to setElement", ex);
-        }
-
-        super.setElement(e);
-    }
-
-    protected void init() {
-        Logger.getAnonymousLogger()
-              .log(Level.SPAM, "Init default Reflection", null);
-        //panel.setWidget( canvas );
-        setElement(canvas.getElement());
-    }
-
     private void paint() {
-        int reflectHeight = (int) Math.round(baseHeight * height);
+    	int reflectHeight = (int) Math.round(baseHeight * height);
         Canvas.Context ctx = canvas.getContext();
         ctx.save();
-        ctx.clearRect(0, 0, this.baseWidth, reflectHeight);
+        ctx.clearRect(0, 0, this.baseWidth, reflectHeight );
         ctx.save();
-        ctx.translate(0, this.baseHeight - 1);
+        ctx.translate(0, this.baseHeight -1 );
         ctx.scale(1, -1);
-        ctx.drawImage(this.base, 0, 0, this.baseWidth, this.baseHeight);
+        ctx.drawImage(this.base, 0, 0, this.baseWidth, this.baseHeight );
         ctx.restore();
         ctx.setGlobalCompositeOperation("destination-out");
-
-        Canvas.LinearGradient gradient = ctx.createLinearGradient(0, 0, 0, reflectHeight);
+        Canvas.LinearGradient gradient = ctx.createLinearGradient(0,0, 0, reflectHeight );
         gradient.addColorStop(1, "rgba(255, 255, 255, 1.0)");
-        gradient.addColorStop(0, "rgba(255, 255, 255, " + (1 - this.opacity) + ")");
-        ctx.setFillStyle(gradient);
-        ctx.fillRect(0, 0, this.baseWidth, reflectHeight);
+        gradient.addColorStop(0, "rgba(255, 255, 255, "+(1-this.opacity)+")");
+        ctx.setFillStyle( gradient );
+        ctx.fillRect(0,0, this.baseWidth, reflectHeight );
         ctx.restore();
     }
+
+    @Override
+    protected void setElement(Element e){
+         Logger.getAnonymousLogger().log( Level.SPAM, "Here", null );
+        try{
+            throw new Exception();
+        } catch(Exception ex){
+            Logger.getAnonymousLogger().log( Level.SPAM, "Call to setElement", ex );
+        }
+        super.setElement(e);
+    }
+    
 }

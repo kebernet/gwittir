@@ -51,47 +51,47 @@ public class OpacitySetterIE6 extends OpacitySetter {
 
     /**
      * Gets the current opacity value.
-     * @param opacity the new opacity value between 0.0 and 1.0
-     * @param o UIObject to inspect.
-     */
-    public void setOpacity(UIObject o, Double opacity) {
-        String filter = DOM.getStyleAttribute(o.getElement(), FILTER_STYLE_NAME);
-
-        if (filter == null) {
-            filter = "";
-        }
-
-        if (opacity != null) {
-            filter = parseOrReplace(filter, "" + Math.round(opacity.doubleValue() * 100d));
-            DOM.setStyleAttribute(o.getElement(), FILTER_STYLE_NAME, filter);
-        } else {
-            filter = parseOrReplace(filter, "100");
-            DOM.setStyleAttribute(o.getElement(), FILTER_STYLE_NAME, filter);
-        }
-    }
-
-    /**
-     * Gets the current opacity value.
      * @param o UIObject to inspect.
      * @return The current opacity between 0.0 and 1.0
      */
     public Double getOpacity(UIObject o) {
-        String str = DOM.getStyleAttribute(o.getElement(), FILTER_STYLE_NAME);
+        String str = DOM.getStyleAttribute(o.getElement(),FILTER_STYLE_NAME);
         str = parseOrReplace(str, null);
 
-        if ((str == null) || (str.length() == 0)) {
+        if((str == null) || (str.length() == 0)) {
             return new Double(1.0);
         } else {
             return new Double(Double.parseDouble(str) / 100D);
         }
     }
 
+    /**
+     * Gets the current opacity value.
+     * @param opacity the new opacity value between 0.0 and 1.0
+     * @param o UIObject to inspect.
+     */
+    public void setOpacity(UIObject o, Double opacity) {
+        String filter = DOM.getStyleAttribute(o.getElement(),FILTER_STYLE_NAME);
+
+        if(filter == null) {
+            filter = "";
+        }
+
+        if(opacity != null) {
+            filter = parseOrReplace(filter, "" + Math.round(opacity.doubleValue() * 100d));
+            DOM.setStyleAttribute(o.getElement(), FILTER_STYLE_NAME,filter);
+        } else {
+            filter = parseOrReplace(filter, "100");
+            DOM.setStyleAttribute(o.getElement(), FILTER_STYLE_NAME,filter);
+        }
+    }
+
     static String parseOrReplace(String filter, String replace) {
         int start = filter.indexOf(ALPHA);
 
-        if (start == -1) {
-            if (replace != null) {
-                if (filter == null) {
+        if(start == -1) {
+            if(replace != null) {
+                if(filter == null) {
                     return ALPHA + OPACITY + replace + ")";
                 } else {
                     return filter + ALPHA + OPACITY + replace + ")";
@@ -105,10 +105,10 @@ public class OpacitySetterIE6 extends OpacitySetter {
         String alphaBlock = filter.substring(start + ALPHA.length(), alphaEnd);
         int opacityStart = alphaBlock.indexOf(OPACITY);
 
-        if (opacityStart == -1) {
-            if (replace != null) {
-                return filter.substring(0, start + ALPHA.length()) + OPACITY + replace + "," + alphaBlock +
-                filter.substring(alphaEnd, filter.length());
+        if(opacityStart == -1) {
+            if(replace != null) {
+                return filter.substring(0, start + ALPHA.length()) + OPACITY + replace + "," + alphaBlock
+                + filter.substring(alphaEnd, filter.length());
             } else {
                 return null;
             }
@@ -118,15 +118,15 @@ public class OpacitySetterIE6 extends OpacitySetter {
 
         int opacityEnd = opacityStart + OPACITY.length() + 1;
 
-        for (; NUMBERS.indexOf(filter.charAt(opacityEnd)) != -1; opacityEnd++) {
+        for(; NUMBERS.indexOf(filter.charAt(opacityEnd)) != -1; opacityEnd++) {
             // Empty loop.
         }
 
-        if (replace == null) {
+        if(replace == null) {
             return filter.substring(opacityStart + OPACITY.length(), opacityEnd);
         } else {
-            return filter.substring(0, opacityStart + OPACITY.length()) + replace +
-            filter.substring(opacityEnd, filter.length());
+            return filter.substring(0, opacityStart + OPACITY.length()) + replace
+            + filter.substring(opacityEnd, filter.length());
         }
     }
 }

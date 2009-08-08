@@ -46,7 +46,7 @@ public class CompositeValidator implements Validator {
     public Object validate(Object value) throws ValidationException {
         Object retValue = value;
 
-        for (Iterator it = validators.iterator(); it.hasNext();) {
+        for(Iterator it = validators.iterator(); it.hasNext();) {
             retValue = ((Validator) it.next()).validate(retValue);
         }
 

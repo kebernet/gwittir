@@ -33,19 +33,6 @@ public class OpacitySetter {
     }
 
     /**
-     * Sets the opactiy.
-     * @param o The UIObject to set.
-     * @param opacity The new opacity between 0.0 and 1.0
-     */
-    public void setOpacity(UIObject o, Double opacity) {
-        if (opacity != null) {
-            DOM.setStyleAttribute(o.getElement(), "opacity", opacity.toString());
-        } else {
-            DOM.setStyleAttribute(o.getElement(), "opacity", "inherit");
-        }
-    }
-
-    /**
      * Gets the current opacity value.
      * @param o UIObject to inspect.
      * @return The current opacity between 0.0 and 1.0
@@ -53,10 +40,23 @@ public class OpacitySetter {
     public Double getOpacity(UIObject o) {
         String str = DOM.getStyleAttribute(o.getElement(), "opacity");
 
-        if ((str == null) || (str.length() == 0)) {
+        if((str == null) || (str.length() == 0)) {
             return new Double(1.0);
         } else {
             return Double.valueOf(str);
+        }
+    }
+
+    /**
+     * Sets the opactiy.
+     * @param o The UIObject to set.
+     * @param opacity The new opacity between 0.0 and 1.0
+     */
+    public void setOpacity(UIObject o, Double opacity) {
+        if(opacity != null) {
+            DOM.setStyleAttribute(o.getElement(), "opacity", opacity.toString());
+        } else {
+            DOM.setStyleAttribute(o.getElement(), "opacity", "inherit");
         }
     }
 }

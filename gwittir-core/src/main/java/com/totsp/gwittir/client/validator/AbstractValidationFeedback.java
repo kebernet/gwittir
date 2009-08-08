@@ -34,7 +34,8 @@ public abstract class AbstractValidationFeedback implements ValidationFeedback {
         super();
     }
 
-    public AbstractValidationFeedback addMessage(Class validationExceptionClass, String message) {
+    public AbstractValidationFeedback addMessage(
+        Class validationExceptionClass, String message) {
         mappings.put(validationExceptionClass, message);
 
         return this;
@@ -44,11 +45,10 @@ public abstract class AbstractValidationFeedback implements ValidationFeedback {
         Class clazz = validationException.getValidatorClass();
         String message = null;
 
-        if (validationException.getValidatorClass() != null) {
+        if(validationException.getValidatorClass() != null) {
             message = (String) mappings.get(clazz);
         }
 
-        return (message == null) ? validationException.getMessage()
-                                 : message;
+        return (message == null) ? validationException.getMessage() : message;
     }
 }

@@ -17,65 +17,60 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.util;
 
 import com.google.gwt.core.client.GWT;
-
 
 /**
  * A utility class to parse Strings in the value of [int][units].
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class UnitsParser {
-    private static final String NUMBERS = "-1234567890";
-
+    private static final String NUMBERS="-1234567890";
+    
     /** Creates a new instance of UnitsParser */
     private UnitsParser() {
     }
-
+    
     /**
      * Parses a string returning a UnitsParser.UnitsValue object
      * @param input String to parse
      * @return Parsed value or null if unparsable.
      */
-    public static UnitValue parse(String input) {
+    public static UnitValue parse( String input ){
         String intPart = "";
-        int i = 0;
-
-        for (; i < input.length(); i++) {
-            if (NUMBERS.indexOf(input.charAt(i)) != -1) {
-                intPart += input.charAt(i);
+        int i=0;
+        for( ; i < input.length(); i++ ){
+            if( NUMBERS.indexOf( input.charAt(i) ) != -1 ){
+                intPart +=input.charAt(i);
             } else {
                 break;
             }
         }
-
         UnitValue value = null;
-
-        try {
+        try{ 
             value = new UnitValue();
-            value.value = (intPart.length() > 0) ? Integer.parseInt(intPart)
-                                                 : 0;
-            value.units = input.substring(i, input.length());
-        } catch (NumberFormatException nfe) {
-            GWT.log(null, nfe);
+            value.value = intPart.length() > 0 ? Integer.parseInt( intPart ) : 0;
+            value.units = input.substring( i, input.length() );
+        } catch(NumberFormatException nfe){
+            GWT.log( null, nfe );
         }
-
         return value;
     }
-
+    
     /**
      * A value object containing the parsed value and the units String.
      */
     public static class UnitValue {
         /**
-         * Units String.
-         */
-        public String units;
-
-        /**
          * Value integer
          */
         public int value;
+        /**
+         * Units String.
+         */
+        public String units;
     }
+    
 }

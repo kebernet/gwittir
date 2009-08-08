@@ -2,95 +2,91 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.totsp.gwittir.client.util.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
-
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 import com.totsp.gwittir.client.util.UnavailableException;
 import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 import com.totsp.gwittir.client.util.userdata.UserData;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-
 /**
- *
+ * 
  * @author kebernet
  */
 public class WindowContextPersisterMSIE extends AbstractWindowContextPersister {
-    private static final String SEPARATOR = " ";
-    private static final String WINDOWCONTEXT = "gwittir-windowcontext";
-    private static final String ATTRIBUTE_NAMES = "GwittirAttributeNames";
-    private UserData userdata;
 
-    @Override
-    public int getByteLimit() {
-        return 128000;
-    }
+	private static final String SEPARATOR = " ";
+	private static final String WINDOWCONTEXT = "gwittir-windowcontext";
+	private static final String ATTRIBUTE_NAMES = "GwittirAttributeNames";
+	private UserData userdata;
 
-    @Override
-    public Map<String, String> getWindowContextData() {
-        Map<String, String> results = new HashMap<String, String>();
-        String attributeNamesVal = userdata.get(ATTRIBUTE_NAMES);
+	@Override
+	public int getByteLimit() {
+		return 128000;
+	}
 
-        if (attributeNamesVal == null) {
-            return results;
-        }
+	@Override
+	public Map<String, String> getWindowContextData() {
+		Map<String, String> results = new HashMap<String, String>();
+		String attributeNamesVal = userdata.get(ATTRIBUTE_NAMES);
+		if (attributeNamesVal == null) {
+			return results;
+		}
+		String[] attributeNames = attributeNamesVal.split(SEPARATOR);
+		for (String key : attributeNames) {
+			if (key.length() > 0) {
+				String value = userdata.get(key);
+				if (value != null) {
+					results.put(key, value);
+				}
+			}
+		}
 
-        String[] attributeNames = attributeNamesVal.split(SEPARATOR);
+		return results;
+	}
 
-        for (String key : attributeNames) {
-            if (key.length() > 0) {
-                String value = userdata.get(key);
+	@Override
+	public void storeWindowContextData(Map<String, String> windowContextData) {
+		StringBuilder attributeNamesVal = new StringBuilder();
+		for (Entry<String, String> entry : windowContextData.entrySet()) {
+			attributeNamesVal = attributeNamesVal.append(entry.getKey())
+					.append(SEPARATOR);
+			userdata.set(entry.getKey(), entry.getValue());
+		}
+		userdata.set(ATTRIBUTE_NAMES, attributeNamesVal.toString());
+		GWT.log(attributeNamesVal.toString(), null);
+		GWT.log("After save: " + userdata.get(ATTRIBUTE_NAMES), null);
+		userdata.save(WINDOWCONTEXT);
 
-                if (value != null) {
-                    results.put(key, value);
-                }
-            }
-        }
+	}
 
-        return results;
-    }
+	@Override
+	public void init(final WindowContextCallback listener) {
+		if (userdata == null) {
+			try {
+				userdata = UserData.getInstance();
+				userdata.load(WINDOWCONTEXT);
+			} catch (UnavailableException e) {
+				Logger.getAnonymousLogger().log(Level.ERROR, "Unable to create a userdata tag", e);
+			}
+			DeferredCommand.addCommand(new Command() {
 
-    @Override
-    public void init(final WindowContextCallback listener) {
-        if (userdata == null) {
-            try {
-                userdata = UserData.getInstance();
-                userdata.load(WINDOWCONTEXT);
-            } catch (UnavailableException e) {
-                Logger.getAnonymousLogger()
-                      .log(Level.ERROR, "Unable to create a userdata tag", e);
-            }
+				public void execute() {
+					listener.onInitialized();
 
-            DeferredCommand.addCommand(
-                new Command() {
-                    public void execute() {
-                        listener.onInitialized();
-                    }
-                });
-        }
-    }
+				}
 
-    @Override
-    public void storeWindowContextData(Map<String, String> windowContextData) {
-        StringBuilder attributeNamesVal = new StringBuilder();
+			});
+		}
+	}
 
-        for (Entry<String, String> entry : windowContextData.entrySet()) {
-            attributeNamesVal = attributeNamesVal.append(entry.getKey())
-                                                 .append(SEPARATOR);
-            userdata.set(entry.getKey(), entry.getValue());
-        }
-
-        userdata.set(ATTRIBUTE_NAMES, attributeNamesVal.toString());
-        GWT.log(attributeNamesVal.toString(), null);
-        GWT.log("After save: " + userdata.get(ATTRIBUTE_NAMES), null);
-        userdata.save(WINDOWCONTEXT);
-    }
 }

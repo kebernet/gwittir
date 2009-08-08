@@ -6,12 +6,12 @@ package com.totsp.gwittir.client.ui.calendar;
 
 import com.google.gwt.core.client.GWT;
 
-
 /**
  *
  * @author kebernet
  */
 public class TimeZoneList {
+
     private static TimeZones TZ = GWT.create(TimeZones.class);
 
     public static String[][] getTimeZones() {
@@ -571,7 +571,6 @@ public class TimeZoneList {
         list[552] = TZ.tz552();
         list[553] = TZ.tz553();
         list[554] = TZ.tz554();
-
         return list;
     }
 }

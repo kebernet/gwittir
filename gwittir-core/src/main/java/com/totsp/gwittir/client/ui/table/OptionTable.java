@@ -40,15 +40,13 @@ public class OptionTable extends BoundTable {
     private final PropertyChangeSupport myChanges = new PropertyChangeSupport(this);
     private final PropertyChangeListener globalListener = new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName()
-                           .equals("selected")) {
-                    PropertyChangeEvent masked = new PropertyChangeEvent(
-                            this, "value", evt.getOldValue(), evt.getNewValue());
+                if(evt.getPropertyName().equals("selected")) {
+                    PropertyChangeEvent masked = new PropertyChangeEvent(this,
+                            "value", evt.getOldValue(), evt.getNewValue());
                     myChanges.firePropertyChange(masked);
-                } else if (evt.getPropertyName()
-                                  .equals("value")) {
-                    PropertyChangeEvent masked = new PropertyChangeEvent(
-                            this, "options", evt.getOldValue(), evt.getNewValue());
+                } else if(evt.getPropertyName().equals("value")) {
+                    PropertyChangeEvent masked = new PropertyChangeEvent(this,
+                            "options", evt.getOldValue(), evt.getNewValue());
                     myChanges.firePropertyChange(masked);
                 } else {
                     myChanges.firePropertyChange(evt);
@@ -103,7 +101,8 @@ public class OptionTable extends BoundTable {
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      */
-    public OptionTable(int masks, BoundWidgetTypeFactory typeFactory, Field[] cols, Collection options) {
+    public OptionTable(int masks, BoundWidgetTypeFactory typeFactory,
+        Field[] cols, Collection options) {
         super(masks, typeFactory, cols, options);
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener(globalListener);
@@ -127,7 +126,8 @@ public class OptionTable extends BoundTable {
      * @param masks int value containing the sum of the *_MASK options for the table.
      * @param cols The Column objects for the table.
      */
-    public OptionTable(int masks, BoundWidgetTypeFactory typeFactory, Field[] cols) {
+    public OptionTable(int masks, BoundWidgetTypeFactory typeFactory,
+        Field[] cols) {
         super(masks, typeFactory, cols);
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener(globalListener);
@@ -152,14 +152,20 @@ public class OptionTable extends BoundTable {
      * @param cols The Column objects for the table.
      * @param provider Instance of DataProvider to get chunked data from.
      */
-    public OptionTable(int masks, BoundWidgetTypeFactory typeFactory, Field[] cols, DataProvider provider) {
+    public OptionTable(int masks, BoundWidgetTypeFactory typeFactory,
+        Field[] cols, DataProvider provider) {
         super(masks, typeFactory, cols, provider);
         super.setStyleName("gwittir-OptionTable");
         super.addPropertyChangeListener(globalListener);
     }
 
-    public void setOptions(Collection options) {
-        super.setValue(options);
+    public void addPropertyChangeListener(String propertyName,
+        PropertyChangeListener l) {
+        this.myChanges.addPropertyChangeListener(propertyName, l);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        this.myChanges.addPropertyChangeListener(l);
     }
 
     public Collection getOptions() {
@@ -170,31 +176,28 @@ public class OptionTable extends BoundTable {
         return this.myChanges.getPropertyChangeListeners();
     }
 
-    public void setValue(Object value) {
-        if (value instanceof List) {
-            super.setSelected((List) value);
-        } else if (value instanceof Collection) {
-            super.setSelected(new ArrayList((Collection) value));
-        }
-    }
-
     public Object getValue() {
         return super.getSelected();
     }
 
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
-        this.myChanges.addPropertyChangeListener(propertyName, l);
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        this.myChanges.addPropertyChangeListener(l);
-    }
-
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
+    public void removePropertyChangeListener(String propertyName,
+        PropertyChangeListener l) {
         this.myChanges.removePropertyChangeListener(propertyName, l);
     }
 
     public void removePropertyChangeListener(PropertyChangeListener l) {
         this.myChanges.removePropertyChangeListener(l);
+    }
+
+    public void setOptions(Collection options) {
+        super.setValue(options);
+    }
+
+    public void setValue(Object value) {
+        if(value instanceof List) {
+            super.setSelected((List) value);
+        } else if(value instanceof Collection) {
+            super.setSelected(new ArrayList((Collection) value));
+        }
     }
 }

@@ -8,6 +8,7 @@
  */
 package com.totsp.gwittir.client.flow;
 
+
 import com.totsp.gwittir.client.ui.BoundWidget;
 
 
@@ -17,10 +18,11 @@ import com.totsp.gwittir.client.ui.BoundWidget;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface HistoryManager {
-    /**
-     * Applies a state on the historyToken
-     * @param historyToken the history token to set.
-     */
+	
+	/**
+	 * Applies a state on the historyToken
+	 * @param historyToken the history token to set.
+	 */
     public void apply(String historyToken);
 
     /**

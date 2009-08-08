@@ -32,7 +32,6 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollListener;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 
@@ -74,13 +73,16 @@ public class SoftHorizontalScrollbar extends Composite {
             }
 
             public void onMouseMove(Widget sender, int x, int y) {
-                if (inDrag) {
-                    float newPercent = (float) ((x - start) + lower.getOffsetWidth()) / (float) base.getOffsetWidth();
-                    Logger.getAnonymousLogger()
-                          .log(Level.SPAM, x + " " + newPercent, null);
+                if(inDrag) {
+                    float newPercent = (float) (
+                            (x - start) + lower.getOffsetWidth()
+                        ) / (float) base.getOffsetWidth();
+                    Logger.getAnonymousLogger().log( Level.SPAM, x + " " + newPercent, null);
 
-                    int newPosition = Math.round(
-                            (target.getOffsetWidth() + target.getMaxHorizontalScrollPosition()) * newPercent) + x;
+                    int newPosition = Math.round((
+                                target.getOffsetWidth()
+                                + target.getMaxHorizontalScrollPosition()
+                            ) * newPercent) + x;
                     target.setHorizontalScrollPosition(newPosition);
                 }
             }
@@ -88,10 +90,13 @@ public class SoftHorizontalScrollbar extends Composite {
 
     private MouseListener higherListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
-                float newPercent = (float) (x + lower.getOffsetWidth() + bar.getOffsetWidth()) / (float) base.getOffsetWidth();
-                int newPosition = Math.round(
-                        (target.getOffsetWidth() + target.getMaxHorizontalScrollPosition()) * newPercent) -
-                    (target.getOffsetWidth() / 2);
+                float newPercent = (float) (
+                        x + lower.getOffsetWidth() + bar.getOffsetWidth()
+                    ) / (float) base.getOffsetWidth();
+                int newPosition = Math.round((
+                            target.getOffsetWidth()
+                            + target.getMaxHorizontalScrollPosition()
+                        ) * newPercent) - (target.getOffsetWidth() / 2);
 
                 target.setHorizontalScrollPosition(newPosition);
             }
@@ -100,11 +105,11 @@ public class SoftHorizontalScrollbar extends Composite {
     private MouseListener lowerListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
                 float newPercent = (float) x / (float) base.getOffsetWidth();
-                int newPosition = Math.round(
-                        (target.getOffsetWidth() + target.getMaxHorizontalScrollPosition()) * newPercent) -
-                    (target.getOffsetWidth() / 2);
-                Logger.getAnonymousLogger()
-                      .log(Level.SPAM, "New Position: " + newPosition, null);
+                int newPosition = Math.round((
+                            target.getOffsetWidth()
+                            + target.getMaxHorizontalScrollPosition()
+                        ) * newPercent) - (target.getOffsetWidth() / 2);
+                Logger.getAnonymousLogger().log( Level.SPAM, "New Position: " + newPosition, null);
                 target.setHorizontalScrollPosition(newPosition);
             }
         };
@@ -138,61 +143,6 @@ public class SoftHorizontalScrollbar extends Composite {
         DOM.setStyleAttribute(this.bar.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.higher.getElement(), "overflow", "hidden");
         DOM.setStyleAttribute(this.getElement(), "overflow", "hidden");
-    }
-
-    public void setBarWidget(Widget w) {
-        this.bar.setWidget(w);
-        DOM.setStyleAttribute(this.bar.getElement(), "overflow", "hidden");
-    }
-
-    public void setHigherWidget(Widget w) {
-        this.higher.setWidget(w);
-        DOM.setStyleAttribute(this.higher.getElement(), "overflow", "hidden");
-    }
-
-    public void setLowerWidget(Widget w) {
-        this.lower.setWidget(w);
-        DOM.setStyleAttribute(this.lower.getElement(), "overflow", "hidden");
-    }
-
-    public void refresh() {
-        int currentWidth = this.getOffsetWidth();
-
-        float pageSize = (float) target.getOffsetWidth() / (float) (
-                target.getMaxHorizontalScrollPosition() + target.getOffsetWidth()
-            );
-
-        //GWT.log("Page sisze " + pageSize, null);
-        float scrollPercentage = (float) target.getHorizontalScrollPosition() / (
-                target.getMaxHorizontalScrollPosition() + 1
-            );
-
-        //GWT.log("Scroll Percentage " + scrollPercentage, null);
-        int lowerWidth = Math.round((currentWidth - Math.round((float) currentWidth * pageSize)) * scrollPercentage);
-
-        //GWT.log("Lower width " + lowerWidth, null);
-        if (lowerWidth == 0) {
-            lowerWidth = 1;
-        }
-
-        this.lower.setWidth(lowerWidth + "px");
-
-        int barWidth = Math.round(currentWidth * pageSize);
-
-        //GWT.log("Bar width " + barWidth, null);
-        if (barWidth >= 0) {
-            this.bar.setWidth(barWidth + "px");
-        }
-
-        int higherWidth = currentWidth - lowerWidth - barWidth;
-
-        if (higherWidth >= 0) {
-            this.higher.setWidth(higherWidth + "px");
-        }
-
-        this.lower.setHeight(this.getOffsetHeight() + "px");
-        this.bar.setHeight(this.getOffsetHeight() + "px");
-        this.higher.setHeight(this.getOffsetHeight() + "px");
     }
 
     protected MouseListener getBarListener() {
@@ -232,5 +182,59 @@ public class SoftHorizontalScrollbar extends Composite {
         this.higherTarget.removeMouseListener(this.getHigherListener());
         this.barTarget.removeMouseListener(this.getBarListener());
         target.removeScrollListener(this.scrollListener);
+    }
+
+    public void refresh() {
+        int currentWidth = this.getOffsetWidth();
+
+        float pageSize = (float) target.getOffsetWidth() / (float) (
+                target.getMaxHorizontalScrollPosition()
+                + target.getOffsetWidth()
+            );
+
+        //GWT.log("Page sisze " + pageSize, null);
+        float scrollPercentage = (float) target.getHorizontalScrollPosition() / (
+                target.getMaxHorizontalScrollPosition() + 1
+            );
+
+        //GWT.log("Scroll Percentage " + scrollPercentage, null);
+        int lowerWidth = Math.round((
+                    currentWidth - Math.round((float) currentWidth * pageSize)
+                ) * scrollPercentage);
+
+        //GWT.log("Lower width " + lowerWidth, null);
+        if(lowerWidth == 0) {
+            lowerWidth = 1;
+        }
+
+        this.lower.setWidth(lowerWidth + "px");
+
+        int barWidth = Math.round(currentWidth * pageSize);
+        //GWT.log("Bar width " + barWidth, null);
+        if(barWidth >=0 ){
+            this.bar.setWidth(barWidth + "px");
+        }
+        int higherWidth = currentWidth - lowerWidth - barWidth;
+        if( higherWidth >= 0 ){
+            this.higher.setWidth(higherWidth + "px");
+        }
+        this.lower.setHeight(this.getOffsetHeight() + "px");
+        this.bar.setHeight(this.getOffsetHeight() + "px");
+        this.higher.setHeight(this.getOffsetHeight() + "px");
+    }
+
+    public void setBarWidget(Widget w) {
+        this.bar.setWidget(w);
+        DOM.setStyleAttribute(this.bar.getElement(), "overflow", "hidden");
+    }
+
+    public void setHigherWidget(Widget w) {
+        this.higher.setWidget(w);
+        DOM.setStyleAttribute(this.higher.getElement(), "overflow", "hidden");
+    }
+
+    public void setLowerWidget(Widget w) {
+        this.lower.setWidget(w);
+        DOM.setStyleAttribute(this.lower.getElement(), "overflow", "hidden");
     }
 }

@@ -62,8 +62,7 @@ public class Calendar extends AbstractBoundWidget<Date> implements DateRenderers
 
         for (int i = 0; i < 7; i++) {
             grid.setWidget(0, i, new Label(Calendar.DAYS_OF_WEEK_SHORT[i]));
-            grid.getCellFormatter()
-                .setStyleName(0, i, "day");
+            grid.getCellFormatter().setStyleName(0, i, "day");
         }
 
         grid.setCellSpacing(0);
@@ -84,12 +83,12 @@ public class Calendar extends AbstractBoundWidget<Date> implements DateRenderers
                         }
                     }
 
-                    if (!cancelled && (currentDates[row - 1][cell].getMonth() == getRenderDate()
-                                                                                         .getMonth())) {
+                    if (!cancelled && (currentDates[row - 1][cell].getMonth() == getRenderDate().getMonth())) {
                         setValue(currentDates[row - 1][cell]);
                     }
                 }
-            });
+            }
+        );
         this.setStyleName("gwittir-Calendar");
     }
 
@@ -99,7 +98,8 @@ public class Calendar extends AbstractBoundWidget<Date> implements DateRenderers
      */
     public CalendarDrawListener[] getCalendarDrawListeners() {
         return (CalendarDrawListener[]) this.drawEventListeners.toArray(
-            new CalendarDrawListener[this.drawEventListeners.size()]);
+                new CalendarDrawListener[this.drawEventListeners.size()]
+            );
     }
 
     /**
@@ -234,24 +234,21 @@ public class Calendar extends AbstractBoundWidget<Date> implements DateRenderers
             for (int col = 0; col < 7; col++) {
                 this.currentDates[row][col] = tempDate;
 
-                if (tempDate.getMonth() == this.getRenderDate()
-                                                   .getMonth()) {
+                if (tempDate.getMonth() == this.getRenderDate().getMonth()) {
                     this.grid.setWidget(row + 1, col, new Label(Integer.toString(tempDate.getDate())));
-                    this.grid.getCellFormatter()
-                             .setStyleName(row + 1, col, "date");
+                    this.grid.getCellFormatter().setStyleName(row + 1, col, "date");
 
                     for (Iterator it = this.drawEventListeners.iterator(); it.hasNext();) {
                         String altStyle = ((CalendarDrawListener) it.next()).onCalendarDrawEvent(
-                                new CalendarDrawEvent(this, tempDate));
+                                    new CalendarDrawEvent(this, tempDate)
+                                );
 
                         if (altStyle != null) {
-                            this.grid.getCellFormatter()
-                                     .addStyleName(row + 1, col, altStyle);
+                            this.grid.getCellFormatter().addStyleName(row + 1, col, altStyle);
                         }
                     }
                 } else {
-                    this.grid.getCellFormatter()
-                             .setStyleName(row + 1, col, "empty");
+                    this.grid.getCellFormatter().setStyleName(row + 1, col, "empty");
                     this.grid.clearCell(row + 1, col);
                 }
 

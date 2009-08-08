@@ -32,12 +32,13 @@ public class Transaction extends JavaScriptObject {
     protected Transaction() {
     }
 
-    public final void execute(String sql, Object[] parameters, ResultsCallback callback) {
+    public final void execute(String sql, Object[] parameters,
+        ResultsCallback callback) {
         JavaScriptObject jsParams = convertParameters(parameters);
         this.nativeExecuteSql(sql, jsParams, callback);
     }
 
-    private static final JavaScriptObject convertParameters(Object[] parameters) {
+    private final static JavaScriptObject convertParameters(Object[] parameters) {
         JavaScriptObjectDecorator d = new JavaScriptObjectDecorator(JavaScriptObjectDecorator.newArray());
 
         for (int i = 0; (parameters != null) && (i < parameters.length); i++) {
@@ -48,7 +49,8 @@ public class Transaction extends JavaScriptObject {
             } else if (p instanceof Integer) {
                 d.setIntegerProperty(Integer.toString(i), (Integer) p);
             } else if (p instanceof Date) {
-                d.setJavaScriptObjectProperty(Integer.toString(i), longAsInt(Long.toString(((Date) p).getTime())));
+                d.setJavaScriptObjectProperty(Integer.toString(i),
+                    longAsInt(Long.toString(((Date) p).getTime())));
             } else if (p instanceof Float) {
                 d.setFloatProperty(Integer.toString(i), (Float) p);
             } else if (p instanceof Double) {
@@ -59,11 +61,12 @@ public class Transaction extends JavaScriptObject {
         return d.getObject();
     }
 
-    private static final native JavaScriptObject longAsInt(String longAsString) /*-{
+    private final static native JavaScriptObject longAsInt(String longAsString) /*-{
     return parseInt(longAsString) ;
     }-*/;
 
-    private final native void nativeExecuteSql(String sql, JavaScriptObject parameters, ResultsCallback callback) /*-{
+    private final native void nativeExecuteSql(String sql,
+        JavaScriptObject parameters, ResultsCallback callback) /*-{
     var trans = this;
     trans.executeSql(
     sql,

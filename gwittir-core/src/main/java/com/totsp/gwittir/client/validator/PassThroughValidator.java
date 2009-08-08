@@ -28,8 +28,9 @@ import com.totsp.gwittir.client.validator.Validator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class PassThroughValidator implements Validator {
+    
     public static final PassThroughValidator INSTANCE = new PassThroughValidator();
-
+    
     /** Creates a new instance of PassThroughValidator */
     private PassThroughValidator() {
     }

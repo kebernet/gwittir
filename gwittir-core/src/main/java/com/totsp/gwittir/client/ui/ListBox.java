@@ -41,30 +41,28 @@ import java.util.Vector;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> implements HasFocus, SourcesFocusEvents,
-    SourcesChangeEvents {
+public class ListBox<T> extends AbstractBoundCollectionWidget<T, String>
+    implements HasFocus, SourcesFocusEvents, SourcesChangeEvents {
     public static final String VALUE_PROPERTY_NAME = "value";
     private static final Logger LOGGER = Logger.getLogger(ListBox.class.toString());
-    private com.google.gwt.user.client.ui.ListBox base;
     private ArrayList<T> selected = new ArrayList<T>();
     private Collection<T> options = new ArrayList<T>();
+    private com.google.gwt.user.client.ui.ListBox base;
     private Vector<ChangeListener> changeListeners = new Vector<ChangeListener>();
 
     /** Creates a new instance of ListBox */
     @SuppressWarnings("unchecked")
-    public ListBox() {
+	public ListBox() {
         super();
         this.base = new com.google.gwt.user.client.ui.ListBox();
         this.setRenderer((Renderer<T, String>) ToStringRenderer.INSTANCE);
         this.setComparator(SimpleComparator.INSTANCE);
-        this.base.addClickListener(
-            new ClickListener() {
+        this.base.addClickListener(new ClickListener() {
                 public void onClick(Widget sender) {
                     update();
                 }
             });
-        this.base.addChangeListener(
-            new ChangeListener() {
+        this.base.addChangeListener(new ChangeListener() {
                 public void onChange(Widget sender) {
                     update();
                 }
@@ -197,8 +195,7 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
         if (this.isMultipleSelect()) {
             changes.firePropertyChange(VALUE_PROPERTY_NAME, old, selected);
         } else {
-            Object prev = ((old == null) || (old.size() == 0)) ? null
-                                                               : old.get(0);
+            Object prev = ((old == null) || (old.size() == 0)) ? null : old.get(0);
             Object curr = (this.selected.size() == 0) ? null
                                                       : this.selected.get(0);
             changes.firePropertyChange(VALUE_PROPERTY_NAME, prev, curr);
@@ -274,7 +271,7 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
 
         for (Iterator<T> it = this.options.iterator(); it.hasNext(); i++) {
             T item = it.next();
-
+            
             if (contains(value, item)) {
                 base.setItemSelected(i, true);
                 this.selected.add(item);
@@ -289,7 +286,8 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
     }
 
     public Collection<T> getValue() {
-        ListBox.LOGGER.log(Level.SPAM, "IsMultipleSelect. Returning collection", null);
+        ListBox.LOGGER.log(Level.SPAM,
+            "IsMultipleSelect. Returning collection", null);
 
         return this.selected;
     }
@@ -339,17 +337,18 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
         if (obj == null) {
             return false;
         }
+        try{
+        	final ListBox<?> other = (ListBox<?>) obj;
 
-        try {
-            final ListBox<?> other = (ListBox<?>) obj;
-
-            if ((this.options != other.options) && ((this.options == null) || !this.options.equals(other.options))) {
-                return false;
-            }
-
-            return true;
-        } catch (ClassCastException e) {
-            return false;
+	        if ((this.options != other.options) &&
+	                ((this.options == null) || !this.options.equals(other.options))) {
+	            return false;
+	        }
+	
+	        return true;
+	        }
+        catch(ClassCastException e){
+        	return false;
         }
     }
 
@@ -370,14 +369,13 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
     }
 
     @SuppressWarnings("unchecked")
-    public void removeItem(final Object o) {
+	public void removeItem(final Object o) {
         int i = 0;
 
         for (Iterator<T> it = this.options.iterator(); it.hasNext(); i++) {
             T option = it.next();
 
-            if (this.getComparator()
-                        .compare(option, o) == 0) {
+            if (this.getComparator().compare(option, o) == 0) {
                 this.options.remove(option);
                 this.base.removeItem(i);
                 this.update();
@@ -398,12 +396,11 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
     }
 
     @SuppressWarnings("unchecked")
-    protected boolean contains(final Collection<T> c, final T o) {
+	protected boolean contains(final Collection<T> c, final T o) {
         for (Iterator<T> it = c.iterator(); it.hasNext();) {
             T next = it.next();
 
-            if (this.getComparator()
-                        .compare(o, next) == 0) {
+            if (this.getComparator().compare(o, next) == 0) {
                 return true;
             }
         }
@@ -418,8 +415,7 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
         }
 
         if (this.getAction() != null) {
-            this.getAction()
-                .execute(this);
+            this.getAction().execute(this);
         }
     }
 
@@ -438,8 +434,9 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
         ArrayList<T> old = this.selected;
         this.selected = newSelected;
 
+        
         changes.firePropertyChange(VALUE_PROPERTY_NAME, old, newSelected);
-
+        
         fireChangeListeners();
     }
 }

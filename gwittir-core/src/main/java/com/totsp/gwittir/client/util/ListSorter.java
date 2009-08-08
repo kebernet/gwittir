@@ -42,27 +42,24 @@ public class ListSorter {
     /**
      * Performs a selection sort on a List of Introspectables
      */
-    public static void sortOnProperty(List list, String propertyName, boolean ascending)
-        throws Exception {
+    public static void sortOnProperty(List list, String propertyName,
+        boolean ascending) throws Exception {
         Class currentClass = null;
-
+        
         Property p = null;
         HashMap<Class, Property> cache = new HashMap<Class, Property>();
 
-        for (int i = 0; i < (list.size() - 1); i++) {
-            for (int j = i + 1; j < list.size(); j++) {
+        for(int i = 0; i < (list.size() - 1); i++) {
+            for(int j = i + 1; j < list.size(); j++) {
                 Object o1 = list.get(i);
                 Class o1Class = INTRO.resolveClass(o1);
-
-                if (currentClass != o1Class) {
+                if(currentClass != o1Class) {
                     p = cache.get(o1Class);
 
-                    if (p == null) {
-                        p = INTRO.getDescriptor(o1)
-                                 .getProperty(propertyName);
-                        cache.put(o1Class, p);
+                    if(p == null) {
+                        p = INTRO.getDescriptor(o1).getProperty(propertyName);
+                        cache.put( o1Class, p);
                     }
-
                     currentClass = o1Class;
                 }
 
@@ -71,31 +68,40 @@ public class ListSorter {
 
                 Object o2 = list.get(j);
                 Class o2Class = INTRO.resolveClass(o2);
-
-                if (currentClass != o2Class) {
+                if(currentClass != o2Class) {
                     p = cache.get(o2Class);
 
-                    if (p == null) {
-                        p = INTRO.getDescriptor(o2)
-                                 .getProperty(propertyName);
-                        cache.put(o2Class, p);
+                    if(p == null) {
+                        p = INTRO.getDescriptor(o2).getProperty(propertyName);
+                        cache.put( o2Class, p);
                     }
-
                     currentClass = o2Class;
                 }
 
                 Comparable oc2 = (Comparable) p.getAccessorMethod()
                                                .invoke(o2, null);
 
-                if (ascending) {
-                    if ((oc1 != oc2) &&
-                            ((oc2 == null) || ((oc1 != null) && (oc2 != null) && (oc2.compareTo(oc1) < 0)))) { //swap
+                if(ascending) {
+                    if((oc1 != oc2)
+                            && (
+                                (oc2 == null)
+                                || (
+                                    (oc1 != null) && (oc2 != null)
+                                    && (oc2.compareTo(oc1) < 0)
+                                )
+                            )) { //swap
                         list.set(i, o2);
                         list.set(j, o1);
                     }
                 } else {
-                    if ((oc1 != oc2) &&
-                            ((oc1 == null) || ((oc1 != null) && (oc2 != null) && (oc1.compareTo(oc2) < 0)))) { //swap
+                    if((oc1 != oc2)
+                            && (
+                                (oc1 == null)
+                                || (
+                                    (oc1 != null) && (oc2 != null)
+                                    && (oc1.compareTo(oc2) < 0)
+                                )
+                            )) { //swap
                         list.set(i, o2);
                         list.set(j, o1);
                     }

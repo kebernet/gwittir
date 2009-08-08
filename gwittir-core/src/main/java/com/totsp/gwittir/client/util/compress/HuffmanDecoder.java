@@ -29,57 +29,6 @@ public class HuffmanDecoder {
     //Used to eliminate the extraneous characters on the end.
     int rawDataLen;
 
-    //-----------------------------------------------------//
-
-    //This method receives a Huffman-encoded message along
-    // with a data structure containing particulars as to how
-    // the original message was encoded and the length of the
-    // original message.  It decodes the original message and
-    // returns the decoded version as a String object.
-    public String decode(byte[] encodedData, HashMap<Character, String> huffEncodeTable, int rawDataLen) {
-        //Save the incoming parameters.
-        ArrayList<Byte> encodedDataList = new ArrayList<Byte>(encodedData.length);
-
-        for (byte b : encodedData) {
-            encodedDataList.add(b);
-        }
-
-        this.binaryEncodedData = encodedDataList;
-        this.huffEncodeTable = huffEncodeTable;
-        this.rawDataLen = rawDataLen;
-
-        //Create a decoding bit map, which is essentially the
-        // reverse of the encoding bit map that was used to
-        // encode the original message.
-        buildDecodingBitMap();
-
-        //Decode the encoded message from a binary
-        // representation to a String of 1 and 0 characters
-        // that represent the actual bits in the encoded
-        // message.  Also, for illustration purposes only,
-        // this method may optionally display the String.
-        decodeToBitsAsString();
-
-        //Create a Huffman decoding table by swapping the keys
-        // and values from the Huffman encoding table received
-        // as an incoming parameter by the decode method.
-        buildHuffDecodingTable();
-
-        //Decode the String containing only 1 and 0 characters
-        // that represent the bits in the encoded message. This
-        // produces a replica of the original message that was
-        // subjected to Huffman encoding.  Write the resulting
-        // decoded message into a String object referred to by
-        // decoded data.
-        decodeStringBitsToCharacters();
-
-        //Return the decoded message.  Eliminate the extraneous
-        // characters from the end of the message on the basis
-        // of the known length of the original message.
-        return decodedData.substring(0, rawDataLen);
-    } //end decode method
-      //-----------------------------------------------------//
-
     //This method populates a lookup table that relates eight
     // bits represented as a String to eight actual bits for
     // all possible combinations of eight bits.  This is
@@ -150,8 +99,7 @@ public class HuffmanDecoder {
     // encoding table received as an incoming parameter by
     // the decode method.
     void buildHuffDecodingTable() {
-        Iterator<Character> enumerator = huffEncodeTable.keySet()
-                                                        .iterator();
+        Iterator<Character> enumerator = huffEncodeTable.keySet().iterator();
 
         while (enumerator.hasNext()) {
             Character nextKey = enumerator.next();
@@ -159,6 +107,56 @@ public class HuffmanDecoder {
             huffDecodeTable.put(nextString, nextKey);
         } //end while
     } //end buildHuffDecodingTable()
+      //-----------------------------------------------------//
+
+    //-----------------------------------------------------//
+
+    //This method receives a Huffman-encoded message along
+    // with a data structure containing particulars as to how
+    // the original message was encoded and the length of the
+    // original message.  It decodes the original message and
+    // returns the decoded version as a String object.
+    public String decode(byte[] encodedData,
+        HashMap<Character, String> huffEncodeTable, int rawDataLen) {
+        //Save the incoming parameters.
+        ArrayList<Byte> encodedDataList = new ArrayList<Byte>(encodedData.length);
+        for(byte b: encodedData){
+            encodedDataList.add(b);
+        }
+        this.binaryEncodedData = encodedDataList;
+        this.huffEncodeTable = huffEncodeTable;
+        this.rawDataLen = rawDataLen;
+
+        //Create a decoding bit map, which is essentially the
+        // reverse of the encoding bit map that was used to
+        // encode the original message.
+        buildDecodingBitMap();
+
+        //Decode the encoded message from a binary
+        // representation to a String of 1 and 0 characters
+        // that represent the actual bits in the encoded
+        // message.  Also, for illustration purposes only,
+        // this method may optionally display the String.
+        decodeToBitsAsString();
+
+        //Create a Huffman decoding table by swapping the keys
+        // and values from the Huffman encoding table received
+        // as an incoming parameter by the decode method.
+        buildHuffDecodingTable();
+
+        //Decode the String containing only 1 and 0 characters
+        // that represent the bits in the encoded message. This
+        // produces a replica of the original message that was
+        // subjected to Huffman encoding.  Write the resulting
+        // decoded message into a String object referred to by
+        // decoded data.
+        decodeStringBitsToCharacters();
+
+        //Return the decoded message.  Eliminate the extraneous
+        // characters from the end of the message on the basis
+        // of the known length of the original message.
+        return decodedData.substring(0, rawDataLen);
+    } //end decode method
       //-----------------------------------------------------//
 
     //The method begins with an empty StringBuffer object

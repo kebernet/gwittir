@@ -6,21 +6,23 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
+
 package com.totsp.gwittir.client.log.rebind;
 
 import com.totsp.gwittir.client.log.Logger;
-
 
 /**
  *
  * @author rcooper
  */
 public class DevNullLogger extends Logger {
+    
     /** Creates a new instance of DevNullLogger */
     public DevNullLogger() {
     }
 
-    protected int getMaxLevel() {
+     protected int getMaxLevel() {
         return Integer.MIN_VALUE;
     }
+    
 }

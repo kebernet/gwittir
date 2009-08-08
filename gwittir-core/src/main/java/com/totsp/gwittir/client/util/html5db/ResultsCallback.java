@@ -15,15 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.util.html5db;
 
+package com.totsp.gwittir.client.util.html5db;
 
 /**
  *
  * @author kebernet
  */
 public interface ResultsCallback {
-    void onFailure(Transaction tx, SQLError error);
+
 
     void onSuccess(Transaction tx, ResultSet rs);
+
+    void onFailure(Transaction tx, SQLError error);
+
 }

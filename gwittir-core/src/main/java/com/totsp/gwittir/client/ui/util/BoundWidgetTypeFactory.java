@@ -19,6 +19,9 @@
  */
 package com.totsp.gwittir.client.ui.util;
 
+import java.util.Date;
+import java.util.HashMap;
+
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Checkbox;
 import com.totsp.gwittir.client.ui.Hyperlink;
@@ -26,9 +29,6 @@ import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.RadioButton;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.calendar.PopupDatePicker;
-
-import java.util.Date;
-import java.util.HashMap;
 
 
 /**
@@ -72,12 +72,13 @@ public class BoundWidgetTypeFactory {
                 return new Hyperlink();
             }
         };
-
-    public static final BoundWidgetProvider<PopupDatePicker> POPUP_DATE_PICKER_PROVIDER = new BoundWidgetProvider<PopupDatePicker>() {
-            public PopupDatePicker get() {
-                return new PopupDatePicker();
-            }
-        };
+        
+   public static final BoundWidgetProvider<PopupDatePicker> POPUP_DATE_PICKER_PROVIDER = new BoundWidgetProvider<PopupDatePicker>(){
+        public PopupDatePicker get() {
+            return new PopupDatePicker();
+        }
+        
+   };
 
     HashMap<Object, BoundWidgetProvider<?>> registry = new HashMap<Object, BoundWidgetProvider<?>>();
 
@@ -100,18 +101,9 @@ public class BoundWidgetTypeFactory {
         }
     }
 
-    /** Creates a new instance of BoundWidgetTypeFactory */
+/** Creates a new instance of BoundWidgetTypeFactory */
     public BoundWidgetTypeFactory() {
         super();
-    }
-
-    public BoundWidgetProvider<?> getWidgetProvider(Class<?> type) {
-        return registry.get(type);
-    }
-
-    public BoundWidgetProvider<?> getWidgetProvider(String propertyName, Class<?> type) {
-        return registry.containsKey(propertyName) ? registry.get(propertyName)
-                                                  : registry.get(type);
     }
 
     public void add(Class<?> type, BoundWidgetProvider<?> provider) {
@@ -120,5 +112,15 @@ public class BoundWidgetTypeFactory {
 
     public void add(String propertyName, BoundWidgetProvider<?> provider) {
         registry.put(propertyName, provider);
+    }
+
+    public BoundWidgetProvider<?> getWidgetProvider(Class<?> type) {
+        return registry.get(type);
+    }
+
+    public BoundWidgetProvider<?> getWidgetProvider(String propertyName, Class<?> type) {
+        return registry.containsKey(propertyName)
+        ? registry.get(propertyName)
+        :  registry.get(type);
     }
 }

@@ -17,22 +17,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.ui.calendar;
 
 import java.util.Date;
-
 
 /**
  * A listener interface for click events on Calendars.
  * @author cooper
  */
 public interface CalendarListener {
+    
     /**
      * Called when a date is clicked.
      * @param calendar The calendar that fired the event
      * @param date The date that was clicked on.
-     * @return A boolean indicating whether processing of events on this date should
+     * @return A boolean indicating whether processing of events on this date should 
      * continue (true) or be halted (false).
      */
-    public boolean onDateClicked(Calendar calendar, Date date);
+    public boolean onDateClicked( Calendar calendar, Date date );
+    
 }

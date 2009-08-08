@@ -10,7 +10,6 @@ package com.totsp.gwittir.client.ui.util;
 
 import com.totsp.gwittir.client.ui.*;
 
-
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>

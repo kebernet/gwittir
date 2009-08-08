@@ -18,20 +18,22 @@ public abstract class StreamingServiceStub {
     private SerializationStreamFactory factory = getStreamFactory();
     private String servicePath;
 
-    /**
-     * @param servicePath the servicePath to set
-     */
-    public void setServicePath(String servicePath) {
-        this.servicePath = servicePath;
-    }
+    protected abstract SerializationStreamFactory getStreamFactory();
 
-    public void onComplete(String name, StreamServiceCallback callback) {
-        callback.onComplete();
-        cleanUp(name);
-    }
+    protected StreamControl invoke(String payload,
+        StreamServiceCallback callback) {
+        String id = "_cb__" + System.currentTimeMillis();
+        StreamControlImpl control = new StreamControlImpl(id, callback);
+        this.setUp(id, callback);
+        
+        Element iframe = this.createIframe(id);
+        
 
-    public void onError(StreamServiceCallback callback, String message) {
-        callback.onReceive(new RuntimeException(message));
+        Element form = this.createForm(id, payload);
+        DOM.appendChild(RootPanel.getBodyElement(), form);
+        this.submit(form);
+
+        return control;
     }
 
     public void onReceive(StreamServiceCallback callback, String payload) {
@@ -42,37 +44,14 @@ public abstract class StreamingServiceStub {
         }
     }
 
-    protected abstract SerializationStreamFactory getStreamFactory();
-
-    protected StreamControl invoke(String payload, StreamServiceCallback callback) {
-        String id = "_cb__" + System.currentTimeMillis();
-        StreamControlImpl control = new StreamControlImpl(id, callback);
-        this.setUp(id, callback);
-
-        Element iframe = this.createIframe(id);
-
-        Element form = this.createForm(id, payload);
-        DOM.appendChild(RootPanel.getBodyElement(), form);
-        this.submit(form);
-
-        return control;
+    public void onError(StreamServiceCallback callback, String message) {
+        callback.onReceive(new RuntimeException(message));
     }
 
-    private native void setUp(String name, StreamServiceCallback callback) /*-{
-    instance = this;
-    $wnd[name] = function(input){
-    instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onReceive(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
-    };
-    $wnd[name+"E"] = function(input){
-    instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onError(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
-    };
-    $wnd[name+"C"] = function(){
-    instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onComplete(Ljava/lang/String;Lcom/totsp/gwittir/client/stream/StreamServiceCallback;)(name,callback);
-    $wnd[name] = null;
-    $wnd[name+"E"] = null;
-    $wnd[name+"C"] = null;
-    };
-    }-*/;
+    public void onComplete(String name, StreamServiceCallback callback) {
+        callback.onComplete();
+        cleanUp(name);
+    }
 
     private void cleanUp(String name) {
         Element frame = DOM.getElementById(name + "frame");
@@ -83,6 +62,33 @@ public abstract class StreamingServiceStub {
 
         Element form = DOM.getElementById(name + "form");
         DOM.removeChild(DOM.getParent(form), form);
+    }
+
+    private native void submit(Element form) /*-{
+    form.submit();
+    }-*/;
+
+    private native void setUp(String name, StreamServiceCallback callback) /*-{
+    instance = this;
+    $wnd[name] = function(input){
+    	instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onReceive(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
+    };
+    $wnd[name+"E"] = function(input){
+        instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onError(Lcom/totsp/gwittir/client/stream/StreamServiceCallback;Ljava/lang/String;)(callback,unescape(input));
+    };
+    $wnd[name+"C"] = function(){
+        instance.@com.totsp.gwittir.client.stream.impl.StreamingServiceStub::onComplete(Ljava/lang/String;Lcom/totsp/gwittir/client/stream/StreamServiceCallback;)(name,callback);
+        $wnd[name] = null;
+        $wnd[name+"E"] = null;
+        $wnd[name+"C"] = null;
+    };
+    }-*/;
+
+    /**
+     * @param servicePath the servicePath to set
+     */
+    public void setServicePath(String servicePath) {
+        this.servicePath = servicePath;
     }
 
     private Element createForm(String id, String payload) {
@@ -110,22 +116,18 @@ public abstract class StreamingServiceStub {
         return form;
     }
 
-    private native Element createIframe(String id) /*-{
-    var style = " style='position:absolute; top:0px; right:0px; border:0px solid white; width:0px; height:0px' ";
-    var div = $doc.createElement("div");
-    div.id = id+"div";
-    $doc.body.appendChild(div);
-    div.innerHTML = "<iframe id='"+id+"frame' name='"+id+
-    "frame' "+style+"></iframe>";
+    private native Element createIframe(String id)/*-{
+        var style = " style='position:absolute; top:0px; right:0px; border:0px solid white; width:0px; height:0px' ";
+    	var div = $doc.createElement("div");
+    	div.id = id+"div";
+    	$doc.body.appendChild(div);
+    	div.innerHTML = "<iframe id='"+id+"frame' name='"+id+
+    		"frame' "+style+"></iframe>";
     }-*/;
-
-    private native void submit(Element form) /*-{
-    form.submit();
-    }-*/;
-
+    
     protected class StreamControlImpl extends StreamControl {
-        StreamServiceCallback callback;
         String name;
+        StreamServiceCallback callback;
 
         StreamControlImpl(String name, StreamServiceCallback callback) {
             super();

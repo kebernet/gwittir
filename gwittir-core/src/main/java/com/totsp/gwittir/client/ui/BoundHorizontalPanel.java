@@ -17,22 +17,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.client.ui;
 
+package com.totsp.gwittir.client.ui;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class BoundHorizontalPanel extends AbstractBoundWidget {
+    
     /** Creates a new instance of BoundHorizontalPanel */
     public BoundHorizontalPanel() {
-    }
-
-    public void setValue(Object value) {
     }
 
     public Object getValue() {
         return null;
     }
+
+    public void setValue(Object value) {
+    }
+    
 }

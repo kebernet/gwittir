@@ -17,11 +17,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.validator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 
 /**
  *
@@ -29,27 +29,26 @@ import java.util.Iterator;
  */
 public class CompositeValidationFeedback extends AbstractValidationFeedback {
     private ArrayList feedbacks = new ArrayList();
-
     /** Creates a new instance of CompositeValidationFeedback */
     public CompositeValidationFeedback() {
         super();
     }
-
-    public CompositeValidationFeedback add(ValidationFeedback feedback) {
-        this.feedbacks.add(feedback);
-
+    
+    public void handleException(Object source, ValidationException exception) {
+        for(Iterator it = feedbacks.iterator(); it.hasNext(); ){
+            ((ValidationFeedback) it.next() ).handleException( source, exception);
+        }
+    }
+    
+    public void resolve(Object source) {
+        for(Iterator it = feedbacks.iterator(); it.hasNext(); ){
+            ((ValidationFeedback) it.next() ).resolve(source);
+        }
+    }
+    
+    public CompositeValidationFeedback add( ValidationFeedback feedback ){
+        this.feedbacks.add( feedback );
         return this;
     }
-
-    public void handleException(Object source, ValidationException exception) {
-        for (Iterator it = feedbacks.iterator(); it.hasNext();) {
-            ((ValidationFeedback) it.next()).handleException(source, exception);
-        }
-    }
-
-    public void resolve(Object source) {
-        for (Iterator it = feedbacks.iterator(); it.hasNext();) {
-            ((ValidationFeedback) it.next()).resolve(source);
-        }
-    }
+    
 }

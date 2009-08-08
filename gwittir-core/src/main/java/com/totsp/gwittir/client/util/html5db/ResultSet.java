@@ -15,35 +15,33 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.util.html5db;
 
 import com.google.gwt.core.client.JavaScriptObject;
-
 import com.totsp.gwittir.client.jsni.JavaScriptObjectDecorator;
-
 
 /**
  *
  * @author kebernet
  */
 public class ResultSet extends JavaScriptObject {
-    protected ResultSet() {
+
+    
+    protected ResultSet(){
+        
     }
 
-    public final native int getRowCount() /*-{ return this.rows ? this.rows.length : 0; }-*/;
+    public final native int getRowCount()/*-{ return this.rows ? this.rows.length : 0; }-*/;
 
-    public final JavaScriptObjectDecorator[] getRows() {
+    public final JavaScriptObjectDecorator[] getRows(){
         JavaScriptObjectDecorator[] result = new JavaScriptObjectDecorator[this.getRowCount()];
-
-        if (this.getRowCount() > 0) {
-            JavaScriptObjectDecorator instance = new JavaScriptObjectDecorator(this).getJavaScriptObjectProperty(
-                    "rows");
-
-            for (int i = 0; i < result.length; i++) {
-                result[i] = instance.getJavaScriptObjectProperty(Integer.toString(i));
-            }
+        if( this.getRowCount() > 0){
+        	JavaScriptObjectDecorator instance = new JavaScriptObjectDecorator(this).getJavaScriptObjectProperty("rows");
+        	for(int i=0; i < result.length; i++ ){
+	            result[i] = instance.getJavaScriptObjectProperty(Integer.toString(i));
+	        }
         }
-
         return result;
     }
 }

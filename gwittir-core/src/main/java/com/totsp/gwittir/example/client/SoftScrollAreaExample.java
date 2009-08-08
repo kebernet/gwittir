@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
 import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
@@ -18,18 +17,16 @@ import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.Image;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
+public class SoftScrollAreaExample extends BoundVerticalPanel<Object>{
 
-public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
-    public SoftScrollAreaExample() {
-        super(new BoundWidgetTypeFactory(), null);
-
-        DockPanel scroll = new DockPanel();
+	public SoftScrollAreaExample(){
+		super(new BoundWidgetTypeFactory(), null);
+		DockPanel scroll = new DockPanel();
 
         final SoftScrollArea ssp = new SoftScrollArea();
         scroll.add(ssp, DockPanel.CENTER);
         ssp.setWidth("500px");
         ssp.setHeight("500px");
-
         VerticalPanel vp = new VerticalPanel();
         vp.add(new Image(GWT.getModuleBaseURL() + "crested_butte.jpg"));
 
@@ -50,8 +47,7 @@ public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
         bar.setHeight("400px");
 
         VerticalPanel control = new VerticalPanel();
-        Button pageDown = new Button(
-                "down",
+        Button pageDown = new Button("down",
                 new ClickListener() {
                     public void onClick(Widget sender) {
                         ssp.pageDownAnimated();
@@ -59,8 +55,7 @@ public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
                 });
         pageDown.setSize("50px", "50px");
 
-        Button pageUp = new Button(
-                "up",
+        Button pageUp = new Button("up",
                 new ClickListener() {
                     public void onClick(Widget sender) {
                         ssp.pageUpAnimated();
@@ -79,8 +74,7 @@ public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
         //hbar.setLowerWidget( new Image( GWT.getModuleBaseURL()+"gwtip.png") );
         //hbar.setHigherWidget( new Image( GWT.getModuleBaseURL()+"gwtip.png") );
         //hbar.setBarWidget( new Image( GWT.getModuleBaseURL()+"crested_butte.jpg") );
-        Button pageLeft = new Button(
-                "<<",
+        Button pageLeft = new Button("<<",
                 new ClickListener() {
                     public void onClick(Widget sender) {
                         ssp.pageLeftAnimated();
@@ -88,8 +82,7 @@ public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
                 });
         pageLeft.setSize("50px", "50px");
 
-        Button pageRight = new Button(
-                ">>",
+        Button pageRight = new Button(">>",
                 new ClickListener() {
                     public void onClick(Widget sender) {
                         ssp.pageRightAnimated();
@@ -101,8 +94,7 @@ public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
         hcontrol.add(pageRight);
         scroll.add(hcontrol, DockPanel.SOUTH);
 
-        Button checkEnsure = new Button(
-                "checkEnsure",
+        Button checkEnsure = new Button("checkEnsure",
                 new ClickListener() {
                     public void onClick(Widget sender) {
                         ssp.ensureVisibleAnimated(visible);
@@ -110,5 +102,7 @@ public class SoftScrollAreaExample extends BoundVerticalPanel<Object> {
                 });
         add(scroll);
         add(checkEnsure);
-    }
+		
+	}
+
 }

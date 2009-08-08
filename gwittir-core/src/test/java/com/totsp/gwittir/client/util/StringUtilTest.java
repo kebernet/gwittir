@@ -38,8 +38,5 @@ public class StringUtilTest extends TestCase {
         for(int i=0; i < control.length; i++ ){
             assertEquals(control[i], b[i]);
         }
-
-        String b64 = Base64.encode(s.getBytes("UTF-16"));
-        System.out.println( StringUtil.fromUtf16ByteArray(Base64.decode(b64)));
     }
 }

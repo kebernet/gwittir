@@ -1,7 +1,6 @@
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.core.client.GWT;
-
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
@@ -17,12 +16,11 @@ import com.totsp.gwittir.client.ui.Renderer;
 import com.totsp.gwittir.client.ui.TextBox;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
-
-public class FlickrExample extends BoundVerticalPanel<Object> {
-    public FlickrExample() {
-        super(new BoundWidgetTypeFactory(), null);
-
-        TextBox box = new TextBox(false);
+public class FlickrExample extends BoundVerticalPanel<Object>{
+	
+	public FlickrExample(){
+		super(new BoundWidgetTypeFactory(), null);
+		TextBox box = new TextBox(false);
         Label title = new Label();
 
         add(box);
@@ -30,8 +28,7 @@ public class FlickrExample extends BoundVerticalPanel<Object> {
 
         ReflectedImageGroup group = new ReflectedImageGroup(100, 75, .2, .5);
         FlickrSearch search = new FlickrSearch();
-        group.setRenderer(
-            new Renderer() {
+        group.setRenderer(new Renderer() {
                 public Object render(Object o) {
                     return ((FlickrPhoto) o).getThumbnail();
                 }
@@ -39,17 +36,13 @@ public class FlickrExample extends BoundVerticalPanel<Object> {
 
         Binding images = new Binding(group, "value", search, "photos");
 
-        images.getChildren()
-              .add(
-            new Binding(
-                box, "value",
+        images.getChildren().add(new Binding(box, "value",
                 new Converter() {
                 public Object convert(Object original) {
                     if (original == null) {
                         return original;
                     } else {
-                        return original.toString()
-                                       .split(",");
+                        return original.toString().split(",");
                     }
                 }
             }, search, "tags",
@@ -73,8 +66,7 @@ public class FlickrExample extends BoundVerticalPanel<Object> {
                     }
                 }
             }));
-        images.getChildren()
-              .add(new Binding(title, "value", search, "title"));
+        images.getChildren().add(new Binding(title, "value", search, "title"));
         images.setLeft();
         images.bind();
 
@@ -92,8 +84,12 @@ public class FlickrExample extends BoundVerticalPanel<Object> {
                 }
             };
 
-        Binding bigBinding = new Binding(larger, "value", null, group, "selected", converter);
+        Binding bigBinding = new Binding(larger, "value", null, group,
+                "selected", converter);
         bigBinding.bind();
         add(larger);
-    }
+	}
+	
+	
+
 }

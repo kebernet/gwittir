@@ -8,25 +8,25 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.ui.util.ActionProvider;
 import com.totsp.gwittir.client.ui.util.ActionTypeFactory;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 
 /**
  *
  * @author rcooper
  */
-public class AbstractCollectionContainer<T> extends AbstractBoundWidget<Collection<T>> implements HasWidgets {
+public class AbstractCollectionContainer<T> extends
+        AbstractBoundWidget<Collection<T>>implements HasWidgets {
     private ActionTypeFactory actionFactory;
     private BoundWidgetTypeFactory factory;
     private Collection<T> value;
@@ -34,18 +34,20 @@ public class AbstractCollectionContainer<T> extends AbstractBoundWidget<Collecti
 
     /** Creates a new instance of AbstractCollectionContainer */
     public AbstractCollectionContainer(
-        final HasWidgets base, final BoundWidgetTypeFactory factory, final ActionTypeFactory actionFactory) {
+        final HasWidgets base, final BoundWidgetTypeFactory factory, final ActionTypeFactory actionFactory
+    ) {
         super();
         assert factory != null : "You must provide a BoundWidgetTypeFactory.";
         this.base = base;
         this.setFactory(factory);
         this.setActionFactory(actionFactory);
-        initWidget((Widget) base);
+        initWidget((Widget)base);
     }
 
     public AbstractCollectionContainer(
         final HasWidgets base, final BoundWidgetTypeFactory factory, final ActionTypeFactory actionFactory,
-        final Collection value) {
+        final Collection value
+    ) {
         this(base, factory, actionFactory);
         this.setValue(value);
     }
@@ -106,13 +108,10 @@ public class AbstractCollectionContainer<T> extends AbstractBoundWidget<Collecti
 
         for (Iterator it = this.value.iterator(); it.hasNext();) {
             Introspectable o = (Introspectable) it.next();
-            BoundWidget w = this.getFactory()
-                                .getWidgetProvider(Introspector.INSTANCE.resolveClass(o))
-                                .get();
+            BoundWidget w = this.getFactory().getWidgetProvider(Introspector.INSTANCE.resolveClass(o)).get();
             w.setModel(o);
 
-            ActionProvider ap = this.getActionFactory()
-                                    .getActionProvider(Introspector.INSTANCE.resolveClass(w));
+            ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));
 
             if (ap != null) {
                 w.setAction(ap.get());
@@ -121,4 +120,6 @@ public class AbstractCollectionContainer<T> extends AbstractBoundWidget<Collecti
             base.add((Widget) w);
         }
     }
+
+    
 }

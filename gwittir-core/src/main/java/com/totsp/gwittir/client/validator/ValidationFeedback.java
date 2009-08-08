@@ -26,6 +26,5 @@ package com.totsp.gwittir.client.validator;
  */
 public interface ValidationFeedback {
     public void handleException(Object source, ValidationException exception);
-
     public void resolve(Object source);
 }

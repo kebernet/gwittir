@@ -17,19 +17,16 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.ui.util;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.totsp.gwittir.client.ui.BoundWidget;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  *
@@ -37,59 +34,57 @@ import java.util.List;
  */
 public class ChangeMarkerListener implements PropertyChangeListener {
     private ChangeMarkedTypeFactory factory;
-    private SimplePanel marker = new SimplePanel();
     private boolean valueHasChanged = false;
-
+    private SimplePanel marker = new SimplePanel();
+    
     /** Creates a new instance of ChangeMarkerListener */
     public ChangeMarkerListener(ChangeMarkedTypeFactory factory) {
         super();
         this.factory = factory;
-        marker.setStyleName("gwittir-ChangeMarker");
+        marker.setStyleName( "gwittir-ChangeMarker");
     }
 
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        if (propertyChangeEvent.getSource() instanceof Widget) {
+    	if( propertyChangeEvent.getSource() instanceof Widget ){
             Widget widget = (Widget) propertyChangeEvent.getSource();
-
-            if (propertyChangeEvent.getPropertyName()
-                                       .equals("value")) {
+            if(propertyChangeEvent.getPropertyName().equals("value") ){
                 valueHasChanged = true;
-
-                if (factory.isMarking() && widget.isAttached()) {
-                    showMarker(widget);
+                if( factory.isMarking() && widget.isAttached() ){
+                    showMarker( widget );
                 }
-
-                if (widget instanceof BoundWidget) {
+                if(widget instanceof BoundWidget ){
                     BoundWidget bw = (BoundWidget) widget;
-                    List widgets = (List) factory.widgetLookup.get(bw.getModel());
-
-                    if (widgets == null) {
+                    List widgets = (List) factory.widgetLookup.get( bw.getModel() );
+                    if( widgets == null ){
                         widgets = new ArrayList();
-                        factory.widgetLookup.put(bw.getModel(), widgets);
+                        factory.widgetLookup.put( bw.getModel(), widgets );
                     }
-
-                    if (!widgets.contains(bw)) {
-                        widgets.add(bw);
-                    }
+                    if( !widgets.contains( bw ) ){
+                        widgets.add( bw );
+                    } 
+                        
                 }
-            } else if (propertyChangeEvent.getPropertyName()
-                                              .equals("attached")) {
+            } else if( propertyChangeEvent.getPropertyName().equals("attached") ){
                 Boolean att = (Boolean) propertyChangeEvent.getNewValue();
-
-                if (factory.isMarking() && att.booleanValue() && valueHasChanged) {
+                if( factory.isMarking() && att.booleanValue() && valueHasChanged ){
                     showMarker(widget);
                 } else {
                     hideMarker(widget);
                 }
             }
         }
+        
     }
-
-    static void hideMarker(Widget widget) {
-        widget.removeStyleName("gwittir-ChangeMarker");
-    }
-
-    static void showMarker(Widget widget) {
+    
+    static void showMarker(Widget widget){
         widget.addStyleName("gwittir-ChangeMarker");
     }
+    
+    static void hideMarker(Widget widget){
+        widget.removeStyleName("gwittir-ChangeMarker");
+    }
+    
+    
+    
+    
 }

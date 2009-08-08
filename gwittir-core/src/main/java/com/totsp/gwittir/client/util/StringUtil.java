@@ -23,6 +23,7 @@ package com.totsp.gwittir.client.util;
  * @author kebernet
  */
 public class StringUtil {
+
     /** Builds a String from a UTF-16 byte array
      *
      * @param bytes Array of double-byte sequences.
@@ -96,7 +97,8 @@ public class StringUtil {
             intToByteArray(four, (int) source.charAt(i));
 
             if (four[2] > 0) {
-                throw new RuntimeException("Encoding not valid for string. Try UTF-8");
+                throw new RuntimeException(
+                    "Encoding not valid for string. Try UTF-8");
             }
 
             bytes[i] = four[3];

@@ -15,28 +15,26 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package com.totsp.gwittir.client.util.userdata;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
-
 import com.totsp.gwittir.client.util.UnavailableException;
-
 
 /**
  *
  * @author kebernet
  */
 public class UserData extends JavaScriptObject {
-    protected UserData() {
+
+    protected UserData(){
     }
 
-    public static final UserData getInstance(Element e)
-        throws UnavailableException {
-        if (!isAvailable()) {
+    public static final UserData getInstance(Element e) throws UnavailableException{
+        if(!isAvailable()){
             throw new UnavailableException();
         }
-
         return getNativeInstance(e);
     }
 
@@ -44,27 +42,37 @@ public class UserData extends JavaScriptObject {
         return getInstance(createElement());
     }
 
-    public final native String get(String key) /*-{
-    return this.getAttribute(key);
+    private static final native UserData getNativeInstance(Element e)
+    /*-{ e.style.behavior = 'url(#default#userData)'; return e; }-*/;
+
+
+    private static final native Element createElement()
+    /*-{
+    var e = document.createElement('span');
+    e.style.behavior = 'url(#default#userData)';
+    document.body.appendChild(e);
+    return e;
+     }-*/;
+
+    private static final native boolean isAvailable()/*-{
+        return navigator.userAgent.indexOf("MSIE") != -1;
+     }-*/;
+
+    public native final void load(String name) /*-{
+        this.load(name);
+     }-*/;
+
+    
+    public native final String get(String key)/*-{
+        return this.getAttribute(key);
     }-*/;
 
-    public final native void load(String name) /*-{
-    this.load(name);
+
+    public native final void set(String key, String value)/*-{
+        this.setAttribute(key, value);
+     }-*/;
+
+    public native final void save(String name)/*-{
+        this.save(name);
     }-*/;
-
-    public final native void save(String name) /*-{
-    this.save(name);
-    }-*/;
-
-    public final native void set(String key, String value) /*-{
-    this.setAttribute(key, value);
-    }-*/;
-
-    private static final native boolean isAvailable() /*-{
-    return navigator.userAgent.indexOf("MSIE") != -1;
-    }-*/;
-
-    private static final native UserData getNativeInstance(Element e);
-
-    private static final native Element createElement();
 }

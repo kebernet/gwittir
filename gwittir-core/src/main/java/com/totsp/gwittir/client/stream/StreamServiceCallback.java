@@ -2,17 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.totsp.gwittir.client.stream;
 
+package com.totsp.gwittir.client.stream;
 
 /**
  *
  * @author kebernet
  */
 public interface StreamServiceCallback<T> {
-    void onComplete();
+
+
+    void onReceive(T object);
 
     void onError(Throwable thrown);
 
-    void onReceive(T object);
+    void onComplete();
+    
 }

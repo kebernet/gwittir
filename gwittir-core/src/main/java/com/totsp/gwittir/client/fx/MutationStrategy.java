@@ -36,10 +36,13 @@ public interface MutationStrategy {
      * A Sinoidal (slow-fast-slow) MutationStrategy for Integer/int properties.
      */
     public static final MutationStrategy INTEGER_SINOIDAL = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 double f = ((Integer) from).doubleValue();
                 double t = ((Integer) to).doubleValue();
-                double offset = ((-Math.cos((double) percentComplete * Math.PI) / 2d) + 0.5d);
+                double offset = ((
+                        -Math.cos((double) percentComplete * Math.PI) / 2d
+                    ) + 0.5d);
 
                 return new Integer((int) Math.round((offset * (t - f)) + f));
             }
@@ -49,11 +52,14 @@ public interface MutationStrategy {
      * A Linear (constant-speed) MutationStrategy for Integer/int properties.
      */
     public static final MutationStrategy INTEGER_LINEAR = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 double f = ((Integer) from).doubleValue();
                 double t = ((Integer) to).doubleValue();
 
-                return new Integer((int) Math.round((percentComplete * (t - f)) + f));
+                return new Integer((int) Math.round((
+                            percentComplete * (t - f)
+                        ) + f));
             }
         };
 
@@ -61,7 +67,8 @@ public interface MutationStrategy {
      * A Cubic (constantly accellerating) MutationStrategy for Integer/int properties
      */
     public static final MutationStrategy INTEGER_CUBIC = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 double f = ((Integer) from).doubleValue();
                 double t = ((Integer) to).doubleValue();
                 double offset = Math.pow(percentComplete, 3);
@@ -74,13 +81,14 @@ public interface MutationStrategy {
      * A Sinoidal (slow-fast-slow) MutationStrategy for properties with units (px/%/etc)
      */
     public static final MutationStrategy UNITS_SINOIDAL = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
-                UnitValue tv = UnitsParser.parse((to == null) ? null
-                                                              : to.toString());
-                double f = (double) UnitsParser.parse((from == null) ? null
-                                                                     : from.toString()).value;
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
+                UnitValue tv = UnitsParser.parse( to == null ? null : to.toString() );
+                double f = (double) UnitsParser.parse( from == null ? null : from.toString()).value;
                 double t = (double) tv.value;
-                double offset = ((-Math.cos((double) percentComplete * Math.PI) / 2d) + 0.5d);
+                double offset = ((
+                        -Math.cos((double) percentComplete * Math.PI) / 2d
+                    ) + 0.5d);
 
                 return Math.round((offset * (t - f)) + f) + tv.units;
             }
@@ -90,7 +98,8 @@ public interface MutationStrategy {
      * A Linear (constant-speed) MutationStrategy for properties with units (px/%/etc)
      */
     public static final MutationStrategy UNITS_LINEAR = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 UnitValue tv = UnitsParser.parse((String) to);
                 double f = (double) UnitsParser.parse((String) from).value;
                 double t = (double) tv.value;
@@ -103,7 +112,8 @@ public interface MutationStrategy {
      * A Cubic (constantly accellerating) MutationStrategy for properties with units (px/%/etc)
      */
     public static final MutationStrategy UNITS_CUBIC = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 UnitValue tv = UnitsParser.parse((String) to);
                 double f = (double) UnitsParser.parse((String) from).value;
                 double t = (double) tv.value;
@@ -117,10 +127,13 @@ public interface MutationStrategy {
      * A Sinoidal (slow-fast-slow) MutationStrategy for Double/double properties.
      */
     public static final MutationStrategy DOUBLE_SINOIDAL = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 double f = ((Double) from).doubleValue();
                 double t = ((Double) to).doubleValue();
-                double offset = ((-Math.cos((double) percentComplete * Math.PI) / 2d) + 0.5d);
+                double offset = ((
+                        -Math.cos((double) percentComplete * Math.PI) / 2d
+                    ) + 0.5d);
 
                 return new Double((offset * (t - f)) + f);
             }
@@ -130,7 +143,8 @@ public interface MutationStrategy {
      * A Linear (constant-speed) MutationStrategy for Double/double properties.
      */
     public static final MutationStrategy DOUBLE_LINEAR = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 double f = ((Double) from).doubleValue();
                 double t = ((Double) to).doubleValue();
 
@@ -142,7 +156,8 @@ public interface MutationStrategy {
      * A Cubic (constantly accellerating) MutationStrategy for Double/double properties
      */
     public static final MutationStrategy DOUBLE_CUBIC = new MutationStrategy() {
-            public Object mutateValue(Object from, Object to, double percentComplete) {
+            public Object mutateValue(Object from, Object to,
+                double percentComplete) {
                 double f = ((Double) from).doubleValue();
                 double t = ((Double) to).doubleValue();
                 double offset = Math.pow(percentComplete, 3);

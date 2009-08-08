@@ -1,5 +1,4 @@
 package com.totsp.gwittir.client.ui;
-
 /*
  * ToBooleanRenderer.java
  *
@@ -24,23 +23,23 @@ package com.totsp.gwittir.client.ui;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class ToBooleanRenderer implements Renderer<Object, Boolean> {
+public class ToBooleanRenderer implements Renderer<Object,Boolean> {
+    
     public static final ToBooleanRenderer INSTANCE = new ToBooleanRenderer();
-
+    
     /** Creates a new instance of ToBooleanRenderer */
     private ToBooleanRenderer() {
         super();
     }
 
     public Boolean render(Object o) {
-        if (o == null) {
+        if( o == null ){
             return null;
         }
-
-        if (o instanceof Boolean) {
+        if( o instanceof Boolean ){
             return (Boolean) o;
         }
-
-        return Boolean.valueOf(o.toString());
+        return Boolean.valueOf( o.toString() );
     }
+    
 }

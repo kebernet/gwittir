@@ -19,14 +19,16 @@ package com.totsp.gwittir.client.util.html5db;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-
 /**
  *
  * @author kebernet
  */
 public class SQLError extends JavaScriptObject {
-    protected SQLError() {
+
+    protected SQLError(){
+        
     }
 
-    public final native String getMessage() /*-{ return this.message; }-*/;
+    public final native String getMessage()/*-{ return this.message; }-*/;
+
 }

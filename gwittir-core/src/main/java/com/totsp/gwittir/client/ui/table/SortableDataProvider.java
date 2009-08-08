@@ -27,5 +27,6 @@ package com.totsp.gwittir.client.ui.table;
 public interface SortableDataProvider extends DataProvider {
     public String[] getSortableProperties();
 
-    public void sortOnProperty(final HasChunks table, final String propertyName, final boolean ascending);
+    public void sortOnProperty(final HasChunks table,
+        final String propertyName, final boolean ascending);
 }

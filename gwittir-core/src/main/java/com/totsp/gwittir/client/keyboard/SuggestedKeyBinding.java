@@ -26,15 +26,22 @@ package com.totsp.gwittir.client.keyboard;
  */
 public class SuggestedKeyBinding extends KeyBinding {
     /** Creates a new instance of SuggestedKeyBinding */
-    public SuggestedKeyBinding(char key, boolean control, boolean alt, boolean shift) {
+    public SuggestedKeyBinding(
+        char key, boolean control, boolean alt, boolean shift) {
         super(key, control, alt, shift);
     }
 
+    public int hashCode() {
+        return super.hashCode() + 4096;
+    }
+    
     public boolean equals(Object o) {
-        if (o instanceof SuggestedKeyBinding && (o != null)) {
+        if(o instanceof SuggestedKeyBinding && (o != null)) {
             SuggestedKeyBinding b = (SuggestedKeyBinding) o;
 
-            if ((b.alt == this.alt) && (b.control == this.control) && (b.shift == this.shift) && (b.key == this.key)) {
+            if(
+                (b.alt == this.alt)&& (b.control == this.control)
+                        && (b.shift == this.shift) && (b.key == this.key)) {
                 return true;
             } else {
                 return false;
@@ -42,9 +49,5 @@ public class SuggestedKeyBinding extends KeyBinding {
         } else {
             return false;
         }
-    }
-
-    public int hashCode() {
-        return super.hashCode() + 4096;
     }
 }

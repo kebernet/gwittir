@@ -24,143 +24,6 @@ public class HuffmanEncoder {
     StringBuffer code = new StringBuffer();
     TreeSet<HuffTree> theTree = new TreeSet<HuffTree>();
 
-    //-----------------------------------------------------//
-
-    //This method encodes an incoming String message using
-    // the Huffman encoding methodology.  The method also
-    // receives a reference to an empty data structure.
-    // This data structures is populated with encoding
-    // particulars required later by the decode method
-    // to decode and transform the encoded message back
-    // into the original String message.  Note that in
-    // order to keep this method simple, pad characters may
-    // be appended onto the end of the original
-    // message when it is encoded.  This is done to cause the
-    // number of bits in the encoded message to be a multiple
-    // of eight, thus causing the length of the encoded
-    // message to be an integral number of bytes.  Additional
-    // code would be required to avoid this at this point.
-    // However, it is easy to eliminate the extraneous
-    // characters during decoding if the length of the
-    // original message is known.
-    public byte[] encode(String rawData, HashMap<Character, String> huffEncodeTable) {
-        //Save the incoming parameters.
-        this.rawData = rawData;
-        this.huffEncodeTable = huffEncodeTable;
-
-        //For illustration purposes only, enable the following
-        // two statements to display the original message as a
-        // stream of bits.  This can be visually compared with
-        // a similar display for the encoded  message later to
-        // illustrate the amount of compression provided by
-        // the encoding process.
-        /*
-            System.out.println("nRaw Data as Bits");
-            displayRawDataAsBits();
-        */
-
-        //Create a frequency chart that identifies each of the
-        // individual characters in the original message and
-        // the number of times (frequency) that each character
-        // appeared in the message.
-        createFreqData();
-
-        //For illustration purposes only, enable the following
-        // statement to display the contents of the frequency
-        // chart created above.
-        /*
-            displayFreqData();
-        */
-
-        //Create a HuffLeaf object for each character
-        // identified in the frequency chart.  Store the
-        // HuffLeaf objects in a TreeSet object.  Each HuffLeaf
-        // object encapsulates the character as well as the
-        // number of times that the character appeared in the
-        // original message (the frequency).
-        createLeaves();
-
-        //Assemble the HuffLeaf objects into  a Huffman tree
-        // (a HuffTree object). A Huffman tree is a special
-        // form of a binary tree  consisting of properly linked
-        // HuffNode objects and HuffLeaf objects.
-        //When the following method returns, the HuffTree
-        // object remains as the only object stored in the
-        // TreeSet object that previously contained all of the
-        // HuffLeaf objects.  This is because all of the
-        // HuffLeaf objects have been combined with HuffNode
-        // objects to form the tree.
-        createHuffTree();
-
-        //Use the Huffman tree in a recursive manner to create
-        // a bit code for each character in the message.  The
-        // bit codes are different lengths with the shorter
-        // codes corresponding to the characters with a high
-        // frequency value and the longer codes corresponding
-        // to the characters with the lower frequency values.
-        //Note that the method call extracts the reference to
-        // the Huffman tree from the TreeSet object and passes
-        // that reference to the method.  This is necessary
-        // because the method is recursive and cannot
-        // conveniently work with the TreeSet object.
-        //This method populates the data structure that is
-        // required later to decode the encoded message.
-        createBitCodes(theTree.first());
-
-        //For purposes of illustration only, enable the
-        // following two statements to display a table showing
-        // the relationship between the characters in the
-        // original message and the bitcodes that will replace
-        // those characters to produce the Huffman-encoded
-        // message.
-        /*
-            System.out.println();
-            displayBitCodes();
-        */
-
-        //Encode the message into a String representation
-        // of the bits that will make up the final encoded
-        // message.  Also,the following method may optionally
-        // display the String showing the bit values that will
-        // appear in the final Huffman-encoded message.  This
-        // is useful for comparing back against the bits in
-        // the original message for purposes of evaluating the
-        // amount of compression provided by encoding the
-        // message.
-        encodeToString();
-
-        //Populate a lookup table that relates eight bits
-        // represented as a String to every possible combinaion
-        // of eight actual bits.
-        buildEncodingBitMap();
-
-        //Encode the String representation of the bits that
-        // make up the encoded message to the actual bits
-        // that make up the encoded message.
-        //Note that this method doesn't handle the end of the
-        // message very gracefully for those cases where the
-        // number of required bits is not a multiple of 8.  It
-        // simply adds enough "0" characters to the end to
-        // cause the length to be a multiple of 8.  This may
-        // result in extraneous characters at the end of the
-        // decoded message later.
-        //For illustration purposes only, this method may also
-        // display the extended version of the String
-        // representation of the bits for comparison with the
-        // non-extended version.
-        encodeStringToBits();
-
-        //Return the encoded message.
-        byte[] val = new byte[binaryEncodedData.size()];
-
-        for (int i = 0; i < val.length; i++) {
-            val[i] = binaryEncodedData.get(i);
-        }
-
-        return val;
-    } //end encode method
-      //-----------------------------------------------------//
-
     //This method populates a lookup table that relates eight
     // bits represented as a String to eight actual bits for
     // all possible combinations of eight bits.
@@ -441,7 +304,8 @@ public class HuffmanEncoder {
             //Combine the two saved elements into a new element
             // of type HuffNode and add it to the TreeSet
             // object.
-            HuffNode tempNode = new HuffNode(left.getFrequency() + right.getFrequency(), left, right);
+            HuffNode tempNode = new HuffNode(left.getFrequency() +
+                    right.getFrequency(), left, right);
             theTree.add(tempNode);
 
             //Enable the following statements to see the HuffTree
@@ -469,8 +333,7 @@ public class HuffmanEncoder {
     // number of times that the character appeared in the
     // original message.
     void createLeaves() {
-        Iterator<Character> enumerator = frequencyData.keySet()
-                                                      .iterator();
+        Iterator<Character> enumerator = frequencyData.keySet().iterator();
 
         while (enumerator.hasNext()) {
             Character nextKey = enumerator.next();
@@ -484,8 +347,7 @@ public class HuffmanEncoder {
     // bitcodes that will ultimately replace each of those
     // characters to produce the Huffman-encoded message.
     void displayBitCodes() {
-        Iterator<Character> enumerator = huffEncodeTable.keySet()
-                                                        .iterator();
+        Iterator<Character> enumerator = huffEncodeTable.keySet().iterator();
 
         while (enumerator.hasNext()) {
             Character nextKey = enumerator.next();
@@ -498,8 +360,7 @@ public class HuffmanEncoder {
     void displayFreqData() {
         System.out.println("nFrequency Data");
 
-        Iterator<Character> enumerator = frequencyData.keySet()
-                                                      .iterator();
+        Iterator<Character> enumerator = frequencyData.keySet().iterator();
 
         while (enumerator.hasNext()) {
             Character nextKey = enumerator.next();
@@ -547,7 +408,8 @@ public class HuffmanEncoder {
     //This method displays a message string as a series of
     // characters each having a value of 1 or 0.
     void displayRawDataAsBits() {
-        for (int cnt = 0, charCnt = 0; cnt < rawData.length(); cnt++, charCnt++) {
+        for (int cnt = 0, charCnt = 0; cnt < rawData.length();
+                cnt++, charCnt++) {
             char theCharacter = rawData.charAt(cnt);
             String binaryString = Integer.toBinaryString(theCharacter);
 
@@ -568,6 +430,142 @@ public class HuffmanEncoder {
 
         System.out.println();
     } //end displayRawDataAsBits
+      //-----------------------------------------------------//
+
+    //-----------------------------------------------------//
+
+    //This method encodes an incoming String message using
+    // the Huffman encoding methodology.  The method also
+    // receives a reference to an empty data structure.
+    // This data structures is populated with encoding
+    // particulars required later by the decode method
+    // to decode and transform the encoded message back
+    // into the original String message.  Note that in
+    // order to keep this method simple, pad characters may
+    // be appended onto the end of the original
+    // message when it is encoded.  This is done to cause the
+    // number of bits in the encoded message to be a multiple
+    // of eight, thus causing the length of the encoded
+    // message to be an integral number of bytes.  Additional
+    // code would be required to avoid this at this point.
+    // However, it is easy to eliminate the extraneous
+    // characters during decoding if the length of the
+    // original message is known.
+    public byte[] encode(String rawData,
+        HashMap<Character, String> huffEncodeTable) {
+        //Save the incoming parameters.
+        this.rawData = rawData;
+        this.huffEncodeTable = huffEncodeTable;
+
+        //For illustration purposes only, enable the following
+        // two statements to display the original message as a
+        // stream of bits.  This can be visually compared with
+        // a similar display for the encoded  message later to
+        // illustrate the amount of compression provided by
+        // the encoding process.
+        /*
+            System.out.println("nRaw Data as Bits");
+            displayRawDataAsBits();
+        */
+
+        //Create a frequency chart that identifies each of the
+        // individual characters in the original message and
+        // the number of times (frequency) that each character
+        // appeared in the message.
+        createFreqData();
+
+        //For illustration purposes only, enable the following
+        // statement to display the contents of the frequency
+        // chart created above.
+        /*
+            displayFreqData();
+        */
+
+        //Create a HuffLeaf object for each character
+        // identified in the frequency chart.  Store the
+        // HuffLeaf objects in a TreeSet object.  Each HuffLeaf
+        // object encapsulates the character as well as the
+        // number of times that the character appeared in the
+        // original message (the frequency).
+        createLeaves();
+
+        //Assemble the HuffLeaf objects into  a Huffman tree
+        // (a HuffTree object). A Huffman tree is a special
+        // form of a binary tree  consisting of properly linked
+        // HuffNode objects and HuffLeaf objects.
+        //When the following method returns, the HuffTree
+        // object remains as the only object stored in the
+        // TreeSet object that previously contained all of the
+        // HuffLeaf objects.  This is because all of the
+        // HuffLeaf objects have been combined with HuffNode
+        // objects to form the tree.
+        createHuffTree();
+
+        //Use the Huffman tree in a recursive manner to create
+        // a bit code for each character in the message.  The
+        // bit codes are different lengths with the shorter
+        // codes corresponding to the characters with a high
+        // frequency value and the longer codes corresponding
+        // to the characters with the lower frequency values.
+        //Note that the method call extracts the reference to
+        // the Huffman tree from the TreeSet object and passes
+        // that reference to the method.  This is necessary
+        // because the method is recursive and cannot
+        // conveniently work with the TreeSet object.
+        //This method populates the data structure that is
+        // required later to decode the encoded message.
+        createBitCodes(theTree.first());
+
+        //For purposes of illustration only, enable the
+        // following two statements to display a table showing
+        // the relationship between the characters in the
+        // original message and the bitcodes that will replace
+        // those characters to produce the Huffman-encoded
+        // message.
+        /*
+            System.out.println();
+            displayBitCodes();
+        */
+
+        //Encode the message into a String representation
+        // of the bits that will make up the final encoded
+        // message.  Also,the following method may optionally
+        // display the String showing the bit values that will
+        // appear in the final Huffman-encoded message.  This
+        // is useful for comparing back against the bits in
+        // the original message for purposes of evaluating the
+        // amount of compression provided by encoding the
+        // message.
+        encodeToString();
+
+        //Populate a lookup table that relates eight bits
+        // represented as a String to every possible combinaion
+        // of eight actual bits.
+        buildEncodingBitMap();
+
+        //Encode the String representation of the bits that
+        // make up the encoded message to the actual bits
+        // that make up the encoded message.
+        //Note that this method doesn't handle the end of the
+        // message very gracefully for those cases where the
+        // number of required bits is not a multiple of 8.  It
+        // simply adds enough "0" characters to the end to
+        // cause the length to be a multiple of 8.  This may
+        // result in extraneous characters at the end of the
+        // decoded message later.
+        //For illustration purposes only, this method may also
+        // display the extended version of the String
+        // representation of the bits for comparison with the
+        // non-extended version.
+        encodeStringToBits();
+
+        //Return the encoded message.
+        byte[] val = new byte[binaryEncodedData.size()];
+        for(int i=0; i<val.length; i++){
+            val[i] = binaryEncodedData.get(i);
+        }
+        return val;
+    } //end encode method
       //-----------------------------------------------------//
 
     //The purpose of this method is to create actual bit data

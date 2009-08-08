@@ -36,19 +36,22 @@ class EventPreviewListener implements EventPreview {
     }
 
     public boolean onEventPreview(Event event) {
-        if (DOM.eventGetType(event) != Event.ONKEYDOWN) {
+        if(DOM.eventGetType(event) != Event.ONKEYDOWN) {
             return true;
         }
 
         KeyboardController.LOG.log(
-            Level.SPAM, "Got preview event EventType: " + DOM.eventGetType(event) + " " + Event.ONKEYDOWN, null);
-        KeyboardController.LOG.log(Level.SPAM, "KeyCode: " + DOM.eventGetKeyCode(event), null);
+            Level.SPAM,
+            "Got preview event EventType: " + DOM.eventGetType(event) + " "
+            + Event.ONKEYDOWN, null);
+        KeyboardController.LOG.log(
+            Level.SPAM, "KeyCode: " + DOM.eventGetKeyCode(event), null);
 
         boolean bubble = KeyboardController.INSTANCE.handleEvent(
-                (char) DOM.eventGetKeyCode(event), DOM.eventGetCtrlKey(event), DOM.eventGetAltKey(event),
-                DOM.eventGetShiftKey(event));
+                (char) DOM.eventGetKeyCode(event), DOM.eventGetCtrlKey(event),
+                DOM.eventGetAltKey(event), DOM.eventGetShiftKey(event));
 
-        if (!bubble) {
+        if(!bubble) {
             DOM.eventPreventDefault(event);
         }
 

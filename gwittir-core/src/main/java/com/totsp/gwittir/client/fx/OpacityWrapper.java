@@ -21,19 +21,20 @@ package com.totsp.gwittir.client.fx;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.UIObject;
-
 import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.fx.rebind.OpacitySetter;
-
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class OpacityWrapper implements Introspectable {
+    
     public static final Double TRANSPARENT = new Double(0.0);
     public static final Double OPAQUE = new Double(1.0);
-    private static final OpacitySetter SETTER = (OpacitySetter) GWT.create(OpacitySetter.class);
+    
+    private static final OpacitySetter SETTER = (OpacitySetter) GWT
+        .create(OpacitySetter.class);
     UIObject o;
 
     /** Creates a new instance of OpacityWrapper */
@@ -41,11 +42,11 @@ public class OpacityWrapper implements Introspectable {
         this.o = o;
     }
 
-    public void setOpacity(Double opacity) {
-        SETTER.setOpacity(this.o, opacity);
-    }
-
     public Double getOpacity() {
         return SETTER.getOpacity(this.o);
+    }
+
+    public void setOpacity(Double opacity) {
+        SETTER.setOpacity(this.o, opacity);
     }
 }
