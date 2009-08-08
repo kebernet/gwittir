@@ -20,6 +20,7 @@
 package com.totsp.gwittir.client.flow;
 
 import com.google.gwt.user.client.ui.Widget;
+
 import com.totsp.gwittir.client.ui.BoundWidget;
 
 
@@ -38,9 +39,9 @@ public class FlowEvent {
     private Widget managedWidget;
 
     /** Creates a new instance of FlowEvent */
-    public FlowEvent(FlowContext context, Widget managedWidget, BoundWidget<?> fromWidget,
-        Object fromModel, String fromName, BoundWidget<?> toWidget,
-        Object toModel, String toName) {
+    public FlowEvent(
+        FlowContext context, Widget managedWidget, BoundWidget<?> fromWidget, Object fromModel, String fromName,
+        BoundWidget<?> toWidget, Object toModel, String toName) {
         this.context = context;
         this.fromWidget = fromWidget;
         this.fromModel = fromModel;
@@ -59,16 +60,16 @@ public class FlowEvent {
         return context;
     }
 
-	/** The model that was used for the previous state.
-	 * 
-	 * @return The model that was used for the previous state.
-	 */
+    /** The model that was used for the previous state.
+     *
+     * @return The model that was used for the previous state.
+     */
     public Object getFromModel() {
         return fromModel;
     }
 
     /** The activity name form the previous state.
-     * 
+     *
      * @return The activity name form the previous state.
      */
     public String getFromName() {
@@ -76,15 +77,19 @@ public class FlowEvent {
     }
 
     /** The BoundWidget from the previous state
-     * 
+     *
      * @return The BoundWidget from the previous state
      */
     public BoundWidget<?> getFromWidget() {
         return fromWidget;
     }
 
+    public Widget getManagedWidget() {
+        return this.managedWidget;
+    }
+
     /** The model for the next state.
-     * 
+     *
      * @return The model for the new state.
      */
     public Object getToModel() {
@@ -92,7 +97,7 @@ public class FlowEvent {
     }
 
     /** The activity name for the new state.
-     * 
+     *
      * @return The activity name for the new state.
      */
     public String getToName() {
@@ -100,14 +105,10 @@ public class FlowEvent {
     }
 
     /** The BoundWidget for the new State
-     * 
+     *
      * @return The BoundWidget for the new State
      */
     public BoundWidget<?> getToWidget() {
         return toWidget;
-    }
-    
-    public Widget getManagedWidget(){
-    	return this.managedWidget;
     }
 }

@@ -39,39 +39,36 @@ public abstract class AbstractTableWidget extends AbstractBoundWidget {
     public AbstractTableWidget() {
     }
 
-    protected BoundWidget createWidget(Binding parent, Field field,
-        Bindable target) {
+    protected BoundWidget createWidget(Binding parent, Field field, Bindable target) {
         final BoundWidget widget;
         Binding binding;
 
-        if(field.getCellProvider() != null) {
-            widget = field.getCellProvider().get();
+        if (field.getCellProvider() != null) {
+            widget = field.getCellProvider()
+                          .get();
         } else {
             final Property p = Introspector.INSTANCE.getDescriptor(target)
-                                                    .getProperty(field
-                    .getPropertyName());
-            widget = this.factory.getWidgetProvider(field.getPropertyName(),
-                    p.getType()).get();
+                                                    .getProperty(field.getPropertyName());
+            widget = this.factory.getWidgetProvider(field.getPropertyName(), p.getType())
+                                 .get();
 
             // TODO Figure out some way to make this read only.
         }
 
-        
-
-
-        binding = new Binding(widget, "value", field.getValidator(),
-                field.getFeedback(), target, field.getPropertyName(), null, null);
+        binding = new Binding(
+                widget, "value", field.getValidator(), field.getFeedback(), target, field.getPropertyName(), null, null);
         widget.setModel(this.getValue());
 
-        if(field.getConverter() != null) {
+        if (field.getConverter() != null) {
             binding.getRight().converter = field.getConverter();
         }
 
-        if(field.getComparator() != null) {
+        if (field.getComparator() != null) {
             widget.setComparator(field.getComparator());
         }
 
-        parent.getChildren().add(binding);
+        parent.getChildren()
+              .add(binding);
 
         return widget;
     }

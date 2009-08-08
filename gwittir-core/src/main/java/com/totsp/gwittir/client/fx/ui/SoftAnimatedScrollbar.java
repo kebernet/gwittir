@@ -31,13 +31,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class SoftAnimatedScrollbar extends SoftScrollbar {
     private MouseListener higherListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
-                float newPercent = (float) (
-                        y + lower.getOffsetHeight() + bar.getOffsetHeight()
-                    ) / (float) base.getOffsetHeight();
-                int newPosition = Math.round((
-                            target.getOffsetHeight()
-                            + target.getMaxScrollPosition()
-                        ) * newPercent) - (target.getOffsetHeight() / 2);
+                float newPercent = (float) (y + lower.getOffsetHeight() + bar.getOffsetHeight()) / (float) base.getOffsetHeight();
+                int newPosition = Math.round((target.getOffsetHeight() + target.getMaxScrollPosition()) * newPercent) -
+                    (target.getOffsetHeight() / 2);
 
                 target.animateToScrollPosition(newPosition);
             }
@@ -46,10 +42,8 @@ public class SoftAnimatedScrollbar extends SoftScrollbar {
     private MouseListener lowerListener = new MouseListenerAdapter() {
             public void onMouseDown(Widget sender, int x, int y) {
                 float newPercent = (float) y / (float) base.getOffsetHeight();
-                int newPosition = Math.round((
-                            target.getOffsetHeight()
-                            + target.getMaxScrollPosition()
-                        ) * newPercent) - (target.getOffsetHeight() / 2);
+                int newPosition = Math.round((target.getOffsetHeight() + target.getMaxScrollPosition()) * newPercent) -
+                    (target.getOffsetHeight() / 2);
                 target.animateToScrollPosition(newPosition);
             }
         };

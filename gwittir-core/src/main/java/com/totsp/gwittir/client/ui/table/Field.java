@@ -58,24 +58,21 @@ public class Field {
         this.styleName = styleName;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        String helpText) {
+    public Field(String propertyName, String label, String styleName, String helpText) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.helpText = helpText;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        Converter converter) {
+    public Field(String propertyName, String label, String styleName, Converter converter) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.converter = converter;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        String helpText, Converter converter) {
+    public Field(String propertyName, String label, String styleName, String helpText, Converter converter) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
@@ -83,8 +80,9 @@ public class Field {
         this.helpText = helpText;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        Converter converter, Validator validator, ValidationFeedback feedback) {
+    public Field(
+        String propertyName, String label, String styleName, Converter converter, Validator validator,
+        ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
@@ -93,8 +91,8 @@ public class Field {
         this.converter = converter;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        String helpText, Converter converter, Validator validator,
+    public Field(
+        String propertyName, String label, String styleName, String helpText, Converter converter, Validator validator,
         ValidationFeedback feedback) {
         this.propertyName = propertyName;
         this.label = label;
@@ -105,8 +103,8 @@ public class Field {
         this.helpText = helpText;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        String helpText, Converter converter, Validator validator,
+    public Field(
+        String propertyName, String label, String styleName, String helpText, Converter converter, Validator validator,
         ValidationFeedback feedback, Comparator comparator) {
         this.propertyName = propertyName;
         this.label = label;
@@ -117,16 +115,15 @@ public class Field {
         this.helpText = helpText;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        BoundWidgetProvider cellProvider) {
+    public Field(String propertyName, String label, String styleName, BoundWidgetProvider cellProvider) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
         this.cellProvider = cellProvider;
     }
 
-    public Field(String propertyName, String label, String styleName,
-        String helpText, BoundWidgetProvider cellProvider) {
+    public Field(
+        String propertyName, String label, String styleName, String helpText, BoundWidgetProvider cellProvider) {
         this.propertyName = propertyName;
         this.label = label;
         this.styleName = styleName;
@@ -139,6 +136,10 @@ public class Field {
 
     public Comparator getComparator() {
         return comparator;
+    }
+
+    public Converter getConverter() {
+        return converter;
     }
 
     public ValidationFeedback getFeedback() {
@@ -155,10 +156,6 @@ public class Field {
 
     public String getPropertyName() {
         return propertyName;
-    }
-
-    public Converter getConverter() {
-        return converter;
     }
 
     public String getStyleName() {

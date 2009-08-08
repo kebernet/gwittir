@@ -11,8 +11,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
-
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamWriter;
+
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
@@ -31,8 +31,7 @@ public class StreamServiceUtils {
     /**
      * Maps primitive wrapper classes to their corresponding primitive class.
      */
-    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS =
-        new HashMap<Class<?>, Class<?>>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS = new HashMap<Class<?>, Class<?>>();
 
     /**
      * Static map of classes to sets of interfaces (e.g. classes). Optimizes
@@ -41,15 +40,12 @@ public class StreamServiceUtils {
     private static Map<Class<?>, Set<String>> serviceToImplementedInterfacesMap;
 
     static {
-        PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Boolean.class,
-            Boolean.TYPE);
+        PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Boolean.class, Boolean.TYPE);
         PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Byte.class, Byte.TYPE);
-        PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Character.class,
-            Character.TYPE);
+        PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Character.class, Character.TYPE);
         PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Double.class, Double.TYPE);
         PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Float.class, Float.TYPE);
-        PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Integer.class,
-            Integer.TYPE);
+        PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Integer.class, Integer.TYPE);
         PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Long.class, Long.TYPE);
         PRIMITIVE_WRAPPER_CLASS_TO_PRIMITIVE_CLASS.put(Short.class, Short.TYPE);
 
@@ -66,8 +62,8 @@ public class StreamServiceUtils {
         serviceToImplementedInterfacesMap = new HashMap<Class<?>, Set<String>>();
     }
 
-    public static RPCRequest decodeRequest(String encodedRequest,
-        Class<?> type, SerializationPolicyProvider serializationPolicyProvider) {
+    public static RPCRequest decodeRequest(
+        String encodedRequest, Class<?> type, SerializationPolicyProvider serializationPolicyProvider) {
         if (encodedRequest == null) {
             throw new NullPointerException("encodedRequest cannot be null");
         }
@@ -76,11 +72,12 @@ public class StreamServiceUtils {
             throw new IllegalArgumentException("encodedRequest cannot be empty");
         }
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = Thread.currentThread()
+                                        .getContextClassLoader();
 
         try {
-            ServerSerializationStreamReader streamReader = new ServerSerializationStreamReader(classLoader,
-                    serializationPolicyProvider);
+            ServerSerializationStreamReader streamReader = new ServerSerializationStreamReader(
+                    classLoader, serializationPolicyProvider);
             streamReader.prepareToRead(encodedRequest);
 
             // Read the name of the RemoteService interface
@@ -125,12 +122,10 @@ public class StreamServiceUtils {
                 String paramClassName = streamReader.readString();
 
                 try {
-                    parameterTypes[i] = getClassFromSerializedName(paramClassName,
-                            classLoader);
+                    parameterTypes[i] = getClassFromSerializedName(paramClassName, classLoader);
                 } catch (ClassNotFoundException e) {
-                    throw new IncompatibleRemoteServiceException("Parameter " +
-                        i + " of is of an unknown type '" + paramClassName +
-                        "'", e);
+                    throw new IncompatibleRemoteServiceException(
+                        "Parameter " + i + " of is of an unknown type '" + paramClassName + "'", e);
                 }
             }
 
@@ -143,15 +138,43 @@ public class StreamServiceUtils {
                     parameterValues[i] = streamReader.deserializeValue(parameterTypes[i]);
                 }
 
-                return new RPCRequest(method, parameterValues,
-                    serializationPolicy);
+                return new RPCRequest(method, parameterValues, serializationPolicy);
             } catch (NoSuchMethodException e) {
-                throw new IncompatibleRemoteServiceException(formatMethodNotFoundErrorMessage(
-                        type, serviceMethodName, parameterTypes));
+                throw new IncompatibleRemoteServiceException(
+                    formatMethodNotFoundErrorMessage(type, serviceMethodName, parameterTypes));
             }
         } catch (SerializationException ex) {
             throw new IncompatibleRemoteServiceException(ex.getMessage(), ex);
         }
+    }
+
+    //
+    /**
+    * Returns a string that encodes the results of an RPC call. Private overload
+    * that takes a flag signaling the preamble of the response payload.
+    *
+    * @param object the object that we wish to send back to the client
+    * @param wasThrown if true, the object being returned was an exception thrown
+    *          by the service method; if false, it was the result of the service
+    *          method's invocation
+    * @return a string that encodes the response from a service method
+    * @throws SerializationException if the object cannot be serialized
+    */
+    public static String encodeResponse(
+        Class<?> responseClass, Object object, boolean wasThrown, SerializationPolicy serializationPolicy)
+        throws SerializationException {
+        ServerSerializationStreamWriter stream = new ServerSerializationStreamWriter(serializationPolicy);
+
+        stream.prepareToWrite();
+
+        if (responseClass != void.class) {
+            stream.serializeValue(object, responseClass);
+        }
+
+        String bufferStr = (wasThrown ? "//EX"
+                                      : "//OK") + stream.toString();
+
+        return bufferStr;
     }
 
     /**
@@ -162,8 +185,8 @@ public class StreamServiceUtils {
     * @return Class instance for the given type name
     * @throws ClassNotFoundException if the named type was not found
     */
-    private static Class<?> getClassFromSerializedName(String serializedName,
-        ClassLoader classLoader) throws ClassNotFoundException {
+    private static Class<?> getClassFromSerializedName(String serializedName, ClassLoader classLoader)
+        throws ClassNotFoundException {
         Class<?> value = TYPE_NAMES.get(serializedName);
 
         if (value != null) {
@@ -171,6 +194,102 @@ public class StreamServiceUtils {
         }
 
         return Class.forName(serializedName, false, classLoader);
+    }
+
+    private static String formatMethodNotFoundErrorMessage(
+        Class<?> serviceIntf, String serviceMethodName, Class<?>[] parameterTypes) {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("Could not locate requested method '");
+        sb.append(serviceMethodName);
+        sb.append("(");
+
+        for (int i = 0; i < parameterTypes.length; ++i) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+
+            sb.append(printTypeName(parameterTypes[i]));
+        }
+
+        sb.append(")'");
+
+        sb.append(" in interface '");
+        sb.append(printTypeName(serviceIntf));
+        sb.append("'");
+
+        return sb.toString();
+    }
+
+    /**
+    * Used to determine whether the specified interface name is implemented by
+    * the service class. This is done without loading the class (for security).
+    */
+    private static boolean implementsInterface(Class<?> service, String intfName) {
+        synchronized (serviceToImplementedInterfacesMap) {
+            // See if it's cached.
+            //
+            Set<String> interfaceSet = serviceToImplementedInterfacesMap.get(service);
+
+            if (interfaceSet != null) {
+                if (interfaceSet.contains(intfName)) {
+                    return true;
+                }
+            } else {
+                interfaceSet = new HashSet<String>();
+                serviceToImplementedInterfacesMap.put(service, interfaceSet);
+            }
+
+            if (!service.isInterface()) {
+                while ((service != null) && !RemoteServiceServlet.class.equals(service)) {
+                    Class<?>[] intfs = service.getInterfaces();
+
+                    for (Class<?> intf : intfs) {
+                        if (implementsInterfaceRecursive(intf, intfName)) {
+                            interfaceSet.add(intfName);
+
+                            return true;
+                        }
+                    }
+
+                    // did not find the interface in this class so we look in the
+                    // superclass
+                    //
+                    service = service.getSuperclass();
+                }
+            } else {
+                if (implementsInterfaceRecursive(service, intfName)) {
+                    interfaceSet.add(intfName);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Only called from implementsInterface().
+     */
+    private static boolean implementsInterfaceRecursive(Class<?> clazz, String intfName) {
+        assert (clazz.isInterface());
+
+        if (clazz.getName()
+                     .equals(intfName)) {
+            return true;
+        }
+
+        // search implemented interfaces
+        Class<?>[] intfs = clazz.getInterfaces();
+
+        for (Class<?> intf : intfs) {
+            if (implementsInterfaceRecursive(intf, intfName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -209,132 +328,7 @@ public class StreamServiceUtils {
 
         // Everything else
         //
-        return type.getName().replace('$', '.');
+        return type.getName()
+                   .replace('$', '.');
     }
-
-    /**
-    * Used to determine whether the specified interface name is implemented by
-    * the service class. This is done without loading the class (for security).
-    */
-    private static boolean implementsInterface(Class<?> service, String intfName) {
-        synchronized (serviceToImplementedInterfacesMap) {
-            // See if it's cached.
-            //
-            Set<String> interfaceSet = serviceToImplementedInterfacesMap.get(service);
-
-            if (interfaceSet != null) {
-                if (interfaceSet.contains(intfName)) {
-                    return true;
-                }
-            } else {
-                interfaceSet = new HashSet<String>();
-                serviceToImplementedInterfacesMap.put(service, interfaceSet);
-            }
-
-            if (!service.isInterface()) {
-                while ((service != null) &&
-                        !RemoteServiceServlet.class.equals(service)) {
-                    Class<?>[] intfs = service.getInterfaces();
-
-                    for (Class<?> intf : intfs) {
-                        if (implementsInterfaceRecursive(intf, intfName)) {
-                            interfaceSet.add(intfName);
-
-                            return true;
-                        }
-                    }
-
-                    // did not find the interface in this class so we look in the
-                    // superclass
-                    //
-                    service = service.getSuperclass();
-                }
-            } else {
-                if (implementsInterfaceRecursive(service, intfName)) {
-                    interfaceSet.add(intfName);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    /**
-     * Only called from implementsInterface().
-     */
-    private static boolean implementsInterfaceRecursive(Class<?> clazz,
-        String intfName) {
-        assert (clazz.isInterface());
-
-        if (clazz.getName().equals(intfName)) {
-            return true;
-        }
-
-        // search implemented interfaces
-        Class<?>[] intfs = clazz.getInterfaces();
-
-        for (Class<?> intf : intfs) {
-            if (implementsInterfaceRecursive(intf, intfName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static String formatMethodNotFoundErrorMessage(
-        Class<?> serviceIntf, String serviceMethodName,
-        Class<?>[] parameterTypes) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("Could not locate requested method '");
-        sb.append(serviceMethodName);
-        sb.append("(");
-
-        for (int i = 0; i < parameterTypes.length; ++i) {
-            if (i > 0) {
-                sb.append(", ");
-            }
-
-            sb.append(printTypeName(parameterTypes[i]));
-        }
-
-        sb.append(")'");
-
-        sb.append(" in interface '");
-        sb.append(printTypeName(serviceIntf));
-        sb.append("'");
-
-        return sb.toString();
-    }
-
-    //
-    /**
-   * Returns a string that encodes the results of an RPC call. Private overload
-   * that takes a flag signaling the preamble of the response payload.
-   *
-   * @param object the object that we wish to send back to the client
-   * @param wasThrown if true, the object being returned was an exception thrown
-   *          by the service method; if false, it was the result of the service
-   *          method's invocation
-   * @return a string that encodes the response from a service method
-   * @throws SerializationException if the object cannot be serialized
-   */
-  public static String encodeResponse(Class<?> responseClass, Object object,
-      boolean wasThrown, SerializationPolicy serializationPolicy)
-      throws SerializationException {
-
-    ServerSerializationStreamWriter stream = new ServerSerializationStreamWriter(
-        serializationPolicy);
-
-    stream.prepareToWrite();
-    if (responseClass != void.class) {
-      stream.serializeValue(object, responseClass);
-    }
-
-    String bufferStr = (wasThrown ? "//EX" : "//OK") + stream.toString();
-    return bufferStr;
-  }
 }

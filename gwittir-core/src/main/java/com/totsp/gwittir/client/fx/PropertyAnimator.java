@@ -20,6 +20,7 @@
 package com.totsp.gwittir.client.fx;
 
 import com.google.gwt.user.client.Timer;
+
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
@@ -31,36 +32,35 @@ import com.totsp.gwittir.client.beans.Property;
  */
 public class PropertyAnimator {
     private AnimationFinishedCallback callback;
-    private Object target;
     private MutationStrategy strategy;
     private Object finalValue;
     private Object initialValue;
+    private Object target;
     private Property property;
+    private Timer timer;
     private int duration;
     private int stepTime;
 
-    private Timer timer;
     //TODO examine step time real results and increase animation time to match.
     /** Creates a new instance of PropertyAnimator */
-    public PropertyAnimator(Object target, String propertyName,
-        Object initialValue, Object finalValue, MutationStrategy strategy,
+    public PropertyAnimator(
+        Object target, String propertyName, Object initialValue, Object finalValue, MutationStrategy strategy,
         int duration, int stepTime, AnimationFinishedCallback callback) {
         this.target = target;
         this.property = Introspector.INSTANCE.getDescriptor(target)
                                              .getProperty(propertyName);
 
-        if((property == null)
-                || (
-                    (property.getAccessorMethod() == null)
-                    && (initialValue == null)
-                ) || (property.getMutatorMethod() == null)) {
+        if (
+            (property == null) || ((property.getAccessorMethod() == null) && (initialValue == null)) ||
+                (property.getMutatorMethod() == null)) {
             throw new RuntimeException("Invalid property.");
         }
 
         try {
-            this.initialValue = (initialValue == null)
-                ? property.getAccessorMethod().invoke(target, null) : initialValue;
-        } catch(Exception e) {
+            this.initialValue = (initialValue == null) ? property.getAccessorMethod()
+                                                                 .invoke(target, null)
+                                                       : initialValue;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -71,44 +71,38 @@ public class PropertyAnimator {
         this.stepTime = stepTime;
     }
 
-    public PropertyAnimator(Object target, String propertyName,
-        Object finalValue, MutationStrategy strategy) {
+    public PropertyAnimator(Object target, String propertyName, Object finalValue, MutationStrategy strategy) {
         this(target, propertyName, null, finalValue, strategy, 1000, 50, null);
     }
 
-    public PropertyAnimator(Object target, String propertyName,
-        Object finalValue, MutationStrategy strategy, int duration) {
-        this(target, propertyName, null, finalValue, strategy, duration, 50,
-            null);
+    public PropertyAnimator(
+        Object target, String propertyName, Object finalValue, MutationStrategy strategy, int duration) {
+        this(target, propertyName, null, finalValue, strategy, duration, 50, null);
     }
 
-    public PropertyAnimator(Object target, String propertyName,
-        Object initialValue, Object finalValue, MutationStrategy strategy,
+    public PropertyAnimator(
+        Object target, String propertyName, Object initialValue, Object finalValue, MutationStrategy strategy,
         int duration) {
-        this(target, propertyName, initialValue, finalValue, strategy,
-            duration, 50, null);
+        this(target, propertyName, initialValue, finalValue, strategy, duration, 50, null);
     }
 
-    public PropertyAnimator(Object target, String propertyName,
-        Object finalValue, MutationStrategy strategy, int duration,
+    public PropertyAnimator(
+        Object target, String propertyName, Object finalValue, MutationStrategy strategy, int duration,
         AnimationFinishedCallback callback) {
-        this(target, propertyName, null, finalValue, strategy, duration, 50,
-            callback);
+        this(target, propertyName, null, finalValue, strategy, duration, 50, callback);
     }
 
-    public PropertyAnimator(Object target, String propertyName,
-        Object initialValue, Object finalValue, MutationStrategy strategy,
+    public PropertyAnimator(
+        Object target, String propertyName, Object initialValue, Object finalValue, MutationStrategy strategy,
         int duration, AnimationFinishedCallback callback) {
-        this(target, propertyName, initialValue, finalValue, strategy,
-            duration, 50, callback);
+        this(target, propertyName, initialValue, finalValue, strategy, duration, 50, callback);
     }
 
-    void invoke(Method method, Object value) throws Exception {
-        if(this.property.getType() == null) {
-            method.invoke(this.target, (Object[]) value);
-        } else {
-            Object[] args = { value };
-            method.invoke(this.target, args);
+    public void cancel() {
+        timer.cancel();
+
+        if (this.callback != null) {
+            callback.onFailure(this, null);
         }
     }
 
@@ -118,59 +112,60 @@ public class PropertyAnimator {
 
         try {
             invoke(this.property.getMutatorMethod(), this.initialValue);
-        } catch(Exception e) {
-            if(this.callback != null) {
+        } catch (Exception e) {
+            if (this.callback != null) {
                 this.callback.onFailure(this, e);
 
                 return;
             }
         }
 
-         timer= new Timer() {
-                private long lastStep = System.currentTimeMillis();
-                public void run() {
-                    try {
-                        double percentComplete = (double) (
-                                System.currentTimeMillis() - startTime
-                            ) / (double) duration;
-                        Object newValue = strategy.mutateValue(initialValue,
-                                finalValue, percentComplete);
+        timer = new Timer() {
+                    private long lastStep = System.currentTimeMillis();
 
-                        if(percentComplete < 1) {
-                            invoke(property.getMutatorMethod(), newValue);
-                        } else {
-                            invoke(property.getMutatorMethod(), finalValue);
+                    public void run() {
+                        try {
+                            double percentComplete = (double) (System.currentTimeMillis() - startTime) / (double) duration;
+                            Object newValue = strategy.mutateValue(initialValue, finalValue, percentComplete);
 
-                            if(callback != null) {
-                                callback.onFinish(instance);
+                            if (percentComplete < 1) {
+                                invoke(property.getMutatorMethod(), newValue);
+                            } else {
+                                invoke(property.getMutatorMethod(), finalValue);
+
+                                if (callback != null) {
+                                    callback.onFinish(instance);
+                                }
+
+                                timer.cancel();
+
+                                return;
                             }
-                            
-                            timer.cancel();
-                            return;
-                        }
-                    } catch(Exception e) {
-                        if(callback != null) {
-                            callback.onFailure(instance, e);
-                            timer.cancel();
+                        } catch (Exception e) {
+                            if (callback != null) {
+                                callback.onFailure(instance, e);
+                                timer.cancel();
 
-                            return;
+                                return;
+                            }
                         }
+
+                        if ((lastStep - System.currentTimeMillis()) > (stepTime * 2)) {
+                            stepTime = (int) lastStep - (int) System.currentTimeMillis();
+                        }
+
+                        timer.schedule(stepTime);
                     }
-                    if( lastStep - System.currentTimeMillis() > stepTime * 2 ){
-                        stepTime = (int) lastStep - (int) System.currentTimeMillis();
-                    }
-                    timer.schedule(stepTime);
-                }
-               
-            };
-            this.timer.schedule( this.stepTime );
-        
+                };
+        this.timer.schedule(this.stepTime);
     }
-    
-    public void cancel(){
-        timer.cancel();
-        if( this.callback != null ){
-            callback.onFailure(this, null);
+
+    void invoke(Method method, Object value) throws Exception {
+        if (this.property.getType() == null) {
+            method.invoke(this.target, (Object[]) value);
+        } else {
+            Object[] args = { value };
+            method.invoke(this.target, args);
         }
     }
 }

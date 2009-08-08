@@ -17,220 +17,178 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.calendar;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.totsp.gwittir.client.beans.Converter;
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.ListBox;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+
 /**
  * A wrapper around a Calendar that provides Month/Year navigation for selection.
  * @author cooper
  */
-public class DatePicker extends AbstractBoundWidget<Date> implements
-        SourcesCalendarDrawEvents, SourcesCalendarEvents {
+public class DatePicker extends AbstractBoundWidget<Date> implements SourcesCalendarDrawEvents, SourcesCalendarEvents {
     private static final String VALUE_PROPERTY_NAME = "value";
-    
     private Calendar calendar = new Calendar();
     private HorizontalPanel hp = new HorizontalPanel();
     private List years = new ArrayList();
-    private ListBox year = new ListBox();
     private ListBox month;
+    private ListBox year = new ListBox();
+
     /** Creates a new instance of DatePicker */
     public DatePicker() {
         VerticalPanel vp = new VerticalPanel();
         Label back = new Label("<<");
-        back.addClickListener( new ClickListener(){
-            public void onClick(Widget sender) {
-                Date current = calendar.getRenderDate();
-                if( current.getMonth() -1 >= 0 ){
-                    current = new Date( current.getYear(), current.getMonth() - 1 , 1);
-                } else {
-                    LOG.log( Level.SPAM, "current Year"+ current.getYear(), null );
-                    current = new Date(current.getYear() - 1, 12 , 0 );
-                    LOG.log( Level.SPAM, "new date"+ current.getYear(), null );
+        back.addClickListener(
+            new ClickListener() {
+                public void onClick(Widget sender) {
+                    Date current = calendar.getRenderDate();
+
+                    if ((current.getMonth() - 1) >= 0) {
+                        current = new Date(current.getYear(), current.getMonth() - 1, 1);
+                    } else {
+                        LOG.log(Level.SPAM, "current Year" + current.getYear(), null);
+                        current = new Date(current.getYear() - 1, 12, 0);
+                        LOG.log(Level.SPAM, "new date" + current.getYear(), null);
+                    }
+
+                    LOG.log(Level.SPAM, current.toString(), null);
+                    calendar.setRenderDate(current);
                 }
-                LOG.log(Level.SPAM, current.toString(), null);
-                calendar.setRenderDate( current );
-            }
-        });
-        hp.add( back );
+            });
+        hp.add(back);
         month = new ListBox();
+
         final ArrayList months = new ArrayList();
-        for( String monthString : Calendar.MONTHS_OF_YEAR_SHORT ){
+
+        for (String monthString : Calendar.MONTHS_OF_YEAR_SHORT) {
             months.add(monthString);
         }
+
         month.setOptions(months);
-        month.addPropertyChangeListener(DatePicker.VALUE_PROPERTY_NAME, new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                Date current = calendar.getRenderDate();
-                current = new Date( current.getYear(),
-                        indexOf( Calendar.MONTHS_OF_YEAR_SHORT, ""+ Converter.FROM_COLLECTION_CONVERTER.convert((Collection)propertyChangeEvent.getNewValue()) )
-                        ,1);
-                calendar.setRenderDate( current );
-            }
-            
-        });
-        
+        month.addPropertyChangeListener(
+            DatePicker.VALUE_PROPERTY_NAME,
+            new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                    Date current = calendar.getRenderDate();
+                    current = new Date(
+                            current.getYear(),
+                            indexOf(
+                                Calendar.MONTHS_OF_YEAR_SHORT,
+                                "" +
+                                Converter.FROM_COLLECTION_CONVERTER.convert(
+                                    (Collection) propertyChangeEvent.getNewValue())), 1);
+                    calendar.setRenderDate(current);
+                }
+            });
+
         this.updateMonth();
-        hp.add( this.month );
+        hp.add(this.month);
         this.updateYears();
-        GWT.log("INit to:"+Integer.toString( calendar.getRenderDate().getYear() + 1900 ), null);
-        this.year.setValue( year.single(Integer.toString( calendar.getRenderDate().getYear() + 1900 )) );
-        hp.add( this.year );
-        this.year.addPropertyChangeListener(VALUE_PROPERTY_NAME, new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if( propertyChangeEvent.getNewValue() == null || ((Collection)propertyChangeEvent.getNewValue()).size() == 0){
-                    return;
+        GWT.log("INit to:" + Integer.toString(calendar.getRenderDate().getYear() + 1900), null);
+        this.year.setValue(year.single(Integer.toString(calendar.getRenderDate().getYear() + 1900)));
+        hp.add(this.year);
+        this.year.addPropertyChangeListener(
+            VALUE_PROPERTY_NAME,
+            new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                    if (
+                        (propertyChangeEvent.getNewValue() == null) ||
+                            (((Collection) propertyChangeEvent.getNewValue()).size() == 0)) {
+                        return;
+                    }
+
+                    Date current = calendar.getRenderDate();
+                    current = new Date(
+                            Integer.parseInt(
+                                ((Collection) propertyChangeEvent
+                                 .getNewValue()).iterator().next().toString()) - 1900, current.getMonth(), 1);
+                    LOG.log(Level.SPAM, current.toString(), null);
+                    calendar.setRenderDate(current);
                 }
-                Date current = calendar.getRenderDate();
-                current = new Date( Integer.parseInt( ((Collection)propertyChangeEvent.getNewValue()).iterator().next().toString() ) -1900, current.getMonth(), 1 );
-                LOG.log(Level.SPAM, current.toString(), null );
-                calendar.setRenderDate( current );
-            }
-            
-        });
+            });
+
         final Label next = new Label(">>");
-        next.addClickListener( new ClickListener(){
-            public void onClick(Widget sender) {
-                Date current = calendar.getRenderDate();
-                if( current.getMonth() + 1 < 12 ){
-                    current = new Date( current.getYear(), current.getMonth() + 1 , 1);
-                } else {
-                    LOG.log( Level.SPAM, "current Year"+ current.getYear(), null );
-                    current = new Date(current.getYear() + 1, 1, 0 );
-                    LOG.log( Level.SPAM, "new date"+ current.getYear(), null );
+        next.addClickListener(
+            new ClickListener() {
+                public void onClick(Widget sender) {
+                    Date current = calendar.getRenderDate();
+
+                    if ((current.getMonth() + 1) < 12) {
+                        current = new Date(current.getYear(), current.getMonth() + 1, 1);
+                    } else {
+                        LOG.log(Level.SPAM, "current Year" + current.getYear(), null);
+                        current = new Date(current.getYear() + 1, 1, 0);
+                        LOG.log(Level.SPAM, "new date" + current.getYear(), null);
+                    }
+
+                    LOG.log(Level.SPAM, current.toString(), null);
+                    calendar.setRenderDate(current);
                 }
-                LOG.log(Level.SPAM, current.toString(), null);
-                calendar.setRenderDate( current );
-            }
-        });
-        hp.add( next );
-        vp.add( hp );
-        vp.add( this.calendar );
-        this.calendar.addPropertyChangeListener("renderDate", new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                updateYears();
-                updateMonth();
-            }
-            
-        });
-        this.calendar.addPropertyChangeListener(VALUE_PROPERTY_NAME, new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent evt) {
-                changes.firePropertyChange(VALUE_PROPERTY_NAME, evt.getOldValue(), evt.getNewValue()  );
-            }
-            
-        });
-        super.initWidget( vp );
+            });
+        hp.add(next);
+        vp.add(hp);
+        vp.add(this.calendar);
+        this.calendar.addPropertyChangeListener(
+            "renderDate",
+            new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                    updateYears();
+                    updateMonth();
+                }
+            });
+        this.calendar.addPropertyChangeListener(
+            VALUE_PROPERTY_NAME,
+            new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent evt) {
+                    changes.firePropertyChange(VALUE_PROPERTY_NAME, evt.getOldValue(), evt.getNewValue());
+                }
+            });
+        super.initWidget(vp);
         this.setStyleName("gwittir-DatePicker");
-        
     }
-    
+
     /**
-     * Returns the Date value of this Calendar.
-     * @return Date value of this Calendar.
-     */
-    public Date getValue() {
-        return this.calendar.getValue();
-    }
-    
-    /**
-     * Sets Date value of this Calendar.
-     * @param value Date value of this Calendar.
-     */
-    public void setValue(Date value) {
-        this.calendar.setValue( value );
-    }
-    
-    /**
-     * 
-     * @param cdl 
-     */
-    public void addCalendarDrawListener(CalendarDrawListener cdl) {
-        this.calendar.addCalendarDrawListener( cdl );
-    }
-    
-    /**
-     * 
-     * @param cdl 
-     */
-    public void removeCalendarDrawListener(CalendarDrawListener cdl) {
-        this.calendar.removeCalendarDrawListener( cdl );
-    }
-    
-    /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public CalendarDrawListener[] getCalendarDrawListeners() {
         return this.calendar.getCalendarDrawListeners();
     }
-    
+
     /**
-     * 
-     * @param l 
-     */
-    public void addCalendarListener(CalendarListener l) {
-        this.calendar.addCalendarListener( l );
-    }
-    
-    /**
-     * 
-     * @param l 
-     */
-    public void removeCalendarListener(CalendarListener l) {
-        this.calendar.removeCalendarListener(l);
-    }
-    
-    /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public CalendarListener[] getCalendarListeners() {
         return this.calendar.getCalendarListeners();
     }
-    
-    private void updateYears(){
-        this.years.clear();
-        int year = this.calendar.getRenderDate().getYear() + 1900;
-        for( int i = year - 20; i < year + 20; i++){
-            this.years.add( Integer.toString( i ) );
-        }
-        this.year.setOptions(this.years);
-        this.year.setValue( this.year.single(Integer.toString( this.calendar.getRenderDate().getYear() + 1900 )) );
-        LOG.log( Level.SPAM, Integer.toString( this.calendar.getRenderDate().getYear() + 1900 ), null );
-        
+
+    /**
+     * Sets the Month/Year date the calendar should be rendering.
+     * @param renderDate Month/Year date the calendar should be rendering.
+     */
+    public void setRenderDate(Date renderDate) {
+        this.calendar.setRenderDate(renderDate);
     }
-    private void updateMonth(){
-        this.month.setValue( this.month.single(Calendar.MONTHS_OF_YEAR_SHORT[ this.calendar.getRenderDate().getMonth() ]));
-    }
-    private int indexOf( final String[] values, final String check ){
-        int index = -1;
-        for( int i=0; i < values.length; i++ ){
-            if( values[i].equals( check ) ){
-                index = i;
-                break;
-            }
-            
-        }
-        return index;
-    }
-    
+
     /**
      * Gets the Month/Year date the calendar should be rendering.
      * @return Date currently rendered around.
@@ -240,11 +198,84 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
     }
 
     /**
-     * Sets the Month/Year date the calendar should be rendering.
-     * @param renderDate Month/Year date the calendar should be rendering.
+     * Sets Date value of this Calendar.
+     * @param value Date value of this Calendar.
      */
-    public void setRenderDate(Date renderDate) {
-        this.calendar.setRenderDate( renderDate );
+    public void setValue(Date value) {
+        this.calendar.setValue(value);
     }
-    
+
+    /**
+     * Returns the Date value of this Calendar.
+     * @return Date value of this Calendar.
+     */
+    public Date getValue() {
+        return this.calendar.getValue();
+    }
+
+    /**
+     *
+     * @param cdl
+     */
+    public void addCalendarDrawListener(CalendarDrawListener cdl) {
+        this.calendar.addCalendarDrawListener(cdl);
+    }
+
+    /**
+     *
+     * @param l
+     */
+    public void addCalendarListener(CalendarListener l) {
+        this.calendar.addCalendarListener(l);
+    }
+
+    /**
+     *
+     * @param cdl
+     */
+    public void removeCalendarDrawListener(CalendarDrawListener cdl) {
+        this.calendar.removeCalendarDrawListener(cdl);
+    }
+
+    /**
+     *
+     * @param l
+     */
+    public void removeCalendarListener(CalendarListener l) {
+        this.calendar.removeCalendarListener(l);
+    }
+
+    private int indexOf(final String[] values, final String check) {
+        int index = -1;
+
+        for (int i = 0; i < values.length; i++) {
+            if (values[i].equals(check)) {
+                index = i;
+
+                break;
+            }
+        }
+
+        return index;
+    }
+
+    private void updateMonth() {
+        this.month.setValue(this.month.single(Calendar.MONTHS_OF_YEAR_SHORT[this.calendar.getRenderDate()
+                                                                                         .getMonth()]));
+    }
+
+    private void updateYears() {
+        this.years.clear();
+
+        int year = this.calendar.getRenderDate()
+                                .getYear() + 1900;
+
+        for (int i = year - 20; i < (year + 20); i++) {
+            this.years.add(Integer.toString(i));
+        }
+
+        this.year.setOptions(this.years);
+        this.year.setValue(this.year.single(Integer.toString(this.calendar.getRenderDate().getYear() + 1900)));
+        LOG.log(Level.SPAM, Integer.toString(this.calendar.getRenderDate().getYear() + 1900), null);
+    }
 }

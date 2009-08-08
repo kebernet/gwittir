@@ -17,13 +17,11 @@
  */
 package com.totsp.gwittir.client.util.html5db;
 
+
 /**
  *
  * @author kebernet
  */
 public interface TransactionTask {
-
-
     void run(Transaction tx);
-
 }

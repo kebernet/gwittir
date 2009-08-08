@@ -28,13 +28,11 @@ import com.google.gwt.core.client.GWT;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface Introspector {
-    
     /**
      * The Singleton instance of the Introspector you should use from your classes.
      */
-    public static final Introspector INSTANCE = (Introspector) GWT.create( Introspector.class);
-    
-    
+    public static final Introspector INSTANCE = (Introspector) GWT.create(Introspector.class);
+
     /**
      * Gets the BeanDescriptor for an object.
      * @param object Object to introspect.

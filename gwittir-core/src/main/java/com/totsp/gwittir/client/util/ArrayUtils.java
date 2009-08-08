@@ -16,6 +16,7 @@
  */
 package com.totsp.gwittir.client.util;
 
+
 /**
  * Utils for working with arrays as Objects with GWT (where Class and
  * Arrays are unavail).
@@ -43,6 +44,40 @@ public class ArrayUtils {
                 result = true;
             } else if (obj instanceof Object[]) {
                 result = true;
+            }
+        }
+
+        return result;
+    }
+
+    public static Object getArrayElement(Object obj, int i) {
+        Object result = null;
+
+        if ((obj != null) && isArray(obj)) {
+            if (obj instanceof char[]) {
+                char[] a = (char[]) obj;
+                result = new Character(a[i]);
+            } else if (obj instanceof short[]) {
+                short[] a = (short[]) obj;
+                result = new Short(a[i]);
+            } else if (obj instanceof int[]) {
+                int[] a = (int[]) obj;
+                result = new Integer(a[i]);
+            } else if (obj instanceof long[]) {
+                long[] a = (long[]) obj;
+                result = new Long(a[i]);
+            } else if (obj instanceof float[]) {
+                float[] a = (float[]) obj;
+                result = new Float(a[i]);
+            } else if (obj instanceof double[]) {
+                double[] a = (double[]) obj;
+                result = new Double(a[i]);
+            } else if (obj instanceof boolean[]) {
+                boolean[] a = (boolean[]) obj;
+                result = new Boolean(a[i]);
+            } else if (obj instanceof Object[]) {
+                Object[] a = (Object[]) obj;
+                result = a[i];
             }
         }
 
@@ -83,58 +118,25 @@ public class ArrayUtils {
         return result;
     }
 
-    public static Object getArrayElement(Object obj, int i) {
-        Object result = null;
-
-        if ((obj != null) && isArray(obj)) {
-            if (obj instanceof char[]) {
-                char[] a = (char[]) obj;
-                result = new Character(a[i]);
-            } else if (obj instanceof short[]) {
-                short[] a = (short[]) obj;
-                result = new Short(a[i]);
-            } else if (obj instanceof int[]) {
-                int[] a = (int[]) obj;
-                result = new Integer(a[i]);
-            } else if (obj instanceof long[]) {
-                long[] a = (long[]) obj;
-                result = new Long(a[i]);
-            } else if (obj instanceof float[]) {
-                float[] a = (float[]) obj;
-                result = new Float(a[i]);
-            } else if (obj instanceof double[]) {
-                double[] a = (double[]) obj;
-                result = new Double(a[i]);
-            } else if (obj instanceof boolean[]) {
-                boolean[] a = (boolean[]) obj;
-                result = new Boolean(a[i]);
-            } else if (obj instanceof Object[]) {
-                Object[] a = (Object[]) obj;
-                result = a[i];
-            }
+    public static void copyArray(Object[] from, Object[] to) {
+        for (int i = 0; i < from.length; i++) {
+            to[i] = from[i];
         }
-
-        return result;
     }
-    
-    public static int indexOf( Object[] array, Object find ){
-        for( int i=0; array!= null && i < array.length; i++ ){
-            if( array[i] == find ){
+
+    public static void copyArray(int[] from, int[] to) {
+        for (int i = 0; i < from.length; i++) {
+            to[i] = from[i];
+        }
+    }
+
+    public static int indexOf(Object[] array, Object find) {
+        for (int i = 0; (array != null) && (i < array.length); i++) {
+            if (array[i] == find) {
                 return i;
             }
         }
+
         return -1;
-    }
-    
-    public static void copyArray(Object[] from, Object[] to){
-        for(int i=0; i < from.length; i++){
-            to[i] = from[i];
-        }
-    }
-    
-    public static void copyArray(int[] from, int[] to){
-        for(int i=0; i < from.length; i++){
-            to[i] = from[i];
-        }
     }
 }

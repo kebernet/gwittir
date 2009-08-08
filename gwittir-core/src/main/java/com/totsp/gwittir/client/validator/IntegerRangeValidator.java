@@ -40,15 +40,14 @@ public class IntegerRangeValidator implements Validator {
     public Object validate(Object value) throws ValidationException {
         Integer i = (Integer) value;
 
-        if(i == null) {
+        if (i == null) {
             return null;
         }
 
-        if((i.intValue() <= max) && (i.intValue() >= min)) {
+        if ((i.intValue() <= max) && (i.intValue() >= min)) {
             return value;
         }
 
-        throw new ValidationException("Must be a value between " + min +
-            " and " + max, IntegerRangeValidator.class);
+        throw new ValidationException("Must be a value between " + min + " and " + max, IntegerRangeValidator.class);
     }
 }

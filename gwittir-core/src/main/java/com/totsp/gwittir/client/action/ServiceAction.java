@@ -27,7 +27,7 @@ import com.totsp.gwittir.client.keyboard.KeyBinding;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface ServiceAction {
-    public KeyBinding getKeyBinding();
-
     public void setKeyBinding(KeyBinding binding);
+
+    public KeyBinding getKeyBinding();
 }

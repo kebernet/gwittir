@@ -23,10 +23,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import java.util.HashMap;
+
 
 /**
  *
@@ -36,9 +40,9 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
     public static final int LEFT = 1;
     public static final int TOP = 2;
     public static final int RIGHT = 3;
-    public static final int BOTTOM =4;
-    final HashMap popups = new HashMap();
+    public static final int BOTTOM = 4;
     final HashMap listeners = new HashMap();
+    final HashMap popups = new HashMap();
     private int position;
 
     /** Creates a new instance of PopupValidationFeedback */
@@ -49,62 +53,58 @@ public class PopupValidationFeedback extends AbstractValidationFeedback {
     public void handleException(Object source, ValidationException exception) {
         final Widget w = (Widget) source;
         final PopupPanel p = new PopupPanel(false);
-        popups.put( source, p );
+        popups.put(source, p);
         p.setStyleName("gwittir-ValidationPopup");
         p.setWidget(new Label(this.getMessage(exception)));
-        p.setPopupPosition( -5000, -5000 );
+        p.setPopupPosition(-5000, -5000);
         p.show();
-        if(this.position == BOTTOM) {
-            p.setPopupPosition(w.getAbsoluteLeft(),
-                w.getAbsoluteTop() + w.getOffsetHeight());
-        } else if(this.position == RIGHT) {
-            p.setPopupPosition(w.getAbsoluteLeft() + w.getOffsetWidth(),
-                w.getAbsoluteTop());
-        } else if(this.position == LEFT) {
-            p.setPopupPosition(w.getAbsoluteLeft() - p.getOffsetWidth(),
-                w.getAbsoluteTop());
-        } else if(this.position == TOP) {
-            p.setPopupPosition(w.getAbsoluteLeft(),
-                w.getAbsoluteTop() - p.getOffsetHeight());
+
+        if (this.position == BOTTOM) {
+            p.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() + w.getOffsetHeight());
+        } else if (this.position == RIGHT) {
+            p.setPopupPosition(w.getAbsoluteLeft() + w.getOffsetWidth(), w.getAbsoluteTop());
+        } else if (this.position == LEFT) {
+            p.setPopupPosition(w.getAbsoluteLeft() - p.getOffsetWidth(), w.getAbsoluteTop());
+        } else if (this.position == TOP) {
+            p.setPopupPosition(w.getAbsoluteLeft(), w.getAbsoluteTop() - p.getOffsetHeight());
         }
-        if( w instanceof SourcesPropertyChangeEvents ){
-            GWT.log( "is PCE", null);
-            PropertyChangeListener attachListener = new PropertyChangeListener(){
-                public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                    if( ((Boolean)propertyChangeEvent.getNewValue()).booleanValue()  ){
-                        p.setVisible( true );
-                    } else {
-                        p.setVisible( false );
+
+        if (w instanceof SourcesPropertyChangeEvents) {
+            GWT.log("is PCE", null);
+
+            PropertyChangeListener attachListener = new PropertyChangeListener() {
+                    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                        if (((Boolean) propertyChangeEvent.getNewValue()).booleanValue()) {
+                            p.setVisible(true);
+                        } else {
+                            p.setVisible(false);
+                        }
                     }
-                }
-                
-            };
-             listeners.put(w, attachListener );
-            ((SourcesPropertyChangeEvents)w).addPropertyChangeListener("attached", attachListener);
-            ((SourcesPropertyChangeEvents)w).addPropertyChangeListener("visible", attachListener);
+                };
+
+            listeners.put(w, attachListener);
+            ((SourcesPropertyChangeEvents) w).addPropertyChangeListener("attached", attachListener);
+            ((SourcesPropertyChangeEvents) w).addPropertyChangeListener("visible", attachListener);
         }
     }
 
     public void resolve(Object source) {
-        PopupPanel p = (PopupPanel) popups.get( source );
-        if( p != null ){
+        PopupPanel p = (PopupPanel) popups.get(source);
+
+        if (p != null) {
             p.hide();
-            popups.remove( source );
-            if( listeners.containsKey( source ) ){
-                try{
-                    ((SourcesPropertyChangeEvents) source)
-                    .removePropertyChangeListener("attach", 
-                            (PropertyChangeListener) listeners.remove(source) );
-                    ((SourcesPropertyChangeEvents) source)
-                    .removePropertyChangeListener("visible", 
-                            (PropertyChangeListener) listeners.remove(source) );
-                    
-                } catch(RuntimeException re){
+            popups.remove(source);
+
+            if (listeners.containsKey(source)) {
+                try {
+                    ((SourcesPropertyChangeEvents) source).removePropertyChangeListener(
+                        "attach", (PropertyChangeListener) listeners.remove(source));
+                    ((SourcesPropertyChangeEvents) source).removePropertyChangeListener(
+                        "visible", (PropertyChangeListener) listeners.remove(source));
+                } catch (RuntimeException re) {
                     re.printStackTrace();
                 }
             }
         }
     }
-
-    
 }

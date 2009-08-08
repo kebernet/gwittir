@@ -27,7 +27,7 @@ import java.util.Collection;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface HasChunks {
-    public void init(Collection firstChunk, int numberOfChunks);
-
     public void setChunk(Collection c);
+
+    public void init(Collection firstChunk, int numberOfChunks);
 }

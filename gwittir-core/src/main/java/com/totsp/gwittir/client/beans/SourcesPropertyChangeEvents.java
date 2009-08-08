@@ -27,16 +27,13 @@ import java.beans.PropertyChangeListener;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface SourcesPropertyChangeEvents {
-    
+    public PropertyChangeListener[] getPropertyChangeListeners();
+
     public void addPropertyChangeListener(PropertyChangeListener l);
 
-    public void addPropertyChangeListener(String propertyName,
-        PropertyChangeListener l);
-
-    public PropertyChangeListener[] getPropertyChangeListeners();
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l);
 
     public void removePropertyChangeListener(PropertyChangeListener l);
 
-    public void removePropertyChangeListener(String propertyName,
-        PropertyChangeListener l);
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l);
 }

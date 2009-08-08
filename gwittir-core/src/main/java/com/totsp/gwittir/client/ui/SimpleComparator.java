@@ -20,6 +20,7 @@
 package com.totsp.gwittir.client.ui;
 
 import java.io.Serializable;
+
 import java.util.Comparator;
 
 
@@ -28,23 +29,23 @@ import java.util.Comparator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class SimpleComparator implements Comparator, Serializable {
-    
-    
     public static final SimpleComparator INSTANCE = new SimpleComparator();
-    
+
     /** Creates a new instance of SimpleComparator */
-    private  SimpleComparator() {
+    private SimpleComparator() {
     }
-    
+
     public int compare(Object o1, Object o2) {
-        if( o1 instanceof Comparable && o2 instanceof Comparable ){
-            return ((Comparable) o1).compareTo( o2 );
+        if (o1 instanceof Comparable && o2 instanceof Comparable) {
+            return ((Comparable) o1).compareTo(o2);
         }
-        if((o1 == o2) || ((o1 != null) && (o2 != null) && o1.equals(o2))) {
+
+        if ((o1 == o2) || ((o1 != null) && (o2 != null) && o1.equals(o2))) {
             return 0;
-        } else if((o1 != null) && (o2 != null)) {
-            return o1.toString().compareTo(o2.toString());
-        } else if((o1 != null) && (o2 == null)) {
+        } else if ((o1 != null) && (o2 != null)) {
+            return o1.toString()
+                     .compareTo(o2.toString());
+        } else if ((o1 != null) && (o2 == null)) {
             return +1;
         } else {
             return -1;

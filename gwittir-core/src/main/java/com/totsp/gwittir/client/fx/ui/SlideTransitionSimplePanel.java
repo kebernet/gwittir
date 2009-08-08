@@ -42,19 +42,17 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class SlideTransitionSimplePanel extends AbstractBoundWidget
-    implements HasWidgets, HasWidget {
-    private static final Logger LOG = Logger.getLogger(
-            "com.totsp.gwittir.client.ui.fx");
+public class SlideTransitionSimplePanel extends AbstractBoundWidget implements HasWidgets, HasWidget {
+    private static final Logger LOG = Logger.getLogger("com.totsp.gwittir.client.ui.fx");
     public static final String HORIZONTAL = "left";
     public static final String VERTICAL = "top";
     private FlowPanel base = new FlowPanel();
     private MutationStrategy mutationStrategy = MutationStrategy.UNITS_SINOIDAL;
     private PositionWrapper currentWidget;
     private PositionWrapper toWidget;
+    private PropertyAnimator currentAnimator;
     private String direction;
     private int duration = 1000;
-    private PropertyAnimator currentAnimator;
 
     /** Creates a new instance of SlidePanel */
     public SlideTransitionSimplePanel() {
@@ -69,29 +67,34 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
         this.setDirection(direction);
     }
 
-    public void add(Widget w) {
-        if (currentWidget != null) {
-            throw new RuntimeException("You can only add one widget at a time.");
-        }
-
-        setWidget(w);
-    }
-
-    public void clear() {
-        base.clear();
-        this.currentWidget = null;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public String getDirection() {
         return direction;
     }
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     public int getDuration() {
         return duration;
     }
 
+    public void setMutationStrategy(MutationStrategy mutationStrategy) {
+        this.mutationStrategy = mutationStrategy;
+    }
+
     public MutationStrategy getMutationStrategy() {
         return mutationStrategy;
+    }
+
+    public void setValue(Object value) {
+        if (currentWidget.getUIObject() instanceof BoundWidget) {
+            ((BoundWidget) currentWidget.getUIObject()).setModel(value);
+        }
     }
 
     public Object getValue() {
@@ -102,65 +105,17 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
         }
     }
 
-    public Widget getWidget() {
-        if (this.currentWidget == null) {
-            return null;
-        }
-
-        return (Widget) this.currentWidget.getUIObject();
-    }
-
-    public Iterator iterator() {
-        return base.iterator();
-    }
-
-    public boolean remove(Widget w) {
-        if (currentWidget != null) {
-            PropertyAnimator old = new PropertyAnimator(currentWidget,
-                    getDirection(), "0%", "-100%",
-                    MutationStrategy.UNITS_LINEAR, 1000,
-                    new AnimationFinishedCallback() {
-                        public void onFailure(PropertyAnimator animator,
-                            Exception e) {
-                            Logger.getAnonymousLogger().log( Level.INFO, "Exception animating transition", e);
-                        }
-
-                        public void onFinish(PropertyAnimator animator) {
-                            currentWidget = null;
-                        }
-                    });
-            old.start();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public void setMutationStrategy(MutationStrategy mutationStrategy) {
-        this.mutationStrategy = mutationStrategy;
-    }
-
-    public void setValue(Object value) {
-        if (currentWidget.getUIObject() instanceof BoundWidget) {
-            ((BoundWidget) currentWidget.getUIObject()).setModel(value);
-        }
-    }
-
     public void setWidget(final Widget w) {
-        LOG.log(Level.SPAM, "Set widget: "+ w, null );
-        if ((this.currentWidget != null) &&
-                ( (this.currentAnimator == null && this.currentWidget.getUIObject() == w) ||
-                  (this.currentAnimator != null && this.toWidget.getUIObject() == w )) ) {
-            LOG.log(Level.SPAM, "Attempted to set the same object twice.", null );
+        LOG.log(Level.SPAM, "Set widget: " + w, null);
+
+        if (
+            (this.currentWidget != null) &&
+                (
+                    ((this.currentAnimator == null) && (this.currentWidget.getUIObject() == w)) ||
+                    ((this.currentAnimator != null) && (this.toWidget.getUIObject() == w))
+                )) {
+            LOG.log(Level.SPAM, "Attempted to set the same object twice.", null);
+
             return;
         }
 
@@ -179,15 +134,15 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
         String high = "100%";
         String low = "0%";
 
-        if ((this.currentWidget != null) &&
-                this.getDirection().equals(SlideTransitionSimplePanel.VERTICAL)) {
+        if ((this.currentWidget != null) && this.getDirection()
+                                                    .equals(SlideTransitionSimplePanel.VERTICAL)) {
             high = "0px";
-            low = "-" + currentWidget.getUIObject().getOffsetHeight() + "px";
+            low = "-" + currentWidget.getUIObject()
+                                     .getOffsetHeight() + "px";
         }
 
-        this.currentAnimator = new PropertyAnimator(nextWidget,
-                this.getDirection(), high, low, this.getMutationStrategy(),
-                1000,
+        this.currentAnimator = new PropertyAnimator(
+                nextWidget, this.getDirection(), high, low, this.getMutationStrategy(), 1000,
                 new AnimationFinishedCallback() {
                     public void onFailure(PropertyAnimator animator, Exception e) {
                         currentAnimator = null;
@@ -207,22 +162,23 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
 
         if (currentWidget != null) {
             final Widget oldWidget = (Widget) currentWidget.getUIObject();
-            int totalOffset = this.currentWidget.getUIObject().getOffsetHeight() +
-                Dimensions.INSTANCE.getTotalVerticalMargin(this.currentWidget.getUIObject()
-                                                                             .getElement());
-            Logger.getAnonymousLogger().log( Level.SPAM, "Total offset " + totalOffset, null);
+            int totalOffset = this.currentWidget.getUIObject()
+                                                .getOffsetHeight() +
+                Dimensions.INSTANCE.getTotalVerticalMargin(this.currentWidget.getUIObject().getElement());
+            Logger.getAnonymousLogger()
+                  .log(Level.SPAM, "Total offset " + totalOffset, null);
 
-            if (this.getDirection().equals(SlideTransitionSimplePanel.HORIZONTAL)) {
+            if (this.getDirection()
+                        .equals(SlideTransitionSimplePanel.HORIZONTAL)) {
                 nextWidget.setTop("-" + totalOffset + "px");
             }
 
-            PropertyAnimator old = new PropertyAnimator(currentWidget,
-                    this.getDirection(), "0%", "-100%",
-                    this.getMutationStrategy(), 1000,
+            PropertyAnimator old = new PropertyAnimator(
+                    currentWidget, this.getDirection(), "0%", "-100%", this.getMutationStrategy(), 1000,
                     new AnimationFinishedCallback() {
-                        public void onFailure(PropertyAnimator animator,
-                            Exception e) {
-                            Logger.getAnonymousLogger().log( Level.INFO, "Exception animating transition", e);
+                        public void onFailure(PropertyAnimator animator, Exception e) {
+                            Logger.getAnonymousLogger()
+                                  .log(Level.INFO, "Exception animating transition", e);
                         }
 
                         public void onFinish(PropertyAnimator animator) {
@@ -241,8 +197,56 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
         this.currentAnimator.start();
         this.base.add(w);
 
-        if (this.getDirection().equals(SlideTransitionSimplePanel.HORIZONTAL)) {
+        if (this.getDirection()
+                    .equals(SlideTransitionSimplePanel.HORIZONTAL)) {
             nextWidget.setLeft("101%");
         }
+    }
+
+    public Widget getWidget() {
+        if (this.currentWidget == null) {
+            return null;
+        }
+
+        return (Widget) this.currentWidget.getUIObject();
+    }
+
+    public void add(Widget w) {
+        if (currentWidget != null) {
+            throw new RuntimeException("You can only add one widget at a time.");
+        }
+
+        setWidget(w);
+    }
+
+    public void clear() {
+        base.clear();
+        this.currentWidget = null;
+    }
+
+    public Iterator iterator() {
+        return base.iterator();
+    }
+
+    public boolean remove(Widget w) {
+        if (currentWidget != null) {
+            PropertyAnimator old = new PropertyAnimator(
+                    currentWidget, getDirection(), "0%", "-100%", MutationStrategy.UNITS_LINEAR, 1000,
+                    new AnimationFinishedCallback() {
+                        public void onFailure(PropertyAnimator animator, Exception e) {
+                            Logger.getAnonymousLogger()
+                                  .log(Level.INFO, "Exception animating transition", e);
+                        }
+
+                        public void onFinish(PropertyAnimator animator) {
+                            currentWidget = null;
+                        }
+                    });
+            old.start();
+
+            return true;
+        }
+
+        return false;
     }
 }

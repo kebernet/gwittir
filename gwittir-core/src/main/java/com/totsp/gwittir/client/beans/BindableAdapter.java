@@ -16,11 +16,11 @@ import java.util.Map;
  * @author kebernet
  */
 public abstract class BindableAdapter implements SourcesPropertyChangeEvents, SelfDescribed {
-    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-    private Object watched;
-    private Map<String, Object> values = new HashMap<String, Object>();
-    private Property[] properties;
     private BeanDescriptor descriptor;
+    private Map<String, Object> values = new HashMap<String, Object>();
+    private Object watched;
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private Property[] properties;
 
     public BindableAdapter(Object watched) {
         this.watched = watched;
@@ -44,17 +44,61 @@ public abstract class BindableAdapter implements SourcesPropertyChangeEvents, Se
         initListener();
     }
 
-    protected void initValues() {
-        try {
-            for (Property p : this.properties) {
-                if (p.getAccessorMethod() != null) {
-                    values.put(p.getName(),
-                        p.getAccessorMethod().invoke(this.watched, null));
-                }
+    public PropertyChangeListener[] getPropertyChangeListeners() {
+        return propertyChangeSupport.getPropertyChangeListeners();
+    }
+
+    public BeanDescriptor __descriptor() {
+        if (this.descriptor == null) { //No lazy thread issues in the browser;
+
+            final Property[] wrappedProps = new Property[this.properties.length];
+
+            for (int i = 0; i < this.properties.length; i++) {
+                wrappedProps[i] = new Property(
+                        this.properties[i].getName(), this.properties[i].getType(),
+                        (this.properties[i].getAccessorMethod() != null)
+                        ? new MethodWrapper(this.properties[i].getAccessorMethod())
+                        : null,
+                        (this.properties[i].getMutatorMethod() != null)
+                        ? new MethodWrapper(this.properties[i].getAccessorMethod())
+                        : null);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+
+            this.descriptor = new BeanDescriptor() {
+                        public Property[] getProperties() {
+                            return wrappedProps;
+                        }
+
+                        public Property getProperty(String name) {
+                            for (Property p : wrappedProps) {
+                                if (p.getName()
+                                         .equals(name)) {
+                                    return p;
+                                }
+                            }
+
+                            return null;
+                        }
+                    };
         }
+
+        return this.descriptor;
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        propertyChangeSupport.addPropertyChangeListener(l);
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        propertyChangeSupport.addPropertyChangeListener(propertyName, l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        propertyChangeSupport.removePropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        propertyChangeSupport.removePropertyChangeListener(propertyName, l);
     }
 
     public void update() {
@@ -65,9 +109,9 @@ public abstract class BindableAdapter implements SourcesPropertyChangeEvents, Se
 
             try {
                 Object old = this.values.get(p.getName());
-                Object cur = p.getAccessorMethod().invoke(this.watched, null);
-                this.propertyChangeSupport.firePropertyChange(p.getName(), old,
-                    cur);
+                Object cur = p.getAccessorMethod()
+                              .invoke(this.watched, null);
+                this.propertyChangeSupport.firePropertyChange(p.getName(), old, cur);
             } catch (Exception e) {
                 throw new RuntimeException();
             }
@@ -75,62 +119,20 @@ public abstract class BindableAdapter implements SourcesPropertyChangeEvents, Se
     }
 
     protected abstract void initListener();
-    protected abstract void stopListener();
 
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        propertyChangeSupport.addPropertyChangeListener(l);
-    }
-
-    public void addPropertyChangeListener(String propertyName,
-        PropertyChangeListener l) {
-        propertyChangeSupport.addPropertyChangeListener(propertyName, l);
-    }
-
-    public PropertyChangeListener[] getPropertyChangeListeners() {
-        return propertyChangeSupport.getPropertyChangeListeners();
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        propertyChangeSupport.removePropertyChangeListener(l);
-    }
-
-    public void removePropertyChangeListener(String propertyName,
-        PropertyChangeListener l) {
-        propertyChangeSupport.removePropertyChangeListener(propertyName, l);
-    }
-
-    public BeanDescriptor __descriptor() {
-        if (this.descriptor == null) { //No lazy thread issues in the browser;
-            final Property[] wrappedProps = new Property[this.properties.length];
-
-            for (int i = 0; i < this.properties.length; i++) {
-                wrappedProps[i] = new Property(this.properties[i].getName(),
-                        this.properties[i].getType(),
-                        (this.properties[i].getAccessorMethod() != null)
-                        ? new MethodWrapper(
-                            this.properties[i].getAccessorMethod()) : null,
-                        (this.properties[i].getMutatorMethod() != null)
-                        ? new MethodWrapper(
-                            this.properties[i].getAccessorMethod()) : null);
+    protected void initValues() {
+        try {
+            for (Property p : this.properties) {
+                if (p.getAccessorMethod() != null) {
+                    values.put(p.getName(), p.getAccessorMethod().invoke(this.watched, null));
+                }
             }
-
-            this.descriptor = new BeanDescriptor() {
-                        public Property[] getProperties() {
-                            return wrappedProps;
-                        }
-
-                        public Property getProperty(String name) {
-                            for (Property p : wrappedProps) {
-                                if (p.getName().equals(name)) {
-                                    return p;
-                                }
-                            }
-                            return null;
-                        }
-                    };
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return this.descriptor;
     }
+
+    protected abstract void stopListener();
 
     protected static class MethodWrapper implements Method {
         private Method internal;

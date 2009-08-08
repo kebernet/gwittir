@@ -19,14 +19,15 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import java.beans.PropertyChangeListener;
-
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
 import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.SourcesClickEvents;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.beans.PropertyChangeListener;
+
 
 /**
  *
@@ -35,7 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class Button extends AbstractBoundWidget<String> implements SourcesClickEvents, HasFocus {
     private final com.google.gwt.user.client.ui.Button base = new com.google.gwt.user.client.ui.Button();
     private String value;
-    
+
     /** Creates a new instance of Button */
     public Button() {
         this.init();
@@ -45,33 +46,31 @@ public class Button extends AbstractBoundWidget<String> implements SourcesClickE
         this.init();
         this.setValue(label);
     }
+
     public Button(String label, ClickListener listener) {
         this.init();
         this.setValue(label);
-        this.addClickListener( listener );
+        this.addClickListener(listener);
     }
 
-    public void addClickListener(ClickListener listener) {
-        this.base.addClickListener(listener);
+    public void setAccessKey(char key) {
+        this.base.setAccessKey(key);
     }
 
-    public void addFocusListener(FocusListener listener) {
-        this.base.addFocusListener(listener);
+    public void setEnabled(boolean enabled) {
+        this.base.setEnabled(enabled);
     }
 
-    public void addKeyboardListener(KeyboardListener listener) {
-        this.base.addKeyboardListener(listener);
+    public boolean isEnabled() {
+        return this.base.isEnabled();
     }
 
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        changes.addPropertyChangeListener(l);
+    public void setFocus(boolean focused) {
+        this.base.setFocus(focused);
     }
 
-    @Override
-    public void addPropertyChangeListener(String propertyName,
-        PropertyChangeListener l) {
-        changes.addPropertyChangeListener(propertyName, l);
+    public void setHTML(String html) {
+        this.base.setHTML(html);
     }
 
     public String getHTML() {
@@ -96,8 +95,16 @@ public class Button extends AbstractBoundWidget<String> implements SourcesClickE
         return retValue;
     }
 
+    public void setTabIndex(int index) {
+        this.base.setTabIndex(index);
+    }
+
     public int getTabIndex() {
-       return this.base.getTabIndex();
+        return this.base.getTabIndex();
+    }
+
+    public void setText(String text) {
+        this.base.setText(text);
     }
 
     public String getText() {
@@ -105,26 +112,47 @@ public class Button extends AbstractBoundWidget<String> implements SourcesClickE
     }
 
     @Override
+    public void setTitle(String title) {
+        String old = this.base.getTitle();
+        this.base.setTitle(title);
+        this.changes.firePropertyChange("title", old, title);
+    }
+
+    @Override
     public String getTitle() {
         return this.base.getTitle();
+    }
+
+    public void setValue(String value) {
+        String old = this.value;
+        this.setText(value);
+        this.changes.firePropertyChange("value", old, value);
     }
 
     public String getValue() {
         return this.value;
     }
 
-    protected void init() {
-        final Button instance = this;
-        ClickListener listener = new ClickListener() {
-                public void onClick(Widget sender) {
-                    if(getAction() != null) {
-                        getAction().execute( instance);
-                    }
-                }
-            };
-
-        this.initWidget(this.base);
+    public void addClickListener(ClickListener listener) {
         this.base.addClickListener(listener);
+    }
+
+    public void addFocusListener(FocusListener listener) {
+        this.base.addFocusListener(listener);
+    }
+
+    public void addKeyboardListener(KeyboardListener listener) {
+        this.base.addKeyboardListener(listener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        changes.addPropertyChangeListener(l);
+    }
+
+    @Override
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        changes.addPropertyChangeListener(propertyName, l);
     }
 
     public void removeClickListener(ClickListener listener) {
@@ -145,51 +173,22 @@ public class Button extends AbstractBoundWidget<String> implements SourcesClickE
     }
 
     @Override
-    public void removePropertyChangeListener(String propertyName,
-        PropertyChangeListener l) {
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
         changes.removePropertyChangeListener(propertyName, l);
     }
 
-    public void setEnabled(boolean enabled) {
-        this.base.setEnabled(enabled);
-    }
+    protected void init() {
+        final Button instance = this;
+        ClickListener listener = new ClickListener() {
+                public void onClick(Widget sender) {
+                    if (getAction() != null) {
+                        getAction()
+                            .execute(instance);
+                    }
+                }
+            };
 
-    public void setFocus(boolean focused) {
-        this.base.setFocus(focused);
+        this.initWidget(this.base);
+        this.base.addClickListener(listener);
     }
-
-    public void setHTML(String html) {
-        this.base.setHTML(html);
-    }
-
-  
-    public void setTabIndex(int index) {
-        this.base.setTabIndex(index);
-    }
-
-    public void setText(String text) {
-        this.base.setText(text);
-    }
-
-    @Override
-    public void setTitle(String title) {
-        String old = this.base.getTitle();
-        this.base.setTitle(title);
-        this.changes.firePropertyChange("title", old, title);
-    }
-
-    public void setValue(String value) {
-        String old = this.value;
-        this.setText(value);
-        this.changes.firePropertyChange("value", old, value);
-    }
-
-    public boolean isEnabled() {
-        return this.base.isEnabled();
-    }
-
-    public void setAccessKey(char key) {
-        this.base.setAccessKey( key );
-    }
-    
 }

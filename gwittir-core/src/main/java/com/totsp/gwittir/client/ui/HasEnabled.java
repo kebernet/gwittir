@@ -17,17 +17,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui;
+
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface HasEnabled {
-    
-    public void setEnabled( boolean enabled );
-    
+    public void setEnabled(boolean enabled);
+
     public boolean isEnabled();
-    
 }

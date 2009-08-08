@@ -17,20 +17,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.validator;
 
 import com.totsp.gwittir.client.validator.ValidationException;
 import com.totsp.gwittir.client.validator.Validator;
 
+
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public class DoubleRangeValidator implements Validator{
-    
-    private double min;
+public class DoubleRangeValidator implements Validator {
     private double max;
+    private double min;
+
     public DoubleRangeValidator(double min, double max) {
         this.min = min;
         this.max = max;
@@ -39,16 +39,14 @@ public class DoubleRangeValidator implements Validator{
     public Object validate(Object value) throws ValidationException {
         Double i = (Double) value;
 
-        if(i == null) {
+        if (i == null) {
             return null;
         }
 
-        if((i.intValue() <= max) && (i.intValue() >= min)) {
+        if ((i.intValue() <= max) && (i.intValue() >= min)) {
             return value;
         }
 
-        throw new ValidationException("Must be a value between " + min +
-            " and " + max, DoubleRangeValidator.class);
+        throw new ValidationException("Must be a value between " + min + " and " + max, DoubleRangeValidator.class);
     }
-    
 }

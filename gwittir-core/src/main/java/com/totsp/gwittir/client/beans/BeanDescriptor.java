@@ -25,7 +25,6 @@ package com.totsp.gwittir.client.beans;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface BeanDescriptor {
-    
     /**
      * Returns the Property instances associated with the class.
      * @return Array of Properties for the class.
@@ -38,5 +37,4 @@ public interface BeanDescriptor {
      * @return Property instance or null
      */
     Property getProperty(String name);
-   
 }

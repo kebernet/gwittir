@@ -17,29 +17,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.calendar;
+
 
 /**
  * An interface noting classes that support CalendarListeners.
  * @author cooper
  */
 public interface SourcesCalendarEvents {
-    
-    /**
-     * Adds a CalendarListener
-     * @param l CalendarListener to add
-     */
-   void addCalendarListener( CalendarListener l );
-    /**
-     * Removes a CalendarListener
-     * @param l CalendarListener to remove
-     */
-   void removeCalendarListener( CalendarListener l );
     /**
      * Returns the current registered CalendarListeners
      * @return Array of CalendarListeners active
      */
-   CalendarListener[] getCalendarListeners();
-    
+    CalendarListener[] getCalendarListeners();
+
+    /**
+     * Adds a CalendarListener
+     * @param l CalendarListener to add
+     */
+    void addCalendarListener(CalendarListener l);
+
+    /**
+     * Removes a CalendarListener
+     * @param l CalendarListener to remove
+     */
+    void removeCalendarListener(CalendarListener l);
 }

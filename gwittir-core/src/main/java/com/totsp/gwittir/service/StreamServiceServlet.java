@@ -32,29 +32,67 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class StreamServiceServlet extends RemoteServiceServlet {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 9185972219157797813L;
-	public static final String SCRIPT_CLOSE = "</script>";
+         *
+         */
+    private static final long serialVersionUID = 9185972219157797813L;
+    public static final String SCRIPT_CLOSE = "</script>";
     public static final String UTF8 = "UTF-8";
     public static final String WINDOW_PARENT = "window.parent.";
     protected static final String SCRIPT_OPEN = "<script type=\"text/javascript\">";
 
-    
-    
+    @Override
+    public String processCall(String payload) throws SerializationException {
+        try {
+            RPCRequest rpcRequest = StreamServiceUtils.decodeRequest(payload, this.getClass(), this);
+
+            //onAfterRequestDeserialized(rpcRequest);
+            StreamServiceIterator iterator = null;
+
+            try {
+                iterator = (StreamServiceIterator) rpcRequest.getMethod()
+                                                             .invoke(this, rpcRequest.getParameters());
+
+                try {
+                    this.sendResults(rpcRequest.getMethod(), iterator, rpcRequest.getSerializationPolicy());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    if (iterator != null) {
+                        iterator.close();
+                    }
+                }
+            } catch (IllegalArgumentException ex) {
+                throw new IncompatibleRemoteServiceException("", ex);
+            } catch (InvocationTargetException ex) {
+                throw new IncompatibleRemoteServiceException("", ex);
+            } catch (IllegalAccessException ex) {
+                throw new IncompatibleRemoteServiceException("", ex);
+            }
+
+            return "";
+        } catch (IncompatibleRemoteServiceException ex) {
+            log("An IncompatibleRemoteServiceException was thrown while processing this call.", ex);
+
+            return RPC.encodeResponseForFailure(null, ex);
+        }
+    }
+
     @Override
     public String readContent(HttpServletRequest request) {
         return request.getParameter("r");
     }
 
+    protected boolean flushExtraAfterEachPush() {
+        return true;
+    }
+
     @Override
-    protected boolean shouldCompressResponse(HttpServletRequest request,
-        HttpServletResponse response, String responsePayload) {
+    protected boolean shouldCompressResponse(
+        HttpServletRequest request, HttpServletResponse response, String responsePayload) {
         return false;
     }
 
-    private void sendResults(Method method, StreamServiceIterator iterator,
-        SerializationPolicy policy) {
+    private void sendResults(Method method, StreamServiceIterator iterator, SerializationPolicy policy) {
         try {
             HttpServletResponse response = this.getThreadLocalResponse();
             HttpServletRequest request = this.getThreadLocalRequest();
@@ -66,16 +104,14 @@ public class StreamServiceServlet extends RemoteServiceServlet {
             while (iterator.hasNext()) {
                 try {
                     Object next = iterator.next();
-                    String obj = StreamServiceUtils.encodeResponse(next.getClass(),
-                            next, false, policy);
+                    String obj = StreamServiceUtils.encodeResponse(next.getClass(), next, false, policy);
 
                     System.out.println("Encoded response: " + obj);
                     out.println(SCRIPT_OPEN);
                     out.print(WINDOW_PARENT);
                     out.print(request.getParameter("c"));
                     out.print("(\"");
-                    out.print(URLEncoder.encode(obj, UTF8)
-                                        .replaceAll("\\+", "%20"));
+                    out.print(URLEncoder.encode(obj, UTF8).replaceAll("\\+", "%20"));
                     out.println("\");");
                     out.println(SCRIPT_CLOSE);
 
@@ -94,8 +130,7 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     out.print(WINDOW_PARENT);
                     out.print(request.getParameter("c"));
                     out.print("E(\"");
-                    out.print(URLEncoder.encode(se.toString(), UTF8)
-                                        .replaceAll("\\+", "%20"));
+                    out.print(URLEncoder.encode(se.toString(), UTF8).replaceAll("\\+", "%20"));
                     out.println("\");");
                     out.println(SCRIPT_CLOSE);
                     out.flush();
@@ -110,51 +145,6 @@ public class StreamServiceServlet extends RemoteServiceServlet {
             out.println(SCRIPT_CLOSE);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
-        }
-    }
-
-    protected boolean flushExtraAfterEachPush() {
-        return true;
-    }
-
-    @Override
-    public String processCall(String payload) throws SerializationException {
-        try {
-            RPCRequest rpcRequest = StreamServiceUtils.decodeRequest(payload,
-                    this.getClass(), this);
-            //onAfterRequestDeserialized(rpcRequest);
-
-            StreamServiceIterator iterator = null;
-
-            try {
-                iterator = (StreamServiceIterator) rpcRequest.getMethod()
-                                                             .invoke(this,
-                        rpcRequest.getParameters());
-
-                try {
-                    this.sendResults(rpcRequest.getMethod(), iterator,
-                        rpcRequest.getSerializationPolicy());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    if (iterator != null) {
-                        iterator.close();
-                    }
-                }
-            } catch (IllegalArgumentException ex) {
-                throw new IncompatibleRemoteServiceException("", ex);
-            } catch (InvocationTargetException ex) {
-                throw new IncompatibleRemoteServiceException("", ex);
-            } catch (IllegalAccessException ex) {
-                throw new IncompatibleRemoteServiceException("", ex);
-            }
-
-            return "";
-        } catch (IncompatibleRemoteServiceException ex) {
-            log("An IncompatibleRemoteServiceException was thrown while processing this call.",
-                ex);
-
-            return RPC.encodeResponseForFailure(null, ex);
         }
     }
 }

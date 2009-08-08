@@ -17,31 +17,31 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.calendar;
 
 import com.google.gwt.user.client.ui.Widget;
+
 
 /**
  * An interface for classes that file CalendarDrawEvents
  * @author cooper
  */
 public interface SourcesCalendarDrawEvents {
-    
-    /**
-     * Adds a CalendarDrawListener
-     * @param cdl CalendarDrawListener to add
-     */
-    void addCalendarDrawListener( CalendarDrawListener cdl );
-    /**
-     * Removes a CalendarDrawListener
-     * @param cdl CalendarDrawListener to remove
-     */
-    void removeCalendarDrawListener( CalendarDrawListener cdl );
     /**
      * The current set of CalendarDrawListeners.
      * @return Array of CalendarDrawListeners currently registered
      */
     CalendarDrawListener[] getCalendarDrawListeners();
-    
+
+    /**
+     * Adds a CalendarDrawListener
+     * @param cdl CalendarDrawListener to add
+     */
+    void addCalendarDrawListener(CalendarDrawListener cdl);
+
+    /**
+     * Removes a CalendarDrawListener
+     * @param cdl CalendarDrawListener to remove
+     */
+    void removeCalendarDrawListener(CalendarDrawListener cdl);
 }

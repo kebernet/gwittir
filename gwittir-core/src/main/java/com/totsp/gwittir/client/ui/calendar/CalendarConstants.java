@@ -17,62 +17,94 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui.calendar;
 
 import com.google.gwt.i18n.client.Constants;
+
 import com.totsp.gwittir.client.ui.*;
+
 
 /**
  * Internationalization constants for the ui.calendar package.
  * Please provide properties files for any language you wish to support in your
- * application. 
+ * application.
  *
  * @author cooper
  */
 public interface CalendarConstants extends Constants {
-    
-    public String sunday();
-    public String monday();
-    public String tuesday();
-    public String wednesday();
-    public String thursday();
-    public String friday();
-    public String saturday();
-    
-    public String sunday_short();
-    public String monday_short();
-    public String tuesday_short();
-    public String wednesday_short();
-    public String thursday_short();
-    public String friday_short();
-    public String saturday_short();
-    
-    public String january();
-    public String february();
-    public String march();
     public String april();
-    public String may();
-    public String june();
-    public String july();
-    public String august();
-    public String september();
-    public String october();
-    public String november();
-    public String december();
-    
-    public String january_short();
-    public String february_short();
-    public String march_short();
+
     public String april_short();
-    public String may_short();
-    public String june_short();
-    public String july_short();
+
+    public String august();
+
     public String august_short();
-    public String september_short();
-    public String october_short();
-    public String november_short();
+
+    public String december();
+
     public String december_short();
-    
-    
+
+    public String february();
+
+    public String february_short();
+
+    public String friday();
+
+    public String friday_short();
+
+    public String january();
+
+    public String january_short();
+
+    public String july();
+
+    public String july_short();
+
+    public String june();
+
+    public String june_short();
+
+    public String march();
+
+    public String march_short();
+
+    public String may();
+
+    public String may_short();
+
+    public String monday();
+
+    public String monday_short();
+
+    public String november();
+
+    public String november_short();
+
+    public String october();
+
+    public String october_short();
+
+    public String saturday();
+
+    public String saturday_short();
+
+    public String september();
+
+    public String september_short();
+
+    public String sunday();
+
+    public String sunday_short();
+
+    public String thursday();
+
+    public String thursday_short();
+
+    public String tuesday();
+
+    public String tuesday_short();
+
+    public String wednesday();
+
+    public String wednesday_short();
 }

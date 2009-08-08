@@ -21,22 +21,20 @@ package com.totsp.gwittir.client.validator;
 
 import com.google.gwt.core.client.GWT;
 
+
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class IntegerValidator implements Validator {
-    
     public static final IntegerValidator INSTANCE = new IntegerValidator();
-    
-    
+
     /** Creates a new instance of IntegerValidator */
     private IntegerValidator() {
     }
 
     public Object validate(Object value) throws ValidationException {
-        
-        if(value == null || value instanceof Integer) {
+        if ((value == null) || value instanceof Integer) {
             return value;
         }
 
@@ -44,10 +42,9 @@ public class IntegerValidator implements Validator {
 
         try {
             i = Integer.valueOf(value.toString());
-        } catch(NumberFormatException nfe) {
-            GWT.log( null, nfe);
-            throw new ValidationException("Must be an integer value.",
-                IntegerValidator.class);
+        } catch (NumberFormatException nfe) {
+            GWT.log(null, nfe);
+            throw new ValidationException("Must be an integer value.", IntegerValidator.class);
         }
 
         return i;

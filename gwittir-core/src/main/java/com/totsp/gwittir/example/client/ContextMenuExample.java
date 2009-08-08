@@ -3,22 +3,21 @@ package com.totsp.gwittir.example.client;
 import com.totsp.gwittir.client.ui.BoundVerticalPanel;
 import com.totsp.gwittir.client.ui.Button;
 import com.totsp.gwittir.client.ui.ContextMenuPanel;
-import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
 import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
+import com.totsp.gwittir.client.ui.Label;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
-public class ContextMenuExample extends BoundVerticalPanel<Object>{
 
-	
-	public ContextMenuExample(){
-		super(new BoundWidgetTypeFactory(), null);
-		
-		Label hasContext = new Label("RightClickMe");
-                ContextMenuPanel ctx = new ContextMenuPanel(hasContext);
+public class ContextMenuExample extends BoundVerticalPanel<Object> {
+    public ContextMenuExample() {
+        super(new BoundWidgetTypeFactory(), null);
+
+        Label hasContext = new Label("RightClickMe");
+        ContextMenuPanel ctx = new ContextMenuPanel(hasContext);
         ctx.addMenuItemWidget(new Button("Item 1"));
         ctx.addMenuItemWidget(new Button("Item 2"));
-       
+
         Button ctxB = new MenuItem("Rick roll");
         ctx = new ContextMenuPanel(ctxB);
         ctx.addMenuItemWidget(new MenuItem("Item 1"));
@@ -34,6 +33,5 @@ public class ContextMenuExample extends BoundVerticalPanel<Object>{
         sub.addMenuItemWidget(sub2);
         ctx.addMenuItemWidget(sub);
         add(ctx);
-        
-	}
+    }
 }

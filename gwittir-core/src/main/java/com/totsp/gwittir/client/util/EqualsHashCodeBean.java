@@ -16,12 +16,12 @@
  */
 package com.totsp.gwittir.client.util;
 
-import java.io.Serializable;
-
 import com.totsp.gwittir.client.beans.BeanDescriptor;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
+
+import java.io.Serializable;
 
 
 /**
@@ -50,6 +50,13 @@ import com.totsp.gwittir.client.beans.Property;
  */
 public class EqualsHashCodeBean implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * equals implementation
+     * @param obj Object to check.
+     * @return Equality
+     */
+    static long total = 0;
     private Object bean;
 
     /**
@@ -60,21 +67,18 @@ public class EqualsHashCodeBean implements Serializable {
         this.bean = bean;
     }
 
-    /**
-     * equals implementation
-     * @param obj Object to check.
-     * @return Equality
-     */
-    static long total =0;
     public boolean beanEquals(Object obj) {
-    	Object bean1 = bean;
+        Object bean1 = bean;
         Object bean2 = obj;
         boolean eq;
-        if( bean1 == bean2 ){
+
+        if (bean1 == bean2) {
             eq = true;
         } else if ((bean2 == null)) {
             eq = false;
-        } else if (!bean1.getClass().getName().equals(bean2.getClass().getName())) {
+        } else if (!bean1.getClass()
+                             .getName()
+                             .equals(bean2.getClass().getName())) {
             eq = false;
         } else {
             eq = true;
@@ -82,9 +86,9 @@ public class EqualsHashCodeBean implements Serializable {
             try {
                 BeanDescriptor bd = Introspector.INSTANCE.getDescriptor(bean);
                 Property[] properties = bd.getProperties();
+
                 if (properties != null) {
                     for (int i = 0; eq && (i < properties.length); i++) {
-
                         Method pReadMethod = properties[i].getAccessorMethod();
 
                         if (pReadMethod != null) {
@@ -98,7 +102,7 @@ public class EqualsHashCodeBean implements Serializable {
                 throw new RuntimeException("Could not execute equals()", ex);
             }
         }
-        
+
         return eq;
     }
 
@@ -107,7 +111,7 @@ public class EqualsHashCodeBean implements Serializable {
      * @return integer hashCode.
      */
     public int beanHashCode() {
-    	//TODO make this something meaningful. the toString() op was way too slow.
+        //TODO make this something meaningful. the toString() op was way too slow.
         return super.hashCode();
     }
 

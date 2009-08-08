@@ -25,9 +25,9 @@ package com.totsp.gwittir.client.keyboard;
  * @author rcooper
  */
 public interface SourcesKeyBindingEvents {
+    public KeyBindingEventListener[] getKeyBindingEventListeners();
+
     public void addKeyBindingEventListener(KeyBindingEventListener l);
 
     public boolean removeKeyBindingEventListener(KeyBindingEventListener l);
-
-    public KeyBindingEventListener[] getKeyBindingEventListeners();
 }

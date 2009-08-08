@@ -19,6 +19,7 @@ package com.totsp.gwittir.client.util.domstorage;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+
 /**
  * This is a global object (globalStorage) that maintains multiple private
  * storage areas that can be used to hold data over a long period of time
@@ -28,31 +29,22 @@ import com.google.gwt.core.client.JavaScriptObject;
  * is not, however supported by Firefox yet. When called from the factory it will
  * be returned as localStorage or globalStorage[window.location.hostName], whichever
  * is available.
- * 
+ *
  * @author kebernet
  */
 public class Storage extends JavaScriptObject {
-
-    protected Storage(){
-        
+    protected Storage() {
     }
 
-    public native final String get(String key)
-    /*-{ var val = this.getItem(key); return val == undefined ? null : val.toString();}-*/;
+    public final native void clear();
 
-    public native final int length()
-    /*-{ return this.length; }-*/;
+    public final native String get(String key);
 
-    public native final String key(int index)
-    /*-{ var key = this.key(index); return key == undefined ? null : key.toString(); }-*/;
+    public final native String key(int index);
 
-    public native final void clear()
-    /*-{ this.clear(); return; }-*/;
+    public final native int length();
 
-    public native final void remove(String key)
-    /*-{ this.removeItem(key); return; }-*/;
+    public final native void remove(String key);
 
-    public native final void set(String key, String value)
-    /*-{ this.setItem(key, value); return; }-*/;
-
+    public final native void set(String key, String value);
 }

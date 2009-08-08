@@ -4,12 +4,6 @@
  */
 package com.totsp.gwittir.client.ui;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
@@ -22,274 +16,281 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.totsp.gwittir.client.action.Action;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+
 /**
- * 
+ *
  * @author kebernet
  */
 public class ContextMenuPanel<T> extends SimplePanel implements BoundWidget<T> {
-	private BoundWidget<T> internal;
-	private List<Widget> menuItems = new ArrayList<Widget>();
-	protected PopupPanel popup = new PopupPanel(true, true);
-	private PropertyChangeSupport changes = new PropertyChangeSupport(this);
-	private VerticalPanel panel = new VerticalPanel();
-	private boolean rightDown = false;
+    protected PopupPanel popup = new PopupPanel(true, true);
+    private BoundWidget<T> internal;
+    private List<Widget> menuItems = new ArrayList<Widget>();
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    private VerticalPanel panel = new VerticalPanel();
+    private boolean rightDown = false;
+    private int x;
+    private int y;
+    private Timer t = new Timer() {
+            @Override
+            public void run() {
+                popup.show();
+                popup.setPopupPosition(x, y);
+            }
+        };
 
-	public ContextMenuPanel(BoundWidget<T> internal) {
-		super();
-		this.internal = internal;
-		setWidget((Widget) internal);
-		this.sinkEvents(Event.ONCLICK | Event.ONCONTEXTMENU | Event.MOUSEEVENTS
-				| Event.ONMOUSEDOWN | Event.ONMOUSEUP);
-		this.panel.setStyleName("gwittir-ContextMenu");
-		this.popup.setWidget(panel);
-	}
+    public ContextMenuPanel(BoundWidget<T> internal) {
+        super();
+        this.internal = internal;
+        setWidget((Widget) internal);
+        this.sinkEvents(Event.ONCLICK | Event.ONCONTEXTMENU | Event.MOUSEEVENTS | Event.ONMOUSEDOWN | Event.ONMOUSEUP);
+        this.panel.setStyleName("gwittir-ContextMenu");
+        this.popup.setWidget(panel);
+    }
 
-	public void addChangeListener(ChangeListener arg0) {
-	}
+    public void setAction(Action action) {
+        this.internal.setAction(action);
+    }
 
-	public void addMenuItemWidget(Widget w) {
-		this.menuItems.add(w);
+    public Action getAction() {
+        return this.internal.getAction();
+    }
 
-		if (w instanceof MenuItem) {
-			((MenuItem) w).setMenu(this);
-		}
+    public void setComparator(Comparator comparator) {
+    }
 
-		if (w instanceof SubMenu) {
-			((SubMenu) w).setMenu(this);
-		}
+    public Comparator getComparator() {
+        return null;
+    }
 
-		this.panel.add(w);
-	}
+    public void setInternal(BoundWidget<T> internal) {
+        this.remove((Widget) this.internal);
+        super.setWidget((Widget) internal);
+        this.changes.firePropertyChange("internal", this.internal, this.internal = internal);
+    }
 
-	public void addPropertyChangeListener(PropertyChangeListener l) {
-		this.changes.addPropertyChangeListener(l);
-	}
+    public BoundWidget<T> getInternal() {
+        return this.internal;
+    }
 
-	public void addPropertyChangeListener(String propertyName,
-			PropertyChangeListener l) {
-		this.changes.addPropertyChangeListener(propertyName, l);
-	}
+    public List<Widget> getMenuItemWidgets() {
+        return this.menuItems;
+    }
 
-	public Action getAction() {
-		return this.internal.getAction();
-	}
+    public void setModel(Object model) {
+        internal.setModel(model);
+    }
 
-	public Comparator getComparator() {
-		return null;
-	}
+    public Object getModel() {
+        return internal.getModel();
+    }
 
-	public BoundWidget<T> getInternal() {
-		return this.internal;
-	}
+    public PropertyChangeListener[] getPropertyChangeListeners() {
+        return this.changes.getPropertyChangeListeners();
+    }
 
-	public List<Widget> getMenuItemWidgets() {
-		return this.menuItems;
-	}
+    public void setValue(T value) {
+        internal.setValue(value);
+    }
 
-	public Object getModel() {
-		return internal.getModel();
-	}
+    public T getValue() {
+        return internal.getValue();
+    }
 
-	public PropertyChangeListener[] getPropertyChangeListeners() {
-		return this.changes.getPropertyChangeListeners();
-	}
+    public void addChangeListener(ChangeListener arg0) {
+    }
 
-	public T getValue() {
-		return internal.getValue();
-	}
+    public void addMenuItemWidget(Widget w) {
+        this.menuItems.add(w);
 
-	public void hide() {
-		this.popup.hide();
-	}
+        if (w instanceof MenuItem) {
+            ((MenuItem) w).setMenu(this);
+        }
 
-	private int x;
-	private int y;
-	private Timer t = new Timer() {
+        if (w instanceof SubMenu) {
+            ((SubMenu) w).setMenu(this);
+        }
 
-		@Override
-		public void run() {
-			popup.show();
-			popup.setPopupPosition(x, y);
-		}
+        this.panel.add(w);
+    }
 
-	};
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        this.changes.addPropertyChangeListener(l);
+    }
 
-	@Override
-	public void onBrowserEvent(Event event) {
-		switch (DOM.eventGetType(event)) {
-		case Event.ONCONTEXTMENU:
-			GWT.log("ONCONTEXTMENU", null);
-			DOM.eventPreventDefault(event);
-			this.popup.show();
-			this.popup.setPopupPosition(x, y);
-			break;
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        this.changes.addPropertyChangeListener(propertyName, l);
+    }
 
-		case Event.ONMOUSEDOWN:
-			GWT.log("ONMOUSEDOWN", null);
-			if ((DOM.eventGetButton(event) == Event.BUTTON_RIGHT)
-					|| DOM.eventGetCtrlKey(event)) {
-				rightDown = true;
-				DOM.eventPreventDefault(event);
-				x = DOM.eventGetClientX(event);
-				y = DOM.eventGetClientY(event);
-				if ((DOM.eventGetButton(event) == Event.BUTTON_RIGHT)) {
-					t.schedule(5);
-				}
-			} else {
-				rightDown = false;
-			}
+    public void hide() {
+        this.popup.hide();
+    }
 
-			break;
+    @Override
+    public void onBrowserEvent(Event event) {
+        switch (DOM.eventGetType(event)) {
+        case Event.ONCONTEXTMENU:
+            GWT.log("ONCONTEXTMENU", null);
+            DOM.eventPreventDefault(event);
+            this.popup.show();
+            this.popup.setPopupPosition(x, y);
 
-		case Event.ONMOUSEUP:
-			if (rightDown) {
-				this.popup.show();
-				this.popup.setPopupPosition(x, y);
-				DOM.eventCancelBubble(event, true);
-			} else {
-				rightDown = false;
-			}
+            break;
 
-			break;
-		case Event.ONCLICK:
-			if (DOM.eventGetButton(event) == Event.BUTTON_RIGHT) {
-				GWT.log("RIGHT CLICK", null);
-				DOM.eventPreventDefault(event);
-			}
-		default:
-			break;
-		}
-	}
+        case Event.ONMOUSEDOWN:
+            GWT.log("ONMOUSEDOWN", null);
 
-	public void removeChangeListener(ChangeListener arg0) {
-	}
+            if ((DOM.eventGetButton(event) == Event.BUTTON_RIGHT) || DOM.eventGetCtrlKey(event)) {
+                rightDown = true;
+                DOM.eventPreventDefault(event);
+                x = DOM.eventGetClientX(event);
+                y = DOM.eventGetClientY(event);
 
-	public boolean removeMenuItemWidget(Widget w) {
-		this.menuItems.remove(w);
+                if ((DOM.eventGetButton(event) == Event.BUTTON_RIGHT)) {
+                    t.schedule(5);
+                }
+            } else {
+                rightDown = false;
+            }
 
-		return this.panel.remove(w);
-	}
+            break;
 
-	public void removePropertyChangeListener(PropertyChangeListener l) {
-		this.changes.addPropertyChangeListener(l);
-	}
+        case Event.ONMOUSEUP:
 
-	public void removePropertyChangeListener(String propertyName,
-			PropertyChangeListener l) {
-		this.changes.addPropertyChangeListener(propertyName, l);
-	}
+            if (rightDown) {
+                this.popup.show();
+                this.popup.setPopupPosition(x, y);
+                DOM.eventCancelBubble(event, true);
+            } else {
+                rightDown = false;
+            }
 
-	public void setAction(Action action) {
-		this.internal.setAction(action);
-	}
+            break;
 
-	public void setComparator(Comparator comparator) {
-	}
+        case Event.ONCLICK:
 
-	public void setInternal(BoundWidget<T> internal) {
-		this.remove((Widget) this.internal);
-		super.setWidget((Widget) internal);
-		this.changes.firePropertyChange("internal", this.internal,
-				this.internal = internal);
-	}
+            if (DOM.eventGetButton(event) == Event.BUTTON_RIGHT) {
+                GWT.log("RIGHT CLICK", null);
+                DOM.eventPreventDefault(event);
+            }
 
-	public void setModel(Object model) {
-		internal.setModel(model);
-	}
+        default:
+            break;
+        }
+    }
 
-	public void setValue(T value) {
-		internal.setValue(value);
-	}
+    public void onDetach() {
+        super.onDetach();
+        DeferredCommand.addCommand(
+            new Command() {
+                public void execute() {
+                    hide();
+                }
+            });
+    }
 
-	public static class MenuItem extends Button {
-		public MenuItem(String text) {
-			super(text);
-			this.setStyleName("gwittir-ContextMenuItem");
-			this.sinkEvents(Event.ONCONTEXTMENU | Event.MOUSEEVENTS);
+    public void removeChangeListener(ChangeListener arg0) {
+    }
 
-		}
+    public boolean removeMenuItemWidget(Widget w) {
+        this.menuItems.remove(w);
 
-		public MenuItem(String text, ClickListener listener) {
-			super(text, listener);
-		}
+        return this.panel.remove(w);
+    }
 
-		public void onBrowserEvent(Event event) {
-			switch (DOM.eventGetType(event)) {
-			case Event.ONCONTEXTMENU:
-				GWT.log("ONCONTEXTMENU-BUTTON", null);
-				DOM.eventPreventDefault(event);
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        this.changes.addPropertyChangeListener(l);
+    }
 
-				break;
-			default:
-				super.onBrowserEvent(event);
-				break;
-			}
-		}
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        this.changes.addPropertyChangeListener(propertyName, l);
+    }
 
-		void setMenu(final ContextMenuPanel panel) {
-			this.addClickListener(new ClickListener() {
-				public void onClick(Widget w) {
-					panel.hide();
-				}
-			});
-		}
-	}
-	
-	public void onDetach(){
-		super.onDetach();
-		DeferredCommand.addCommand( new Command(){
+    public static class MenuItem extends Button {
+        public MenuItem(String text) {
+            super(text);
+            this.setStyleName("gwittir-ContextMenuItem");
+            this.sinkEvents(Event.ONCONTEXTMENU | Event.MOUSEEVENTS);
+        }
 
-			public void execute() {
-				hide();
-			}
-			
-		});
-		
-	}
+        public MenuItem(String text, ClickListener listener) {
+            super(text, listener);
+        }
 
-	public static class SubMenu extends ContextMenuPanel {
-		ContextMenuPanel panel;
+        public void onBrowserEvent(Event event) {
+            switch (DOM.eventGetType(event)) {
+            case Event.ONCONTEXTMENU:
+                GWT.log("ONCONTEXTMENU-BUTTON", null);
+                DOM.eventPreventDefault(event);
 
-		public SubMenu(String text) {
-			super(new Button(text));
-			((Widget) this.getInternal())
-					.setStyleName("gwittir-ContextSubMenu");
-		}
+                break;
 
-		public void hide() {
-			this.popup.hide();
-			this.panel.hide();
-		}
+            default:
+                super.onBrowserEvent(event);
 
-		@Override
-		public void onBrowserEvent(Event event) {
-			switch (DOM.eventGetType(event)) {
-			case Event.ONMOUSEDOWN:
+                break;
+            }
+        }
 
-				Widget w = (Widget) this.getInternal();
-				int x = w.getAbsoluteLeft() + w.getOffsetWidth();
-				int y = w.getAbsoluteTop();
-				this.popup.show();
-				this.popup.setPopupPosition(x, y);
-				DOM.eventCancelBubble(event, true);
+        void setMenu(final ContextMenuPanel panel) {
+            this.addClickListener(
+                new ClickListener() {
+                    public void onClick(Widget w) {
+                        panel.hide();
+                    }
+                });
+        }
+    }
 
-				break;
+    public static class SubMenu extends ContextMenuPanel {
+        ContextMenuPanel panel;
 
-			default:
-				break;
-			}
-			
-		}
+        public SubMenu(String text) {
+            super(new Button(text));
+            ((Widget) this.getInternal()).setStyleName("gwittir-ContextSubMenu");
+        }
 
-		void setMenu(final ContextMenuPanel panel) {
-			this.panel = panel;
-			((Button) this.getInternal()).addClickListener(new ClickListener() {
-				public void onClick(Widget w) {
-					hide();
-				}
-			});
-		}
-	}
+        public void hide() {
+            this.popup.hide();
+            this.panel.hide();
+        }
+
+        @Override
+        public void onBrowserEvent(Event event) {
+            switch (DOM.eventGetType(event)) {
+            case Event.ONMOUSEDOWN:
+
+                Widget w = (Widget) this.getInternal();
+                int x = w.getAbsoluteLeft() + w.getOffsetWidth();
+                int y = w.getAbsoluteTop();
+                this.popup.show();
+                this.popup.setPopupPosition(x, y);
+                DOM.eventCancelBubble(event, true);
+
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        void setMenu(final ContextMenuPanel panel) {
+            this.panel = panel;
+            ((Button) this.getInternal()).addClickListener(
+                new ClickListener() {
+                    public void onClick(Widget w) {
+                        hide();
+                    }
+                });
+        }
+    }
 }

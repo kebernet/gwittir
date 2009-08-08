@@ -6,314 +6,23 @@ package com.totsp.gwittir.client.ui.calendar;
 
 import com.google.gwt.i18n.client.Constants;
 import com.google.gwt.i18n.client.LocalizableResource.Key;
+
 import java.util.Map;
+
 
 /**
  *
  * @author kebernet
  */
-public interface TimeZones extends Constants{
-
-    
+public interface TimeZones extends Constants {
     @Key("0")
     String[] tz0();
-    
+
     @Key("1")
     String[] tz1();
 
-    @Key("2")
-    String[] tz2();
-
-    @Key("3")
-    String[] tz3();
-
-    @Key("4")
-    String[] tz4();
-
-    @Key("5")
-    String[] tz5();
-
-    @Key("6")
-    String[] tz6();
-
-    @Key("7")
-    String[] tz7();
-
-    @Key("8")
-    String[] tz8();
-
-    @Key("9")
-    String[] tz9();
-
     @Key("10")
     String[] tz10();
-
-    @Key("11")
-    String[] tz11();
-
-    @Key("12")
-    String[] tz12();
-
-    @Key("13")
-    String[] tz13();
-
-    @Key("14")
-    String[] tz14();
-
-    @Key("15")
-    String[] tz15();
-
-    @Key("16")
-    String[] tz16();
-
-    @Key("17")
-    String[] tz17();
-
-    @Key("18")
-    String[] tz18();
-
-    @Key("19")
-    String[] tz19();
-
-    @Key("20")
-    String[] tz20();
-
-    @Key("21")
-    String[] tz21();
-
-    @Key("22")
-    String[] tz22();
-
-    @Key("23")
-    String[] tz23();
-
-    @Key("24")
-    String[] tz24();
-
-    @Key("25")
-    String[] tz25();
-
-    @Key("26")
-    String[] tz26();
-
-    @Key("27")
-    String[] tz27();
-
-    @Key("28")
-    String[] tz28();
-
-    @Key("29")
-    String[] tz29();
-
-    @Key("30")
-    String[] tz30();
-
-    @Key("31")
-    String[] tz31();
-
-    @Key("32")
-    String[] tz32();
-
-    @Key("33")
-    String[] tz33();
-
-    @Key("34")
-    String[] tz34();
-
-    @Key("35")
-    String[] tz35();
-
-    @Key("36")
-    String[] tz36();
-
-    @Key("37")
-    String[] tz37();
-
-    @Key("38")
-    String[] tz38();
-
-    @Key("39")
-    String[] tz39();
-
-    @Key("40")
-    String[] tz40();
-
-    @Key("41")
-    String[] tz41();
-
-    @Key("42")
-    String[] tz42();
-
-    @Key("43")
-    String[] tz43();
-
-    @Key("44")
-    String[] tz44();
-
-    @Key("45")
-    String[] tz45();
-
-    @Key("46")
-    String[] tz46();
-
-    @Key("47")
-    String[] tz47();
-
-    @Key("48")
-    String[] tz48();
-
-    @Key("49")
-    String[] tz49();
-
-    @Key("50")
-    String[] tz50();
-
-    @Key("51")
-    String[] tz51();
-
-    @Key("52")
-    String[] tz52();
-
-    @Key("53")
-    String[] tz53();
-
-    @Key("54")
-    String[] tz54();
-
-    @Key("55")
-    String[] tz55();
-
-    @Key("56")
-    String[] tz56();
-
-    @Key("57")
-    String[] tz57();
-
-    @Key("58")
-    String[] tz58();
-
-    @Key("59")
-    String[] tz59();
-
-    @Key("60")
-    String[] tz60();
-
-    @Key("61")
-    String[] tz61();
-
-    @Key("62")
-    String[] tz62();
-
-    @Key("63")
-    String[] tz63();
-
-    @Key("64")
-    String[] tz64();
-
-    @Key("65")
-    String[] tz65();
-
-    @Key("66")
-    String[] tz66();
-
-    @Key("67")
-    String[] tz67();
-
-    @Key("68")
-    String[] tz68();
-
-    @Key("69")
-    String[] tz69();
-
-    @Key("70")
-    String[] tz70();
-
-    @Key("71")
-    String[] tz71();
-
-    @Key("72")
-    String[] tz72();
-
-    @Key("73")
-    String[] tz73();
-
-    @Key("74")
-    String[] tz74();
-
-    @Key("75")
-    String[] tz75();
-
-    @Key("76")
-    String[] tz76();
-
-    @Key("77")
-    String[] tz77();
-
-    @Key("78")
-    String[] tz78();
-
-    @Key("79")
-    String[] tz79();
-
-    @Key("80")
-    String[] tz80();
-
-    @Key("81")
-    String[] tz81();
-
-    @Key("82")
-    String[] tz82();
-
-    @Key("83")
-    String[] tz83();
-
-    @Key("84")
-    String[] tz84();
-
-    @Key("85")
-    String[] tz85();
-
-    @Key("86")
-    String[] tz86();
-
-    @Key("87")
-    String[] tz87();
-
-    @Key("88")
-    String[] tz88();
-
-    @Key("89")
-    String[] tz89();
-
-    @Key("90")
-    String[] tz90();
-
-    @Key("91")
-    String[] tz91();
-
-    @Key("92")
-    String[] tz92();
-
-    @Key("93")
-    String[] tz93();
-
-    @Key("94")
-    String[] tz94();
-
-    @Key("95")
-    String[] tz95();
-
-    @Key("96")
-    String[] tz96();
-
-    @Key("97")
-    String[] tz97();
-
-    @Key("98")
-    String[] tz98();
-
-    @Key("99")
-    String[] tz99();
 
     @Key("100")
     String[] tz100();
@@ -345,6 +54,9 @@ public interface TimeZones extends Constants{
     @Key("109")
     String[] tz109();
 
+    @Key("11")
+    String[] tz11();
+
     @Key("110")
     String[] tz110();
 
@@ -374,6 +86,9 @@ public interface TimeZones extends Constants{
 
     @Key("119")
     String[] tz119();
+
+    @Key("12")
+    String[] tz12();
 
     @Key("120")
     String[] tz120();
@@ -405,6 +120,9 @@ public interface TimeZones extends Constants{
     @Key("129")
     String[] tz129();
 
+    @Key("13")
+    String[] tz13();
+
     @Key("130")
     String[] tz130();
 
@@ -434,6 +152,9 @@ public interface TimeZones extends Constants{
 
     @Key("139")
     String[] tz139();
+
+    @Key("14")
+    String[] tz14();
 
     @Key("140")
     String[] tz140();
@@ -465,6 +186,9 @@ public interface TimeZones extends Constants{
     @Key("149")
     String[] tz149();
 
+    @Key("15")
+    String[] tz15();
+
     @Key("150")
     String[] tz150();
 
@@ -494,6 +218,9 @@ public interface TimeZones extends Constants{
 
     @Key("159")
     String[] tz159();
+
+    @Key("16")
+    String[] tz16();
 
     @Key("160")
     String[] tz160();
@@ -525,6 +252,9 @@ public interface TimeZones extends Constants{
     @Key("169")
     String[] tz169();
 
+    @Key("17")
+    String[] tz17();
+
     @Key("170")
     String[] tz170();
 
@@ -554,6 +284,9 @@ public interface TimeZones extends Constants{
 
     @Key("179")
     String[] tz179();
+
+    @Key("18")
+    String[] tz18();
 
     @Key("180")
     String[] tz180();
@@ -585,6 +318,9 @@ public interface TimeZones extends Constants{
     @Key("189")
     String[] tz189();
 
+    @Key("19")
+    String[] tz19();
+
     @Key("190")
     String[] tz190();
 
@@ -614,6 +350,12 @@ public interface TimeZones extends Constants{
 
     @Key("199")
     String[] tz199();
+
+    @Key("2")
+    String[] tz2();
+
+    @Key("20")
+    String[] tz20();
 
     @Key("200")
     String[] tz200();
@@ -645,6 +387,9 @@ public interface TimeZones extends Constants{
     @Key("209")
     String[] tz209();
 
+    @Key("21")
+    String[] tz21();
+
     @Key("210")
     String[] tz210();
 
@@ -674,6 +419,9 @@ public interface TimeZones extends Constants{
 
     @Key("219")
     String[] tz219();
+
+    @Key("22")
+    String[] tz22();
 
     @Key("220")
     String[] tz220();
@@ -705,6 +453,9 @@ public interface TimeZones extends Constants{
     @Key("229")
     String[] tz229();
 
+    @Key("23")
+    String[] tz23();
+
     @Key("230")
     String[] tz230();
 
@@ -734,6 +485,9 @@ public interface TimeZones extends Constants{
 
     @Key("239")
     String[] tz239();
+
+    @Key("24")
+    String[] tz24();
 
     @Key("240")
     String[] tz240();
@@ -765,6 +519,9 @@ public interface TimeZones extends Constants{
     @Key("249")
     String[] tz249();
 
+    @Key("25")
+    String[] tz25();
+
     @Key("250")
     String[] tz250();
 
@@ -794,6 +551,9 @@ public interface TimeZones extends Constants{
 
     @Key("259")
     String[] tz259();
+
+    @Key("26")
+    String[] tz26();
 
     @Key("260")
     String[] tz260();
@@ -825,6 +585,9 @@ public interface TimeZones extends Constants{
     @Key("269")
     String[] tz269();
 
+    @Key("27")
+    String[] tz27();
+
     @Key("270")
     String[] tz270();
 
@@ -854,6 +617,9 @@ public interface TimeZones extends Constants{
 
     @Key("279")
     String[] tz279();
+
+    @Key("28")
+    String[] tz28();
 
     @Key("280")
     String[] tz280();
@@ -885,6 +651,9 @@ public interface TimeZones extends Constants{
     @Key("289")
     String[] tz289();
 
+    @Key("29")
+    String[] tz29();
+
     @Key("290")
     String[] tz290();
 
@@ -914,6 +683,12 @@ public interface TimeZones extends Constants{
 
     @Key("299")
     String[] tz299();
+
+    @Key("3")
+    String[] tz3();
+
+    @Key("30")
+    String[] tz30();
 
     @Key("300")
     String[] tz300();
@@ -945,6 +720,9 @@ public interface TimeZones extends Constants{
     @Key("309")
     String[] tz309();
 
+    @Key("31")
+    String[] tz31();
+
     @Key("310")
     String[] tz310();
 
@@ -974,6 +752,9 @@ public interface TimeZones extends Constants{
 
     @Key("319")
     String[] tz319();
+
+    @Key("32")
+    String[] tz32();
 
     @Key("320")
     String[] tz320();
@@ -1005,6 +786,9 @@ public interface TimeZones extends Constants{
     @Key("329")
     String[] tz329();
 
+    @Key("33")
+    String[] tz33();
+
     @Key("330")
     String[] tz330();
 
@@ -1034,6 +818,9 @@ public interface TimeZones extends Constants{
 
     @Key("339")
     String[] tz339();
+
+    @Key("34")
+    String[] tz34();
 
     @Key("340")
     String[] tz340();
@@ -1065,6 +852,9 @@ public interface TimeZones extends Constants{
     @Key("349")
     String[] tz349();
 
+    @Key("35")
+    String[] tz35();
+
     @Key("350")
     String[] tz350();
 
@@ -1094,6 +884,9 @@ public interface TimeZones extends Constants{
 
     @Key("359")
     String[] tz359();
+
+    @Key("36")
+    String[] tz36();
 
     @Key("360")
     String[] tz360();
@@ -1125,6 +918,9 @@ public interface TimeZones extends Constants{
     @Key("369")
     String[] tz369();
 
+    @Key("37")
+    String[] tz37();
+
     @Key("370")
     String[] tz370();
 
@@ -1154,6 +950,9 @@ public interface TimeZones extends Constants{
 
     @Key("379")
     String[] tz379();
+
+    @Key("38")
+    String[] tz38();
 
     @Key("380")
     String[] tz380();
@@ -1185,6 +984,9 @@ public interface TimeZones extends Constants{
     @Key("389")
     String[] tz389();
 
+    @Key("39")
+    String[] tz39();
+
     @Key("390")
     String[] tz390();
 
@@ -1214,6 +1016,12 @@ public interface TimeZones extends Constants{
 
     @Key("399")
     String[] tz399();
+
+    @Key("4")
+    String[] tz4();
+
+    @Key("40")
+    String[] tz40();
 
     @Key("400")
     String[] tz400();
@@ -1245,6 +1053,9 @@ public interface TimeZones extends Constants{
     @Key("409")
     String[] tz409();
 
+    @Key("41")
+    String[] tz41();
+
     @Key("410")
     String[] tz410();
 
@@ -1274,6 +1085,9 @@ public interface TimeZones extends Constants{
 
     @Key("419")
     String[] tz419();
+
+    @Key("42")
+    String[] tz42();
 
     @Key("420")
     String[] tz420();
@@ -1305,6 +1119,9 @@ public interface TimeZones extends Constants{
     @Key("429")
     String[] tz429();
 
+    @Key("43")
+    String[] tz43();
+
     @Key("430")
     String[] tz430();
 
@@ -1334,6 +1151,9 @@ public interface TimeZones extends Constants{
 
     @Key("439")
     String[] tz439();
+
+    @Key("44")
+    String[] tz44();
 
     @Key("440")
     String[] tz440();
@@ -1365,6 +1185,9 @@ public interface TimeZones extends Constants{
     @Key("449")
     String[] tz449();
 
+    @Key("45")
+    String[] tz45();
+
     @Key("450")
     String[] tz450();
 
@@ -1394,6 +1217,9 @@ public interface TimeZones extends Constants{
 
     @Key("459")
     String[] tz459();
+
+    @Key("46")
+    String[] tz46();
 
     @Key("460")
     String[] tz460();
@@ -1425,6 +1251,9 @@ public interface TimeZones extends Constants{
     @Key("469")
     String[] tz469();
 
+    @Key("47")
+    String[] tz47();
+
     @Key("470")
     String[] tz470();
 
@@ -1454,6 +1283,9 @@ public interface TimeZones extends Constants{
 
     @Key("479")
     String[] tz479();
+
+    @Key("48")
+    String[] tz48();
 
     @Key("480")
     String[] tz480();
@@ -1485,6 +1317,9 @@ public interface TimeZones extends Constants{
     @Key("489")
     String[] tz489();
 
+    @Key("49")
+    String[] tz49();
+
     @Key("490")
     String[] tz490();
 
@@ -1514,6 +1349,12 @@ public interface TimeZones extends Constants{
 
     @Key("499")
     String[] tz499();
+
+    @Key("5")
+    String[] tz5();
+
+    @Key("50")
+    String[] tz50();
 
     @Key("500")
     String[] tz500();
@@ -1545,6 +1386,9 @@ public interface TimeZones extends Constants{
     @Key("509")
     String[] tz509();
 
+    @Key("51")
+    String[] tz51();
+
     @Key("510")
     String[] tz510();
 
@@ -1574,6 +1418,9 @@ public interface TimeZones extends Constants{
 
     @Key("519")
     String[] tz519();
+
+    @Key("52")
+    String[] tz52();
 
     @Key("520")
     String[] tz520();
@@ -1605,6 +1452,9 @@ public interface TimeZones extends Constants{
     @Key("529")
     String[] tz529();
 
+    @Key("53")
+    String[] tz53();
+
     @Key("530")
     String[] tz530();
 
@@ -1634,6 +1484,9 @@ public interface TimeZones extends Constants{
 
     @Key("539")
     String[] tz539();
+
+    @Key("54")
+    String[] tz54();
 
     @Key("540")
     String[] tz540();
@@ -1665,6 +1518,9 @@ public interface TimeZones extends Constants{
     @Key("549")
     String[] tz549();
 
+    @Key("55")
+    String[] tz55();
+
     @Key("550")
     String[] tz550();
 
@@ -1680,4 +1536,147 @@ public interface TimeZones extends Constants{
     @Key("554")
     String[] tz554();
 
+    @Key("56")
+    String[] tz56();
+
+    @Key("57")
+    String[] tz57();
+
+    @Key("58")
+    String[] tz58();
+
+    @Key("59")
+    String[] tz59();
+
+    @Key("6")
+    String[] tz6();
+
+    @Key("60")
+    String[] tz60();
+
+    @Key("61")
+    String[] tz61();
+
+    @Key("62")
+    String[] tz62();
+
+    @Key("63")
+    String[] tz63();
+
+    @Key("64")
+    String[] tz64();
+
+    @Key("65")
+    String[] tz65();
+
+    @Key("66")
+    String[] tz66();
+
+    @Key("67")
+    String[] tz67();
+
+    @Key("68")
+    String[] tz68();
+
+    @Key("69")
+    String[] tz69();
+
+    @Key("7")
+    String[] tz7();
+
+    @Key("70")
+    String[] tz70();
+
+    @Key("71")
+    String[] tz71();
+
+    @Key("72")
+    String[] tz72();
+
+    @Key("73")
+    String[] tz73();
+
+    @Key("74")
+    String[] tz74();
+
+    @Key("75")
+    String[] tz75();
+
+    @Key("76")
+    String[] tz76();
+
+    @Key("77")
+    String[] tz77();
+
+    @Key("78")
+    String[] tz78();
+
+    @Key("79")
+    String[] tz79();
+
+    @Key("8")
+    String[] tz8();
+
+    @Key("80")
+    String[] tz80();
+
+    @Key("81")
+    String[] tz81();
+
+    @Key("82")
+    String[] tz82();
+
+    @Key("83")
+    String[] tz83();
+
+    @Key("84")
+    String[] tz84();
+
+    @Key("85")
+    String[] tz85();
+
+    @Key("86")
+    String[] tz86();
+
+    @Key("87")
+    String[] tz87();
+
+    @Key("88")
+    String[] tz88();
+
+    @Key("89")
+    String[] tz89();
+
+    @Key("9")
+    String[] tz9();
+
+    @Key("90")
+    String[] tz90();
+
+    @Key("91")
+    String[] tz91();
+
+    @Key("92")
+    String[] tz92();
+
+    @Key("93")
+    String[] tz93();
+
+    @Key("94")
+    String[] tz94();
+
+    @Key("95")
+    String[] tz95();
+
+    @Key("96")
+    String[] tz96();
+
+    @Key("97")
+    String[] tz97();
+
+    @Key("98")
+    String[] tz98();
+
+    @Key("99")
+    String[] tz99();
 }

@@ -1,9 +1,5 @@
 package com.totsp.gwittir.client.fx;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -16,236 +12,223 @@ import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
 public class DragAndDrop {
-	private static final DragAndDrop instance = new DragAndDrop();
-	private Draggable dragging;
-	private Element placeholder;
-	private HashMap<Widget, Draggable> draggables = new HashMap<Widget, Draggable>();
-	private HashMap<Widget, List<DropListener>> dropListeners = new HashMap<Widget, List<DropListener>>();
-	private List<Widget> dropTargets;
+    private static final DragAndDrop instance = new DragAndDrop();
+    private Draggable dragging;
+    private Element placeholder;
+    private HashMap<Widget, Draggable> draggables = new HashMap<Widget, Draggable>();
+    private HashMap<Widget, List<DropListener>> dropListeners = new HashMap<Widget, List<DropListener>>();
+    private List<Widget> dropTargets;
 
-	private DragAndDrop() {
-	}
+    private DragAndDrop() {
+    }
 
-	public void addDropListener(Widget w, DropListener dl) {
-		List<DropListener> listeners = dropListeners.get(w) != null ? dropListeners
-				.get(w)
-				: new ArrayList<DropListener>();
-		listeners.add(dl);
-		dropListeners.put(w, listeners);
-	}
+    public static DragAndDrop getInstance() {
+        return instance;
+    }
 
-	public static DragAndDrop getInstance() {
-		return instance;
-	}
+    public void addDropListener(Widget w, DropListener dl) {
+        List<DropListener> listeners = (dropListeners.get(w) != null) ? dropListeners.get(w)
+                                                                      : new ArrayList<DropListener>();
+        listeners.add(dl);
+        dropListeners.put(w, listeners);
+    }
 
-	public void makeDraggable(SourcesMouseEvents w, boolean revert) {
-		Draggable d = new Draggable();
-		d.widget = (Widget) w;
-		d.listener = new DragSupportListener((Widget) w, revert);
-		w.addMouseListener(d.listener);
-		draggables.put(d.widget, d);
-	}
+    public void makeDraggable(SourcesMouseEvents w, boolean revert) {
+        Draggable d = new Draggable();
+        d.widget = (Widget) w;
+        d.listener = new DragSupportListener((Widget) w, revert);
+        w.addMouseListener(d.listener);
+        draggables.put(d.widget, d);
+    }
 
-	public void makeDroppable(Widget w) {
-		dropTargets = dropTargets == null ? new ArrayList<Widget>()
-				: dropTargets;
-		dropTargets.add(w);
-	}
+    public void makeDroppable(Widget w) {
+        dropTargets = (dropTargets == null) ? new ArrayList<Widget>()
+                                            : dropTargets;
+        dropTargets.add(w);
+    }
 
-	public void removeDropListeners(SourcesMouseEvents w, DropListener dl) {
-		List listeners = (dropListeners.get(w) != null) ? (List) dropListeners
-				.get(w) : new ArrayList();
-		listeners.remove(dl);
-	}
+    public void removeDropListeners(SourcesMouseEvents w, DropListener dl) {
+        List listeners = (dropListeners.get(w) != null) ? (List) dropListeners.get(w)
+                                                        : new ArrayList();
+        listeners.remove(dl);
+    }
 
-	class DragSupportListener extends MouseListenerAdapter {
-		private boolean revert;
-		DraggablePopupPanel p;
+    class DragSupportListener extends MouseListenerAdapter {
+        DraggablePopupPanel p;
+        private boolean revert;
 
-		public DragSupportListener(Widget w, boolean revert) {
-			this.revert = revert;
-		}
+        public DragSupportListener(Widget w, boolean revert) {
+            this.revert = revert;
+        }
 
-		public void onMouseDown(Widget sender, int x, int y) {
-			super.onMouseDown(sender, x, y);
-			if (dragging != null) {
-				dragging.listener.onMouseUp(dragging.widget, 0, 0);
-			}
+        public void onMouseDown(Widget sender, int x, int y) {
+            super.onMouseDown(sender, x, y);
 
-			dragging = (Draggable) draggables.get(sender);
-			int ix = dragging.widget.getAbsoluteLeft();
-			int iy = dragging.widget.getAbsoluteTop();
-			GWT.log(ix + "::" + iy, null);
+            if (dragging != null) {
+                dragging.listener.onMouseUp(dragging.widget, 0, 0);
+            }
 
-			placeholder = DOM.createDiv();
-			DOM.setStyleAttribute(placeholder, "width", dragging.widget
-					.getOffsetWidth()
-					+ "px");
-			DOM.setStyleAttribute(placeholder, "height", dragging.widget
-					.getOffsetHeight()
-					+ "px");
-			DOM.setStyleAttribute(placeholder, "background", "#CCCCCC");
+            dragging = (Draggable) draggables.get(sender);
 
-			int index = DOM.getChildIndex(DOM.getParent(dragging.widget
-					.getElement()), dragging.widget.getElement());
-			DOM.insertChild(DOM.getParent(dragging.widget.getElement()),
-					placeholder, index);
-			p = new DraggablePopupPanel();
-			p.p.setWidget(revert ? new HTML(dragging.widget.toString())
-					: dragging.widget);
-			if (revert) {
-				dragging.display = dragging.widget.getElement().getStyle()
-						.getProperty("display");
-				dragging.widget.getElement().getStyle().setProperty("display",
-						"none");
-			}
-			p.revert = revert;
-			p.setPopupPosition(ix, iy);
-			p.show();
-			p.onMouseDown(p.p, x, y);
+            int ix = dragging.widget.getAbsoluteLeft();
+            int iy = dragging.widget.getAbsoluteTop();
+            GWT.log(ix + "::" + iy, null);
 
-		}
+            placeholder = DOM.createDiv();
+            DOM.setStyleAttribute(placeholder, "width", dragging.widget.getOffsetWidth() + "px");
+            DOM.setStyleAttribute(placeholder, "height", dragging.widget.getOffsetHeight() + "px");
+            DOM.setStyleAttribute(placeholder, "background", "#CCCCCC");
 
-		public void onMouseMove(Widget sender, int x, int y) {
+            int index = DOM.getChildIndex(DOM.getParent(dragging.widget.getElement()), dragging.widget.getElement());
+            DOM.insertChild(DOM.getParent(dragging.widget.getElement()), placeholder, index);
+            p = new DraggablePopupPanel();
+            p.p.setWidget(revert ? new HTML(dragging.widget.toString())
+                                 : dragging.widget);
 
-		}
+            if (revert) {
+                dragging.display = dragging.widget.getElement()
+                                                  .getStyle()
+                                                  .getProperty("display");
+                dragging.widget.getElement()
+                               .getStyle()
+                               .setProperty("display", "none");
+            }
 
-		public void onMouseUp(Widget sender, int x, int y) {
-			p.onMouseUp(p.p, x, y);
-		}
-	}
+            p.revert = revert;
+            p.setPopupPosition(ix, iy);
+            p.show();
+            p.onMouseDown(p.p, x, y);
+        }
 
-	private class Draggable {
-		public DragSupportListener listener;
-		public Widget widget;
-		public int upperX;
-		public int upperY;
-		public int lowerX;
-		public int lowerY;
-		public String display;
-	}
+        public void onMouseMove(Widget sender, int x, int y) {
+        }
 
-	private class DraggablePopupPanel extends PopupPanel implements
-			MouseListener {
-		FocusPanel p = new FocusPanel();
-		boolean isDragging, revert;
-		int dragStartX, dragStartY;
+        public void onMouseUp(Widget sender, int x, int y) {
+            p.onMouseUp(p.p, x, y);
+        }
+    }
 
-		DraggablePopupPanel() {
-			this.setWidget(p);
-			p.addMouseListener(this);
-			this.setStyleName("gwittir-Draggable");
-		}
+    private class Draggable {
+        public DragSupportListener listener;
+        public String display;
+        public Widget widget;
+        public int lowerX;
+        public int lowerY;
+        public int upperX;
+        public int upperY;
+    }
 
-		@Override
-		public boolean onEventPreview(Event event) {
-			if (DOM.eventGetType(event) == Event.ONMOUSEDOWN) {
-				if (DOM.isOrHasChild(p.getElement(), DOM.eventGetTarget(event))) {
-					DOM.eventPreventDefault(event);
-				}
-			}
+    private class DraggablePopupPanel extends PopupPanel implements MouseListener {
+        FocusPanel p = new FocusPanel();
+        boolean isDragging;
+        boolean revert;
+        int dragStartX;
+        int dragStartY;
 
-			return super.onEventPreview(event);
-		}
+        DraggablePopupPanel() {
+            this.setWidget(p);
+            p.addMouseListener(this);
+            this.setStyleName("gwittir-Draggable");
+        }
 
-		public void onMouseDown(Widget sender, int x, int y) {
-			isDragging = true;
-			DOM.setCapture(p.getElement());
-			dragStartX = x;
-			dragStartY = y;
+        @Override
+        public boolean onEventPreview(Event event) {
+            if (DOM.eventGetType(event) == Event.ONMOUSEDOWN) {
+                if (DOM.isOrHasChild(p.getElement(), DOM.eventGetTarget(event))) {
+                    DOM.eventPreventDefault(event);
+                }
+            }
 
-		}
+            return super.onEventPreview(event);
+        }
 
-		public void onMouseEnter(Widget sender) {
-		}
+        public void onMouseDown(Widget sender, int x, int y) {
+            isDragging = true;
+            DOM.setCapture(p.getElement());
+            dragStartX = x;
+            dragStartY = y;
+        }
 
-		public void onMouseLeave(Widget sender) {
-		}
+        public void onMouseEnter(Widget sender) {
+        }
 
-		public void onMouseMove(Widget sender, int x, int y) {
-			if (isDragging) {
-				int absX = x + getAbsoluteLeft();
-				int absY = y + getAbsoluteTop();
-				setPopupPosition(absX - dragStartX, absY - dragStartY);
-			}
-		}
+        public void onMouseLeave(Widget sender) {
+        }
 
-		public void onMouseUp(Widget sender, int x, int y) {
-			if (isDragging) {
-				isDragging = false;
-				dragStartX = x + getAbsoluteLeft() - dragStartX;
-				dragStartY = y + getAbsoluteTop() - dragStartY;
-				DOM.releaseCapture(p.getElement());
-				int top = this.getAbsoluteTop();
-				int left =this.getAbsoluteLeft();
-				Logger.getAnonymousLogger().log(
-						Level.SPAM,
-						"Top:" + top + " Left:" + left + "OffsetTop"
-								+ this.getOffsetHeight()
-								+ " OffsetLeft:"
-								+ this.getOffsetWidth(), null);
+        public void onMouseMove(Widget sender, int x, int y) {
+            if (isDragging) {
+                int absX = x + getAbsoluteLeft();
+                int absY = y + getAbsoluteTop();
+                setPopupPosition(absX - dragStartX, absY - dragStartY);
+            }
+        }
 
-				int centerY = top
-						+ (int) ((float) this.getOffsetHeight() / (float) 2);
-				int centerX = left
-						+ (int) ((float) this.getOffsetWidth() / (float) 2);
-				Logger.getAnonymousLogger().log(Level.SPAM,
-						"Center Top:" + centerY + " Center Left:" + centerX,
-						null);
+        public void onMouseUp(Widget sender, int x, int y) {
+            if (isDragging) {
+                isDragging = false;
+                dragStartX = (x + getAbsoluteLeft()) - dragStartX;
+                dragStartY = (y + getAbsoluteTop()) - dragStartY;
+                DOM.releaseCapture(p.getElement());
 
-				for (int i = 0; (dropTargets != null)
-						&& (i < dropTargets.size()); i++) {
-					Widget w = (Widget) dropTargets.get(i);
-					Logger.getAnonymousLogger()
-							.log(
-									Level.SPAM,
-									"Top Range: "
-											+ w.getAbsoluteTop()
-											+ " .. "
-											+ (w.getAbsoluteTop() + w
-													.getOffsetHeight()), null);
-					Logger.getAnonymousLogger()
-							.log(
-									Level.SPAM,
-									"Left Range: "
-											+ w.getAbsoluteLeft()
-											+ " .. "
-											+ (w.getAbsoluteLeft() + w
-													.getOffsetWidth()), null);
+                int top = this.getAbsoluteTop();
+                int left = this.getAbsoluteLeft();
+                Logger.getAnonymousLogger()
+                      .log(
+                    Level.SPAM,
+                    "Top:" + top + " Left:" + left + "OffsetTop" + this.getOffsetHeight() + " OffsetLeft:" +
+                    this.getOffsetWidth(), null);
 
-					if ((centerY >= w.getAbsoluteTop())
-							&& (centerY <= (w.getAbsoluteTop() + w
-									.getOffsetHeight()))
-							&& (centerX >= w.getAbsoluteLeft())
-							&& (centerX <= (w.getAbsoluteLeft() + w
-									.getOffsetWidth()))) {
-						List<DropListener> listeners = dropListeners.get(w);
+                int centerY = top + (int) ((float) this.getOffsetHeight() / (float) 2);
+                int centerX = left + (int) ((float) this.getOffsetWidth() / (float) 2);
+                Logger.getAnonymousLogger()
+                      .log(Level.SPAM, "Center Top:" + centerY + " Center Left:" + centerX, null);
 
-						for (int j = 0; (listeners != null)
-								&& (j < listeners.size()); j++) {
-							DropListener l = (DropListener) listeners.get(j);
+                for (int i = 0; (dropTargets != null) && (i < dropTargets.size()); i++) {
+                    Widget w = (Widget) dropTargets.get(i);
+                    Logger.getAnonymousLogger()
+                          .log(
+                        Level.SPAM,
+                        "Top Range: " + w.getAbsoluteTop() + " .. " + (w.getAbsoluteTop() + w.getOffsetHeight()), null);
+                    Logger.getAnonymousLogger()
+                          .log(
+                        Level.SPAM,
+                        "Left Range: " + w.getAbsoluteLeft() + " .. " + (w.getAbsoluteLeft() + w.getOffsetWidth()), null);
 
-							if (l.onDrop(dragging.widget)) {
-								break;
-							}
-						}
-					}
-				}
+                    if (
+                        (centerY >= w.getAbsoluteTop()) && (centerY <= (w.getAbsoluteTop() + w.getOffsetHeight())) &&
+                            (centerX >= w.getAbsoluteLeft()) &&
+                            (centerX <= (w.getAbsoluteLeft() + w.getOffsetWidth()))) {
+                        List<DropListener> listeners = dropListeners.get(w);
 
-				if (revert) {
-					DOM.removeChild(
-							DOM.getParent(dragging.widget.getElement()),
-							placeholder);
-					dragging.widget.getElement().getStyle().setProperty(
-							"display", dragging.display);
-					hide();
-					placeholder = null;
-				}
-			}
-		}
-	}
+                        for (int j = 0; (listeners != null) && (j < listeners.size()); j++) {
+                            DropListener l = (DropListener) listeners.get(j);
+
+                            if (l.onDrop(dragging.widget)) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (revert) {
+                    DOM.removeChild(DOM.getParent(dragging.widget.getElement()), placeholder);
+                    dragging.widget.getElement()
+                                   .getStyle()
+                                   .setProperty("display", dragging.display);
+                    hide();
+                    placeholder = null;
+                }
+            }
+        }
+    }
 }

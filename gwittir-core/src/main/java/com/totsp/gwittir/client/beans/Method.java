@@ -25,7 +25,6 @@ package com.totsp.gwittir.client.beans;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface Method {
-    
     /**
      * Returns the name of the method
      * @return String value name of the method

@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.ui;
 
 import com.google.gwt.user.client.ui.ClickListener;
@@ -27,146 +26,158 @@ import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.totsp.gwittir.client.fx.MutationStrategy;
 import com.totsp.gwittir.client.fx.OpacityWrapper;
 import com.totsp.gwittir.client.fx.PositionWrapper;
 import com.totsp.gwittir.client.fx.PropertyAnimator;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 
 /**
  *
  * @author cooper
  */
 public class ToggleEditContainer extends AbstractBoundWidget {
-    private SimplePanel root = new SimplePanel();
-    private FocusPanel focus = new FocusPanel();
-    private BoundWidget edit;
     private BoundWidget display;
-    private boolean hasChangedOnce = false;
-    private boolean hasChanged = false;
-    private SimplePanel marker = new SimplePanel();
+    private BoundWidget edit;
+    private FocusPanel focus = new FocusPanel();
     private Object firstValue;
-    
+    private SimplePanel marker = new SimplePanel();
+    private SimplePanel root = new SimplePanel();
+    private boolean hasChanged = false;
+    private boolean hasChangedOnce = false;
+
     /** Creates a new instance of ToggleEditContainer */
     public ToggleEditContainer(final BoundWidget display, final BoundWidget edit) {
         this.display = display;
         this.edit = edit;
-        ((Widget)display).setWidth("100%");
-        ((Widget)edit).setWidth("100%");
+        ((Widget) display).setWidth("100%");
+        ((Widget) edit).setWidth("100%");
         focus.setWidth("100%");
-        focus.setWidget( (Widget) this.display );
-        root.setWidget( focus );
-        super.initWidget( root );
-        focus.addFocusListener( new FocusListener(){
-            public void onLostFocus(Widget sender) {
-                
-            }
-            
-            public void onFocus(Widget sender) {
-                root.setWidget( (Widget) edit );
-                if(edit instanceof HasFocus ){
-                    ((HasFocus) edit).setFocus( true );
-                }
-            }
-        });
-        focus.addClickListener( new ClickListener(){
-            public void onClick(Widget sender) {
-                root.setWidget( (Widget) edit );
-                if(edit instanceof HasFocus ){
-                    ((HasFocus) edit).setFocus( true );
-                }
-            }
-            
-        });
-        if( edit instanceof HasFocus ){
-            ((HasFocus) edit).addFocusListener( new FocusListener(){
+        focus.setWidget((Widget) this.display);
+        root.setWidget(focus);
+        super.initWidget(root);
+        focus.addFocusListener(
+            new FocusListener() {
                 public void onLostFocus(Widget sender) {
-                    root.setWidget( (Widget) focus );
                 }
-                
+
                 public void onFocus(Widget sender) {
+                    root.setWidget((Widget) edit);
+
+                    if (edit instanceof HasFocus) {
+                        ((HasFocus) edit).setFocus(true);
+                    }
                 }
-                
             });
-        }
-        edit.addPropertyChangeListener("value", new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                if( !hasChangedOnce ){
-                    hasChangedOnce = true;
-                    firstValue = propertyChangeEvent.getOldValue();
+        focus.addClickListener(
+            new ClickListener() {
+                public void onClick(Widget sender) {
+                    root.setWidget((Widget) edit);
+
+                    if (edit instanceof HasFocus) {
+                        ((HasFocus) edit).setFocus(true);
+                    }
                 }
-                hasChanged = true;
-                showChangedIndicator();
-            }
-            
-        });
-        marker.setStyleName( "gwittir-ChangeMarker");
+            });
+
+        if (edit instanceof HasFocus) {
+            ((HasFocus) edit).addFocusListener(
+                new FocusListener() {
+                    public void onLostFocus(Widget sender) {
+                        root.setWidget((Widget) focus);
+                    }
+
+                    public void onFocus(Widget sender) {
+                    }
+                });
+        }
+
+        edit.addPropertyChangeListener(
+            "value",
+            new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+                    if (!hasChangedOnce) {
+                        hasChangedOnce = true;
+                        firstValue = propertyChangeEvent.getOldValue();
+                    }
+
+                    hasChanged = true;
+                    showChangedIndicator();
+                }
+            });
+        marker.setStyleName("gwittir-ChangeMarker");
     }
-    
-    public void setValue(Object value) {
-        this.edit.setValue(value);
-        this.display.setValue( value );
+
+    public void setModel(Object model) {
+        this.edit.setModel(model);
+        this.display.setModel(model);
     }
-    
-    public Object getValue() {
-        return this.edit.getValue();
-    }
-    
-    public void setModel(Object model){
-        this.edit.setModel( model );
-        this.display.setModel( model );
-    }
-    
-    public Object getModel(){
+
+    public Object getModel() {
         return this.edit.getModel();
     }
-    
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        this.edit.removePropertyChangeListener(l);
-    }
-    
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        this.edit.addPropertyChangeListener(l);
-    }
-    
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
-        this.edit.removePropertyChangeListener(propertyName, l);
-    }
-    
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
-        this.edit.addPropertyChangeListener(propertyName, l);
-    }
-    
+
     public PropertyChangeListener[] getPropertyChangeListeners() {
         return this.edit.getPropertyChangeListeners();
     }
-    
-    private void showChangedIndicator(){
-        if( this.isAttached() && this.hasChanged ){
-            OpacityWrapper o = new OpacityWrapper(marker);
-            o.setOpacity(new Double(0.0));
-            RootPanel.get().add( this.marker );
-            PositionWrapper w = new PositionWrapper(marker);
-            w.setPosition("absolute");
-            w.setTop( this.root.getAbsoluteTop()+"px" );
-            w.setRight( this.root.getAbsoluteLeft() + this.root.getOffsetWidth() +"px");
-            PropertyAnimator a = new PropertyAnimator(o, "opacity", new Double(1), MutationStrategy.DOUBLE_CUBIC, 250);
-            a.start();
-        }
+
+    public void setValue(Object value) {
+        this.edit.setValue(value);
+        this.display.setValue(value);
     }
 
-    protected void onDetach() {
-        super.onDetach();
-        if(this.hasChanged){
-            RootPanel.get().remove( this.marker );
-        }
+    public Object getValue() {
+        return this.edit.getValue();
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        this.edit.addPropertyChangeListener(l);
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        this.edit.addPropertyChangeListener(propertyName, l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        this.edit.removePropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener l) {
+        this.edit.removePropertyChangeListener(propertyName, l);
     }
 
     protected void onAttach() {
         super.onAttach();
         showChangedIndicator();
     }
-    
-    
+
+    protected void onDetach() {
+        super.onDetach();
+
+        if (this.hasChanged) {
+            RootPanel.get()
+                     .remove(this.marker);
+        }
+    }
+
+    private void showChangedIndicator() {
+        if (this.isAttached() && this.hasChanged) {
+            OpacityWrapper o = new OpacityWrapper(marker);
+            o.setOpacity(new Double(0.0));
+            RootPanel.get()
+                     .add(this.marker);
+
+            PositionWrapper w = new PositionWrapper(marker);
+            w.setPosition("absolute");
+            w.setTop(this.root.getAbsoluteTop() + "px");
+            w.setRight(this.root.getAbsoluteLeft() + this.root.getOffsetWidth() + "px");
+
+            PropertyAnimator a = new PropertyAnimator(o, "opacity", new Double(1), MutationStrategy.DOUBLE_CUBIC, 250);
+            a.start();
+        }
+    }
 }

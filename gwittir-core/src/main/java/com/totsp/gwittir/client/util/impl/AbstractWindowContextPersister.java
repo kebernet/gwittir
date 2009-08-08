@@ -15,25 +15,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.client.util.impl;
+
+import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 
 import java.util.Map;
 
-import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
 
 /**
  *
  * @author kebernet
  */
 public abstract class AbstractWindowContextPersister implements WindowContextPersister {
-
-    public abstract void init(WindowContextCallback listener);
-    
     public abstract int getByteLimit();
 
     public abstract Map<String, String> getWindowContextData();
 
-    public abstract void storeWindowContextData(Map<String, String> windowContextData);
+    public abstract void init(WindowContextCallback listener);
 
+    public abstract void storeWindowContextData(Map<String, String> windowContextData);
 }

@@ -28,37 +28,32 @@ import java.util.Collection;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface Converter<T, C> {
-    C convert(T original);
-
-
-    public static final Converter<Object, String> TO_STRING_CONVERTER =
-            new Converter<Object, String>(){
-
-        public String convert(Object original) {
-            return original == null ? null : original.toString();
-        }
-
-    };
-
-    public static final Converter<Collection, Object> FROM_COLLECTION_CONVERTER =
-            new Converter<Collection, Object>(){
-
-        public Object convert(Collection original) {
-            if( original == null || original.size() == 0 ){
-                return null;
+    public static final Converter<Object, String> TO_STRING_CONVERTER = new Converter<Object, String>() {
+            public String convert(Object original) {
+                return (original == null) ? null
+                                          : original.toString();
             }
-            return original.iterator().next();
-        }
-    };
+        };
 
-    public static final Converter<Object, Collection> TO_COLLECTION_CONVERTER =
-            new Converter<Object, Collection>(){
+    public static final Converter<Collection, Object> FROM_COLLECTION_CONVERTER = new Converter<Collection, Object>() {
+            public Object convert(Collection original) {
+                if ((original == null) || (original.size() == 0)) {
+                    return null;
+                }
 
-        public Collection convert(Object original) {
-            ArrayList ret = new ArrayList();
-            ret.add(original);
-            return ret;
-        }
+                return original.iterator()
+                               .next();
+            }
+        };
 
-    };
+    public static final Converter<Object, Collection> TO_COLLECTION_CONVERTER = new Converter<Object, Collection>() {
+            public Collection convert(Object original) {
+                ArrayList ret = new ArrayList();
+                ret.add(original);
+
+                return ret;
+            }
+        };
+
+    C convert(T original);
 }

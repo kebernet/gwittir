@@ -17,14 +17,15 @@
  */
 package com.totsp.gwittir.client.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import com.google.gwt.user.client.History;
+
 import com.totsp.gwittir.client.log.Level;
 import com.totsp.gwittir.client.log.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 /**
@@ -38,34 +39,30 @@ public class HistoryTokenizer {
     public HistoryTokenizer() {
         this(History.getToken());
     }
-    
-    public HistoryTokenizer(Map<String, String> tokens){
-    	this.tokens = tokens;
+
+    public HistoryTokenizer(Map<String, String> tokens) {
+        this.tokens = tokens;
     }
 
     public HistoryTokenizer(String anchor) {
-        if (anchor != null && anchor.trim().length() > 0) {
+        if ((anchor != null) && (anchor.trim()
+                                           .length() > 0)) {
             String[] values = anchor.split("&");
-            
+
             for (String value : values) {
                 String[] nameVal = value.split("=");
 
                 if ((nameVal.length == 1) && (nameVal[0].length() > 0)) {
                     tokens.put(nameVal[0], "");
                 } else {
-                    tokens.put(nameVal[0].replaceAll("u!038;", "&")
-                                         .replaceAll("u!061;", "="),
-                        nameVal[1].replaceAll("u!038;", "&")
-                                  .replaceAll("u!061;", "="));
+                    tokens.put(
+                        nameVal[0].replaceAll("u!038;", "&").replaceAll("u!061;", "="),
+                        nameVal[1].replaceAll("u!038;", "&").replaceAll("u!061;", "="));
                 }
             }
         }
     }
 
-    public Map<String, String> getTokensMap(){
-    	return tokens;
-    }
-    
     public Set<Entry<String, String>> getEntries() {
         return tokens.entrySet();
     }
@@ -80,6 +77,10 @@ public class HistoryTokenizer {
 
     public String getToken(String token) {
         return tokens.get(token);
+    }
+
+    public Map<String, String> getTokensMap() {
+        return tokens;
     }
 
     public void begin() {
@@ -103,8 +104,7 @@ public class HistoryTokenizer {
 
         final HistoryTokenizer other = (HistoryTokenizer) obj;
 
-        if ((this.tokens != other.tokens) &&
-                ((this.tokens == null) || !this.tokens.equals(other.tokens))) {
+        if ((this.tokens != other.tokens) && ((this.tokens == null) || !this.tokens.equals(other.tokens))) {
             return false;
         }
 
@@ -114,8 +114,8 @@ public class HistoryTokenizer {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = (97 * hash) +
-            ((this.tokens != null) ? this.tokens.hashCode() : 0);
+        hash = (97 * hash) + ((this.tokens != null) ? this.tokens.hashCode()
+                                                    : 0);
 
         return hash;
     }
@@ -124,13 +124,12 @@ public class HistoryTokenizer {
         StringBuilder sb = new StringBuilder();
 
         for (Entry<String, String> entry : this.tokens.entrySet()) {
-            sb = sb.append(entry.getKey().replaceAll("&", "u!038;")
-                                .replaceAll("=", "u!061;"));
+            sb = sb.append(entry.getKey().replaceAll("&", "u!038;").replaceAll("=", "u!061;"));
 
-            if (entry.getValue().length() > 0) {
+            if (entry.getValue()
+                         .length() > 0) {
                 sb = sb.append("=")
-                       .append(entry.getValue().replaceAll("&", "u!038;")
-                                    .replaceAll("=", "u!061;"));
+                       .append(entry.getValue().replaceAll("&", "u!038;").replaceAll("=", "u!061;"));
             }
 
             sb = sb.append("&");

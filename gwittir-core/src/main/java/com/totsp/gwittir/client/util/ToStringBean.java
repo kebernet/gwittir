@@ -36,9 +36,9 @@ import java.util.Stack;
  * Inspired by the Rome bean utils -
  * https://rome.dev.java.net/source/browse/rome/src/java/com/sun/syndication/feed/impl/.
  * Powered by the gwittir Introspection API.
- * 
+ *
  * Example:
- * 
+ *
  *  public String toString() {
  *       ToStringBean b = new ToStringBean(this);
  *
@@ -50,7 +50,7 @@ import java.util.Stack;
  *
  *       return b.equals(obj);
  *   }
- * 
+ *
  * @see <code>com.totsp.gwittir.client.beans.AbstractModelBean</code>
  *
  * @author ccollins
@@ -75,7 +75,8 @@ public class ToStringBean implements Serializable {
      */
     @Override
     public String toString() {
-        String[] tsInfo = (String[]) ((stack.isEmpty()) ? null : stack.peek());
+        String[] tsInfo = (String[]) ((stack.isEmpty()) ? null
+                                                        : stack.peek());
         String prefix;
 
         if (tsInfo == null) {
@@ -89,44 +90,25 @@ public class ToStringBean implements Serializable {
         return toString(prefix);
     }
 
-    private String toString(String prefix) {
-        StringBuffer sb = new StringBuffer(128);
+    private void printArrayProperty(StringBuffer sb, String prefix, Object array) {
+        int length = ArrayUtils.getArrayLength(array);
 
-        try {
-            BeanDescriptor bd = Introspector.INSTANCE.getDescriptor(bean);
-            Property[] properties = bd.getProperties();
-
-            if (properties != null) {
-                 //System.out.println(properties.length);
-                for (int i = 0; i < properties.length; i++) {
-                    String pName = properties[i].getName();
-                    //System.out.println(pName);
-                    Property p = bd.getProperty(pName);
-                    Method m = p.getAccessorMethod();
-
-                    if (m != null) { // ensure it has a getter method
-
-                        Object value = m.invoke(bean, null);
-                        printProperty(sb, prefix + "." + pName, value);
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            sb.append("\n\nEXCEPTION: unable to process " + prefix +
-                ".toString(): " + ex.getMessage() + "\n");
+        for (int i = 0; i < length; i++) {
+            Object obj = ArrayUtils.getArrayElement(array, i);
+            printProperty(sb, prefix + "[" + i + "]", obj);
         }
-
-        return sb.toString();
     }
 
     private void printProperty(StringBuffer sb, String prefix, Object value) {
         if (value == null) {
-            sb.append(prefix).append("=null\n");
+            sb.append(prefix)
+              .append("=null\n");
         } else if (ArrayUtils.isArray(value)) {
             printArrayProperty(sb, prefix, value);
         } else if (value instanceof Map) {
             Map map = (Map) value;
-            Iterator i = map.entrySet().iterator();
+            Iterator i = map.entrySet()
+                            .iterator();
 
             if (i.hasNext()) {
                 while (i.hasNext()) {
@@ -139,17 +121,22 @@ public class ToStringBean implements Serializable {
                     tsInfo[0] = ePrefix;
                     stack.push(tsInfo);
 
-                    String s = (eValue != null) ? eValue.toString() : "null";
+                    String s = (eValue != null) ? eValue.toString()
+                                                : "null";
                     stack.pop();
 
                     if (tsInfo[1] == null) {
-                        sb.append(ePrefix).append("=").append(s).append("\n");
+                        sb.append(ePrefix)
+                          .append("=")
+                          .append(s)
+                          .append("\n");
                     } else {
                         sb.append(s);
                     }
                 }
             } else {
-                sb.append(prefix).append("=[]\n");
+                sb.append(prefix)
+                  .append("=[]\n");
             }
         } else if (value instanceof Collection) {
             Collection collection = (Collection) value;
@@ -167,17 +154,22 @@ public class ToStringBean implements Serializable {
                     tsInfo[0] = cPrefix;
                     stack.push(tsInfo);
 
-                    String s = (cValue != null) ? cValue.toString() : "null";
+                    String s = (cValue != null) ? cValue.toString()
+                                                : "null";
                     stack.pop();
 
                     if (tsInfo[1] == null) {
-                        sb.append(cPrefix).append("=").append(s).append("\n");
+                        sb.append(cPrefix)
+                          .append("=")
+                          .append(s)
+                          .append("\n");
                     } else {
                         sb.append(s);
                     }
                 }
             } else {
-                sb.append(prefix).append("=[]\n");
+                sb.append(prefix)
+                  .append("=[]\n");
             }
         } else {
             String[] tsInfo = new String[2];
@@ -188,19 +180,43 @@ public class ToStringBean implements Serializable {
             stack.pop();
 
             if (tsInfo[1] == null) {
-                sb.append(prefix).append("=").append(s).append("\n");
+                sb.append(prefix)
+                  .append("=")
+                  .append(s)
+                  .append("\n");
             } else {
                 sb.append(s);
             }
         }
     }
 
-    private void printArrayProperty(StringBuffer sb, String prefix, Object array) {
-        int length = ArrayUtils.getArrayLength(array);
+    private String toString(String prefix) {
+        StringBuffer sb = new StringBuffer(128);
 
-        for (int i = 0; i < length; i++) {
-            Object obj = ArrayUtils.getArrayElement(array, i);
-            printProperty(sb, prefix + "[" + i + "]", obj);
+        try {
+            BeanDescriptor bd = Introspector.INSTANCE.getDescriptor(bean);
+            Property[] properties = bd.getProperties();
+
+            if (properties != null) {
+                //System.out.println(properties.length);
+                for (int i = 0; i < properties.length; i++) {
+                    String pName = properties[i].getName();
+
+                    //System.out.println(pName);
+                    Property p = bd.getProperty(pName);
+                    Method m = p.getAccessorMethod();
+
+                    if (m != null) { // ensure it has a getter method
+
+                        Object value = m.invoke(bean, null);
+                        printProperty(sb, prefix + "." + pName, value);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            sb.append("\n\nEXCEPTION: unable to process " + prefix + ".toString(): " + ex.getMessage() + "\n");
         }
+
+        return sb.toString();
     }
 }

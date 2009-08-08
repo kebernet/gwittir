@@ -32,19 +32,19 @@ import java.util.Comparator;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
-    public Action<BoundWidget<T>> getAction();
-
-    public Comparator<BoundWidget<T>> getComparator();
-
-    public Object getModel();
-
-    public T getValue();
-
     public void setAction(Action<BoundWidget<T>> action);
+
+    public Action<BoundWidget<T>> getAction();
 
     public void setComparator(Comparator<BoundWidget<T>> comparator);
 
+    public Comparator<BoundWidget<T>> getComparator();
+
     public void setModel(Object model);
-    
+
+    public Object getModel();
+
     public void setValue(T value);
+
+    public T getValue();
 }
