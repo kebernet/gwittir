@@ -71,7 +71,8 @@ public class AbstractCollectionContainer<T> extends
     public void setValue(final Collection<T> value) {
         final Collection<T> old = this.value;
         this.value = value;
-        this.render();
+        if(this.isAttached())
+            this.render();
         this.changes.firePropertyChange("value", old, value);
     }
 
@@ -81,6 +82,12 @@ public class AbstractCollectionContainer<T> extends
 
     public void add(final Widget w) {
         this.base.add(w);
+    }
+
+    @Override
+    public void onAttach(){
+        super.onAttach();
+        render();
     }
 
     public void clear() {
@@ -107,16 +114,16 @@ public class AbstractCollectionContainer<T> extends
         }
 
         for (Iterator it = this.value.iterator(); it.hasNext();) {
-            Introspectable o = (Introspectable) it.next();
-            BoundWidget w = this.getFactory().getWidgetProvider(Introspector.INSTANCE.resolveClass(o)).get();
+            Object o = (Object) it.next();
+            BoundWidget w = (BoundWidget) this.getFactory().getWidgetProvider(Introspector.INSTANCE.resolveClass(o)).get();
             w.setModel(o);
-
-            ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));
-
-            if (ap != null) {
-                w.setAction(ap.get());
+            if( this.getActionFactory() != null ){
+                ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));
+            
+                if (ap != null) {
+                    w.setAction(ap.get());
+                }
             }
-
             base.add((Widget) w);
         }
     }

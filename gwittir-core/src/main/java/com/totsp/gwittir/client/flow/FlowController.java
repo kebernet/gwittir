@@ -8,6 +8,7 @@
  */
 package com.totsp.gwittir.client.flow;
 
+import com.google.gwt.core.client.GWT;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -77,7 +78,7 @@ public class FlowController {
         BoundWidget<?> widget = context.get(name);
 
         if(widget == null) {
-            return call(contextRoot.getParent(), name, model);
+            return call(contextRoot.getParent(), name, model, fireEvents);
         }
         if( model != null ){
             widget.setModel(model);
@@ -114,7 +115,7 @@ public class FlowController {
         }
         FlowEvent event = context.createEvent(contextRoot, name, widget, old );
         if(fireEvents){
-	        context.fireEvent(event);
+                context.fireEvent(event);
         }
 	if(manager != null ){
 	    manager.transition(event, fireEvents);

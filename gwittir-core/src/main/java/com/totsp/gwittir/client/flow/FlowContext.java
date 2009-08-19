@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.flow;
 
+import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -132,7 +133,6 @@ public class FlowContext {
     }
     
     void fireEvent( FlowEvent e ){
-        
         for(FlowEventListener listener : this.listeners ){
                 listener.onFlowEvent( e );
         }

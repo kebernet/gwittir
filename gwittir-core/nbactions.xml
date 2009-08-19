@@ -32,4 +32,11 @@
                 <google.webtoolkit.skipTest>true</google.webtoolkit.skipTest>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-gwt-test</actionName>
+            <displayName>gwt-test</displayName>
+            <goals>
+                <goal>gwt-maven:test</goal>
+            </goals>
+        </action>
     </actions>
