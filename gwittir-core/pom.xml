@@ -38,21 +38,21 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>1.5.3</version>
+			<version>1.6.4</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>1.5.3</version>
+			<version>1.6.4</version>
 			<type>jar</type>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
-			<version>1.5.3</version>
+			<version>1.6.4</version>
 			<classifier>mac</classifier>
 			<type>jar</type>
 			<scope>provided</scope>
@@ -90,7 +90,7 @@
 				<artifactId>maven-googlewebtoolkit2-plugin</artifactId>
 				<version>2.0-RC1</version>
 				<configuration>
-					<gwtVersion>1.5.3</gwtVersion>
+					<gwtVersion>1.6.4</gwtVersion>
 					<logLevel>INFO</logLevel>
 					<style>OBF</style>
 					<gen>target/gwtgen</gen>
@@ -114,7 +114,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>RELEASE</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
