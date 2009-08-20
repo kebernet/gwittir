@@ -61,4 +61,21 @@ public interface Converter<T, C> {
         }
 
     };
+
+    public static final Converter<Integer, String> INTEGER_TO_STRING_CONVERTER = new Converter<Integer, String>(){
+
+        public String convert(Integer original) {
+            return original == null ? null : original.toString();
+        }
+
+    };
+
+    public static final Converter<String, Integer> STRING_TO_INTEGER_CONVERTER = new Converter<String, Integer>(){
+
+        
+        public Integer convert(String original) {
+            return original == null? null : new Integer(original);
+        }
+
+    };
 }

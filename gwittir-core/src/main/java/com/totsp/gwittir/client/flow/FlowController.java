@@ -8,12 +8,14 @@
  */
 package com.totsp.gwittir.client.flow;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.HistoryListener;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -30,16 +32,24 @@ import com.totsp.gwittir.client.ui.HasWidget;
 public class FlowController {
     static final HashMap<Object, FlowContext> contexts = new HashMap<Object, FlowContext>();
     static HistoryManager manager = null;
-    static final HistoryListener hl = new HistoryListener() {
-            public void onHistoryChanged(String historyToken) {
-                if(manager != null) {
-                    manager.apply(historyToken);
+    static final ValueChangeHandler<String> hl = new ValueChangeHandler<String>() {
+           
+        public void onValueChange(ValueChangeEvent<String> event) {
+            if(manager != null) {
+                    manager.apply(event.getValue());
                 }
-            }
+        }
         };
 
     static {
-        History.addHistoryListener(hl);
+        DeferredCommand.addCommand( new Command(){
+
+            public void execute() {
+                History.addValueChangeHandler(hl);
+            }
+
+        });
+        
     }
 
     /**

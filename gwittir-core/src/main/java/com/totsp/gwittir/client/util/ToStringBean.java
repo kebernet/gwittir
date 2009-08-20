@@ -26,8 +26,10 @@ import com.totsp.gwittir.client.beans.Property;
 import java.io.Serializable;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 
@@ -59,7 +61,8 @@ public class ToStringBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private Object bean;
     private Stack stack;
-
+    private static final Set<Object> printed = new HashSet<Object>();
+    private static int depth = 0;
     /**
      * Constructs a new instance of ToStringBean
      * @param bean Introspectable object to create a toString for.
@@ -75,6 +78,7 @@ public class ToStringBean implements Serializable {
      */
     @Override
     public String toString() {
+        depth++;
         String[] tsInfo = (String[]) ((stack.isEmpty()) ? null : stack.peek());
         String prefix;
 
@@ -86,7 +90,11 @@ public class ToStringBean implements Serializable {
             tsInfo[1] = prefix;
         }
 
-        return toString(prefix);
+        String val = toString(prefix);
+        depth--;
+        if(depth == 0)
+            printed.clear();
+        return val;
     }
 
     private String toString(String prefix) {
@@ -107,7 +115,10 @@ public class ToStringBean implements Serializable {
                     if (m != null) { // ensure it has a getter method
 
                         Object value = m.invoke(bean, null);
-                        printProperty(sb, prefix + "." + pName, value);
+                        if(!printed.contains(value)){
+                           printed.add(value);
+                           printProperty(sb, prefix + "." + pName, value);
+                        }
                     }
                 }
             }

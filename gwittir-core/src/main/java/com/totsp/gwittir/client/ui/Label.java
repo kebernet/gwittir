@@ -224,5 +224,9 @@ public class Label extends AbstractBoundWidget<String> {
     public String getValue() {
         return this.base.getText().length() == 0 ? null : this.base.getText();
     }
+
+    public void addChangeListener(ClickListener clickListener) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
     
 }
