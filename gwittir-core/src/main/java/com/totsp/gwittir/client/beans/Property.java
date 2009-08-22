@@ -82,6 +82,6 @@ public class Property {
      * @return String representation.
      */
     public String toString() {
-        return "Property[ name=" + name + " ]";
+        return name+" ("+type+")";
     }
 }

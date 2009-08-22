@@ -1,96 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.totsp.gwittir</groupId>
-	<artifactId>gwittir-core</artifactId>
-	<packaging>jar</packaging>
-	<version>0.5-SNAPSHOT</version>
-	<name>Gwittir Core</name>
-	<description>Core libraries for GWT Applications.</description>
-	<url>http://maven.apache.org</url>
-	<repositories>
-		<repository>
-			<id>gwt-maven</id>
-			<url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>gwt-maven</id>
-			<url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
-		</pluginRepository>
-	</pluginRepositories>
-	<distributionManagement>
-		<repository>
-			<id>local.repo</id>
-			<name>file repository to svn</name>
-			<url>file://${basedir}/../../repository</url>
-		</repository>
-	</distributionManagement>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>1.6.4</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>1.6.4</version>
-			<type>jar</type>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>1.6.4</version>
-			<classifier>mac</classifier>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gwtx</groupId>
-			 <artifactId>gwtx</artifactId>
-			 <version>1.5.2</version>
-			 <type>jar</type>
-			 <scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt.google-apis</groupId>
-			<artifactId>gwt-gears</artifactId>
-			<version>1.1.1</version>
-			<scope>provided</scope>
-			<type>jar</type>
-		</dependency>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.totsp.gwittir</groupId>
+    <artifactId>gwittir-core</artifactId>
+    <packaging>jar</packaging>
+    <version>0.5-SNAPSHOT</version>
+    <name>Gwittir Core</name>
+    <description>Core libraries for GWT Applications.</description>
+    <url>http://maven.apache.org</url>
+    <repositories>
+        <repository>
+            <id>gwt-maven</id>
+            <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gwt-maven</id>
+            <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+        <repository>
+            <id>local.repo</id>
+            <name>file repository to svn</name>
+            <url>file://${basedir}/../../repository</url>
+        </repository>
+    </distributionManagement>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.0</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>2.0</version>
+            <type>jar</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>2.0</version>
+            <classifier>windows</classifier>
+            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${google.webtoolkit.home}/gwt-dev-windows.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gwtx</groupId>
+            <artifactId>gwtx</artifactId>
+            <version>1.5.2</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.google-apis</groupId>
+            <artifactId>gwt-gears</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
+            <type>jar</type>
+        </dependency>
 
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+			<!--plugin>
 				<groupId>com.totsp.gwt</groupId>
 				<artifactId>maven-googlewebtoolkit2-plugin</artifactId>
 				<version>2.0-RC1</version>
 				<configuration>
 					<gwtVersion>1.6.4</gwtVersion>
+                                        <testFilter>GwtTestBinding*</testFilter>
 					<logLevel>INFO</logLevel>
 					<style>OBF</style>
 					<gen>target/gwtgen</gen>
@@ -100,63 +102,81 @@
 					</compileTargets>
 					<extraJvmArgs>-Xmx512m</extraJvmArgs>
 					<port>8088</port>
-					<!--extraTestArgs>-Dgwt.args="-help"</extraTestArgs-->
+					
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
-							<!--
-								<goal>compile</goal> <goal>test</goal>
-							-->
+							
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<excludes>
-					<exclude>com/totsp/gwittir/rebind/**.*</exclude>
-				</excludes>
-			</resource>
-		</resources>
-	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</reporting>
-	<profiles>
+			</plugin-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <includes>**/GwtTestBinding*.java</includes>
+                    <module>com.mycompany.gwt.Module</module>
+                    <testTimeOut>120</testTimeOut>
+                </configuration>
 
-		<profile>
-			<id>netbeans-public</id>
-			<activation>
-				<property>
-					<name>netbeans.execution</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build />
-		</profile>
-	</profiles>
-	<properties>
-		<netbeans.hint.useExternalMaven>true</netbeans.hint.useExternalMaven>
-	</properties>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <excludes>
+                    <exclude>com/totsp/gwittir/rebind/**.*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+    <profiles>
+
+        <profile>
+            <id>netbeans-public</id>
+            <activation>
+                <property>
+                    <name>netbeans.execution</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build />
+        </profile>
+    </profiles>
+    <properties>
+        <netbeans.hint.useExternalMaven>true</netbeans.hint.useExternalMaven>
+    </properties>
 </project>

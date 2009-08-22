@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -167,6 +168,7 @@ public class IntrospectorGenerator extends Generator {
 
     public String generate(TreeLogger logger, GeneratorContext context, String typeName)
         throws UnableToCompleteException {
+        //.println("Introspector Generate.");
         try {
             this.objectType = context.getTypeOracle().getType("java.lang.Object");
         } catch (NotFoundException ex) {
@@ -206,6 +208,7 @@ public class IntrospectorGenerator extends Generator {
         PrintWriter printWriter = context.tryCreate(logger, packageName, implementationName);
 
         if (printWriter == null) {
+            //.println( "Introspector Generate skipped.");
             return packageName + "." + implementationName;
         }
 
@@ -237,16 +240,17 @@ public class IntrospectorGenerator extends Generator {
         writer.println("}");
 
         context.commit(logger, printWriter);
-
+        //.println( "Introspector Generate completed.");
         return packageName + "." + implementationName;
     }
 
     private List<BeanResolver> getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
         ArrayList<BeanResolver> results = new ArrayList<BeanResolver>();
         HashSet<BeanResolver> resolvers = new HashSet<BeanResolver>();
-
+        HashSet<String> found = new HashSet<String>();
         try {
             JClassType[] types = oracle.getTypes();
+            //.println("Found "+types.length +" types.");
             JClassType introspectable = oracle.getType(
                         com.totsp.gwittir.client.beans.Introspectable.class.getCanonicalName()
                     );
@@ -262,12 +266,12 @@ public class IntrospectorGenerator extends Generator {
 //                    );
 //                }
 
-
-                if (
+                
+                if ( !found.contains(type.getQualifiedSourceName()) &&
                         (isIntrospectable(logger, type)  ||
                         type.isAssignableTo(introspectable) )
-                          && (type.isInterface() == null)) {
-
+                          && (type.isInterface() == null) ) {
+                    found.add(type.getQualifiedSourceName());
                     resolvers.add(new BeanResolver(logger, type));
                 }
             }
@@ -277,8 +281,9 @@ public class IntrospectorGenerator extends Generator {
             results.addAll(resolvers);
             results.addAll( this.getFileDeclaredTypes(logger, oracle) );
             boolean swap = true;
-
+            //.print("Ordering "+results.size()+" by heirarchy ");
             while (swap) {
+                //.print(".");
                 swap = false;
 
                 for (int i = results.size() - 1; i >= 0; i--) {
@@ -298,17 +303,19 @@ public class IntrospectorGenerator extends Generator {
                     }
                 }
             }
+            //System.out.println();
         } catch (Exception e) {
             logger.log(TreeLogger.ERROR, "Unable to finad Introspectable types.", e);
         }
 //        for(BeanResolver rs:results){
 //            logger.log(TreeLogger.ERROR, rs.toString());
 //        }
+        System.out.println("Found "+results.size()+" introspectable types.");
         return results;
     }
 
-    private List<BeanResolver> getFileDeclaredTypes(TreeLogger logger, TypeOracle oralce ) throws UnableToCompleteException {
-        ArrayList<BeanResolver> results = new ArrayList<BeanResolver>();
+    private Set<BeanResolver> getFileDeclaredTypes(TreeLogger logger, TypeOracle oralce ) throws UnableToCompleteException {
+        HashSet<BeanResolver> results = new HashSet<BeanResolver>();
         ClassLoader ctxLoader = Thread.currentThread().getContextClassLoader();
         try{
             Enumeration<URL> introspections = ctxLoader.getResources( "gwittir-introspection.properties");

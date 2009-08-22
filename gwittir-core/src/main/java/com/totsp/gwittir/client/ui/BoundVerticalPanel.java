@@ -8,6 +8,7 @@ public class BoundVerticalPanel<T> extends AbstractCollectionContainer<T> {
 
 	public BoundVerticalPanel(BoundWidgetTypeFactory factory, ActionTypeFactory actionFactory) {
 		super(new VerticalPanel(), factory, actionFactory);
+                this.setStyleName("gwittir-BoundVerticalPanel");
 	}
 	
 	

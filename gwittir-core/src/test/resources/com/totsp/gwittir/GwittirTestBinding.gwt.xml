@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+    <source path="client/beans" />
+    <source path="client/validator" />
+    <source path="client/util" />
+    <inherits name='com.totsp.gwittir.Introspector'/>
+    <inherits name='com.totsp.gwittir.LoggingDisabled'/>
+    <inherits name='com.googlecode.gwtx.Java'/>
+    <!--set-property name="gwittir.windowcontext" value="name" /-->
+</module>

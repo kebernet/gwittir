@@ -11,13 +11,12 @@ package com.totsp.gwittir.client.ui;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.beans.Introspectable;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.ui.util.ActionProvider;
 import com.totsp.gwittir.client.ui.util.ActionTypeFactory;
+import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
 
 
@@ -115,7 +114,15 @@ public class AbstractCollectionContainer<T> extends
 
         for (Iterator it = this.value.iterator(); it.hasNext();) {
             Object o = (Object) it.next();
-            BoundWidget w = (BoundWidget) this.getFactory().getWidgetProvider(Introspector.INSTANCE.resolveClass(o)).get();
+            Class clazz = Introspector.INSTANCE.resolveClass(o);
+            if( clazz == null ){
+                throw new RuntimeException("Unable to resolve class "+ o.getClass().getName() );
+            }
+            BoundWidgetProvider provider =  this.getFactory().getWidgetProvider(clazz);
+            if(provider == null){
+                throw new RuntimeException("Unable to find a BoundWidgetProvider for class "+ clazz.getName() );
+            }
+            BoundWidget w = provider.get();
             w.setModel(o);
             if( this.getActionFactory() != null ){
                 ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));

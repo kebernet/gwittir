@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author kebernet
  */
-public abstract class BindableAdapter implements SourcesPropertyChangeEvents, SelfDescribed {
+public abstract class BindableAdapter implements Bindable, SelfDescribed {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Object watched;
     private Map<String, Object> values = new HashMap<String, Object>();

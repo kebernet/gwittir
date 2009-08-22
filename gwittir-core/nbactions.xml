@@ -36,6 +36,15 @@
             <actionName>CUSTOM-gwt-test</actionName>
             <displayName>gwt-test</displayName>
             <goals>
+                <goal>test</goal>
+                <goal>gwt:test</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-gwt-maven test</actionName>
+            <displayName>gwt-maven test</displayName>
+            <goals>
+                <goal>test</goal>
                 <goal>gwt-maven:test</goal>
             </goals>
         </action>
