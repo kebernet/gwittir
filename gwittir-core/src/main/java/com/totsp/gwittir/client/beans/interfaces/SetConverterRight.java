@@ -11,6 +11,6 @@ import com.totsp.gwittir.client.beans.Converter;
  *
  * @author kebernet
  */
-public interface SetRightConverter {
+public interface SetConverterRight {
     SetValidateOrFinish convertRightWith(Converter converter);
 }

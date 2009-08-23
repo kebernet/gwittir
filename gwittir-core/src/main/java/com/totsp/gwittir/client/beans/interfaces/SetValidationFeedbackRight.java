@@ -5,12 +5,13 @@
 
 package com.totsp.gwittir.client.beans.interfaces;
 
-import com.totsp.gwittir.client.beans.Converter;
+import com.totsp.gwittir.client.validator.ValidationFeedback;
 
 /**
  *
  * @author kebernet
  */
-public interface SetConverter {
-    SetValidateOrRight convertLeftWith( Converter coverter );
+public interface SetValidationFeedbackRight {
+
+    Finish notifiedWithRight( ValidationFeedback feedback );
 }

@@ -5,12 +5,12 @@
 
 package com.totsp.gwittir.client.beans.interfaces;
 
-import com.totsp.gwittir.client.validator.ValidationFeedback;
+import com.totsp.gwittir.client.validator.Validator;
 
 /**
  *
  * @author kebernet
  */
-public interface SetValidationFeedback {
-    SetRight notifiedWith( ValidationFeedback feedback );
+public interface SetValidatorLeft {
+    SetValidationFeedbackLeft validateLeftWith( Validator validator );
 }

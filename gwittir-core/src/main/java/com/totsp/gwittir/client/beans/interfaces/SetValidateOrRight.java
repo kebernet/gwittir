@@ -9,6 +9,6 @@ package com.totsp.gwittir.client.beans.interfaces;
  *
  * @author kebernet
  */
-public interface SetValidateOrRight extends SetRight, SetValidator{
+public interface SetValidateOrRight extends SetRight, SetValidatorLeft{
 
 }

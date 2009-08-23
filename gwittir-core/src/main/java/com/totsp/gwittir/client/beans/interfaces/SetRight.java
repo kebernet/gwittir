@@ -12,5 +12,5 @@ import com.totsp.gwittir.client.beans.Bindable;
  * @author kebernet
  */
 public interface SetRight {
-    SetPropertyRight to( Bindable o );
+    SetPropertyRight toRight( Bindable o );
 }

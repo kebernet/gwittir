@@ -10,6 +10,9 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 import com.totsp.gwittir.client.testmodel.Person;
 
+import com.totsp.gwittir.client.validator.IntegerValidator;
+import com.totsp.gwittir.client.validator.ValidationException;
+import com.totsp.gwittir.client.validator.ValidationFeedback;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -112,10 +115,10 @@ public class GwtTestBinding extends GWTTestCase {
                 new Person("Jonny", "Doe", 1), new Person("Delaney", "Krissel", 12), new Person("Timmy", "Nobody", 3)
             };
 
-        Binding b = BindingBuilder.bindLeft(children1[0])
-                                  .property("firstName")
-                                  .to(children1[1])
-                                  .toProperty("firstName")
+        Binding b = BindingBuilder.bind(children1[0])
+                                  .leftProperty("firstName")
+                                  .toRight(children1[1])
+                                  .rightProperty("firstName")
                                   .toBinding();
 
         b.setLeft();
@@ -127,20 +130,20 @@ public class GwtTestBinding extends GWTTestCase {
 
         b.unbind();
 
-        b = BindingBuilder.bindLeft(children1[0])
-                          .property("firstName")
-                          .to(children1[1])
-                          .toProperty("firstName")
+        b = BindingBuilder.bind(children1[0])
+                          .leftProperty("firstName")
+                          .toRight(children1[1])
+                          .rightProperty("firstName")
                           .toBinding();
 
         Person johnny = new Person("Jonny", "Doe", 1);
         Person delaney = new Person("Delaney", "Krissel", 12);
 
         BindingBuilder.appendChildToBinding(b)
-                      .bind(johnny)
-                      .property("firstName")
-                      .to(delaney)
-                      .toProperty("firstName")
+                      .bindLeft(johnny)
+                      .leftProperty("firstName")
+                      .toRight(delaney)
+                      .rightProperty("firstName")
                       .convertRightWith(
             new Converter<String, String>() {
                 public String convert(String original) {
@@ -157,6 +160,31 @@ public class GwtTestBinding extends GWTTestCase {
         delaney.setFirstName("Changed!");
         assertEquals("CHANGED!", johnny.getFirstName());
 
+        ValidationFeedback vf = new ValidationFeedback() {
+
+            public void handleException(Object source, ValidationException exception) {
+                System.out.println(source);
+                exception.printStackTrace();
+            }
+
+            public void resolve(Object source) {
+                System.out.println("OK:" +source);
+            }
+
+        };
+
+        b.unbind();
+        BindingBuilder.appendChildToBinding(b)
+                .bindLeft(johnny)
+                .leftProperty("age")
+                .toRight(delaney)
+                .rightProperty("lastName")
+                .validateRightWith(IntegerValidator.INSTANCE)
+                .notifiedWithRight(vf)
+                .toBinding();
+        b.bind();
+        delaney.setLastName("12345");
+        
 
     }
 }

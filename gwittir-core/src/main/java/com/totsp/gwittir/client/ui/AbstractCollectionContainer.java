@@ -8,6 +8,7 @@
  */
 package com.totsp.gwittir.client.ui;
 
+import com.google.gwt.core.client.GWT;
 import java.util.Collection;
 import java.util.Iterator;
 

@@ -9,6 +9,6 @@ package com.totsp.gwittir.client.beans.interfaces;
  *
  * @author kebernet
  */
-public interface SetProperty {
-    public SetBindingOptions property( String propertyName );
+public interface SetPropertyLeft {
+    public SetBindingOptionsLeft leftProperty( String propertyName );
 }

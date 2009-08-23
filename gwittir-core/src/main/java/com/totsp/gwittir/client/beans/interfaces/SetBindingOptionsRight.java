@@ -9,6 +9,6 @@ package com.totsp.gwittir.client.beans.interfaces;
  *
  * @author kebernet
  */
-public interface SetBindingOptionsRight extends SetRightConverter, SetValidator , Finish {
+public interface SetBindingOptionsRight extends SetConverterRight, SetValidatorRight , Finish {
 
 }

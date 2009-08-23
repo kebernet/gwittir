@@ -5,10 +5,12 @@
 
 package com.totsp.gwittir.client.beans.interfaces;
 
+import com.totsp.gwittir.client.beans.Bindable;
+
 /**
  *
  * @author kebernet
  */
-public interface SetPropertyRight {
-    SetBindingOptionsRight rightProperty( String propertyName );
+public interface SetLeft {
+    SetPropertyLeft bindLeft(Bindable o);
 }
