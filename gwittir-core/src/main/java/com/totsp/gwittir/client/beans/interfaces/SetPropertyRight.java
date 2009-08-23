@@ -10,5 +10,5 @@ package com.totsp.gwittir.client.beans.interfaces;
  * @author kebernet
  */
 public interface SetPropertyRight {
-    SetBindingOptionsRight rightProperty( String propertyName );
+    SetBindingOptionsRight onRightProperty( String propertyName );
 }

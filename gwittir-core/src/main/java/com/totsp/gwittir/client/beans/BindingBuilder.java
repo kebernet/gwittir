@@ -81,7 +81,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this;
     }
 
-    public SetBindingOptionsLeft leftProperty(String propertyName) {
+    public SetBindingOptionsLeft onLeftProperty(String propertyName) {
         this.left = parentBinding.createBindingInstance((Bindable) this.temp, propertyName);
 
         temp = null;
@@ -101,7 +101,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this;
     }
 
-    public SetBindingOptionsRight rightProperty(String propertyName) {
+    public SetBindingOptionsRight onRightProperty(String propertyName) {
         this.right = parentBinding.createBindingInstance((Bindable) this.temp, propertyName);
         this.workingOnRight = true;
 

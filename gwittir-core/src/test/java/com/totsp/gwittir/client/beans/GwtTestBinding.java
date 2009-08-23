@@ -116,9 +116,9 @@ public class GwtTestBinding extends GWTTestCase {
             };
 
         Binding b = BindingBuilder.bind(children1[0])
-                                  .leftProperty("firstName")
+                                  .onLeftProperty("firstName")
                                   .toRight(children1[1])
-                                  .rightProperty("firstName")
+                                  .onRightProperty("firstName")
                                   .toBinding();
 
         b.setLeft();
@@ -131,9 +131,9 @@ public class GwtTestBinding extends GWTTestCase {
         b.unbind();
 
         b = BindingBuilder.bind(children1[0])
-                          .leftProperty("firstName")
+                          .onLeftProperty("firstName")
                           .toRight(children1[1])
-                          .rightProperty("firstName")
+                          .onRightProperty("firstName")
                           .toBinding();
 
         Person johnny = new Person("Jonny", "Doe", 1);
@@ -141,9 +141,9 @@ public class GwtTestBinding extends GWTTestCase {
 
         BindingBuilder.appendChildToBinding(b)
                       .bindLeft(johnny)
-                      .leftProperty("firstName")
+                      .onLeftProperty("firstName")
                       .toRight(delaney)
-                      .rightProperty("firstName")
+                      .onRightProperty("firstName")
                       .convertRightWith(
             new Converter<String, String>() {
                 public String convert(String original) {
@@ -176,9 +176,9 @@ public class GwtTestBinding extends GWTTestCase {
         b.unbind();
         BindingBuilder.appendChildToBinding(b)
                 .bindLeft(johnny)
-                .leftProperty("age")
+                .onLeftProperty("age")
                 .toRight(delaney)
-                .rightProperty("lastName")
+                .onRightProperty("lastName")
                 .validateRightWith(IntegerValidator.INSTANCE)
                 .notifiedWithRight(vf)
                 .toBinding();
