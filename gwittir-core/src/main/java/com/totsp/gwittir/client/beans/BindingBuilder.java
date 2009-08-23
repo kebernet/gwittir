@@ -36,7 +36,6 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     private BindingInstance left;
     private BindingInstance right;
     private Object temp;
-    private boolean workingOnRight = false;
 
     private BindingBuilder() {
     }
@@ -103,8 +102,6 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
 
     public SetBindingOptionsRight onRightProperty(String propertyName) {
         this.right = parentBinding.createBindingInstance((Bindable) this.temp, propertyName);
-        this.workingOnRight = true;
-
         return this;
     }
 
@@ -125,8 +122,6 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
 
     public SetPropertyRight toRight(Bindable o) {
         this.temp = o;
-        this.workingOnRight = true;
-
         return this;
     }
 
