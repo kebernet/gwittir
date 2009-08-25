@@ -187,4 +187,60 @@ public class GwtTestBinding extends GWTTestCase {
         
 
     }
+    
+    
+    public static void testMattRead() throws Exception {
+       MockModel model1 = new MockModel();
+       model1.setTestProp("model1");
+
+       MockModel model2 = new MockModel();
+       model2.setTestProp("model2");
+
+       Binding b = new Binding(model1, "testProp", model2,
+"testProp");
+       b.bind();
+
+       assertEquals("model1", model1.getTestProp());
+       assertEquals("model2", model2.getTestProp());
+
+       b.setRight();
+
+       assertEquals("model1", model1.getTestProp());
+       assertEquals("model1", model2.getTestProp());
+
+       // WORKS UP TO THIS POINT
+
+       model1.setTestProp("different");
+
+       assertEquals("different", model1.getTestProp());
+       assertEquals("different", model2.getTestProp()); // FAILS
+    }
+
+    private static class MockModel extends AbstractModelBean {
+
+    private String testProp;
+
+    public static final String PROP_TESTPROP = "testProp";
+
+    /**
+     * Get the value of testProp
+     *
+     * @return the value of testProp
+     */
+    public String getTestProp() {
+        return this.testProp;
+    }
+
+    /**
+     * Set the value of testProp
+     *
+     * @param newtestProp new value of testProp
+     */
+    public void setTestProp(String newtestProp) {
+        String oldtestProp = testProp;
+        this.testProp = newtestProp;
+        this.changeSupport.firePropertyChange(PROP_TESTPROP, oldtestProp, newtestProp);
+    }
+
+    }
 }

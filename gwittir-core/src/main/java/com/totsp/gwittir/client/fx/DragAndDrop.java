@@ -6,7 +6,6 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -170,12 +169,21 @@ public class DragAndDrop {
         public void onMouseLeave(Widget sender) {
         }
 
+        private Widget lastHover = null;
+
         public void onMouseMove(Widget sender, int x, int y) {
             if (isDragging) {
                 int absX = x + getAbsoluteLeft();
                 int absY = y + getAbsoluteTop();
                 setPopupPosition(absX - dragStartX, absY - dragStartY);
-                calc(sender, x, y, false);
+                Widget newHover = calc(sender, x, y, false);
+                Logger.getAnonymousLogger().log(Level.SPAM, "newHover: "+newHover, null);
+                if( lastHover != null && lastHover != newHover && dropListeners.containsKey(lastHover)){
+                    for(DropListener l : dropListeners.get(lastHover)){
+                        l.onEndHover(sender);
+                    }
+                }
+                lastHover = newHover;
             }
         }
 
@@ -185,7 +193,7 @@ public class DragAndDrop {
             }
         }
 
-        private void calc(Widget sender, int x, int y, boolean drop) {
+        private Widget calc(Widget sender, int x, int y, boolean drop) {
             if (drop) {
                 isDragging = false;
                 dragStartX = (x + getAbsoluteLeft()) - dragStartX;
@@ -206,7 +214,7 @@ public class DragAndDrop {
             int centerX = left + (int) ((float) this.getOffsetWidth() / (float) 2);
             Logger.getAnonymousLogger()
                   .log(Level.SPAM, "Drop: " + drop + "Center Top:" + centerY + " Center Left:" + centerX, null);
-
+            Widget hit = null;
             for (int i = 0; (dropTargets != null) && (i < dropTargets.size()); i++) {
                 Widget w = (Widget) dropTargets.get(i);
                 Logger.getAnonymousLogger()
@@ -224,7 +232,7 @@ public class DragAndDrop {
                     (centerY >= w.getAbsoluteTop()) && (centerY <= (w.getAbsoluteTop() + w.getOffsetHeight())) &&
                         (centerX >= w.getAbsoluteLeft()) && (centerX <= (w.getAbsoluteLeft() + w.getOffsetWidth()))) {
                     List<DropListener> listeners = dropListeners.get(w);
-
+                    hit = w;
                     for (int j = 0; (listeners != null) && (j < listeners.size()); j++) {
                         DropListener l = (DropListener) listeners.get(j);
 
@@ -243,6 +251,7 @@ public class DragAndDrop {
                 hide();
                 placeholder = null;
             }
+            return hit;
         }
     }
 }
