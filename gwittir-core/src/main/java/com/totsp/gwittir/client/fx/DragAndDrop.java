@@ -21,6 +21,16 @@ import java.util.List;
 
 
 public class DragAndDrop {
+    private static final DraggedPlaceholderStrategy DEFAULT_DPS = new DraggedPlaceholderStrategy() {
+            public void setupPlaceholderElement(Widget dragged, Element element) {
+                DOM.setInnerHTML(element, dragged.toString());
+                DOM.setStyleAttribute(element, "width", dragged.getOffsetWidth() + "px");
+                DOM.setStyleAttribute(element, "height", dragged.getOffsetHeight() + "px");
+                DOM.setStyleAttribute(element, "background", "#CCCCCC");
+                DOM.setStyleAttribute(element, "opacity", ".5");
+            }
+        };
+
     private static final DragAndDrop instance = new DragAndDrop();
     private Draggable dragging;
     private Element placeholder;
@@ -33,6 +43,11 @@ public class DragAndDrop {
 
     public static DragAndDrop getInstance() {
         return instance;
+    }
+
+    public void setDraggedPlaceholderStrategy(Widget draggable, DraggedPlaceholderStrategy strat) {
+        Draggable d = this.draggables.get(draggable);
+        d.strat = strat;
     }
 
     public void addDropListener(Widget w, DropListener dl) {
@@ -56,10 +71,21 @@ public class DragAndDrop {
         dropTargets.add(w);
     }
 
+    public void removeDraggable(SourcesMouseEvents w) {
+        Draggable d = this.draggables.get((Widget) w);
+        w.removeMouseListener(d.listener);
+        this.draggables.remove(d.widget);
+    }
+
     public void removeDropListeners(SourcesMouseEvents w, DropListener dl) {
         List<DropListener> listeners = (dropListeners.get((Widget) w) != null) ? dropListeners.get((Widget) w)
-                                                        : new ArrayList<DropListener>();
+                                                                               : new ArrayList<DropListener>();
         listeners.remove(dl);
+    }
+
+    public void removeDroppable(Widget w) {
+        this.dropListeners.remove(w);
+        this.dropTargets.remove(w);
     }
 
     class DragSupportListener extends MouseListenerAdapter {
@@ -82,14 +108,14 @@ public class DragAndDrop {
 
             int ix = dragging.widget.getAbsoluteLeft();
             int iy = dragging.widget.getAbsoluteTop();
-            GWT.log(ix + "::" + iy, null);
 
             placeholder = DOM.createDiv();
-            DOM.setInnerHTML(placeholder, sender.toString());
-            DOM.setStyleAttribute(placeholder, "width", dragging.widget.getOffsetWidth() + "px");
-            DOM.setStyleAttribute(placeholder, "height", dragging.widget.getOffsetHeight() + "px");
-            DOM.setStyleAttribute(placeholder, "background", "#CCCCCC");
-            DOM.setStyleAttribute(placeholder, "opacity", ".5");
+
+            if (dragging.strat == null) {
+                DEFAULT_DPS.setupPlaceholderElement(dragging.widget, placeholder);
+            } else {
+                dragging.strat.setupPlaceholderElement(dragging.widget, placeholder);
+            }
 
             int index = DOM.getChildIndex(DOM.getParent(dragging.widget.getElement()), dragging.widget.getElement());
             DOM.insertChild(DOM.getParent(dragging.widget.getElement()), placeholder, index);
@@ -124,6 +150,7 @@ public class DragAndDrop {
 
     private class Draggable {
         public DragSupportListener listener;
+        public DraggedPlaceholderStrategy strat;
         public String display;
         public Widget widget;
         public int lowerX;
@@ -138,6 +165,7 @@ public class DragAndDrop {
         boolean revert;
         int dragStartX;
         int dragStartY;
+        private Widget lastHover = null;
 
         DraggablePopupPanel() {
             this.setWidget(p);
@@ -169,20 +197,22 @@ public class DragAndDrop {
         public void onMouseLeave(Widget sender) {
         }
 
-        private Widget lastHover = null;
-
         public void onMouseMove(Widget sender, int x, int y) {
             if (isDragging) {
                 int absX = x + getAbsoluteLeft();
                 int absY = y + getAbsoluteTop();
                 setPopupPosition(absX - dragStartX, absY - dragStartY);
+
                 Widget newHover = calc(sender, x, y, false);
-                Logger.getAnonymousLogger().log(Level.SPAM, "newHover: "+newHover, null);
-                if( lastHover != null && lastHover != newHover && dropListeners.containsKey(lastHover)){
-                    for(DropListener l : dropListeners.get(lastHover)){
+                Logger.getAnonymousLogger()
+                      .log(Level.SPAM, "newHover: " + newHover, null);
+
+                if ((lastHover != null) && (lastHover != newHover) && dropListeners.containsKey(lastHover)) {
+                    for (DropListener l : dropListeners.get(lastHover)) {
                         l.onEndHover(sender);
                     }
                 }
+
                 lastHover = newHover;
             }
         }
@@ -214,7 +244,9 @@ public class DragAndDrop {
             int centerX = left + (int) ((float) this.getOffsetWidth() / (float) 2);
             Logger.getAnonymousLogger()
                   .log(Level.SPAM, "Drop: " + drop + "Center Top:" + centerY + " Center Left:" + centerX, null);
+
             Widget hit = null;
+
             for (int i = 0; (dropTargets != null) && (i < dropTargets.size()); i++) {
                 Widget w = (Widget) dropTargets.get(i);
                 Logger.getAnonymousLogger()
@@ -232,18 +264,35 @@ public class DragAndDrop {
                     (centerY >= w.getAbsoluteTop()) && (centerY <= (w.getAbsoluteTop() + w.getOffsetHeight())) &&
                         (centerX >= w.getAbsoluteLeft()) && (centerX <= (w.getAbsoluteLeft() + w.getOffsetWidth()))) {
                     List<DropListener> listeners = dropListeners.get(w);
-                    hit = w;
+
                     for (int j = 0; (listeners != null) && (j < listeners.size()); j++) {
                         DropListener l = (DropListener) listeners.get(j);
 
-                        if ((drop && l.onDrop(dragging.widget)) || (!drop && l.onHover(sender))) {
+                        if ((drop && l.canDrop(dragging.widget)) || (!drop && l.onHover(sender))) {
+                            if (drop) {
+                                //Make sure we revert the widget before the drop event in case the user
+                                // wants to do something with it.
+                                if (revert) {
+                                    DOM.removeChild(DOM.getParent(dragging.widget.getElement()), placeholder);
+                                    dragging.widget.getElement()
+                                                   .getStyle()
+                                                   .setProperty("display", dragging.display);
+                                    hide();
+                                    placeholder = null;
+                                }
+
+                                l.onDrop(dragging.widget);
+                            }
+
+                            hit = w;
+
                             break;
                         }
                     }
                 }
             }
 
-            if (drop && revert) {
+            if (drop && revert && (hit == null)) {
                 DOM.removeChild(DOM.getParent(dragging.widget.getElement()), placeholder);
                 dragging.widget.getElement()
                                .getStyle()
@@ -251,6 +300,7 @@ public class DragAndDrop {
                 hide();
                 placeholder = null;
             }
+
             return hit;
         }
     }
