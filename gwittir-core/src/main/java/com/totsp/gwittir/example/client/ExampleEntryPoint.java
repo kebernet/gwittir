@@ -31,7 +31,7 @@ import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.flow.FlowContext;
 import com.totsp.gwittir.client.flow.FlowController;
 import com.totsp.gwittir.client.flow.SimpleSessionHistoryManager;
-import com.totsp.gwittir.client.fx.DragAndDrop;
+import com.totsp.gwittir.client.fx.DragAndDropContext;
 import com.totsp.gwittir.client.fx.DropListener;
 import com.totsp.gwittir.client.ui.FlowTabPanel;
 
@@ -71,12 +71,15 @@ public class ExampleEntryPoint implements EntryPoint {
         hp.setWidth("100%");
         final Label draggable = new Label("DRAG ME");
         final Label droppable = new Label("DROP HERE");
-        DragAndDrop.getInstance().makeDraggable(draggable, true);
-        DragAndDrop.getInstance().makeDroppable(droppable);
-        DragAndDrop.getInstance().addDropListener(droppable, new DropListener(){
+        DragAndDropContext d = new DragAndDropContext();
+
+        d.makeDraggable(draggable, true);
+        d.makeDroppable(droppable);
+        d.addDropListener(droppable, new DropListener(){
 
             public boolean onDrop(Widget dropped) {
                 RootPanel.get().add(dropped);
+                droppable.getElement().getStyle().setBackgroundColor("white");
                 return true;
             }
 

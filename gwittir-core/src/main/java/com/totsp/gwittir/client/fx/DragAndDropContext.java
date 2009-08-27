@@ -1,6 +1,5 @@
 package com.totsp.gwittir.client.fx;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -12,15 +11,14 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.totsp.gwittir.client.log.Level;
-import com.totsp.gwittir.client.log.Logger;
 
+import com.totsp.gwittir.client.fx.DragListener.DragPoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class DragAndDrop {
+public class DragAndDropContext {
     private static final DraggedPlaceholderStrategy DEFAULT_DPS = new DraggedPlaceholderStrategy() {
             public void setupPlaceholderElement(Widget dragged, Element element) {
                 DOM.setInnerHTML(element, dragged.toString());
@@ -31,18 +29,13 @@ public class DragAndDrop {
             }
         };
 
-    private static final DragAndDrop instance = new DragAndDrop();
     private Draggable dragging;
     private Element placeholder;
     private HashMap<Widget, Draggable> draggables = new HashMap<Widget, Draggable>();
     private HashMap<Widget, List<DropListener>> dropListeners = new HashMap<Widget, List<DropListener>>();
     private List<Widget> dropTargets;
 
-    private DragAndDrop() {
-    }
-
-    public static DragAndDrop getInstance() {
-        return instance;
+    public DragAndDropContext() {
     }
 
     public void setDraggedPlaceholderStrategy(Widget draggable, DraggedPlaceholderStrategy strat) {
@@ -63,6 +56,16 @@ public class DragAndDrop {
         d.listener = new DragSupportListener((Widget) w, revert);
         w.addMouseListener(d.listener);
         draggables.put(d.widget, d);
+    }
+
+    public void addDragListener(SourcesMouseEvents w, DragListener l){
+        Draggable d = this.draggables.get((Widget) w);
+        d.listeners.add(l);
+    }
+
+    public void removeDragListener(SourcesMouseEvents w, DragListener l){
+        Draggable d = this.draggables.get((Widget) w);
+        d.listeners.remove(l);
     }
 
     public void makeDroppable(Widget w) {
@@ -119,7 +122,7 @@ public class DragAndDrop {
 
             int index = DOM.getChildIndex(DOM.getParent(dragging.widget.getElement()), dragging.widget.getElement());
             DOM.insertChild(DOM.getParent(dragging.widget.getElement()), placeholder, index);
-            p = new DraggablePopupPanel();
+            p = new DraggablePopupPanel(dragging);
             p.p.setWidget(revert ? new HTML(dragging.widget.toString())
                                  : dragging.widget);
 
@@ -157,6 +160,7 @@ public class DragAndDrop {
         public int lowerY;
         public int upperX;
         public int upperY;
+        public ArrayList<DragListener> listeners = new ArrayList<DragListener>();
     }
 
     private class DraggablePopupPanel extends PopupPanel implements MouseListener {
@@ -166,9 +170,11 @@ public class DragAndDrop {
         int dragStartX;
         int dragStartY;
         private Widget lastHover = null;
+        private Draggable d;
 
-        DraggablePopupPanel() {
+        DraggablePopupPanel(Draggable d) {
             this.setWidget(p);
+            this.d = d;
             p.addMouseListener(this);
             this.setStyleName("gwittir-Draggable");
         }
@@ -201,12 +207,14 @@ public class DragAndDrop {
             if (isDragging) {
                 int absX = x + getAbsoluteLeft();
                 int absY = y + getAbsoluteTop();
-                setPopupPosition(absX - dragStartX, absY - dragStartY);
+                DragPoint pt = new DragPoint(absX - dragStartX, absY - dragStartY);
+                for(DragListener l : d.listeners){
+                    pt = l.onDrag(pt);
+                }
+                setPopupPosition( pt.getX() , pt.getY() );
 
                 Widget newHover = calc(sender, x, y, false);
-                Logger.getAnonymousLogger()
-                      .log(Level.SPAM, "newHover: " + newHover, null);
-
+                
                 if ((lastHover != null) && (lastHover != newHover) && dropListeners.containsKey(lastHover)) {
                     for (DropListener l : dropListeners.get(lastHover)) {
                         l.onEndHover(sender);
@@ -234,32 +242,14 @@ public class DragAndDrop {
 
             int top = this.getAbsoluteTop();
             int left = this.getAbsoluteLeft();
-            Logger.getAnonymousLogger()
-                  .log(
-                Level.SPAM,
-                "Drop: " + drop + "Top:" + top + " Left:" + left + "OffsetTop" + this.getOffsetHeight() +
-                " OffsetLeft:" + this.getOffsetWidth(), null);
-
             int centerY = top + (int) ((float) this.getOffsetHeight() / (float) 2);
             int centerX = left + (int) ((float) this.getOffsetWidth() / (float) 2);
-            Logger.getAnonymousLogger()
-                  .log(Level.SPAM, "Drop: " + drop + "Center Top:" + centerY + " Center Left:" + centerX, null);
-
+            
             Widget hit = null;
 
             for (int i = 0; (dropTargets != null) && (i < dropTargets.size()); i++) {
                 Widget w = (Widget) dropTargets.get(i);
-                Logger.getAnonymousLogger()
-                      .log(
-                    Level.SPAM,
-                    "Drop: " + drop + "Top Range: " + w.getAbsoluteTop() + " .. " +
-                    (w.getAbsoluteTop() + w.getOffsetHeight()), null);
-                Logger.getAnonymousLogger()
-                      .log(
-                    Level.SPAM,
-                    "Drop: " + drop + "Left Range: " + w.getAbsoluteLeft() + " .. " +
-                    (w.getAbsoluteLeft() + w.getOffsetWidth()), null);
-
+                
                 if (
                     (centerY >= w.getAbsoluteTop()) && (centerY <= (w.getAbsoluteTop() + w.getOffsetHeight())) &&
                         (centerX >= w.getAbsoluteLeft()) && (centerX <= (w.getAbsoluteLeft() + w.getOffsetWidth()))) {
