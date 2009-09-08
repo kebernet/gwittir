@@ -173,7 +173,7 @@ public class BeanResolver {
         }
     }
 
-    Map<String, Property> getProperties() {
+    public Map<String, Property> getProperties() {
         if( this.filterProperties != null ){
             Map<String, Property> results = new HashMap<String, Property>();
             for(String property : this.filterProperties ){

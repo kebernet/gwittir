@@ -244,7 +244,7 @@ public class IntrospectorGenerator extends Generator {
         return packageName + "." + implementationName;
     }
 
-    private List<BeanResolver> getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
+    protected List<BeanResolver> getIntrospectableTypes(TreeLogger logger, TypeOracle oracle) {
         ArrayList<BeanResolver> results = new ArrayList<BeanResolver>();
         HashSet<BeanResolver> resolvers = new HashSet<BeanResolver>();
         HashSet<String> found = new HashSet<String>();
