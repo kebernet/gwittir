@@ -53,11 +53,13 @@ public class MethodWrapper implements Comparable{
         return baseMethod;
     }
     
+    @Override
     public String toString(){
         return ( hashWithType ? this.declaringType.getQualifiedSourceName() : "" ) +
                 this.baseMethod.getReadableDeclaration(false, true, false, true, true);
     }
     
+    @Override
     public int hashCode(){
         return this.toString().hashCode();
     }
@@ -69,6 +71,8 @@ public class MethodWrapper implements Comparable{
         return this.toString().compareTo( o.toString() );
     }
     
+    @Override
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals( Object o ){
         return this.compareTo( o ) == 0;
     }

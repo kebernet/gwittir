@@ -35,7 +35,7 @@ import java.util.Map;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public class BeanResolver {
-    private HashMap<String, Property> properties = new HashMap<String, Property>(); /*<String name, Property>*/
+    private HashMap<String, RProperty> properties = new HashMap<String, RProperty>(); /*<String name, RProperty>*/
     private HashSet<MethodWrapper> methodSet = new HashSet<MethodWrapper>(); /*<MethodWrapper>*/
     private JClassType type;
     private TreeLogger logger;
@@ -103,13 +103,13 @@ public class BeanResolver {
         for (Iterator it = methodSet.iterator(); it.hasNext();) {
             MethodWrapper w = (MethodWrapper) it.next();
             String methodName = w.getBaseMethod().getName();
-            Property p = null;
+            RProperty p = null;
             
             if ( 
                 methodName.startsWith("get") && (methodName.length() >= 4) &&
                     (methodName.charAt(3) == methodName.toUpperCase().charAt(3))
             ) {
-                p = new Property();
+                p = new RProperty();
                 p.setReadMethod(w);
                 p.setName(
                         methodName.substring(3, 4).toLowerCase() +
@@ -119,7 +119,7 @@ public class BeanResolver {
                 methodName.startsWith("is") && (methodName.length() >= 3) &&
                     (methodName.charAt(2) == methodName.toUpperCase().charAt(2))
             ) {
-                p = new Property();
+                p = new RProperty();
                 p.setReadMethod(w);
                 p.setName(
                     methodName.substring(2, 3).toLowerCase() +
@@ -149,7 +149,7 @@ public class BeanResolver {
                 String name = methodName.substring(3, 4).toLowerCase() +
                     ((methodName.length() > 4) ? methodName.substring(4, methodName.length()) : "");
 
-                Property p = (properties.containsKey(name) ? (Property) properties.get(name) : new Property());
+                RProperty p = (properties.containsKey(name) ? (RProperty) properties.get(name) : new RProperty());
                 p.setName(name);
                 p.setWriteMethod(w);
 
@@ -173,9 +173,9 @@ public class BeanResolver {
         }
     }
 
-    public Map<String, Property> getProperties() {
+    public Map<String, RProperty> getProperties() {
         if( this.filterProperties != null ){
-            Map<String, Property> results = new HashMap<String, Property>();
+            Map<String, RProperty> results = new HashMap<String, RProperty>();
             for(String property : this.filterProperties ){
                 property = property.trim();
                 if( this.properties.containsKey( property) ){

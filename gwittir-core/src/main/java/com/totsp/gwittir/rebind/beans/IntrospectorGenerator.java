@@ -137,9 +137,9 @@ public class IntrospectorGenerator extends Generator {
                     continue;
                 }
 
-                Collection<Property> pds = info.getProperties().values();
+                Collection<RProperty> pds = info.getProperties().values();
 
-                for ( Property p : pds) {
+                for ( RProperty p : pds) {
                    
                     if (p.getReadMethod() != null) {
                         p.getReadMethod().hashWithType = true;
@@ -435,7 +435,7 @@ public class IntrospectorGenerator extends Generator {
                 int i = 0;
 
                 for (Iterator it = pds.iterator(); it.hasNext(); i++) {
-                    Property p = (Property) it.next();
+                    RProperty p = (RProperty) it.next();
                     propertyNames[i] = p.getName();
                     writer.println("{");
                     writer.indent();
