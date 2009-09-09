@@ -22,7 +22,7 @@ public class GwtTestJson extends GWTTestCase {
 
     public void testBasic() throws Exception {
         try{
-        String json = " { string:'a string', integer: 5} ";
+        String json = " { string:'a \\n \\\" $ & with \\u0945 string', integer: 5} ";
         TestBeanCodec codec = GWT.create(TestBeanCodec.class);
         TestBean b = codec.deserialize(json);
 
