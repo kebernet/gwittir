@@ -1,6 +1,18 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package com.totsp.gwittir.serial.json.rebind;
 
@@ -181,10 +193,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 writer.println(this.setterPrefix(prop) + "null);");
                 writer.println("} else {");
             }
-            if (isCoreType(prop.getType())) {
-                writer.println(
-                    setterPrefix(prop) + fromType(prop.getType(), "root.get(\"" + fieldName+ "\")") + ");");
-            } else if (((JClassType) prop.getType()).isAssignableTo(this.collectionType)) {
+             if ( prop.getType() instanceof JClassType && ((JClassType) prop.getType()).isAssignableTo(this.collectionType)) {
                 // get the parameter type
                 JClassType propType = (JClassType) prop.getType();
                 JType paramType = propType.asParameterizationOf((JGenericType) this.collectionType)
@@ -201,6 +210,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 writer.outdent();
                 writer.println("}"); //endfor
                 writer.println(this.setterPrefix(prop) + " col );");
+            } else {
+                writer.println(
+                    setterPrefix(prop) + fromType(prop.getType(), "root.get(\"" + fieldName+ "\")") + ");");
             }
             if(prop.getType().isPrimitive() == null ){
                 writer.println("}"); //end null else

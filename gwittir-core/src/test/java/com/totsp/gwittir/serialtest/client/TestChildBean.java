@@ -35,6 +35,27 @@ public class TestChildBean {
         this.booleanProperty = newbooleanProperty;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TestChildBean other = (TestChildBean) obj;
+        if (this.booleanProperty != other.booleanProperty) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + (this.booleanProperty ? 1 : 0);
+        return hash;
+    }
 
 
 }

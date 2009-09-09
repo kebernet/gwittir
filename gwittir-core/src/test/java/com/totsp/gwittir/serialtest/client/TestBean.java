@@ -6,6 +6,7 @@ package com.totsp.gwittir.serialtest.client;
 
 import com.totsp.gwittir.client.beans.annotations.Introspectable;
 
+import com.totsp.gwittir.serial.json.client.JSONField;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,6 +112,7 @@ public class TestBean {
      *
      * @return the value of integerList
      */
+    @JSONField("my-list-of-integers")
     public List<Integer> getIntegerList() {
         return this.integerList;
     }
@@ -149,5 +151,54 @@ public class TestBean {
      */
     public HashSet<String> getStringHash() {
         return this.stringHash;
+    }
+
+
+    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TestBean other = (TestBean) obj;
+        if (this.stringHash != other.stringHash && (this.stringHash == null || !this.stringHash.equals(other.stringHash))) {
+            return false;
+        }
+        if (this.integerList != other.integerList && (this.integerList == null || !this.integerList.equals(other.integerList))) {
+            return false;
+        }
+        if (this.childSet != other.childSet && (this.childSet == null || !this.childSet.equals(other.childSet))) {
+            return false;
+        }
+        if ((this.string == null) ? (other.string != null) : !this.string.equals(other.string)) {
+            return false;
+        }
+        if (this.child != other.child && (this.child == null || !this.child.equals(other.child))) {
+            return false;
+        }
+        if (this.intProperty != other.intProperty) {
+            return false;
+        }
+        if (this.integer != other.integer) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + (this.stringHash != null ? this.stringHash.hashCode() : 0);
+        hash = 29 * hash + (this.integerList != null ? this.integerList.hashCode() : 0);
+        hash = 29 * hash + (this.childSet != null ? this.childSet.hashCode() : 0);
+        hash = 29 * hash + (this.string != null ? this.string.hashCode() : 0);
+        hash = 29 * hash + (this.child != null ? this.child.hashCode() : 0);
+        hash = 29 * hash + this.intProperty;
+        hash = 29 * hash + this.integer;
+        return hash;
     }
 }

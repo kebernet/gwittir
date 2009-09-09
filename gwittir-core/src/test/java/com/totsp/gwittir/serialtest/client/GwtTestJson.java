@@ -26,8 +26,6 @@ public class GwtTestJson extends GWTTestCase {
         TestBeanCodec codec = GWT.create(TestBeanCodec.class);
         TestBean b = codec.deserialize(json);
 
-        System.out.println( codec.serialize(b));
-
         TestChildBean tcb = new TestChildBean();
         tcb.setBooleanProperty(true);
 
@@ -42,7 +40,12 @@ public class GwtTestJson extends GWTTestCase {
         }
         b.setIntegerList(intList);
 
-        System.out.println( codec.serialize(b));
+        String ser = codec.serialize(b);
+
+        TestBean b2 = codec.deserialize(ser);
+        System.out.println( ser );
+        System.out.println( codec.serialize(b2));
+        assertEquals( b, b2 );
 
         } catch(Throwable e){
             while(e.getCause() != null ){
