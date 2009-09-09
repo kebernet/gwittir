@@ -30,28 +30,9 @@ public class RProperty {
     private JType type;
     private MethodWrapper readMethod;
     private MethodWrapper writeMethod;
-    private String jsonName;
     private String name;
 
     public RProperty() {
-    }
-
-    /**
-     * Set the value of jsonName
-     *
-     * @param newjsonName new value of jsonName
-     */
-    public void setJsonName(String newjsonName) {
-        this.jsonName = newjsonName;
-    }
-
-    /**
-     * Get the value of jsonName
-     *
-     * @return the value of jsonName
-     */
-    public String getJsonName() {
-        return this.jsonName;
     }
 
     public void setName(String name) {

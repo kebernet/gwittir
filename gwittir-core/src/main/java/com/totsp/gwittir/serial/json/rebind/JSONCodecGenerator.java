@@ -30,6 +30,7 @@ import com.totsp.gwittir.rebind.beans.RProperty;
 import com.totsp.gwittir.serial.client.SerializationException;
 import com.totsp.gwittir.serial.json.client.JSONCodec;
 
+import com.totsp.gwittir.serial.json.client.JSONField;
 import java.io.PrintWriter;
 
 import java.util.Collection;
@@ -171,22 +172,24 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     }
 
     public void writeReader(SourceWriter writer, RProperty prop) {
+        JSONField field =  prop.getReadMethod().getBaseMethod().getAnnotation(JSONField.class);
+        String fieldName = field == null ? prop.getName() : field.value();
         try {
-            writer.println("if(root.containsKey(\"" + prop.getName() + "\")){");
+            writer.println("if(root.containsKey(\"" + fieldName+ "\")){");
             if(prop.getType().isPrimitive() == null ){
-                writer.println("if(root.get(\"" + prop.getName() + "\").isNull() != null) {");
+                writer.println("if(root.get(\"" + fieldName + "\").isNull() != null) {");
                 writer.println(this.setterPrefix(prop) + "null);");
                 writer.println("} else {");
             }
             if (isCoreType(prop.getType())) {
                 writer.println(
-                    setterPrefix(prop) + fromType(prop.getType(), "root.get(\"" + prop.getName() + "\")") + ");");
+                    setterPrefix(prop) + fromType(prop.getType(), "root.get(\"" + fieldName+ "\")") + ");");
             } else if (((JClassType) prop.getType()).isAssignableTo(this.collectionType)) {
                 // get the parameter type
                 JClassType propType = (JClassType) prop.getType();
                 JType paramType = propType.asParameterizationOf((JGenericType) this.collectionType)
                                           .getTypeArgs()[0];
-                writer.println("JSONArray array = root.get(\"" + prop.getName() + "\").isArray();");
+                writer.println("JSONArray array = root.get(\"" + fieldName+ "\").isArray();");
                 writer.println(
                     propType.getParameterizedQualifiedSourceName() + " col = " +
                     this.newCollectionExpression(propType) + ";");
@@ -378,6 +381,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 continue;
             }
 
+            JSONField field =  prop.getReadMethod().getBaseMethod().getAnnotation(JSONField.class);
+            String fieldName = field == null ? prop.getName() : field.value();
+
             if (prop.getReadMethod() != null) {
                 JClassType classType = prop.getType()
                                            .isClassOrInterface();
@@ -387,7 +393,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                                              .getTypeArgs()[0];
                     writer.println();
                     writer.println(" if( source."+ prop.getReadMethod().getBaseMethod().getName() + "() == null ){");
-                    writer.println( "destination.put(\""+prop.getName() + "\", JSONNull.getInstance());");  //TODO JSONField
+                    writer.println( "destination.put(\""+fieldName + "\", JSONNull.getInstance());");
                     writer.println(" } else { ");
                     writer.println("int i=0; JSONArray value = new JSONArray();");
                     writer.println(
@@ -395,10 +401,10 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                         prop.getReadMethod().getBaseMethod().getName() + "()){");
                     writer.println("   value.set(i++, " + toType(subType, " o ") + ");");
                     writer.println("}");
-                    writer.println( "destination.put(\""+prop.getName()+"\", value);"); //TODO JSONField
+                    writer.println( "destination.put(\""+fieldName+"\", value);"); //TODO JSONField
                     writer.println("}");
                 } else {
-                    writer.print("destination.put( \"" + prop.getName() + "\", "); //TODO JSONField
+                    writer.print("destination.put( \"" + fieldName + "\", "); //TODO JSONField
                     writer.print(
                         toType(prop.getType(), " source." + prop.getReadMethod().getBaseMethod().getName() + "() ") +
                         ");");

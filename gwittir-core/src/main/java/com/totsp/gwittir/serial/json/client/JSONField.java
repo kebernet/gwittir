@@ -9,10 +9,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- *
+ * An annotation that can be placed on the getter method for a property to customize
+ * its JSON field value.
  * @author kebernet
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JSONField {
-    String name();
+    String value();
 }
