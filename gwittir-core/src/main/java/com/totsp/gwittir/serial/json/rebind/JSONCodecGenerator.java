@@ -114,7 +114,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     public String generate(TreeLogger logger, GeneratorContext context, String typeName)
         throws UnableToCompleteException {
        
-            System.out.println("Generating codec for " + typeName);
+            logger.log(Type.INFO,"Generating codec for " + typeName);
 
             JClassType type = null;
             JClassType jsonCodec = null;
@@ -165,8 +165,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             this.writeClassSerializer(logger, context, thisType);
 
             this.writeTopSerializer(logger, context, type, subtype);
-            System.out.println("RETURNING " + type.getQualifiedSourceName() + "_Impl");
-
+            
             return type.getQualifiedSourceName() + "_Impl";
         
     }
@@ -276,7 +275,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     }
 
     private void writeClassSerializer(TreeLogger logger, GeneratorContext context, BeanResolver type) {
-        System.out.println("Creating JSON Serializer for " + type.getType());
+        logger.log(Type.INFO,"Creating JSON Serializer for " + type.getType());
 
         String classTypeName = type.getType()
                                    .getSimpleSourceName() + "_JSONCodec";
