@@ -212,7 +212,7 @@ public class BeanMapping {
         // if we have gotten here,
         // this is a class that requires resolution mapping.
         Class destinationClass = resolveClass(mappings, bean.getClass());
-        
+        //System.out.println("Got "+destinationClass+" for "+bean.getClass() );
         if(destinationClass == null) {
             throw new MappingException(
                     "Unable to resolve class" + bean.getClass().getName());
@@ -469,7 +469,7 @@ public class BeanMapping {
                 Entry entry = it.next();
                 
                 if(entry.getValue().equals(clazz.getName())) {
-                    return Class.forName(entry.getValue().toString());
+                    return Class.forName(entry.getKey().toString());
                 }
             }
         } else if(mappings.containsKey(trimPackage(clazz.getName()) + ".*")) {
