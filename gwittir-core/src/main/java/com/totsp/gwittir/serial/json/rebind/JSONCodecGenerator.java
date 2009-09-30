@@ -43,6 +43,7 @@ import com.totsp.gwittir.serial.client.SerializationException;
 import com.totsp.gwittir.serial.json.client.JSONCodec;
 
 import com.totsp.gwittir.serial.json.client.JSONField;
+import com.totsp.gwittir.serial.json.client.JSONOmit;
 import java.io.PrintWriter;
 
 import java.util.Collection;
@@ -185,6 +186,10 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
     public void writeReader(SourceWriter writer, RProperty prop) {
         JSONField field =  prop.getReadMethod().getBaseMethod().getAnnotation(JSONField.class);
+        JSONOmit omit = prop.getReadMethod().getBaseMethod().getAnnotation(JSONOmit.class);
+        if(omit != null ){
+            return;
+        }
         String fieldName = field == null ? prop.getName() : field.value();
         try {
             writer.println("if(root.containsKey(\"" + fieldName+ "\")){");
@@ -394,6 +399,10 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             }
 
             JSONField field =  prop.getReadMethod().getBaseMethod().getAnnotation(JSONField.class);
+            JSONOmit omit = prop.getReadMethod().getBaseMethod().getAnnotation(JSONOmit.class);
+            if(omit != null ){
+                continue;
+            }
             String fieldName = field == null ? prop.getName() : field.value();
 
             if (prop.getReadMethod() != null) {
