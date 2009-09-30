@@ -79,10 +79,14 @@ public class BeanMapping {
         java.lang.CharSequence.class
     };
     private static final HashMap<Class,HashMap<String,Object>> inspections = new HashMap<Class,HashMap<String,Object>>();
-    
+    private static final Set<String> probes = new HashSet<String>();
     /** Creates a new instance of BeanMapping */
     private BeanMapping() {
         super();
+    }
+
+    public static void addProbe(String value){
+        probes.add(value);
     }
     
     /**
@@ -212,7 +216,6 @@ public class BeanMapping {
         // if we have gotten here,
         // this is a class that requires resolution mapping.
         Class destinationClass = resolveClass(mappings, bean.getClass());
-        //System.out.println("Got "+destinationClass+" for "+bean.getClass() );
         if(destinationClass == null) {
             throw new MappingException(
                     "Unable to resolve class" + bean.getClass().getName());
@@ -242,6 +245,7 @@ public class BeanMapping {
                     propertyName);
             Class valueClass = null;
             Object valueObject = null;
+            boolean isProbe = false;
             
             if(sourceAccessor instanceof Field) {
                 Field f = (Field) sourceAccessor;
@@ -252,7 +256,10 @@ public class BeanMapping {
                 valueClass = pd.getPropertyType();
                 valueObject = pd.getReadMethod().invoke(bean);
             }
-            
+            if(probes.contains(valueClass.getCanonicalName() ) ){
+                System.out.println("Found "+valueClass+" on property/field "+propertyName );
+                isProbe = true;
+            }
             Class valueDestinationClass = null;
             
             if(destinationAccessor instanceof Field) {
@@ -306,7 +313,12 @@ public class BeanMapping {
             } else { // Destination accessor is a property
                 PropertyDescriptor pd = (PropertyDescriptor) destinationAccessor;
                 valueDestinationClass = pd.getPropertyType();
-                
+                if(isProbe || probes.contains(valueDestinationClass.getCanonicalName() ) ){
+                    isProbe = true;
+                    System.out.println("Found destination type "+valueDestinationClass+ "on destination property "+pd.getName());
+                    System.out.println("Class resolution to "+ resolveClass(mappings, valueClass) );
+
+                }
                 if(
                         isInterface(Map.class, valueClass) &&
                         isInterface(Map.class, valueDestinationClass)) {
@@ -340,12 +352,18 @@ public class BeanMapping {
                             collection);
                     pd.getWriteMethod().invoke(dest, collection);
                 } else if(valueClass == valueDestinationClass) {
+                    if(isProbe){
+                        System.out.println("identical property types");
+                    }
                     pd.getWriteMethod().invoke(dest, valueObject);
                 } else if(
                         (valueDestinationClass == resolveClass(
                         mappings, valueClass)) ||
                         (valueDestinationClass.isArray() &&
                         valueClass.isArray())) {
+                    if(isProbe){
+                        System.out.println("Convert to "+ resolveClass(mappings, valueClass) );
+                    }
                     pd.getWriteMethod().invoke(
                             dest, convertInternal(instances, mappings, valueObject));
                 } else {
@@ -458,8 +476,14 @@ public class BeanMapping {
         //System.out.println("Resolving class: " + clazz.getName());
         assert ((mappings != null) && (mappings.size() > 0));
         assert (clazz != null);
-        
+        boolean isProbe = probes.contains(clazz.getCanonicalName() );
+        if(isProbe){
+            System.out.println("Checking against "+clazz.getName() );
+        }
         if(mappings.containsKey(clazz.getName())) {
+            if(isProbe){
+                System.out.println("First order mapping from "+clazz.getName()+" to "+mappings.getProperty(clazz.getName()));
+            }
             return Class.forName(mappings.getProperty(clazz.getName()));
         } else if(mappings.containsValue(clazz.getName())) {
             for(
