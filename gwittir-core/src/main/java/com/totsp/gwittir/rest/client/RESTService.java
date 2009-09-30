@@ -6,6 +6,7 @@
 package com.totsp.gwittir.rest.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.totsp.gwittir.rest.client.Transport.RequestControl;
 import com.totsp.gwittir.serial.client.Codec;
 
 /**
@@ -18,9 +19,9 @@ public interface RESTService<T> {
     public void setTransport(Transport transport);
     public void setCodec(Codec<T> codec);
 
-    public void get(String key, AsyncCallback<T> callback );
-    public void put(T object, AsyncCallback<String> callback );
-    public void delete(String key, AsyncCallback callback );
-    public void post(String key, T object, AsyncCallback callback );
+    public RequestControl get(String key, AsyncCallback<T> callback );
+    public RequestControl put(T object, AsyncCallback<String> callback );
+    public RequestControl delete(String key, AsyncCallback callback );
+    public RequestControl post(String key, T object, AsyncCallback callback );
 
 }
