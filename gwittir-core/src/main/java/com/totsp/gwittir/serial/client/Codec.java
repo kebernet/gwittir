@@ -11,6 +11,8 @@ package com.totsp.gwittir.serial.client;
  */
 public interface Codec<T> {
 
+    String getMimeType();
+
     T deserialize(String data) throws SerializationException;
     String serialize(T object) throws SerializationException;
 

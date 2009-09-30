@@ -28,6 +28,9 @@ import com.totsp.gwittir.serial.client.SerializationException;
  */
 public interface JSONCodec<T> extends Codec<T> {
 
+
+    static final String MIME_TYPE = "application/json";
+
     /**
      *  Serializes an object to JSONObject form.
      * @param source Object to Serialize

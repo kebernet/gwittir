@@ -332,7 +332,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 child.getType().getQualifiedSourceName() + "_JSONCodec.class);");
             writeClassSerializer(logger, context, child);
         }
-
+        writer.println(" public String getMimeType() { return MIME_TYPE; }");
         writer.println("}"); // close the class
 
         context.commit(logger, printWriter);
@@ -452,6 +452,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         }
 
         SourceWriter writer = mcf.createSourceWriter(context, printWriter);
+        writer.println(" public String getMimeType() { return MIME_TYPE; }");
         writer.println("}");
         context.commit(logger, printWriter);
     }
