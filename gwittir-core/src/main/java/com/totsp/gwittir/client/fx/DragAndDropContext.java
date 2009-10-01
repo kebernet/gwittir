@@ -113,11 +113,12 @@ public class DragAndDropContext {
             int iy = dragging.widget.getAbsoluteTop();
 
             placeholder = DOM.createDiv();
-
-            if (dragging.strat == null) {
-                DEFAULT_DPS.setupPlaceholderElement(dragging.widget, placeholder);
-            } else {
-                dragging.strat.setupPlaceholderElement(dragging.widget, placeholder);
+            if(revert){
+                if (dragging.strat == null) {
+                    DEFAULT_DPS.setupPlaceholderElement(dragging.widget, placeholder);
+                } else {
+                    dragging.strat.setupPlaceholderElement(dragging.widget, placeholder);
+                }
             }
 
             int index = DOM.getChildIndex(DOM.getParent(dragging.widget.getElement()), dragging.widget.getElement());

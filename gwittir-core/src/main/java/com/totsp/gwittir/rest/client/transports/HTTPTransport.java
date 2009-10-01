@@ -16,7 +16,7 @@ import com.totsp.gwittir.rest.client.Transport;
  * @author kebernet
  */
 public abstract class HTTPTransport implements Transport {
-
+    public static final String ACCEPT_HEADER = "Accept";
     private PreHook pre;
 
     private PostHook post;
