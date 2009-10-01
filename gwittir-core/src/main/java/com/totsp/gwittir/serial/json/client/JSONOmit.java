@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- *
+ * Omits a property from a JSON object
  * @author rcooper
  */
 @Retention(RetentionPolicy.RUNTIME)
