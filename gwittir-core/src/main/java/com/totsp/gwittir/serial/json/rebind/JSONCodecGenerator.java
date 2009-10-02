@@ -123,7 +123,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             ".deserializeFromJSONObject(" + innerExpression + ".isObject())";
         }
 
-        throw new RuntimeException();
+        throw new RuntimeException(""+type);
     }
 
     @Override
@@ -185,14 +185,15 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     }
 
     public void writeReader(SourceWriter writer, RProperty prop) {
-        if(prop.getReadMethod() == null ){
+        if(prop.getWriteMethod() == null ){
             return;
         }
-        JSONField field = prop.getReadMethod().getBaseMethod()
-                              .getAnnotation(JSONField.class);
-        JSONOmit omit = prop.getReadMethod().getBaseMethod()
-                            .getAnnotation(JSONOmit.class);
 
+        JSONField field = prop.getReadMethod() == null ? null : prop.getReadMethod().getBaseMethod()
+                              .getAnnotation(JSONField.class);
+        JSONOmit omit = prop.getReadMethod() == null ? null : prop.getReadMethod().getBaseMethod()
+                            .getAnnotation(JSONOmit.class);
+        System.out.println( prop.getName() + " omit "+omit + " field "+field );
         if (omit != null) {
             return;
         }
@@ -311,8 +312,14 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             sb = sb.append("new JSONNumber( ((Number) " + innerExpression +
                     ").doubleValue())");
         } else if (type.getQualifiedSourceName().equals("java.lang.Boolean")) {
-            sb.append("new JSONBoolean( " + innerExpression + " ) ");
+            sb.append(" JSONBoolean.getInstance( " + innerExpression + " ) ");
         } else {
+       
+            BeanResolver child = findType(type);
+            if (child == null) {
+                throw new RuntimeException(type+" is not introspectable!");
+            }
+            this.children.add(child);
             sb = sb.append("CODEC_" +
                     type.getQualifiedSourceName().replaceAll("\\.", "_") +
                     ".serializeToJSONObject( " + innerExpression + " ) ");
@@ -434,7 +441,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                                   .getAnnotation(JSONField.class);
             JSONOmit omit = prop.getReadMethod().getBaseMethod()
                                 .getAnnotation(JSONOmit.class);
-
+            System.out.println(" ws \t "+prop.getName() +" "+ prop.getReadMethod().getBaseMethod().getEnclosingType()+ prop.getReadMethod().getBaseMethod().getReadableDeclaration()  + " "+ omit +" "+field );
             if (omit != null) {
                 continue;
             }
@@ -444,9 +451,10 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             if (prop.getReadMethod() != null) {
                 JClassType classType = prop.getType().isClassOrInterface();
                 JArrayType arrayType = prop.getType().isArray();
+                System.out.println(prop.getName()+ "  ArrayType "+arrayType +" :: "+((arrayType == null ? "" : ""+arrayType.getComponentType())));
                 if ((classType != null) &&
-                        (classType.isAssignableTo(this.collectionType) ||
-                        arrayType != null)) {
+                        (classType.isAssignableTo(this.collectionType)) ||
+                        arrayType != null) {
                     JType subType = (arrayType != null)
                         ? arrayType.getComponentType()
                         : classType.asParameterizationOf(this.collectionType.isGenericType())

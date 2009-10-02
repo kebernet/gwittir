@@ -51,7 +51,7 @@ public class BeanResolver {
         this.type = type;
         this.logger = logger;
         //System.out.println("Inspecting type: "+type);
-        this.logger = logger.branch(TreeLogger.INFO, "Inspecting type: " + type.getQualifiedSourceName(), null);
+        this.logger = logger.branch(TreeLogger.DEBUG, "Inspecting type: " + type.getQualifiedSourceName(), null);
         buildMethods(type);
         examineGetters();
         examineSetters();

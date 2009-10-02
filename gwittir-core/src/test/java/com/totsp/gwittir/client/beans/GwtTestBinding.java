@@ -216,7 +216,7 @@ public class GwtTestBinding extends GWTTestCase {
        assertEquals("different", model2.getTestProp()); // FAILS
     }
 
-    private static class MockModel extends AbstractModelBean {
+    public static class MockModel extends AbstractModelBean {
 
     private String testProp;
 

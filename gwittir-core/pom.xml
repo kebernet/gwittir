@@ -92,7 +92,7 @@
                 <version>2.0-SNAPSHOT</version>
                 <configuration>
                     <gwtVersion>1.6.4</gwtVersion>
-                    <testFilter>GwtTestBinding*</testFilter>
+                    <testFilter>GwtTestJson*</testFilter>
                     <logLevel>INFO</logLevel>
                     <style>OBF</style>
                     <gen>target/gwtgen</gen>

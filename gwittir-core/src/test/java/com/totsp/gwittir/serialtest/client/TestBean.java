@@ -201,4 +201,27 @@ public class TestBean {
         hash = 29 * hash + this.integer;
         return hash;
     }
+
+
+
+    private TestChildBean[] arrayProp;
+
+    /**
+     * Get the value of arrayProp
+     *
+     * @return the value of arrayProp
+     */
+    public TestChildBean[] getArrayProp() {
+        return this.arrayProp;
+    }
+
+    /**
+     * Set the value of arrayProp
+     *
+     * @param newarrayProp new value of arrayProp
+     */
+    public void setArrayProp(TestChildBean[] newarrayProp) {
+        this.arrayProp = newarrayProp;
+    }
+
 }
