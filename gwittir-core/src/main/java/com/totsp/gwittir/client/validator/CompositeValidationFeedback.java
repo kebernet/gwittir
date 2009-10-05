@@ -21,6 +21,7 @@
 package com.totsp.gwittir.client.validator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -33,7 +34,12 @@ public class CompositeValidationFeedback extends AbstractValidationFeedback {
     public CompositeValidationFeedback() {
         super();
     }
-    
+
+    public CompositeValidationFeedback(ValidationFeedback... feedback){
+        super();
+        this.feedbacks.addAll(Arrays.asList(feedback));
+    }
+
     public void handleException(Object source, ValidationException exception) {
         for(Iterator it = feedbacks.iterator(); it.hasNext(); ){
             ((ValidationFeedback) it.next() ).handleException( source, exception);
