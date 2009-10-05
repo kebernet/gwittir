@@ -19,6 +19,7 @@
  */
 package com.totsp.gwittir.client.beans;
 
+import com.totsp.gwittir.client.beans.annotations.Omit;
 import com.totsp.gwittir.serial.json.client.JSONOmit;
 import java.beans.PropertyChangeListener;
 
@@ -35,6 +36,7 @@ public interface SourcesPropertyChangeEvents {
         PropertyChangeListener l);
 
     @JSONOmit
+    @Omit
     public PropertyChangeListener[] getPropertyChangeListeners();
 
     public void removePropertyChangeListener(PropertyChangeListener l);
