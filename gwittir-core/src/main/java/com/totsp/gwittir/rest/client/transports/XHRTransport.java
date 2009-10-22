@@ -18,6 +18,7 @@ import com.totsp.gwittir.rest.client.Transport.RequestControl;
  */
 public class XHRTransport extends HTTPTransport {
 
+
     public RequestControl get(String mimeType, String url, final AsyncCallback<String> callback) {
         RequestBuilder b = new RequestBuilder(RequestBuilder.GET, url);
         b.setHeader( ACCEPT_HEADER, mimeType);
@@ -54,8 +55,8 @@ public class XHRTransport extends HTTPTransport {
     }
 
     public RequestControl post(String mimeType, String url, String payload, final AsyncCallback callback) {
-        RequestBuilder b = new RequestBuilder(RequestBuilder.GET, url);
-        b.setHeader( ACCEPT_HEADER, mimeType);
+        RequestBuilder b = new RequestBuilder(RequestBuilder.POST, url);
+        b.setHeader(  CONTENT_TYPE_HEADER, mimeType);
         b.setRequestData(payload);
         RequestCallback rc = new RequestCallback(){
 
@@ -73,7 +74,7 @@ public class XHRTransport extends HTTPTransport {
 
     public RequestControl put(String mimeType, String url, String payload, final AsyncCallback<String> callback) {
         RequestBuilder b = new FullRequestBuilder("PUT", url);
-        b.setHeader( ACCEPT_HEADER, mimeType);
+        b.setHeader( "Content-Type", mimeType);
         b.setRequestData(payload);
         RequestCallback rc = new RequestCallback(){
 

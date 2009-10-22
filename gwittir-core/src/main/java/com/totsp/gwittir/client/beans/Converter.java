@@ -78,4 +78,22 @@ public interface Converter<T, C> {
         }
 
     };
+
+
+    public static final Converter<Long, String> LONG_TO_STRING_CONVERTER = new Converter<Long, String>(){
+
+        public String convert(Long original) {
+            return original == null ? null : original.toString();
+        }
+
+    };
+
+    public static final Converter<String, Long> STRING_TO_LONG_CONVERTER = new Converter<String, Long>(){
+
+
+        public Long convert(String original) {
+            return original == null? null : new Long(original);
+        }
+
+    };
 }

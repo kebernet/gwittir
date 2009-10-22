@@ -693,10 +693,11 @@ public class Binding {
             } catch (Exception e) {
                 // throw new RuntimeException(
                 // "Exception setting property: "+target.property.getName(), e);
-                LOGGER.log(Level.ERROR, "Exception setting property: " + target.property.getName(), e);
+                LOGGER.log(Level.ERROR, "Exception setting property: " + target.property.getName() + " on object "+target.object, e);
             }
         }
 
+        @Override
         public String toString() {
             return "[Listener on : " + this.instance.object + " ] ";
         }

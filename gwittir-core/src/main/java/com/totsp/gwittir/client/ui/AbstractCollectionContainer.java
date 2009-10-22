@@ -115,7 +115,7 @@ public class AbstractCollectionContainer<T> extends
 
         for (Iterator it = this.value.iterator(); it.hasNext();) {
             Object o = (Object) it.next();
-            Class clazz = Introspector.INSTANCE.resolveClass(o);
+            Class clazz = o.getClass();
             if( clazz == null ){
                 throw new RuntimeException("Unable to resolve class "+ o.getClass().getName() );
             }

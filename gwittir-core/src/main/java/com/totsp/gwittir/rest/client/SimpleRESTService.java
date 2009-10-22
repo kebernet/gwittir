@@ -51,11 +51,11 @@ public class SimpleRESTService<T> implements RESTService<T> {
             });
     }
 
-    public RequestControl put(T object, final AsyncCallback<String> callback) {
+    public RequestControl put(String key, T object, final AsyncCallback<String> callback) {
         try {
             String value = codec.serialize(object);
 
-            return transport.put(codec.getMimeType(), baseURL, value, callback);
+            return transport.put(codec.getMimeType(), baseURL+key, value, callback);
         } catch (final Exception e) {
             DeferredCommand.addCommand(new Command() {
                     public void execute() {

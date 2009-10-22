@@ -63,7 +63,6 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
 
     public SetPropertyLeft bindLeft(Bindable object) {
         this.temp = object;
-        System.out.println(object);
 
         return this;
     }
