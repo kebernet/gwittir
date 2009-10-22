@@ -25,6 +25,10 @@ public class XHRTransport extends HTTPTransport {
         RequestCallback rc = new RequestCallback(){
 
             public void onResponseReceived(Request request, Response response) {
+                if(response.getStatusCode() != Response.SC_OK){
+                    callback.onFailure(new RuntimeException("Response from server: "+response.getStatusCode()+" \n "+response.getText()));
+                    return;
+                }
                 callback.onSuccess( response.getText() );
             }
 
@@ -43,6 +47,10 @@ public class XHRTransport extends HTTPTransport {
         RequestCallback rc = new RequestCallback(){
 
             public void onResponseReceived(Request request, Response response) {
+                if(response.getStatusCode() != Response.SC_OK){
+                    callback.onFailure(new RuntimeException("Response from server: "+response.getStatusCode()+" \n "+response.getText()));
+                    return;
+                }
                 callback.onSuccess( response.getText() );
             }
 
@@ -61,6 +69,10 @@ public class XHRTransport extends HTTPTransport {
         RequestCallback rc = new RequestCallback(){
 
             public void onResponseReceived(Request request, Response response) {
+                if(response.getStatusCode() != Response.SC_RESET_CONTENT && response.getStatusCode() != Response.SC_OK){
+                    callback.onFailure(new RuntimeException("Response from server: "+response.getStatusCode()+" \n "+response.getText()));
+                    return;
+                }
                 callback.onSuccess( response.getText() );
             }
 
@@ -79,6 +91,10 @@ public class XHRTransport extends HTTPTransport {
         RequestCallback rc = new RequestCallback(){
 
             public void onResponseReceived(Request request, Response response) {
+                if(response.getStatusCode() != Response.SC_NO_CONTENT && response.getStatusCode() != Response.SC_OK){
+                    callback.onFailure(new RuntimeException("Response from server: "+response.getStatusCode()+" \n "+response.getText()));
+                    return;
+                }
                 callback.onSuccess( response.getText() );
             }
 
