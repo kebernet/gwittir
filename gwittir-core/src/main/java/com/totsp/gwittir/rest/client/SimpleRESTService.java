@@ -67,12 +67,12 @@ public class SimpleRESTService<T> implements RESTService<T> {
         }
     }
 
-    public RequestControl delete(String key, AsyncCallback callback) {
+    public RequestControl delete(String key, AsyncCallback<String> callback) {
         return transport.delete(codec.getMimeType(), baseURL + key, callback);
     }
 
     public RequestControl post(String key, T object,
-        final AsyncCallback callback) {
+        final AsyncCallback<String> callback) {
         try {
             String value = codec.serialize(object);
 

@@ -21,7 +21,7 @@ public interface RESTService<T> {
 
     public RequestControl get(String key, AsyncCallback<T> callback );
     public RequestControl put(String key, T object, AsyncCallback<String> callback );
-    public RequestControl delete(String key, AsyncCallback callback );
-    public RequestControl post(String key, T object, AsyncCallback callback );
+    public RequestControl delete(String key, AsyncCallback<String> callback );
+    public RequestControl post(String key, T object, AsyncCallback<String> callback );
 
 }
