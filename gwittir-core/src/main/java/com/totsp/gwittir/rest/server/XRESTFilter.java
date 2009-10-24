@@ -24,6 +24,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 /** This filter looks for X-REST-Method headers and adapts the Request for use with standard REST services.
  *
@@ -31,16 +33,40 @@ import javax.servlet.ServletResponse;
  */
 public class XRESTFilter implements Filter {
 
+    /** "X-REST-Method" */
+    public static final String X_REST_METHOD_HEADER = "X-REST-Method";
+
+
     public void init(FilterConfig filterConfig) throws ServletException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        String xRestMethod = request.getHeader(X_REST_METHOD_HEADER);
+        if(xRestMethod != null){
+            request = new RequestWrapper(request);
+        }
+        chain.doFilter(request, res);
     }
 
     public void destroy() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private static class RequestWrapper extends HttpServletRequestWrapper {
+
+        private HttpServletRequest request;
+        RequestWrapper(HttpServletRequest request ){
+            super(request);
+            this.request = request;
+        }
+
+        @Override
+        public String getMethod(){
+            return request.getHeader(X_REST_METHOD_HEADER);
+        }
+
     }
 
 }
