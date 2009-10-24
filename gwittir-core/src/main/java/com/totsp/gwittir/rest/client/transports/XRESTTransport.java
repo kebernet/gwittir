@@ -32,24 +32,28 @@ import com.totsp.gwittir.rest.client.Transport.RequestControl;
  * @author <a href="mailto:kebernet@gmail.com">Robert Cooper</a>
  */
 public class XRESTTransport extends HTTPTransport {
+    /** "X-REST-Method" */
     public static final String X_REST_METHOD_HEADER = "X-REST-Method";
 
     public RequestControl delete(String mimeType, String url, final AsyncCallback callback) {
         RequestBuilder b = new RequestBuilder(RequestBuilder.GET, url);
         b.setHeader(X_REST_METHOD_HEADER, "DELETE");
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.DELETE_RESPONSE_CODES, false, callback));
     }
 
     public RequestControl get(String mimeType, String url, final AsyncCallback<String> callback) {
         RequestBuilder b = new RequestBuilder(RequestBuilder.GET, url);
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.POST_RESPONSE_CODES, false, callback));
     }
 
     public RequestControl post(String mimeType, String url, String payload, final AsyncCallback callback) {
         RequestBuilder b = new RequestBuilder(RequestBuilder.POST, url);
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         b.setRequestData(payload);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.PUT_RESPONSE_CODES, false, callback));
     }
@@ -58,6 +62,7 @@ public class XRESTTransport extends HTTPTransport {
         RequestBuilder b = new RequestBuilder(RequestBuilder.POST, url);
         b.setHeader(X_REST_METHOD_HEADER, "PUT");
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         b.setRequestData(payload);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.PUT_RESPONSE_CODES, false, callback));
     }

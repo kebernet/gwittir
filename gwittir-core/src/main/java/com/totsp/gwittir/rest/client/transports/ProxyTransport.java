@@ -47,6 +47,7 @@ public class ProxyTransport extends XRESTTransport {
         RequestBuilder b = new RequestBuilder(RequestBuilder.GET,
                 this.originProxyPath);
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         b.setHeader(X_PROXY_LOCATION_HEADER, url);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.DELETE_RESPONSE_CODES, false, callback));
     }
@@ -59,6 +60,7 @@ public class ProxyTransport extends XRESTTransport {
         b.setHeader(X_REST_METHOD_HEADER, "DELETE");
         b.setHeader(X_PROXY_LOCATION_HEADER, url);
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.GET_RESPONSE_CODES, true, callback));
     }
 
@@ -69,6 +71,7 @@ public class ProxyTransport extends XRESTTransport {
                 this.originProxyPath);
         b.setHeader(ACCEPT_HEADER, mimeType);
         b.setHeader(X_PROXY_LOCATION_HEADER, url);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         b.setRequestData(payload);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.POST_RESPONSE_CODES, false, callback));
     }

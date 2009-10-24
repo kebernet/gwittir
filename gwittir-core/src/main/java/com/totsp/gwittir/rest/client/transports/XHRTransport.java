@@ -31,6 +31,7 @@ public class XHRTransport extends HTTPTransport {
     public RequestControl delete(String mimeType, String url, final AsyncCallback callback) {
         RequestBuilder b = new FullRequestBuilder("DELETE", url);
         b.setHeader(ACCEPT_HEADER, mimeType);
+        b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.DELETE_RESPONSE_CODES, false, callback));
     }
 
@@ -42,6 +43,7 @@ public class XHRTransport extends HTTPTransport {
 
     public RequestControl post(String mimeType, String url, String payload, final AsyncCallback<String> callback) {
         RequestBuilder b = new RequestBuilder(RequestBuilder.POST, url);
+        b.setHeader(ACCEPT_HEADER, mimeType);
         b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         b.setRequestData(payload);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.POST_RESPONSE_CODES, false, callback));
@@ -49,6 +51,7 @@ public class XHRTransport extends HTTPTransport {
 
     public RequestControl put(String mimeType, String url, String payload, final AsyncCallback<String> callback) {
         RequestBuilder b = new FullRequestBuilder("PUT", url);
+        b.setHeader(ACCEPT_HEADER, mimeType);
         b.setHeader(CONTENT_TYPE_HEADER, mimeType);
         b.setRequestData(payload);
         return super.doRequest(b, new GenericRequestCallback(HTTPTransport.PUT_RESPONSE_CODES, false, callback));

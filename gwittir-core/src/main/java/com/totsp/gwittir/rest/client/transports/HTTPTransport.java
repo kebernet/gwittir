@@ -21,8 +21,8 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import com.totsp.gwittir.rest.client.Transport;
 
 import java.util.Arrays;
@@ -35,16 +35,21 @@ import java.util.Arrays;
 public abstract class HTTPTransport implements Transport {
     /** "Accept" */
     public static final String ACCEPT_HEADER = "Accept";
+
     /** "Content-Type" */
     public static final String CONTENT_TYPE_HEADER = "Content-Type";
+
     /** SC_OK */
     public static final int[] GET_RESPONSE_CODES = new int[] { Response.SC_OK };
+
     /** SC_OK, SC_NO_CONTENT, SC_CREATED */
     public static final int[] PUT_RESPONSE_CODES = new int[] { Response.SC_OK, Response.SC_NO_CONTENT, Response.SC_CREATED };
+
     /** SC_OK, SC_NO_CONTENT, SC_RESET_CONTENT */
     public static final int[] POST_RESPONSE_CODES = new int[] {
             Response.SC_OK, Response.SC_NO_CONTENT, Response.SC_RESET_CONTENT
         };
+
     /** SC_OK, SC_NO_CONTENT */
     public static final int[] DELETE_RESPONSE_CODES = new int[] { Response.SC_OK, Response.SC_NO_CONTENT };
 
@@ -187,14 +192,14 @@ public abstract class HTTPTransport implements Transport {
     }
 
     /** A standard RequestCallback that can be used to invoke #doRequest() with.
-     * 
+     *
      */
     protected static class GenericRequestCallback implements RequestCallback {
         AsyncCallback<String> wrapped;
         int[] codes;
         boolean requireBody;
 
-        GenericRequestCallback(int[] codes, boolean requireBody, AsyncCallback<String> wrapped) {
+        public GenericRequestCallback(int[] codes, boolean requireBody, AsyncCallback<String> wrapped) {
             this.codes = codes;
             this.requireBody = requireBody;
             this.wrapped = wrapped;
