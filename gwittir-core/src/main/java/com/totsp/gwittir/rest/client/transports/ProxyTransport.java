@@ -22,9 +22,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.totsp.gwittir.rest.client.Transport.RequestControl;
 
 
-/**
+/** A transport that makes XREST calls with an addition X-Proxy-Location filter that can be used to forward
+ * non-same orgin request though the host server to another server.
  *
- * @author kebernet
+ * @see com.totsp.gwittir.rest.server.RESTProxyServlet
+ * @author <a href="mailto:kebernet@gmail.com">Robert Cooper</a>
  */
 public class ProxyTransport extends XRESTTransport {
     public static final String X_PROXY_LOCATION_HEADER = "X-Proxy-Location";

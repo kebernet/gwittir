@@ -22,9 +22,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.totsp.gwittir.rest.client.Transport.RequestControl;
 
 
-/**
+/** The XRESTTransport uses GET for DELETE and POST for PUT, while passing an extended header called
+ * X-REST-Method with the actual intended method for the call. This is suitable for older browsers that
+ * only support GET and POST as methods.
  *
- * @author rcooper
+ * You can use this with the XRESTFilter to easily support this operation in your REST services.
+ * @see com.totsp.gwittir.rest.server.XRESTFilter
+ *
+ * @author <a href="mailto:kebernet@gmail.com">Robert Cooper</a>
  */
 public class XRESTTransport extends HTTPTransport {
     public static final String X_REST_METHOD_HEADER = "X-REST-Method";

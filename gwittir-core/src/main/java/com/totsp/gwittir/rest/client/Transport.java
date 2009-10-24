@@ -14,24 +14,57 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.totsp.gwittir.rest.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-/**
+
+/** Transports are implementations of the network call that deal directly with the serialized forms of objects in RESTService
  *
- * @author kebernet
+ * @see com.totsp.gwittir.rest.client.transports.XHRTransport
+ * @author <a href="mailto:kebernet@gmail.com">Robert Cooper</a>
  */
 public interface Transport {
+    /** Makes a DELETE request to the server
+     *
+     * @param mimeType mimeType from the codec.
+     * @param url URL to make the request to
+     * @param callback callback with the redirect URL or the resultant data.
+     * @return RequestControl for cancelling the request.
+     */
+    public RequestControl delete(String mimeType, String url, AsyncCallback<String> callback);
 
-    public RequestControl get(String mimeType, String url, AsyncCallback<String> callback );
-    public RequestControl put(String mimeType, String url, String payload, AsyncCallback<String> callback );
-    public RequestControl delete(String mimeType, String url, AsyncCallback<String> callback );
-    public RequestControl post(String mimeType, String url, String payload, AsyncCallback<String> callback );
+    /** Makes a GET request to the server
+     *
+     * @param mimeType mimeType from the codec.
+     * @param url URL to make the request to
+     * @param callback callback with the resultant data.
+     * @return RequestControl for cancelling the request.
+     */
+    public RequestControl get(String mimeType, String url, AsyncCallback<String> callback);
 
+    /** Makes a POST request to the server
+     *
+     * @param mimeType mimeType from the codec.
+     * @param url URL to make the request to
+     * @param callback callback with the redirect URL or the resultant data.
+     * @return RequestControl for cancelling the request.
+     */
+    public RequestControl post(String mimeType, String url, String payload, AsyncCallback<String> callback);
+
+    /** Makes a PUT request to the server
+     *
+     * @param mimeType mimeType from the codec.
+     * @param url URL to make the request to
+     * @param callback callback with the redirect URL or the resultant data.
+     * @return RequestControl for cancelling the request.
+     */
+    public RequestControl put(String mimeType, String url, String payload, AsyncCallback<String> callback);
+
+    /** An interface to controlling a request once it has been made.
+     *
+     */
     public static interface RequestControl {
         public void cancel();
     }
-
 }

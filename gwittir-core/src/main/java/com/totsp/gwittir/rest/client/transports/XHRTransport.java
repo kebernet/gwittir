@@ -23,9 +23,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.totsp.gwittir.rest.client.Transport.RequestControl;
 
 
-/**
+/** A Standard Transport based on the XmlHttpRequest object provided through the GWT HTTP APIs.
  *
- * @author kebernet
+ * @author <a href="mailto:kebernet@gmail.com">Robert Cooper</a>
  */
 public class XHRTransport extends HTTPTransport {
     public RequestControl delete(String mimeType, String url, final AsyncCallback callback) {
