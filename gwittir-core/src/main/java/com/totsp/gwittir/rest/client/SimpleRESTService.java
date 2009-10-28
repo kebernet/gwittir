@@ -88,7 +88,7 @@ public class SimpleRESTService<T> implements RESTService<T> {
         try {
             String value = codec.serialize(object);
 
-            return transport.post(codec.getMimeType(), baseURL + key, value,
+            return transport.post(codec.getMimeType(), baseURL + (key == null ? "" : key), value,
                 callback);
         } catch (final Exception e) {
             DeferredCommand.addCommand(new Command() {
