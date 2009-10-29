@@ -41,7 +41,7 @@ import java.util.Map.Entry;
  * This class represents a DataBinding between two objects. It also supports
  * Child bindings. For more information, see <a
  * href="http://code.google.com/p/gwittir/wiki/Binding">Binding</a> in the Wiki.
- *
+ * @see com.totsp.gwittir.client.beans.BindingBuilder
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet"
  *         Cooper</a>
  */
@@ -78,7 +78,7 @@ public class Binding {
      * @param rightProperty
      *            Property on the right object.
      */
-    public Binding(Bindable left, String leftProperty, Bindable right, String rightProperty) {
+    public Binding(SourcesPropertyChangeEvents left, String leftProperty, SourcesPropertyChangeEvents right, String rightProperty) {
         this.left = this.createBindingInstance(left, leftProperty);
         this.right = this.createBindingInstance(right, rightProperty);
 
@@ -107,7 +107,7 @@ public class Binding {
      *            Feedback for the right hand validator.
      */
     public Binding(
-        Bindable left, String leftProperty, Validator leftValidator, ValidationFeedback leftFeedback, Bindable right,
+        SourcesPropertyChangeEvents left, String leftProperty, Validator leftValidator, ValidationFeedback leftFeedback, SourcesPropertyChangeEvents right,
         String rightProperty, Validator rightValidator, ValidationFeedback rightFeedback) {
         this.left = this.createBindingInstance(left, leftProperty);
         this.left.validator = leftValidator;
@@ -131,7 +131,7 @@ public class Binding {
      * @param rightConverter
      */
     public Binding(
-        Bindable left, String leftProperty, Converter leftConverter, Bindable right, String rightProperty,
+        SourcesPropertyChangeEvents left, String leftProperty, Converter leftConverter, SourcesPropertyChangeEvents right, String rightProperty,
         Converter rightConverter) {
         this.left = this.createBindingInstance(left, leftProperty);
         this.left.converter = leftConverter;
@@ -172,7 +172,7 @@ public class Binding {
      *            The property on the Widgets model object to bind to.
      */
     public <T>Binding(BoundWidget<T> widget, Validator validator, ValidationFeedback feedback, String modelProperty) {
-        this(widget, "value", validator, feedback, (Bindable) widget.getModel(), "modelProperty", null, null);
+        this(widget, "value", validator, feedback, (SourcesPropertyChangeEvents) widget.getModel(), "modelProperty", null, null);
     }
 
     /**
@@ -309,11 +309,14 @@ public class Binding {
         this.bound = true;
     }
 
+    @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
-
+        if(obj.getClass() != this.getClass() ){
+            return false;
+        }
         final Binding other = (Binding) obj;
 
         if ((this.left != other.left) && ((this.left == null) || !this.left.equals(other.left))) {
@@ -432,7 +435,7 @@ public class Binding {
         return valid;
     }
 
-    BindingInstance createBindingInstance(Bindable object, String propertyName) {
+    BindingInstance createBindingInstance(SourcesPropertyChangeEvents object, String propertyName) {
         int dotIndex = propertyName.indexOf(".");
         BindingInstance instance = new BindingInstance();
         NestedPropertyChangeListener rtpcl = (dotIndex == -1) ? null
@@ -466,7 +469,7 @@ public class Binding {
                                                            .invoke(object, null);
                     object = this.getDiscriminatedObject(collectionOrArray, descriminator);
                 } else {
-                    object = (Bindable) INTROSPECTOR.getDescriptor(object)
+                    object = (SourcesPropertyChangeEvents) INTROSPECTOR.getDescriptor(object)
                                                     .getProperty(pname)
                                                     .getAccessorMethod()
                                                     .invoke(object, null);
@@ -481,7 +484,7 @@ public class Binding {
         }
 
         if (rtpcl != null) {
-            rtpcl.parents = new Bindable[parents.size()];
+            rtpcl.parents = new SourcesPropertyChangeEvents[parents.size()];
             parents.toArray(rtpcl.parents);
             rtpcl.propertyNames = new String[propertyNames.size()];
             propertyNames.toArray(rtpcl.propertyNames);
@@ -501,12 +504,12 @@ public class Binding {
         return instance;
     }
 
-    private Bindable getBindableAtCollectionIndex(Collection collection, int index) {
+    private SourcesPropertyChangeEvents getBindableAtCollectionIndex(Collection collection, int index) {
         int i = 0;
-        Bindable result = null;
+        SourcesPropertyChangeEvents result = null;
 
         for (Iterator it = collection.iterator(); it.hasNext() && (i <= index); i++) {
-            result = (Bindable) it.next();
+            result = (SourcesPropertyChangeEvents) it.next();
 
             return result;
         }
@@ -514,8 +517,8 @@ public class Binding {
         throw new IndexOutOfBoundsException("Binding descriminator too high: " + index);
     }
 
-    private Bindable getBindableAtMapKey(Map map, String key) {
-        Bindable result = null;
+    private SourcesPropertyChangeEvents getBindableAtMapKey(Map map, String key) {
+        SourcesPropertyChangeEvents result = null;
 
         for (Iterator it = map.entrySet()
                               .iterator(); it.hasNext();) {
@@ -524,7 +527,7 @@ public class Binding {
             if (e.getKey()
                      .toString()
                      .equals(key)) {
-                result = (Bindable) e.getValue();
+                result = (SourcesPropertyChangeEvents) e.getValue();
 
                 break;
             }
@@ -533,7 +536,7 @@ public class Binding {
         return result;
     }
 
-    private Bindable getBindableFromArrayWithProperty(Bindable[] array, String propertyName, String stringValue) {
+    private SourcesPropertyChangeEvents getBindableFromArrayWithProperty(SourcesPropertyChangeEvents[] array, String propertyName, String stringValue) {
         Method access = null;
 
         for (int i = 0; i < array.length; i++) {
@@ -555,12 +558,12 @@ public class Binding {
         throw new RuntimeException("No Object matching " + propertyName + "=" + stringValue);
     }
 
-    private Bindable getBindableFromCollectionWithProperty(
+    private SourcesPropertyChangeEvents getBindableFromCollectionWithProperty(
         Collection collection, String propertyName, String stringValue) {
         Method access = null;
 
         for (Iterator it = collection.iterator(); it.hasNext();) {
-            Bindable object = (Bindable) it.next();
+            SourcesPropertyChangeEvents object = (SourcesPropertyChangeEvents) it.next();
 
             if (access == null) {
                 access = Introspector.INSTANCE.getDescriptor(object)
@@ -580,7 +583,7 @@ public class Binding {
         throw new RuntimeException("No Object matching " + propertyName + "=" + stringValue);
     }
 
-    private Bindable getDiscriminatedObject(Object collectionOrArray, String descriminator) {
+    private SourcesPropertyChangeEvents getDiscriminatedObject(Object collectionOrArray, String descriminator) {
         int equalsIndex = descriminator.indexOf("=");
 
         if (collectionOrArray instanceof Collection && (equalsIndex == -1)) {
@@ -592,10 +595,10 @@ public class Binding {
         } else if (collectionOrArray instanceof Map) {
             return this.getBindableAtMapKey((Map) collectionOrArray, descriminator);
         } else if (equalsIndex == -1) {
-            return ((Bindable[]) collectionOrArray)[Integer.parseInt(descriminator)];
+            return ((SourcesPropertyChangeEvents[]) collectionOrArray)[Integer.parseInt(descriminator)];
         } else {
             return getBindableFromArrayWithProperty(
-                (Bindable[]) collectionOrArray, descriminator.substring(0, equalsIndex),
+                (SourcesPropertyChangeEvents[]) collectionOrArray, descriminator.substring(0, equalsIndex),
                 descriminator.substring(equalsIndex + 1));
         }
     }
@@ -608,7 +611,7 @@ public class Binding {
         /**
          * The Object being bound.
          */
-        public Bindable object;
+        public SourcesPropertyChangeEvents object;
 
         /**
          * A converter when needed.
@@ -708,13 +711,13 @@ public class Binding {
     }
 
     private class NestedPropertyChangeListener implements PropertyChangeListener {
-        Bindable sourceObject;
+        SourcesPropertyChangeEvents sourceObject;
         BindingInstance target;
         String propertyName;
-        Bindable[] parents;
+        SourcesPropertyChangeEvents[] parents;
         String[] propertyNames;
 
-        NestedPropertyChangeListener(BindingInstance target, Bindable sourceObject, String propertyName) {
+        NestedPropertyChangeListener(BindingInstance target, SourcesPropertyChangeEvents sourceObject, String propertyName) {
             this.target = target;
             this.sourceObject = sourceObject;
             this.propertyName = propertyName;

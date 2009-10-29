@@ -39,10 +39,10 @@ import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.totsp.gwittir.client.action.Action;
-import com.totsp.gwittir.client.beans.Bindable;
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Property;
+import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
 import com.totsp.gwittir.client.keyboard.KeyBinding;
 import com.totsp.gwittir.client.keyboard.KeyBindingException;
 import com.totsp.gwittir.client.keyboard.KeyboardController;
@@ -315,22 +315,22 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     }
 
     /**
-     * Adds a new Bindable object to the table.
-     * @param o An object of type Bindable.
+     * Adds a new SourcesPropertyChangeEvents object to the table.
+     * @param o An object of type SourcesPropertyChangeEvents.
      */
-    public void add(Bindable o) {
+    public void add(SourcesPropertyChangeEvents o) {
         if (this.value.add(o)) {
             this.addRow(o);
         }
     }
 
     /**
-     * Adds a colleciton of Bindables to the table
-     * @param c A collection containing Bindable objects.
+     * Adds a colleciton of SourcesPropertyChangeEvents to the table
+     * @param c A collection containing SourcesPropertyChangeEvents objects.
      */
     public void add(Collection c) {
         for (Iterator it = c.iterator(); it.hasNext();) {
-            this.add((Bindable) it.next());
+            this.add((SourcesPropertyChangeEvents) it.next());
         }
     }
 
@@ -373,7 +373,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
         this.addKeyBinding(binding, (Object) this);
     }
 
-    private void addRow(final Bindable o) {
+    private void addRow(final SourcesPropertyChangeEvents o) {
         int row = table.getRowCount();
 
         if (((((masks & BoundTable.HEADER_MASK) > 0) && (row >= 2)) ||
@@ -736,7 +736,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     }
 
     private BoundWidget createCellWidget(Binding rowBinding, int colIndex,
-        Bindable target) {
+        SourcesPropertyChangeEvents target) {
         final BoundWidget widget;
         Field col = this.columns[colIndex];
         BoundWidget[] rowWidgets = (BoundWidget[]) widgetCache.get(target);
@@ -1233,7 +1233,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
 
         //GWT.log( "RealIndex: "+ realIndex, null );
         int i = 0;
-        Bindable o = null;
+        SourcesPropertyChangeEvents o = null;
 
         for (Iterator it = this.topBinding.getChildren().iterator();
                 it.hasNext(); i++) {
@@ -1359,7 +1359,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
 
         for (Iterator it = (this.value == null) ? null : this.value.iterator();
                 (it != null) && it.hasNext();) {
-            this.addRow((Bindable) it.next());
+            this.addRow((SourcesPropertyChangeEvents) it.next());
         }
 
         if ((this.provider != null) &&
@@ -1495,7 +1495,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
 
         for (Iterator it = this.topBinding.getChildren().iterator();
                 it.hasNext(); i++) {
-            Bindable b = ((Binding) ((Binding) it.next()).getChildren().get(0)).getRight().object;
+            SourcesPropertyChangeEvents b = ((Binding) ((Binding) it.next()).getChildren().get(0)).getRight().object;
 
             if (selected.contains(b)) {
                 this.setSelectedRow(calculateObjectToRowOffset(i));

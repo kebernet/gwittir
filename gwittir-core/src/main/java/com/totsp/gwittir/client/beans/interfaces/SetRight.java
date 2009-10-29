@@ -5,12 +5,12 @@
 
 package com.totsp.gwittir.client.beans.interfaces;
 
-import com.totsp.gwittir.client.beans.Bindable;
+import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
 
 /**
  *
  * @author kebernet
  */
 public interface SetRight {
-    SetPropertyRight toRight( Bindable o );
+    SetPropertyRight toRight( SourcesPropertyChangeEvents o );
 }

@@ -4,10 +4,13 @@
  */
 package com.totsp.gwittir.client.beans;
 
+import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.totsp.gwittir.client.beans.adapters.GWTBindableAdapter;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
 
 import com.totsp.gwittir.client.beans.Binding.BindingInstance;
 import com.totsp.gwittir.client.beans.Binding.DefaultPropertyChangeListener;
+import com.totsp.gwittir.client.beans.adapters.ChangeHandlerBindableAdapter;
 import com.totsp.gwittir.client.beans.interfaces.Finish;
 import com.totsp.gwittir.client.beans.interfaces.SetBindingOptionsLeft;
 import com.totsp.gwittir.client.beans.interfaces.SetBindingOptionsRight;
@@ -50,24 +53,43 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return builder;
     }
 
-    public static SetPropertyLeft bind(SourcesChangeEvents object) {
+    public static SetPropertyLeft bindOnChangeEvents(SourcesChangeEvents object) {
         GWTBindableAdapter a = new GWTBindableAdapter(object);
 
         return bind(a);
     }
 
-    public static SetPropertyLeft bind(Bindable object) {
+    public static SetPropertyLeft bindOnChangeHandler(HasChangeHandlers object) {
+        ChangeHandlerBindableAdapter a = new ChangeHandlerBindableAdapter(object);
+
+        return bind(a);
+    }
+
+    public static SetPropertyLeft bind(SourcesPropertyChangeEvents object) {
         BindingBuilder builder = new BindingBuilder();
         builder.temp = object;
 
         return builder;
     }
 
-    public SetPropertyLeft bindLeft(Bindable object) {
+    public SetPropertyLeft bindLeft(SourcesPropertyChangeEvents object) {
         this.temp = object;
 
         return this;
     }
+    
+    public SetPropertyLeft bindLeftOnChangeEvents(SourcesChangeEvents o) {
+        this.temp = new GWTBindableAdapter(o);
+        return this;
+    }
+
+    public SetPropertyLeft bindLeftOnChangeHandler(HasChangeHandlers o) {
+        this.temp = new ChangeHandlerBindableAdapter(o);
+        
+        return this;
+    }
+
+
 
     public SetValidateOrRight convertLeftWith(Converter converter) {
         left.converter = converter;
@@ -82,7 +104,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     }
 
     public SetBindingOptionsLeft onLeftProperty(String propertyName) {
-        this.left = parentBinding.createBindingInstance((Bindable) this.temp, propertyName);
+        this.left = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
 
         temp = null;
 
@@ -102,7 +124,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     }
 
     public SetBindingOptionsRight onRightProperty(String propertyName) {
-        this.right = parentBinding.createBindingInstance((Bindable) this.temp, propertyName);
+        this.right = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
         return this;
     }
 
@@ -121,7 +143,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this.parentBinding;
     }
 
-    public SetPropertyRight toRight(Bindable o) {
+    public SetPropertyRight toRight(SourcesPropertyChangeEvents o) {
         this.temp = o;
         return this;
     }
@@ -161,4 +183,6 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
 
         return this;
     }
+
+
 }

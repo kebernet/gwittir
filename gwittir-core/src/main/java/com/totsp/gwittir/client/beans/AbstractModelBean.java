@@ -26,7 +26,7 @@ DOCUMENT ME!
  *
  * @author ccollins
  */
-public abstract class AbstractModelBean implements Bindable {
+public abstract class AbstractModelBean implements SourcesPropertyChangeEvents {
     private transient final ToStringBean toString = new ToStringBean(this);
     private transient final EqualsHashCodeBean equalsHash = new EqualsHashCodeBean(this);
     protected transient final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -40,6 +40,7 @@ public abstract class AbstractModelBean implements Bindable {
     }
 
     @Override
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object obj) {
         return this.equalsHash.equals(obj);
     }

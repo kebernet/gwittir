@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.totsp.gwittir.client.beans;
+package com.totsp.gwittir.client.beans.adapters;
 
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;

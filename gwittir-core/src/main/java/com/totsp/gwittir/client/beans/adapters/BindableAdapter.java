@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.totsp.gwittir.client.beans;
+package com.totsp.gwittir.client.beans.adapters;
 
+import com.totsp.gwittir.client.beans.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  *
  * @author kebernet
  */
-public abstract class BindableAdapter implements Bindable, SelfDescribed {
+public abstract class BindableAdapter implements SourcesPropertyChangeEvents, SelfDescribed {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Object watched;
     private Map<String, Object> values = new HashMap<String, Object>();
@@ -49,7 +50,7 @@ public abstract class BindableAdapter implements Bindable, SelfDescribed {
             for (Property p : this.properties) {
                 if (p.getAccessorMethod() != null) {
                     values.put(p.getName(),
-                        p.getAccessorMethod().invoke(this.watched, null));
+                        p.getAccessorMethod().invoke(this.getWatched(), null));
                 }
             }
         } catch (Exception e) {
@@ -65,7 +66,7 @@ public abstract class BindableAdapter implements Bindable, SelfDescribed {
 
             try {
                 Object old = this.values.get(p.getName());
-                Object cur = p.getAccessorMethod().invoke(this.watched, null);
+                Object cur = p.getAccessorMethod().invoke(this.getWatched(), null);
                 this.propertyChangeSupport.firePropertyChange(p.getName(), old,
                     cur);
             } catch (Exception e) {
@@ -132,6 +133,13 @@ public abstract class BindableAdapter implements Bindable, SelfDescribed {
         return this.descriptor;
     }
 
+    /**
+     * @return the watched
+     */
+    public Object getWatched() {
+        return watched;
+    }
+
     protected static class MethodWrapper implements Method {
         private Method internal;
 
@@ -145,7 +153,7 @@ public abstract class BindableAdapter implements Bindable, SelfDescribed {
 
         public Object invoke(Object target, Object[] args)
             throws Exception {
-            return internal.invoke(((BindableAdapter) target).watched, args);
+            return internal.invoke(((BindableAdapter) target).getWatched(), args);
         }
     }
 }

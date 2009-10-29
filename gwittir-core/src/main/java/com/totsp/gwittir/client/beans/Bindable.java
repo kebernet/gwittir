@@ -28,6 +28,7 @@ import com.totsp.gwittir.client.beans.annotations.Introspectable;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
+@Deprecated
 @Introspectable
 public interface Bindable extends SourcesPropertyChangeEvents {
 }
