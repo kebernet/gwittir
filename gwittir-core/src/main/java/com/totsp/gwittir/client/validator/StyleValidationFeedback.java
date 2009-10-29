@@ -41,6 +41,9 @@ public class StyleValidationFeedback extends AbstractValidationFeedback {
     
     public void handleException(Object source, ValidationException exception) {
         UIObject object = (UIObject) source;
+        if(this.styleName.equals(object.getStyleName()) ){
+            return;
+        }
         String previousStyle =  object.getStyleName() == null ||
                 object.getStyleName().length() == 0 ?
                     "default" :
