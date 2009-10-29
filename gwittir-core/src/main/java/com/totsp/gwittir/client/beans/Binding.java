@@ -357,13 +357,17 @@ public class Binding {
     public void unbind() {
         if ((left != null) && (right != null)) {
             left.object.removePropertyChangeListener(left.property.getName(), left.listener);
-
+            if(left.feedback != null){
+                left.feedback.resolve(left.object);
+            }
             if (left.nestedListener != null) {
                 left.nestedListener.cleanup();
             }
 
             right.object.removePropertyChangeListener(right.property.getName(), right.listener);
-
+            if(right.feedback != null){
+                right.feedback.resolve(right.object);
+            }
             if (right.nestedListener != null) {
                 right.nestedListener.cleanup();
             }
