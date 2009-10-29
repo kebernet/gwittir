@@ -198,10 +198,11 @@ public class Binding {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
+        } 
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = children.get(i);
+            System.out.println("Setting left on child "+i);
             child.setLeft();
         }
 
@@ -341,15 +342,19 @@ public class Binding {
 
     @Override
     public String toString() {
-        return new StringBuilder("[Binding property ").append(left.property)
+        StringBuilder sb = new StringBuilder("[Binding property ").append(left.property)
                                                       .append(" on ")
                                                       .append(left.object)
                                                       .append(" to ")
                                                       .append(right.property)
                                                       .append(" on ")
                                                       .append(right.object)
-                                                      .append(" ]")
-                                                      .toString();
+                                                      .append(" ] with children :");
+        for(Binding b : this.getChildren() ){
+            sb.append("\n"+ b.toString());
+        }
+        return sb.toString();
+                                                      
     }
 
 

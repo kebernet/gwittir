@@ -41,6 +41,8 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     private BindingInstance left;
     private BindingInstance right;
     private Object temp;
+    private static boolean isAnd = false;
+    private static Binding lastAppended;
 
     private BindingBuilder() {
     }
@@ -49,7 +51,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         BindingBuilder builder = new BindingBuilder();
         parent.getChildren()
               .add(builder.parentBinding);
-
+        lastAppended = parent;
         return builder;
     }
 
@@ -156,11 +158,20 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         assert right.property != null : "Right property null";
         assert right.listener != null : "Right listener null";
 
-        return this.parentBinding;
+        if(BindingBuilder.lastAppended != null && isAnd ){
+            lastAppended.getChildren().add(this.parentBinding);
+            Binding val = lastAppended;
+            lastAppended = null;
+            isAnd = false;
+            return val;
+        } else {
+            return this.parentBinding;
+        }
     }
 
     public SetLeft and() {
-        return BindingBuilder.appendChildToBinding(this.toBinding());
+        isAnd = true;
+        return BindingBuilder.appendChildToBinding( this.toBinding() );
     }
 
     public SetPropertyRight toRight(SourcesPropertyChangeEvents o) {
