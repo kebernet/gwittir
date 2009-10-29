@@ -202,7 +202,7 @@ public class Binding {
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = children.get(i);
-            System.out.println("Setting left on child "+i);
+            //System.out.println("Setting left on child "+i);
             child.setLeft();
         }
 
