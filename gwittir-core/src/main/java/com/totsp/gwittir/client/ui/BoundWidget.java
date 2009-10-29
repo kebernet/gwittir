@@ -22,8 +22,9 @@ package com.totsp.gwittir.client.ui;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
 
 import com.totsp.gwittir.client.action.Action;
-import com.totsp.gwittir.client.beans.Bindable;
 
+import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
+import com.totsp.gwittir.client.beans.annotations.Introspectable;
 import java.util.Comparator;
 
 
@@ -31,7 +32,8 @@ import java.util.Comparator;
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
-public interface BoundWidget<T> extends Bindable, SourcesChangeEvents {
+@Introspectable
+public interface BoundWidget<T> extends SourcesChangeEvents, SourcesPropertyChangeEvents {
     public Action<BoundWidget<T>> getAction();
 
     public Comparator<BoundWidget<T>> getComparator();
