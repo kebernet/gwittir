@@ -37,12 +37,11 @@ import com.totsp.gwittir.client.validator.Validator;
  */
 public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, SetLeft, SetBindingOptionsLeft, SetPropertyLeft, SetValidationFeedbackLeft,
     SetValidationFeedbackRight, SetValidatorRight, SetValidateOrRight, SetBindingOptionsRight, SetPropertyRight {
-    private Binding parentBinding = new Binding();
+    private Binding workBinding = new Binding();
     private BindingInstance left;
     private BindingInstance right;
     private Object temp;
-    private static boolean isAnd = false;
-    private static Binding lastAppended;
+    private Binding parent;
 
     private BindingBuilder() {
     }
@@ -50,8 +49,8 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     public static SetLeft appendChildToBinding(Binding parent) {
         BindingBuilder builder = new BindingBuilder();
         parent.getChildren()
-              .add(builder.parentBinding);
-        lastAppended = parent;
+              .add(builder.workBinding);
+        builder.parent = parent;
         return builder;
     }
 
@@ -133,7 +132,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     }
 
     public SetBindingOptionsLeft onLeftProperty(String propertyName) {
-        this.left = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
+        this.left = workBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
 
         temp = null;
 
@@ -141,14 +140,14 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     }
 
     public SetBindingOptionsRight onRightProperty(String propertyName) {
-        this.right = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
+        this.right = workBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
 
         return this;
     }
 
     public Binding toBinding() {
-        this.parentBinding.left = this.left;
-        this.parentBinding.right = this.right;
+        this.workBinding.left = this.left;
+        this.workBinding.right = this.right;
         this.left.listener = new DefaultPropertyChangeListener(left, right);
         this.right.listener = new DefaultPropertyChangeListener(right, left);
         assert left.object != null : "Left object null";
@@ -158,20 +157,17 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         assert right.property != null : "Right property null";
         assert right.listener != null : "Right listener null";
 
-        if(BindingBuilder.lastAppended != null && isAnd ){
-            lastAppended.getChildren().add(this.parentBinding);
-            Binding val = lastAppended;
-            lastAppended = null;
-            isAnd = false;
-            return val;
-        } else {
-            return this.parentBinding;
-        }
+        return this.parent == null ? this.workBinding: this.parent;
+        
     }
 
     public SetLeft and() {
-        isAnd = true;
-        return BindingBuilder.appendChildToBinding( this.toBinding() );
+        if(parent == null){
+            parent = this.toBinding(); // first one, so save it.
+        } else {
+            this.toBinding(); //this was appended, so lets just finalize it.
+        }
+        return BindingBuilder.appendChildToBinding( this.parent );
     }
 
     public SetPropertyRight toRight(SourcesPropertyChangeEvents o) {
