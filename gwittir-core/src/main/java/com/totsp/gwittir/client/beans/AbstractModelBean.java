@@ -26,6 +26,7 @@ DOCUMENT ME!
  *
  * @author ccollins
  */
+@com.totsp.gwittir.client.beans.annotations.Introspectable
 public abstract class AbstractModelBean implements SourcesPropertyChangeEvents {
     private transient final ToStringBean toString = new ToStringBean(this);
     private transient final EqualsHashCodeBean equalsHash = new EqualsHashCodeBean(this);
