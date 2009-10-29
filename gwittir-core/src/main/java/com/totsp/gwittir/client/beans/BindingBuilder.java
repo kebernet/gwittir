@@ -60,6 +60,10 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return builder;
     }
 
+    public static SetPropertyLeft bindOnPropertyChangeEvents(SourcesPropertyChangeEvents object){
+        return bind(object);
+    }
+
     public static SetPropertyLeft bindOnChangeEvents(SourcesChangeEvents object) {
         GWTBindableAdapter a = new GWTBindableAdapter(object);
 
