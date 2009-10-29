@@ -14,4 +14,5 @@ import com.totsp.gwittir.client.validator.ValidationFeedback;
 public interface SetValidationFeedbackRight {
 
     Finish notifiedWithRight( ValidationFeedback feedback );
+    Finish notifiedWithRight( ValidationFeedback... feedbacks );
 }

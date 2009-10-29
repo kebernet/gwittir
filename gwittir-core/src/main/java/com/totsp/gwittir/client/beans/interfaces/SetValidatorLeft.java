@@ -13,4 +13,5 @@ import com.totsp.gwittir.client.validator.Validator;
  */
 public interface SetValidatorLeft {
     SetValidationFeedbackLeft validateLeftWith( Validator validator );
+    SetValidationFeedbackLeft validateLeftWith( Validator... validators );
 }

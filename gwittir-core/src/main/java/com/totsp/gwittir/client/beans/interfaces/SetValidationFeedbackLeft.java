@@ -13,4 +13,5 @@ import com.totsp.gwittir.client.validator.ValidationFeedback;
  */
 public interface SetValidationFeedbackLeft {
     SetRight notifiedWithLeft( ValidationFeedback feedback );
+    SetRight notifiedWithLeft( ValidationFeedback... feedbacks );
 }

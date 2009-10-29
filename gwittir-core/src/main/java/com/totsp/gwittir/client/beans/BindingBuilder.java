@@ -21,6 +21,8 @@ import com.totsp.gwittir.client.beans.interfaces.SetValidateOrRight;
 import com.totsp.gwittir.client.beans.interfaces.SetValidationFeedbackLeft;
 import com.totsp.gwittir.client.beans.interfaces.SetValidationFeedbackRight;
 import com.totsp.gwittir.client.beans.interfaces.SetValidatorRight;
+import com.totsp.gwittir.client.validator.CompositeValidationFeedback;
+import com.totsp.gwittir.client.validator.CompositeValidator;
 import com.totsp.gwittir.client.validator.ValidationFeedback;
 import com.totsp.gwittir.client.validator.Validator;
 
@@ -130,8 +132,32 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this;
     }
 
+    public SetValidationFeedbackLeft validateLeftWith(Validator... validators) {
+        this.left.validator = new CompositeValidator(validators);
+
+        return this;
+    }
+
     public SetValidationFeedbackRight validateRightWith(Validator validator) {
         this.right.validator = validator;
+
+        return this;
+    }
+
+    public SetValidationFeedbackRight validateRightWith(Validator... validators) {
+        this.right.validator = new CompositeValidator(validators);
+
+        return this;
+    }
+
+    public SetRight notifiedWithLeft(ValidationFeedback... feedbacks) {
+        this.left.feedback = new CompositeValidationFeedback(feedbacks);
+
+        return this;
+    }
+
+    public Finish notifiedWithRight(ValidationFeedback... feedbacks) {
+         this.right.feedback = new CompositeValidationFeedback(feedbacks);
 
         return this;
     }
