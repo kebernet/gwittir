@@ -202,7 +202,6 @@ public class Binding {
 
         for (int i = 0; (children != null) && (i < children.size()); i++) {
             Binding child = children.get(i);
-            //System.out.println("Setting left on child "+i);
             child.setLeft();
         }
 
@@ -366,7 +365,11 @@ public class Binding {
         if ((left != null) && (right != null)) {
             left.object.removePropertyChangeListener(left.property.getName(), left.listener);
             if(left.feedback != null){
-                left.feedback.resolve(left.object);
+                try{
+                    left.feedback.resolve(left.object);
+                } catch(Exception e){
+                    LOGGER.log(Level.INFO, "Exception cleaning up feedback ", e);
+                }
             }
             if (left.nestedListener != null) {
                 left.nestedListener.cleanup();
@@ -374,7 +377,11 @@ public class Binding {
 
             right.object.removePropertyChangeListener(right.property.getName(), right.listener);
             if(right.feedback != null){
-                right.feedback.resolve(right.object);
+                try{
+                    right.feedback.resolve(right.object);
+                } catch(Exception e){
+                    LOGGER.log(Level.INFO, "Exception cleaning up feedback ", e);
+                }
             }
             if (right.nestedListener != null) {
                 right.nestedListener.cleanup();
