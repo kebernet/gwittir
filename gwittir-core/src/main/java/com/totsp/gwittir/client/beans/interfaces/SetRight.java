@@ -5,6 +5,8 @@
 
 package com.totsp.gwittir.client.beans.interfaces;
 
+import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
 
 /**
@@ -13,4 +15,7 @@ import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
  */
 public interface SetRight {
     SetPropertyRight toRight( SourcesPropertyChangeEvents o );
+    SetPropertyRight toRightOnChangeEvents( SourcesChangeEvents o);
+    SetPropertyRight toRightOnChangeHandler(HasChangeHandlers o);
+    SetPropertyRight toRightOneWay(Object o);
 }

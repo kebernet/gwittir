@@ -13,4 +13,5 @@ import com.totsp.gwittir.client.beans.Binding;
  */
 public interface Finish {
     public Binding toBinding();
+    public SetLeft and();
 }

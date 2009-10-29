@@ -5,12 +5,13 @@
 package com.totsp.gwittir.client.beans;
 
 import com.google.gwt.event.dom.client.HasChangeHandlers;
-import com.totsp.gwittir.client.beans.adapters.GWTBindableAdapter;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
 
 import com.totsp.gwittir.client.beans.Binding.BindingInstance;
 import com.totsp.gwittir.client.beans.Binding.DefaultPropertyChangeListener;
 import com.totsp.gwittir.client.beans.adapters.ChangeHandlerBindableAdapter;
+import com.totsp.gwittir.client.beans.adapters.GWTBindableAdapter;
+import com.totsp.gwittir.client.beans.adapters.OneWayBindingAdapter;
 import com.totsp.gwittir.client.beans.interfaces.Finish;
 import com.totsp.gwittir.client.beans.interfaces.SetBindingOptionsLeft;
 import com.totsp.gwittir.client.beans.interfaces.SetBindingOptionsRight;
@@ -30,13 +31,12 @@ import com.totsp.gwittir.client.validator.ValidationFeedback;
 import com.totsp.gwittir.client.validator.Validator;
 
 
-/**
+/** The BindingBuilder is a semi-"literate programming" style builder for constructing bindings.
  *
- * @author kebernet
+ * @author <a href="kebernet@gmail.com">Robert "kebernet" Cooper</a>
  */
-public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, SetLeft, SetBindingOptionsLeft,
-    SetPropertyLeft, SetValidationFeedbackLeft, SetValidationFeedbackRight, SetValidatorRight, SetValidateOrRight,
-    SetBindingOptionsRight, SetPropertyRight {
+public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, SetLeft, SetBindingOptionsLeft, SetPropertyLeft, SetValidationFeedbackLeft,
+    SetValidationFeedbackRight, SetValidatorRight, SetValidateOrRight, SetBindingOptionsRight, SetPropertyRight {
     private Binding parentBinding = new Binding();
     private BindingInstance left;
     private BindingInstance right;
@@ -53,6 +53,13 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return builder;
     }
 
+    public static SetPropertyLeft bind(SourcesPropertyChangeEvents object) {
+        BindingBuilder builder = new BindingBuilder();
+        builder.temp = object;
+
+        return builder;
+    }
+
     public static SetPropertyLeft bindOnChangeEvents(SourcesChangeEvents object) {
         GWTBindableAdapter a = new GWTBindableAdapter(object);
 
@@ -65,31 +72,23 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return bind(a);
     }
 
-    public static SetPropertyLeft bind(SourcesPropertyChangeEvents object) {
-        BindingBuilder builder = new BindingBuilder();
-        builder.temp = object;
-
-        return builder;
-    }
-
     public SetPropertyLeft bindLeft(SourcesPropertyChangeEvents object) {
         this.temp = object;
 
         return this;
     }
-    
+
     public SetPropertyLeft bindLeftOnChangeEvents(SourcesChangeEvents o) {
         this.temp = new GWTBindableAdapter(o);
+
         return this;
     }
 
     public SetPropertyLeft bindLeftOnChangeHandler(HasChangeHandlers o) {
         this.temp = new ChangeHandlerBindableAdapter(o);
-        
+
         return this;
     }
-
-
 
     public SetValidateOrRight convertLeftWith(Converter converter) {
         left.converter = converter;
@@ -103,16 +102,14 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this;
     }
 
-    public SetBindingOptionsLeft onLeftProperty(String propertyName) {
-        this.left = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
-
-        temp = null;
+    public SetRight notifiedWithLeft(ValidationFeedback feedback) {
+        this.left.feedback = feedback;
 
         return this;
     }
 
-    public SetRight notifiedWithLeft(ValidationFeedback feedback) {
-        this.left.feedback = feedback;
+    public SetRight notifiedWithLeft(ValidationFeedback... feedbacks) {
+        this.left.feedback = new CompositeValidationFeedback(feedbacks);
 
         return this;
     }
@@ -123,8 +120,23 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this;
     }
 
+    public Finish notifiedWithRight(ValidationFeedback... feedbacks) {
+        this.right.feedback = new CompositeValidationFeedback(feedbacks);
+
+        return this;
+    }
+
+    public SetBindingOptionsLeft onLeftProperty(String propertyName) {
+        this.left = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
+
+        temp = null;
+
+        return this;
+    }
+
     public SetBindingOptionsRight onRightProperty(String propertyName) {
         this.right = parentBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
+
         return this;
     }
 
@@ -143,8 +155,31 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
         return this.parentBinding;
     }
 
+    public SetLeft and() {
+        return BindingBuilder.appendChildToBinding(this.toBinding());
+    }
+
     public SetPropertyRight toRight(SourcesPropertyChangeEvents o) {
         this.temp = o;
+
+        return this;
+    }
+
+    public SetPropertyRight toRightOnChangeEvents(SourcesChangeEvents o) {
+        this.temp = new GWTBindableAdapter(o);
+
+        return this;
+    }
+
+    public SetPropertyRight toRightOnChangeHandler(HasChangeHandlers o) {
+        this.temp = new ChangeHandlerBindableAdapter(o);
+
+        return this;
+    }
+
+    public SetPropertyRight toRightOneWay(Object o){
+        this.temp = new OneWayBindingAdapter(o);
+
         return this;
     }
 
@@ -168,18 +203,6 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
 
     public SetValidationFeedbackRight validateRightWith(Validator... validators) {
         this.right.validator = new CompositeValidator(validators);
-
-        return this;
-    }
-
-    public SetRight notifiedWithLeft(ValidationFeedback... feedbacks) {
-        this.left.feedback = new CompositeValidationFeedback(feedbacks);
-
-        return this;
-    }
-
-    public Finish notifiedWithRight(ValidationFeedback... feedbacks) {
-         this.right.feedback = new CompositeValidationFeedback(feedbacks);
 
         return this;
     }
