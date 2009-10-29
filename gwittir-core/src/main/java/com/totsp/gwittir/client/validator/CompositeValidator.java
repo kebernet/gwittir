@@ -33,6 +33,12 @@ import java.util.Iterator;
 public class CompositeValidator implements Validator {
     private ArrayList validators = new ArrayList();
 
+    public CompositeValidator(Validator... v){
+        for(Validator validator: v){
+            this.add(validator);
+        }
+    }
+
     /** Creates a new instance of CompositeValidator */
     public CompositeValidator() {
     }
