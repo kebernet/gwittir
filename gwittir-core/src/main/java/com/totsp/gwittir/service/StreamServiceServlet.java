@@ -172,6 +172,7 @@ public class StreamServiceServlet extends RemoteServiceServlet {
             out.print(request.getParameter("c"));
             out.println("C();");
             out.println(SCRIPT_CLOSE);
+            
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

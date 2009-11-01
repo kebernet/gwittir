@@ -1,12 +1,11 @@
 package com.totsp.gwittir.client.stream.impl;
 
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -38,11 +37,13 @@ public abstract class StreamingServiceStub {
         Element form = this.createForm(id, payload);
         DOM.appendChild(RootPanel.getBodyElement(), form);
         this.submit(form);
-        this.registration = Window.addCloseHandler(new CloseHandler(){
+        this.registration = Window.addWindowClosingHandler(new ClosingHandler(){
 
-            public void onClose(CloseEvent event) {
+            public void onWindowClosing(ClosingEvent event) {
                 control.terminate();
             }
+
+         
 
         });
         return control;
