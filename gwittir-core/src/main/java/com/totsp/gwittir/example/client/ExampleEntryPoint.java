@@ -75,30 +75,30 @@ public class ExampleEntryPoint implements EntryPoint {
 
         d.makeDraggable(draggable, true);
         d.makeDroppable(droppable);
-        d.addDropListener(droppable, new DropListener(){
+//        d.addDropListener(droppable, new DropListener(){
 
-            public boolean onDrop(Widget dropped) {
-                RootPanel.get().add(dropped);
-                droppable.getElement().getStyle().setBackgroundColor("white");
-                return true;
-            }
+//            public boolean onDrop(Widget dropped) {
+//                RootPanel.get().add(dropped);
+//                droppable.getElement().getStyle().setBackgroundColor("white");
+//                return true;
+//            }
+//
+//            public boolean onHover(Widget hovered) {
+//                droppable.getElement().getStyle().setBackgroundColor("green");
+//                return true;
+//            }
+//
+//            public boolean onEndHover(Widget hovered) {
+//                droppable.getElement().getStyle().setBackgroundColor("white");
+//                return true;
+//            }
+//
+//            public boolean canDrop(Widget dropped) {
+//                GWT.log("canDrop: "+dropped, null);
+//                return true;
+//            }
 
-            public boolean onHover(Widget hovered) {
-                droppable.getElement().getStyle().setBackgroundColor("green");
-                return true;
-            }
-
-            public boolean onEndHover(Widget hovered) {
-                droppable.getElement().getStyle().setBackgroundColor("white");
-                return true;
-            }
-
-            public boolean canDrop(Widget dropped) {
-                GWT.log("canDrop: "+dropped, null);
-                return true;
-            }
-
-        });
+//        });
 
         hp.add(draggable);
         hp.add(droppable);

@@ -1,7 +1,12 @@
 package com.totsp.gwittir.client.stream.impl;
 
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.client.rpc.SerializationStreamFactory;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -17,13 +22,14 @@ import com.totsp.gwittir.client.stream.StreamServiceCallback;
 public abstract class StreamingServiceStub {
     private SerializationStreamFactory factory = getStreamFactory();
     private String servicePath;
+    private HandlerRegistration registration = null;
 
     protected abstract SerializationStreamFactory getStreamFactory();
 
     protected StreamControl invoke(String payload,
         StreamServiceCallback callback) {
         String id = "_cb__" + System.currentTimeMillis();
-        StreamControlImpl control = new StreamControlImpl(id, callback);
+        final StreamControlImpl control = new StreamControlImpl(id, callback);
         this.setUp(id, callback);
         
         Element iframe = this.createIframe(id);
@@ -32,7 +38,13 @@ public abstract class StreamingServiceStub {
         Element form = this.createForm(id, payload);
         DOM.appendChild(RootPanel.getBodyElement(), form);
         this.submit(form);
+        this.registration = Window.addCloseHandler(new CloseHandler(){
 
+            public void onClose(CloseEvent event) {
+                control.terminate();
+            }
+
+        });
         return control;
     }
 
@@ -62,6 +74,7 @@ public abstract class StreamingServiceStub {
 
         Element form = DOM.getElementById(name + "form");
         DOM.removeChild(DOM.getParent(form), form);
+        this.registration.removeHandler();
     }
 
     private native void submit(Element form) /*-{
@@ -140,9 +153,10 @@ public abstract class StreamingServiceStub {
             Element iframe = DOM.getElementById(this.name + "frame");
 
             if (iframe == null) {
-                return false;
+                throw new RuntimeException("Failed to find frame "+this.name);
             }
-
+            iframe.setPropertyString("onload", "this.parentNode.removeChild(this);");
+            iframe.setPropertyString("src", servicePath+"?c="+name);
             onComplete(name, callback);
 
             return true;

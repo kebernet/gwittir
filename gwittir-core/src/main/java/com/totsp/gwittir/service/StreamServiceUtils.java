@@ -144,7 +144,7 @@ public class StreamServiceUtils {
                 }
 
                 return new RPCRequest(method, parameterValues,
-                    serializationPolicy, 0);
+                    serializationPolicy); //, 0);
             } catch (NoSuchMethodException e) {
                 throw new IncompatibleRemoteServiceException(formatMethodNotFoundErrorMessage(
                         type, serviceMethodName, parameterTypes));
