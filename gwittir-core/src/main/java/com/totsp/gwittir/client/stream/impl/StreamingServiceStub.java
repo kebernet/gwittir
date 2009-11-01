@@ -41,6 +41,8 @@ public abstract class StreamingServiceStub {
 
             public void onWindowClosing(ClosingEvent event) {
                 control.terminate();
+                event.setMessage("Terminate open stream?");
+                
             }
 
          
