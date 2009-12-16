@@ -90,8 +90,8 @@
                 <artifactId>maven-googlewebtoolkit2-plugin</artifactId>
                 <version>2.0-SNAPSHOT</version>
                 <configuration>
-                    <gwtVersion>1.6.4</gwtVersion>
-                    <testFilter>GwtTestJson*</testFilter>
+                    <gwtVersion>2.0.0</gwtVersion>
+                    <testFilter>GwtTest*</testFilter>
                     <logLevel>INFO</logLevel>
                     <style>OBF</style>
                     <gen>target/gwtgen</gen>
@@ -101,12 +101,15 @@
                     </compileTargets>
                     <extraJvmArgs>-Xmx512m</extraJvmArgs>
                     <port>8088</port>
-					
+                    <useHtmlUnit>true</useHtmlUnit>
+                    <htmlUnitBrowsers>
+                        <param>FF3</param>
+                    </htmlUnitBrowsers>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
-							
+                            <goal>test</goal>
                         </goals>
                     </execution>
                 </executions>
