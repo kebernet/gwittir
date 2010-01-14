@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 
 import java.net.URLEncoder;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -40,6 +41,10 @@ public class StreamServiceServlet extends RemoteServiceServlet {
     public static final String WINDOW_PARENT = "window.parent.";
     protected static final String SCRIPT_OPEN = "<script type=\"text/javascript\">";
 
+
+    protected int getEmptyFlushSize() {
+        return 2048;
+    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response){
@@ -77,15 +82,19 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     }
                 }
             } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
                 throw new IncompatibleRemoteServiceException("", ex);
             } catch (InvocationTargetException ex) {
+                ex.printStackTrace();
                 throw new IncompatibleRemoteServiceException("", ex);
             } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
                 throw new IncompatibleRemoteServiceException("", ex);
             }
 
             return "";
         } catch (IncompatibleRemoteServiceException ex) {
+            ex.printStackTrace();
             log("An IncompatibleRemoteServiceException was thrown while processing this call.", ex);
 
             return RPC.encodeResponseForFailure(null, ex);
@@ -109,14 +118,17 @@ public class StreamServiceServlet extends RemoteServiceServlet {
     private void sendResults(Method method, StreamServiceIterator iterator, SerializationPolicy policy) {
         try {
             HttpServletResponse response = this.getThreadLocalResponse();
+            response.setBufferSize(256);
             HttpServletRequest request = this.getThreadLocalRequest();
             HttpSession session = request.getSession(true);
             session.setAttribute(
                 request.getParameter("c"),
                 Boolean.TRUE);
             response.setContentType("text/html");
-
-            PrintWriter out = response.getWriter();
+            
+            ServletOutputStream out = response.getOutputStream();
+            
+            System.out.println( "Classes: "+ response.getClass() + " " +out.getClass() );
             out.print("<html>");
 
             while (iterator.hasNext()) {
@@ -138,15 +150,16 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     out.println(SCRIPT_CLOSE);
 
                     if (this.flushExtraAfterEachPush()) {
-                        out.print("<!--");
+                        out.print("<p>Filler.");
 
-                        for (int i = 0; i < 512; i++)
-                            out.print(" ");
+                        for (int i = 0; i < this.getEmptyFlushSize()/7; i++)
+                            out.print("<br />");
 
-                        out.println("-->");
+                        out.println("</p>");
                     }
 
                     out.flush();
+
 
                     if (session.getAttribute(request.getParameter("c")) == null) {
                         System.out.println("Terminated on request.");
@@ -163,6 +176,7 @@ public class StreamServiceServlet extends RemoteServiceServlet {
                     out.println("\");");
                     out.println(SCRIPT_CLOSE);
                     out.flush();
+                    response.flushBuffer();
                     this.log("Serialization exception", se);
                 }
             }
@@ -174,6 +188,7 @@ public class StreamServiceServlet extends RemoteServiceServlet {
             out.println(SCRIPT_CLOSE);
             
         } catch (IOException ioe) {
+            System.out.println("Captured IO Exception.");
             throw new RuntimeException(ioe);
         }
     }
