@@ -5,6 +5,7 @@
 
 package com.totsp.gwittir.client.beans;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.totsp.gwittir.client.testmodel.TestFileDeclaredIntrospection;
 
@@ -27,7 +28,9 @@ public class GwtTestIntrospection extends GWTTestCase {
         assertTrue( p.getName().equals("intProperty"));
         try{
             p = Introspector.INSTANCE.getDescriptor(bean).getProperty("doubleProperty");
-            fail();
+            if(GWT.isScript()){
+                fail();
+            }
         }
         catch(RuntimeException e) {
             assertTrue( e != null );

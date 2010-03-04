@@ -81,7 +81,8 @@ public class Property {
      * String representation.
      * @return String representation.
      */
+    @Override
     public String toString() {
-        return name+" ("+type+")";
+        return name+" ("+type+"): "+this.accessorMethod+"  /  "+this.mutatorMethod;
     }
 }
