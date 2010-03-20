@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.action.BindingAction;
-import com.totsp.gwittir.client.beans.Bindable;
 import com.totsp.gwittir.client.beans.Binding;
+import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.HasDefaultBinding;
 import com.totsp.gwittir.client.ui.Label;
@@ -129,7 +129,7 @@ public class GridForm extends AbstractTableWidget implements HasDefaultBinding {
                 }
 
                 Widget widget = (Widget) this.createWidget(
-                        this.binding, field, (Bindable) this.getValue());
+                        this.binding, field, (SourcesPropertyChangeEvents) this.getValue());
                 Label label = new Label(field.getLabel());
                 this.base.setWidget(row, col * 2, label);
                 this.base.getCellFormatter().setStyleName(

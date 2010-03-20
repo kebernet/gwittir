@@ -19,10 +19,10 @@
  */
 package com.totsp.gwittir.client.ui.table;
 
-import com.totsp.gwittir.client.beans.Bindable;
 import com.totsp.gwittir.client.beans.Binding;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Property;
+import com.totsp.gwittir.client.beans.SourcesPropertyChangeEvents;
 import com.totsp.gwittir.client.ui.AbstractBoundWidget;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
@@ -40,7 +40,7 @@ public abstract class AbstractTableWidget extends AbstractBoundWidget {
     }
 
     protected BoundWidget createWidget(Binding parent, Field field,
-        Bindable target) {
+        SourcesPropertyChangeEvents target) {
         final BoundWidget widget;
         Binding binding;
 
