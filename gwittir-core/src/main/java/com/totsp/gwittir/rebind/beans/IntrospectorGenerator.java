@@ -48,7 +48,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -62,7 +63,7 @@ public class IntrospectorGenerator extends Generator {
         );
     private String methodsImplementationName = "MethodsList";
     private JType objectType = null;
-  
+    private Map<MethodWrapper, Integer> methodWrapperLookup;
 
     /** Creates a new instance of IntrospectorGenerator */
     public IntrospectorGenerator() {
@@ -113,8 +114,26 @@ public class IntrospectorGenerator extends Generator {
 
         return false;
     }
-
+    /*because the call to MethodWrapper.toString() used in the comparison is _highly_ expensive
+     * (it wanders through the gwt jtype system), this optimisation gives something like a 30x 
+     * speed improvement
+     * 
+     */
     private int find(MethodWrapper[] search, MethodWrapper match) {
+    	//the second check (!containsKey) will be hit if doing a recompile
+    	//in hosted mode with new methods
+		if (methodWrapperLookup == null
+				|| !methodWrapperLookup.containsKey(match)) {
+			Map m = new HashMap<MethodWrapper, Integer>();
+			for (int i = 0; i < search.length; i++) {
+				m.put(search[i], i);
+			}
+			methodWrapperLookup = m;
+		}
+		return methodWrapperLookup.get(match);
+	}
+    
+    private int findOld(MethodWrapper[] search, MethodWrapper match) {
         for (int i = 0; i < search.length; i++) {
             if (search[i].equals(match)) {
                 return i;
@@ -216,10 +235,31 @@ public class IntrospectorGenerator extends Generator {
         this.writeIntrospectables(logger, introspectables, methods, writer);
         this.writeResolver(introspectables, writer);
 
-        writer.println("public BeanDescriptor getDescriptor( Object object ){ ");
+        writer.println("private HashMap<Class,BeanDescriptor> beanDescriptorLookup = new HashMap<Class,BeanDescriptor>();");
+        writer.println();
+        writer
+        .println("public BeanDescriptor getDescriptor( Object object ){ ");
         writer.indent();
-        writer.println("if( object == null ) throw new NullPointerException(\"Attempt to introspect null object\");");
-        writer.println("if( object instanceof "+SelfDescribed.class.getCanonicalName()+" ) return ((SelfDescribed)object).__descriptor();");
+        writer
+        .println("if( object == null ) throw new NullPointerException(\"Attempt to introspect null object\");");
+        writer
+        .println("BeanDescriptor descriptor = beanDescriptorLookup.get(object.getClass());");
+        writer.println("if (descriptor!=null){");
+        writer.indentln("return descriptor;");
+        writer.outdent();
+        writer.println("}");
+        writer.println("if( object instanceof "
+                + SelfDescribed.class.getCanonicalName()
+                + " ) return ((SelfDescribed)object).__descriptor();");
+        writer.println("descriptor=_getDescriptor(object);");
+        writer.println("beanDescriptorLookup.put(object.getClass(),descriptor);");
+        writer.println("return descriptor;");
+        writer.outdent();
+        writer.println("}");
+        
+        writer
+                .println("private BeanDescriptor _getDescriptor( Object object ){ ");
+        writer.indent();
         for (BeanResolver resolver : introspectables) {
             writer.println("if( object instanceof " + resolver.getType().getQualifiedSourceName() + " ) {");
             writer.indent();

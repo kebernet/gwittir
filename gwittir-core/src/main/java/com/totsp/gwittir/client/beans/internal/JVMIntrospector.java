@@ -42,7 +42,7 @@ public class JVMIntrospector implements Introspector {
                     props[index] = new Property(d.getName(), d.getPropertyType(), 
                             d.getReadMethod() == null ? null : new MethodWrapper(d.getReadMethod()),
                             d.getWriteMethod() == null ? null : new MethodWrapper(d.getWriteMethod()));
-                    System.out.println(clazz+" mapped property: "+props[index]);
+                   // System.out.println(clazz+" mapped property: "+props[index]);
                     index++;
                 }
             } catch(Exception e){
@@ -75,12 +75,13 @@ public class JVMIntrospector implements Introspector {
             this.inner = inner;
         }
 
-        @Override
+        //@Override
+        //For JDK1.5 compatibility, don't override methods inherited from an interface
         public String getName() {
             return ((java.lang.reflect.Method)inner).toString();
         }
 
-        @Override
+        //@Override
         public Object invoke(Object target, Object[] args) throws Exception {
               return inner.invoke(target, args);
         }

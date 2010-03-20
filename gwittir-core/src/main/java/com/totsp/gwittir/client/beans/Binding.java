@@ -522,8 +522,8 @@ public class Binding {
 
         for (Iterator it = collection.iterator(); it.hasNext() && (i <= index); i++) {
             result = (SourcesPropertyChangeEvents) it.next();
-
             return result;
+            // TODO - bug here i think - "i++" is never be called, so index is basically ignored 
         }
 
         throw new IndexOutOfBoundsException("Binding descriminator too high: " + index);

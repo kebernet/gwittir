@@ -132,7 +132,16 @@ public class Field {
         this.styleName = styleName;
         this.cellProvider = cellProvider;
     }
-
+    
+    public Field(String propertyName, String label,
+			BoundWidgetProvider cellProvider, Validator validator,
+			ValidationFeedback feedback) {
+		this.propertyName = propertyName;
+		this.label = label;
+		this.cellProvider = cellProvider;
+		this.validator = validator;
+		this.feedback = feedback;
+	}
     public BoundWidgetProvider getCellProvider() {
         return cellProvider;
     }
