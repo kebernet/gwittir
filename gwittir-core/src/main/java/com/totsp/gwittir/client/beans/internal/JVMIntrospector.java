@@ -60,7 +60,7 @@ public class JVMIntrospector implements Introspector {
                     return p;
                 }
             }
-            throw new RuntimeException();
+            throw new RuntimeException("Unknown property: "+name);
         }
 
 
