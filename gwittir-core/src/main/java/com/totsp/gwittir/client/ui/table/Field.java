@@ -142,6 +142,18 @@ public class Field {
 		this.validator = validator;
 		this.feedback = feedback;
 	}
+    
+    public Field(String propertyName, String label,
+			BoundWidgetProvider cellProvider, Validator validator,
+			ValidationFeedback feedback,Converter converter) {
+		this.propertyName = propertyName;
+		this.label = label;
+		this.cellProvider = cellProvider;
+		this.validator = validator;
+		this.feedback = feedback;
+		this.converter=converter;
+	}
+    
     public BoundWidgetProvider getCellProvider() {
         return cellProvider;
     }
