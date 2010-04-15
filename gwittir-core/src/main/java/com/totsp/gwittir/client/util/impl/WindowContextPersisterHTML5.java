@@ -5,6 +5,7 @@
 
 package com.totsp.gwittir.client.util.impl;
 
+import com.google.gwt.core.client.GWT;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,33 +49,51 @@ public class WindowContextPersisterHTML5 extends AbstractWindowContextPersister 
 	@Override
 	public void storeWindowContextData(
 			final Map<String, String> windowContextData) {
-		db.run(new TransactionTask() {
-			public void run(Transaction tx) {
-				for (Entry<String, String> entry : windowContextData.entrySet()) {
-					tx
-							.execute(
-									"INSERT INTO windowcontext (key, value) VALUES ( ?, ? )",
-									new String[] { entry.getKey(),
-											entry.getValue() },
-									new ResultsCallback() {
+                db.run(
+                        new TransactionTask() {
 
-										public void onFailure(Transaction tx,
-												SQLError error) {
-											Window.alert("Insertion failure "
-													+ error.getMessage());
-										}
+                            public void run(Transaction tx) {
+                               tx.execute("DELETE FROM windowcontext ", new String[0], new ResultsCallback(){
 
-										public void onSuccess(Transaction tx,
-												ResultSet rs) {
-											Logger.getAnonymousLogger().log(
-													Level.INFO,
-													"Insertion made.", null);
-										}
-									});
-				}
-			}
+                                public void onSuccess(Transaction tx, ResultSet rs) {
 
-		});
+                                      for (Entry<String, String> entry : windowContextData.entrySet()) {
+                                            tx
+                                                            .execute(
+                                                                            "INSERT INTO windowcontext (key, value) VALUES ( ?, ? )",
+                                                                            new String[] { entry.getKey(),
+                                                                                            entry.getValue() },
+                                                                            new ResultsCallback() {
+
+                                                                                    public void onFailure(Transaction tx,
+                                                                                                    SQLError error) {
+                                                                                            Window.alert("Insertion failure "
+                                                                                                            + error.getMessage());
+                                                                                    }
+
+                                                                                    public void onSuccess(Transaction tx,
+                                                                                                    ResultSet rs) {
+                                                                                            Logger.getAnonymousLogger().log(
+                                                                                                            Level.INFO,
+                                                                                                            "Insertion made.", null);
+                                                                                    }
+                                                                            });
+                                    }
+
+                                }
+
+                                public void onFailure(Transaction tx, SQLError error) {
+                                    GWT.log("Failed to delete "+error.getMessage(), null);
+                                }
+
+                               });
+                            }
+
+                });
+
+
+
+		
 	}
 
 	@Override
@@ -87,22 +106,25 @@ public class WindowContextPersisterHTML5 extends AbstractWindowContextPersister 
 				tx.execute("SELECT COUNT(*) FROM windowcontext", null,
 						new ResultsCallback() {
 							public void onSuccess(Transaction tx, ResultSet rs) {
+                                                                GWT.log("windowcontext found", null);
 								tx.execute(
 										"SELECT key, value FROM windowcontext",
-										null, new ResultsCallback() {
+										new Object[0], new ResultsCallback() {
 
 											public void onSuccess(
 													Transaction tx, ResultSet rs) {
+                                                                                                try{
+                                                                                                GWT.log("Loading "+rs.getRowCount(), null);
 												for (JavaScriptObjectDecorator d : rs
 														.getRows()) {
-													loaded
-															.put(
-																	d
-																			.getStringProperty("key"),
-																	d
-																			.getStringProperty("value"));
-													listener.onInitialized();
+                                                                                                        loaded.put(d.getStringProperty("key"),
+														   d.getStringProperty("value"));
+													
 												}
+                                                                                                listener.onInitialized();
+                                                                                                } catch(Exception e){
+                                                                                                    GWT.log(null,e);
+                                                                                                }
 											}
 
 											public void onFailure(

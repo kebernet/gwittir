@@ -32,16 +32,21 @@ public class ResultSet extends JavaScriptObject {
         
     }
 
-    public final native int getRowCount()/*-{ return this.rows ? this.rows.length : 0; }-*/;
+    public final native int getRowCount()/*-{ 
+        alert(this);
+        alert(this.rows);                               
+        return this.rows != undefined ? this.rows.length : 0;
+     }-*/;
 
     public final JavaScriptObjectDecorator[] getRows(){
         JavaScriptObjectDecorator[] result = new JavaScriptObjectDecorator[this.getRowCount()];
         if( this.getRowCount() > 0){
-        	JavaScriptObjectDecorator instance = new JavaScriptObjectDecorator(this).getJavaScriptObjectProperty("rows");
         	for(int i=0; i < result.length; i++ ){
-	            result[i] = instance.getJavaScriptObjectProperty(Integer.toString(i));
+	            result[i] = new JavaScriptObjectDecorator( this.item(i));
 	        }
         }
         return result;
     }
+
+    private final native JavaScriptObject item(int i)/*-{ return this.rows.item(i); }-*/;
 }

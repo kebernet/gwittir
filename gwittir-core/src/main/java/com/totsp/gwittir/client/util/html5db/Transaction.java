@@ -71,11 +71,11 @@ public class Transaction extends JavaScriptObject {
     trans.executeSql(
     sql,
     parameters,
-    function(result){
+    function(trans, result){
     callback.@com.totsp.gwittir.client.util.html5db.ResultsCallback::onSuccess(Lcom/totsp/gwittir/client/util/html5db/Transaction;Lcom/totsp/gwittir/client/util/html5db/ResultSet;)
     (trans, result);
     },
-    function(error){
+    function(trans, error){
     callback.@com.totsp.gwittir.client.util.html5db.ResultsCallback::onFailure(Lcom/totsp/gwittir/client/util/html5db/Transaction;Lcom/totsp/gwittir/client/util/html5db/SQLError;)
     (trans, error);
     })

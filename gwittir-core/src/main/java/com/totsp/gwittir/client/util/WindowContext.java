@@ -108,10 +108,10 @@ public class WindowContext {
 	 * @param callback WindowContextCallback to notify when the WindowContext has been initialized. 
 	 */
 	public void initialize(final WindowContextCallback callback) {
-		if(!GWT.isScript() && getUserAgent().indexOf("WebKit") != -1){
-			this.persister = new WindowContextPersisterMacShell();
-			LOG.log(Level.WARN, "***You are in hosted mode on Safari. Defaulting to the WindowName persister because HTML5 won't work in hosted mode!***", null);
-		}
+//		if(!GWT.isScript() && getUserAgent().indexOf("WebKit") != -1){
+//			this.persister = new WindowContextPersisterMacShell();
+//			LOG.log(Level.WARN, "***You are in hosted mode on Safari. Defaulting to the WindowName persister because HTML5 won't work in hosted mode!***", null);
+//		}
 		LOG.log( Level.INFO, "Got persister :"+persister.getClass(), null);
 		WindowContextCallback internalCallback = new WindowContextCallback() {
 
