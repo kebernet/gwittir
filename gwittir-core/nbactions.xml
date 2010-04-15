@@ -48,4 +48,15 @@
                 <goal>gwt-maven:test</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-build-no-test</actionName>
+            <displayName>build-no-test</displayName>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <google.webtoolkit.testSkip>true</google.webtoolkit.testSkip>
+            </properties>
+        </action>
     </actions>

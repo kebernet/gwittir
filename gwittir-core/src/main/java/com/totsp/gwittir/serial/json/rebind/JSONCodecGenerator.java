@@ -72,6 +72,10 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         CORE_TYPES.add(long.class.getCanonicalName());
         CORE_TYPES.add(Boolean.class.getCanonicalName());
         CORE_TYPES.add(boolean.class.getCanonicalName());
+        CORE_TYPES.add(Short.class.getCanonicalName());
+        CORE_TYPES.add(short.class.getCanonicalName());
+        CORE_TYPES.add(Character.class.getCanonicalName());
+        CORE_TYPES.add(char.class.getCanonicalName());
     }
 
     private HashSet<BeanResolver> children = new HashSet<BeanResolver>();
@@ -100,6 +104,18 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 JPrimitiveType.INT.equals(type.isPrimitive()))) {
             return "Double.valueOf(" + innerExpression +
             ".isNumber().doubleValue()) .intValue()";
+        } else if (type.getQualifiedSourceName()
+                           .equals(Short.class.getCanonicalName()) ||
+                ((type.isPrimitive() != null) &&
+                JPrimitiveType.SHORT.equals(type.isPrimitive()))) {
+            return "Short.valueOf(" + innerExpression +
+            ".isNumber().doubleValue()) .shortValue()";
+        }  else if (type.getQualifiedSourceName()
+                           .equals(Character.class.getCanonicalName()) ||
+                ((type.isPrimitive() != null) &&
+                JPrimitiveType.CHAR.equals(type.isPrimitive()))) {
+            return "" + innerExpression +
+            ".isString().stringValue().charAt(0)";
         } else if (type.getQualifiedSourceName()
                            .equals(Long.class.getCanonicalName()) ||
                 ((type.isPrimitive() != null) &&
@@ -297,10 +313,13 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         if ((type.isPrimitive() == JPrimitiveType.DOUBLE) ||
                 (type.isPrimitive() == JPrimitiveType.FLOAT) ||
                 (type.isPrimitive() == JPrimitiveType.LONG) ||
-                (type.isPrimitive() == JPrimitiveType.INT)) {
+                (type.isPrimitive() == JPrimitiveType.INT) ||
+                (type.isPrimitive() == JPrimitiveType.SHORT)) {
             return " new JSONNumber( (double) " + innerExpression + ")";
         } else if (type.isPrimitive() == JPrimitiveType.BOOLEAN) {
             return " JSONBoolean.getInstance( " + innerExpression + " ) ";
+        } else if (type.isPrimitive() == JPrimitiveType.CHAR ){
+            return " new JSONString( Character.toString("+ innerExpression +") )";
         }
 
         StringBuilder sb = new StringBuilder(innerExpression +
@@ -308,7 +327,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
         if (type.getQualifiedSourceName().equals("java.lang.String")) {
             sb = sb.append(" new JSONString( " + innerExpression + " ) ");
-        } else if (type.isClassOrInterface() != null && type.isClassOrInterface().isAssignableTo(this.numberType)) {
+        } else if(type.getQualifiedSourceName().equals("java.lang.Character")){
+            sb = sb.append(" new JSONString( Character.toString(" + innerExpression + ") ) ");
+        }else if (type.isClassOrInterface() != null && type.isClassOrInterface().isAssignableTo(this.numberType)) {
             sb = sb.append("new JSONNumber( ((Number) " + innerExpression +
                     ").doubleValue())");
         } else if (type.getQualifiedSourceName().equals("java.lang.Boolean")) {
@@ -401,6 +422,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         writer.println("public " + r.toString() +
             " deserializeFromJSONObject(JSONObject root) throws SerializationException {");
         writer.indent();
+        writer.println(" if(root == null) return null;");
         writer.println("try {");
         writer.indent();
 
