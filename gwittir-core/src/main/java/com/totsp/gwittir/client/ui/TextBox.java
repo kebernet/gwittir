@@ -311,6 +311,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
 		      .getValue().equals(old)))) {
             this.changes.firePropertyChange("value", old, this.getValue());
         }
+        old = this.getValue();
     }
     
     public void setVisibleLength(int length) {
