@@ -302,7 +302,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     }
     
     public void setValue(String value) {
-        String old = this.getValue();
+        old = this.getValue();
         this.setText(value);
         //if( this.getValue() != old && this.getValue() != null && !this.getValue().equals( old ) ){
         //the above doesn't fire a change on the case new==null, old!=null
