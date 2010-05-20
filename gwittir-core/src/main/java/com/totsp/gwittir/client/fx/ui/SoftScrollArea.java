@@ -185,7 +185,7 @@ public class SoftScrollArea extends Composite implements HasWidget,
     realOffset += item.offsetLeft;
     item = item.offsetParent;
     }
-    return realOffset; //- position.offsetWidth / 2;
+    return realOffset + position.offsetWidth/2;
     }-*/;
 
     private native int ensureVisiblePosition(Element position, Element e) /*-{
@@ -197,8 +197,8 @@ public class SoftScrollArea extends Composite implements HasWidget,
     while (item && (item != position)) {
     realOffset += item.offsetTop;
     item = item.offsetParent;
-    }
-    return -1 * (realOffset - position.offsetHeight/2 + e.offsetHeight / 2);
+    }                                                                      
+    return  (realOffset - position.offsetHeight/2 ) + e.offsetHeight ;
     }-*/;
 
     public int getDefaultAnimationDuration() {
