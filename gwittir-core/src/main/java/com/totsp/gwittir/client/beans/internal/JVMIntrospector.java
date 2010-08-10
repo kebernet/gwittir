@@ -9,6 +9,7 @@ import com.totsp.gwittir.client.beans.BeanDescriptor;
 import com.totsp.gwittir.client.beans.Introspector;
 import com.totsp.gwittir.client.beans.Method;
 import com.totsp.gwittir.client.beans.Property;
+import com.totsp.gwittir.client.beans.SelfDescribed;
 import java.beans.BeanInfo;
 import java.beans.PropertyDescriptor;
 
@@ -19,7 +20,13 @@ import java.beans.PropertyDescriptor;
 public class JVMIntrospector implements Introspector {
 
     public BeanDescriptor getDescriptor(Object object) {
-        return new ReflectionBeanDescriptor(object.getClass());
+        if(object instanceof SelfDescribed){
+            System.out.println("SelfDescribed\t"+ object.getClass().getName());
+            return ((SelfDescribed) object).__descriptor();
+        } else {
+            System.out.println("Reflection\t"+ object.getClass().getName());
+            return new ReflectionBeanDescriptor(object.getClass());
+        }
     }
 
     public Class resolveClass(Object instance) {
