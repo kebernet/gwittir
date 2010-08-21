@@ -303,7 +303,7 @@ public class StreamClientGenerator extends Generator {
             if ((method.getThrows() != null) &&
                     (method.getThrows().length > 0)) {
                 sw.print(" throws ");
-                first = false;
+                first = true;
 
                 for (JType throwable : method.getThrows()) {
                     if (!first) {

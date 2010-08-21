@@ -39,8 +39,8 @@ public class AbstractCollectionContainer<T> extends
         super();
         assert factory != null : "You must provide a BoundWidgetTypeFactory.";
         this.base = base;
-        this.setFactory(factory);
-        this.setActionFactory(actionFactory);
+        this.factory = factory;
+        this.actionFactory = actionFactory;
         initWidget((Widget)base);
     }
 
@@ -49,7 +49,7 @@ public class AbstractCollectionContainer<T> extends
         final Collection value
     ) {
         this(base, factory, actionFactory);
-        this.setValue(value);
+        this.value = value;
     }
 
     public void setActionFactory(final ActionTypeFactory actionFactory) {

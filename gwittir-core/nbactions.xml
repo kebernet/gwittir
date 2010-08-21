@@ -59,4 +59,22 @@
                 <google.webtoolkit.testSkip>true</google.webtoolkit.testSkip>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-deploy-no-test</actionName>
+            <displayName>deploy-no-test</displayName>
+            <goals>
+                <goal>-Dmaven.test.skip=true</goal>
+                <goal>deploy</goal>
+            </goals>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-deploy</actionName>
+            <displayName>deploy</displayName>
+            <goals>
+                <goal>deploy</goal>
+            </goals>
+        </action>
     </actions>

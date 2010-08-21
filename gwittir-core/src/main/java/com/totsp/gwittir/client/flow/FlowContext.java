@@ -113,7 +113,9 @@ public class FlowContext {
     public <T> BoundWidget<T> get(String name) {
         BoundWidgetProvider<BoundWidget<T>> value =  (BoundWidgetProvider<BoundWidget<T>>) destinations.get(name);
         BoundWidget<T> ret;
-
+        if( value == null){
+            throw new RuntimeException("Unable to find widget for "+name);
+        }
         ret = value.get();
         
 
