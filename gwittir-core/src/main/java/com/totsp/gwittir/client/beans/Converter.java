@@ -28,72 +28,67 @@ import java.util.Collection;
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
 public interface Converter<T, C> {
-    C convert(T original);
-
-
-    public static final Converter<Object, String> TO_STRING_CONVERTER =
-            new Converter<Object, String>(){
-
-        public String convert(Object original) {
-            return original == null ? null : original.toString();
-        }
-
-    };
-
-    public static final Converter<Collection, Object> FROM_COLLECTION_CONVERTER =
-            new Converter<Collection, Object>(){
-
-        public Object convert(Collection original) {
-            if( original == null || original.size() == 0 ){
-                return null;
+    public static final Converter<Object, String> TO_STRING_CONVERTER = new Converter<Object, String>() {
+            public String convert(Object original) {
+                return (original == null) ? null : original.toString();
             }
-            return original.iterator().next();
-        }
-    };
+        };
 
-    public static final Converter<Object, Collection> TO_COLLECTION_CONVERTER =
-            new Converter<Object, Collection>(){
+    public static final Converter<Collection, Object> FROM_COLLECTION_CONVERTER = new Converter<Collection, Object>() {
+            public Object convert(Collection original) {
+                if ((original == null) || (original.size() == 0)) {
+                    return null;
+                }
 
-        public Collection convert(Object original) {
-            ArrayList ret = new ArrayList();
-            ret.add(original);
-            return ret;
-        }
+                return original.iterator()
+                               .next();
+            }
+        };
 
-    };
+    public static final Converter<Object, Collection> TO_COLLECTION_CONVERTER = new Converter<Object, Collection>() {
+            public Collection convert(Object original) {
+                ArrayList ret = new ArrayList();
+                ret.add(original);
 
-    public static final Converter<Integer, String> INTEGER_TO_STRING_CONVERTER = new Converter<Integer, String>(){
+                return ret;
+            }
+        };
 
-        public String convert(Integer original) {
-            return original == null ? null : original.toString();
-        }
+    public static final Converter<Integer, String> INTEGER_TO_STRING_CONVERTER = new Converter<Integer, String>() {
+            public String convert(Integer original) {
+                return (original == null) ? null : original.toString();
+            }
+        };
 
-    };
+    public static final Converter<String, Integer> STRING_TO_INTEGER_CONVERTER = new Converter<String, Integer>() {
+            public Integer convert(String original) {
+                return (original == null) ? null : Integer.valueOf(original);
+            }
+        };
 
-    public static final Converter<String, Integer> STRING_TO_INTEGER_CONVERTER = new Converter<String, Integer>(){
+    public static final Converter<String, Double> STRING_TO_DOUBLE_CONVERTER = new Converter<String, Double>() {
+            public Double convert(String original) {
+                return (original == null) ? null : Double.valueOf(original);
+            }
+        };
 
-        
-        public Integer convert(String original) {
-            return original == null? null : new Integer(original);
-        }
+    public static final Converter<Long, String> LONG_TO_STRING_CONVERTER = new Converter<Long, String>() {
+            public String convert(Long original) {
+                return (original == null) ? null : original.toString();
+            }
+        };
 
-    };
+    public static final Converter<Double, String> DOUBLE_TO_STRING_CONVERTER = new Converter<Double, String>() {
+            public String convert(Double original) {
+                return (original == null) ? null : original.toString();
+            }
+        };
 
+    public static final Converter<String, Long> STRING_TO_LONG_CONVERTER = new Converter<String, Long>() {
+            public Long convert(String original) {
+                return (original == null) ? null : Long.valueOf(original);
+            }
+        };
 
-    public static final Converter<Long, String> LONG_TO_STRING_CONVERTER = new Converter<Long, String>(){
-
-        public String convert(Long original) {
-            return original == null ? null : original.toString();
-        }
-
-    };
-
-    public static final Converter<String, Long> STRING_TO_LONG_CONVERTER = new Converter<String, Long>(){
-
-
-        public Long convert(String original) {
-            return original == null? null : new Long(original);
-        }
-
-    };
+    C convert(T original);
 }
