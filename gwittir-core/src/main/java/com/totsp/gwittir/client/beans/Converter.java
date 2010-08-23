@@ -78,6 +78,12 @@ public interface Converter<T, C> {
             }
         };
 
+    public static final Converter<Boolean, String> BOOLEAN_TO_STRING_CONVERTER = new Converter<Boolean, String>() {
+            public String convert(Boolean original) {
+                return (original == null) ? null : original.toString();
+            }
+        };
+
     public static final Converter<Double, String> DOUBLE_TO_STRING_CONVERTER = new Converter<Double, String>() {
             public String convert(Double original) {
                 return (original == null) ? null : original.toString();
@@ -87,6 +93,13 @@ public interface Converter<T, C> {
     public static final Converter<String, Long> STRING_TO_LONG_CONVERTER = new Converter<String, Long>() {
             public Long convert(String original) {
                 return (original == null) ? null : Long.valueOf(original);
+            }
+        };
+
+
+    public static final Converter<String, Boolean> STRING_TO_BOOLEAN_CONVERTER = new Converter<String, Boolean>() {
+            public Boolean convert(String original) {
+                return (original == null) ? null : Boolean.valueOf(original);
             }
         };
 
