@@ -17,7 +17,7 @@ import com.totsp.gwittir.client.util.StringConverter;
  * @author robert.cooper
  */
 public class GenericBindingAction implements BindingAction {
-    private static final StringConverter CONVERTERS = new StringConverter();
+    public static final StringConverter CONVERTERS = new StringConverter();
     private final Class clazz;
     private final String propertyName;
     private Binding binding;
