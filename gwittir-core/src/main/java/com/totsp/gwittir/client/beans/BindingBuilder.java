@@ -140,6 +140,7 @@ public class BindingBuilder implements SetConverterRight, SetValidateOrFinish, S
     }
 
     public SetBindingOptionsRight onRightProperty(String propertyName) {
+        assert propertyName != null : "PropretyName cannot be null";
         this.right = workBinding.createBindingInstance((SourcesPropertyChangeEvents) this.temp, propertyName);
 
         return this;

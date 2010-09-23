@@ -289,10 +289,8 @@ public class DragAndDropContext {
                 (int) ((float) this.getOffsetWidth() / (float) 2);
 
             Widget hit = null;
-
-            for (int i = 0; (dropTargets != null) && (i < dropTargets.size());
-                    i++) {
-                Widget w = (Widget) dropTargets.get(i);
+            for (int i = dropTargets == null ? -1 : dropTargets.size() -1 ; i > -1; i-- ) {
+                Widget w = dropTargets.get(i);
 
                 if ((centerY >= w.getAbsoluteTop()) &&
                         (centerY <= (w.getAbsoluteTop() + w.getOffsetHeight())) &&

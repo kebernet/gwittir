@@ -12,6 +12,7 @@ import com.totsp.gwittir.client.beans.Property;
 import com.totsp.gwittir.client.beans.SelfDescribed;
 import java.beans.BeanInfo;
 import java.beans.PropertyDescriptor;
+import java.util.HashMap;
 
 /**
  *
@@ -19,14 +20,23 @@ import java.beans.PropertyDescriptor;
  */
 public class JVMIntrospector implements Introspector {
 
+    private HashMap<Class, BeanDescriptor> cache = new HashMap<Class, BeanDescriptor>();
+
     public BeanDescriptor getDescriptor(Object object) {
+        if(cache.containsKey(object.getClass())){
+            return cache.get(object.getClass());
+        }
+        BeanDescriptor result = null;
         if(object instanceof SelfDescribed){
             System.out.println("SelfDescribed\t"+ object.getClass().getName());
-            return ((SelfDescribed) object).__descriptor();
+            result =  ((SelfDescribed) object).__descriptor();
         } else {
             System.out.println("Reflection\t"+ object.getClass().getName());
-            return new ReflectionBeanDescriptor(object.getClass());
+            result = new ReflectionBeanDescriptor(object.getClass());
+            cache.put(object.getClass(), result);
         }
+        
+        return result;
     }
 
     public Class resolveClass(Object instance) {
@@ -37,8 +47,10 @@ public class JVMIntrospector implements Introspector {
 
         BeanInfo info;
         Property[] props;
+        String className;
         ReflectionBeanDescriptor(Class clazz){
             try{
+                className = clazz.getName();
                 info = java.beans.Introspector.getBeanInfo(clazz);
                 props = new Property[info.getPropertyDescriptors().length-1];
                 int index =0;
@@ -67,7 +79,7 @@ public class JVMIntrospector implements Introspector {
                     return p;
                 }
             }
-            throw new RuntimeException("Unknown property: "+name);
+            throw new RuntimeException("Unknown property: "+name+" on class "+className);
         }
 
 

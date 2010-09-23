@@ -44,6 +44,7 @@ public class ContextMenuPanel<T> extends SimplePanel implements BoundWidget<T> {
 				| Event.ONMOUSEDOWN | Event.ONMOUSEUP);
 		this.panel.setStyleName("gwittir-ContextMenu");
 		this.popup.setWidget(panel);
+                this.getElement().setAttribute("oncontextmenu", "return false;");
 	}
 
 	public void addChangeListener(ChangeListener arg0) {
@@ -137,6 +138,7 @@ public class ContextMenuPanel<T> extends SimplePanel implements BoundWidget<T> {
 				if ((DOM.eventGetButton(event) == Event.BUTTON_RIGHT)) {
 					t.schedule(5);
 				}
+                                DOM.eventCancelBubble(event, true);
 			} else {
 				rightDown = false;
 			}

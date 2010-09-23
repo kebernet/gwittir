@@ -507,6 +507,9 @@ public class Binding {
         try {
             instance.property = INTROSPECTOR.getDescriptor(object)
                                             .getProperty(propertyName);
+            if(instance.property == null ){
+                throw new NullPointerException("Property Not Found.");
+            }
         } catch (NullPointerException e) {
             throw new RuntimeException("Exception getting property " + propertyName, e);
         }
