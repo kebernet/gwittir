@@ -114,6 +114,7 @@ public class AbstractCollectionContainer<T> extends
         }
 
         for (Iterator it = this.value.iterator(); it.hasNext();) {
+
             Object o = (Object) it.next();
             Class clazz = o.getClass();
             if( clazz == null ){
@@ -124,15 +125,19 @@ public class AbstractCollectionContainer<T> extends
                 throw new RuntimeException("Unable to find a BoundWidgetProvider for class "+ clazz.getName() );
             }
             BoundWidget w = provider.get();
-            w.setModel(o);
-            if( this.getActionFactory() != null ){
-                ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));
-            
-                if (ap != null) {
-                    w.setAction(ap.get());
+            try{
+                w.setModel(o);
+                if( this.getActionFactory() != null ){
+                    ActionProvider ap = this.getActionFactory().getActionProvider(Introspector.INSTANCE.resolveClass(w));
+
+                    if (ap != null) {
+                        w.setAction(ap.get());
+                    }
                 }
+                base.add((Widget) w);
+            } catch(Exception e){
+                throw new RuntimeException("Exception initing widget "+w.getClass(), e);
             }
-            base.add((Widget) w);
         }
     }
 
