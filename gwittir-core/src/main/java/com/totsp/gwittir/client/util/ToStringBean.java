@@ -125,6 +125,7 @@ public class ToStringBean implements Serializable {
         } catch (Exception ex) {
             sb.append("\n\nEXCEPTION: unable to process " + prefix +
                 ".toString(): " + ex.getMessage() + "\n");
+            ex.printStackTrace();
         }
 
         return sb.toString();

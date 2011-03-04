@@ -115,12 +115,21 @@ public class BoundWidgetTypeFactory {
     }
 
     public BoundWidgetProvider<?> getWidgetProvider(Class<?> type) {
+        BoundWidgetProvider<?> val = registry.get(type);
+        if(val == null){
+            throw new RuntimeException(type +" not found");
+        }
         return registry.get(type);
     }
 
     public BoundWidgetProvider<?> getWidgetProvider(String propertyName, Class<?> type) {
-        return registry.containsKey(propertyName)
+        BoundWidgetProvider<?> val =  registry.containsKey(propertyName)
         ? registry.get(propertyName)
         :  registry.get(type);
+        if(val == null){
+            throw new RuntimeException(propertyName+" not mapped to "+type +" "+val, null);
+        }
+        return val;
     }
+
 }
