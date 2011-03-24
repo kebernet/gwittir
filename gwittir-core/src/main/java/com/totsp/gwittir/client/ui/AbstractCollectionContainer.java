@@ -85,6 +85,14 @@ public class AbstractCollectionContainer<T> extends
     }
 
     @Override
+    protected void onDetach() {
+        super.onDetach();
+        clear();
+    }
+
+
+
+    @Override
     public void onAttach(){
         super.onAttach();
         render();
@@ -93,9 +101,9 @@ public class AbstractCollectionContainer<T> extends
     public void clear() {
         this.base.clear();
 
-        if (this.value != null) {
-            this.value.clear();
-        }
+//        if (this.value != null) {
+//            this.value.clear();
+//        }
     }
 
     public Iterator<Widget> iterator() {

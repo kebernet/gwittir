@@ -22,10 +22,10 @@ public class IntrospectorFactory {
 
     public static Introspector create(){
         if(GWT.isScript()){
-            GWT.log("Using generated introspector.", null);
+            //GWT.log("Using generated introspector.", null);
             return GWT.create(Introspector.class);
         } else {
-            System.out.println("Using JVMIntrospector");
+            //System.out.println("Using JVMIntrospector");
             return new JVMIntrospector();
         }
     }

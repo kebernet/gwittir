@@ -1672,6 +1672,9 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
     }
 
     public void setValue(Object value) {
+        if(value == this.value){
+            return;
+        }
         Collection old = this.value;
         this.value = (Collection) value;
         this.changes.firePropertyChange("value", old, this.value);

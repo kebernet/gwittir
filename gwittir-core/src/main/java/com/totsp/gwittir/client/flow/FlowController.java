@@ -19,6 +19,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.totsp.gwittir.client.ui.BoundWidget;
 import com.totsp.gwittir.client.ui.HasWidget;
@@ -89,6 +90,9 @@ public class FlowController {
 
         if(widget == null) {
             return call(contextRoot.getParent(), name, model, fireEvents);
+        }
+        if(((Widget)widget).isAttached() ){
+           ((Widget)widget).removeFromParent();
         }
         if( model != null ){
             widget.setModel(model);
