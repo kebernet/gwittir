@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FocusListener;
+import com.google.gwt.user.client.ui.FocusListenerCollection;
 import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.KeyboardListener;
 import com.google.gwt.user.client.ui.SourcesClickEvents;
@@ -42,6 +43,7 @@ import com.totsp.gwittir.client.action.Action;
 public class TextBox extends AbstractBoundWidget<String> implements HasFocus, HasEnabled, SourcesKeyboardEvents, SourcesClickEvents {
     private com.google.gwt.user.client.ui.TextBox base = new com.google.gwt.user.client.ui.TextBox();
     private ChangeListenerCollection changeListeners = new ChangeListenerCollection();
+    private FocusListenerCollection focusListeners = new FocusListenerCollection();
     private String old;
     public TextBox() {
         this(false);
@@ -51,6 +53,17 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     public TextBox(final boolean updateOnKeypress) {
         final TextBox instance = this;
         old = base.getText();
+        base.addFocusListener( new FocusListener(){
+
+            public void onFocus(Widget sender) {
+                focusListeners.fireFocus(TextBox.this);
+            }
+
+            public void onLostFocus(Widget sender) {
+                focusListeners.fireLostFocus(TextBox.this);
+            }
+            
+        });
         
         if(updateOnKeypress) {
             this.addKeyboardListener(new KeyboardListener() {
@@ -110,7 +123,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     }
     
     public void addFocusListener(FocusListener listener) {
-        this.base.addFocusListener(listener);
+        this.focusListeners.add(listener);
     }
     
     public void addKeyboardListener(KeyboardListener listener) {
@@ -210,6 +223,7 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
         return this.base.getVisibleLength();
     }
     
+    @Override
     public void removeChangeListener(ChangeListener listener) {
         this.base.removeChangeListener(listener);
     }
@@ -219,13 +233,14 @@ public class TextBox extends AbstractBoundWidget<String> implements HasFocus, Ha
     }
     
     public void removeFocusListener(FocusListener listener) {
-        this.base.removeFocusListener(listener);
+        this.focusListeners.remove(listener);
     }
     
     public void removeKeyboardListener(KeyboardListener listener) {
         this.base.removeKeyboardListener(listener);
     }
     
+    @Override
     public void removeStyleName(String style) {
         this.base.removeStyleName(style);
     }
