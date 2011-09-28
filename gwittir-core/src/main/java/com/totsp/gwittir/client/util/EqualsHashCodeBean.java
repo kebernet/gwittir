@@ -95,7 +95,7 @@ public class EqualsHashCodeBean implements Serializable {
                     }
                 }
             } catch (Exception ex) {
-                throw new RuntimeException("Could not execute equals()", ex);
+                throw new RuntimeException("Could not execute equals()\n this: "+bean1.getClass()+" that: "+(bean2 == null ? "null" : bean2.getClass()+"")+"\n "+ex.toString(), ex);
             }
         }
         
