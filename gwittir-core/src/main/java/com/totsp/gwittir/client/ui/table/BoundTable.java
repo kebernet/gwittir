@@ -749,7 +749,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
 
                     // TODO Figure out some way to make this read only.
                 }
-
+                assert widget != null : target + "." + col.getPropertyName() + " did not get a widget.";
                 rowWidgets[colIndex] = widget;
                 BoundTable.LOG.log(Level.SPAM,
                         "Creating widget for " + target + "." + col.getPropertyName(),
@@ -764,11 +764,15 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             }
 
             if (bindings[colIndex] == null) {
-                bindings[colIndex] = new Binding(widget, "value",
-                        col.getValidator(), col.getFeedback(), target,
-                        col.getPropertyName(), null, null);
-                BoundTable.LOG.log(Level.SPAM,
-                        "Created binding " + bindings[colIndex], null);
+                try {
+                    bindings[colIndex] = new Binding(widget, "value",
+                            col.getValidator(), col.getFeedback(), target,
+                            col.getPropertyName(), null, null);
+                    BoundTable.LOG.log(Level.SPAM,
+                            "Created binding " + bindings[colIndex], null);
+                } catch (Throwable e) {
+                    throw new RuntimeException("Error creating " + col.getPropertyName(), e);
+                }
             }
 
             widget.setModel(target);
@@ -1019,7 +1023,10 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 || (((masks & BoundTable.HEADER_MASK) > 0) & ((calcRow % 2) != 0))
                 || (((masks & BoundTable.HEADER_MASK) == 0)
                 && ((calcRow % 2) != 1))) {
-            //GWT.log( "Inside" , null);
+            if (!this.columns[col].isClickable()) {
+                System.out.println("Not clickable");
+                return;
+            }
             if ((toggleRow
                     && (((masks & BoundTable.MULTIROWSELECT_MASK) == 0)
                     && (row != this.selectedCellRowLastIndex)))

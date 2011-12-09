@@ -79,6 +79,9 @@ public class Binding {
      *            Property on the right object.
      */
     public Binding(SourcesPropertyChangeEvents left, String leftProperty, SourcesPropertyChangeEvents right, String rightProperty) {
+        assert left != null : "Left hand side of listener for property "+leftProperty+" is null.";
+        assert right != null : "Right hand side of listener for property "+rightProperty+" is null.";
+        
         this.left = this.createBindingInstance(left, leftProperty);
         this.right = this.createBindingInstance(right, rightProperty);
 
@@ -109,6 +112,8 @@ public class Binding {
     public Binding(
         SourcesPropertyChangeEvents left, String leftProperty, Validator leftValidator, ValidationFeedback leftFeedback, SourcesPropertyChangeEvents right,
         String rightProperty, Validator rightValidator, ValidationFeedback rightFeedback) {
+        assert left != null : "Left hand side of listener for property "+leftProperty+" is null.";
+        assert right != null : "Right hand side of listener for property "+rightProperty+" is null.";
         this.left = this.createBindingInstance(left, leftProperty);
         this.left.validator = leftValidator;
         this.left.feedback = leftFeedback;
@@ -133,6 +138,8 @@ public class Binding {
     public Binding(
         SourcesPropertyChangeEvents left, String leftProperty, Converter leftConverter, SourcesPropertyChangeEvents right, String rightProperty,
         Converter rightConverter) {
+        assert left != null : "Left hand side of listener for property "+leftProperty+" is null.";
+        assert right != null : "Right hand side of listener for property "+rightProperty+" is null.";
         this.left = this.createBindingInstance(left, leftProperty);
         this.left.converter = leftConverter;
         this.right = this.createBindingInstance(right, rightProperty);
@@ -151,6 +158,8 @@ public class Binding {
      *            The right binding instance
      */
     public Binding(BindingInstance left, BindingInstance right) {
+        assert left.object != null : "Left hand side of listener for property "+left.property.getName()+" is null.";
+        assert right.object != null : "Right hand side of listener for property "+right.property.getName()+" is null.";
         this.left = left;
         this.right = right;
     }
@@ -350,7 +359,8 @@ public class Binding {
                                                       .append(right.object)
                                                       .append(" ] with children :");
         for(Binding b : this.getChildren() ){
-            sb.append("\n"+ b.toString());
+            sb.append("\n")
+              .append(b.toString());
         }
         return sb.toString();
                                                       
@@ -447,7 +457,7 @@ public class Binding {
         return valid;
     }
 
-    BindingInstance createBindingInstance(SourcesPropertyChangeEvents object, String propertyName) {
+    final BindingInstance createBindingInstance(SourcesPropertyChangeEvents object, String propertyName) {
         int dotIndex = propertyName.indexOf(".");
         BindingInstance instance = new BindingInstance();
         NestedPropertyChangeListener rtpcl = (dotIndex == -1) ? null

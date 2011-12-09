@@ -16,6 +16,7 @@
  */
 package com.totsp.gwittir.client.util;
 
+import com.google.gwt.core.client.GWT;
 import java.io.Serializable;
 
 import com.totsp.gwittir.client.beans.BeanDescriptor;
@@ -95,7 +96,13 @@ public class EqualsHashCodeBean implements Serializable {
                     }
                 }
             } catch (Exception ex) {
-                throw new RuntimeException("Could not execute equals()\n this: "+bean1.getClass()+" that: "+(bean2 == null ? "null" : bean2.getClass()+"")+"\n "+ex.toString(), ex);
+                String line = "Could not execute equals()\n this: "+bean1.getClass()+" that: "+(bean2 == null ? "null" : bean2.getClass()+"")+"\n "+ex.toString();
+                if(GWT.isClient()){
+                    GWT.log(line, ex);
+                } else {
+                    System.err.println(line);
+                    ex.printStackTrace();
+                }
             }
         }
         

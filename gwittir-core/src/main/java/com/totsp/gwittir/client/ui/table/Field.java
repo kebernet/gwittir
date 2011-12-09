@@ -41,6 +41,7 @@ public class Field {
     private String styleName;
     private ValidationFeedback feedback;
     private Validator validator;
+    private boolean isClickable = true;
 
     /** Creates a new instance of Column */
     public Field(String propertyName) {
@@ -50,6 +51,12 @@ public class Field {
     public Field(String propertyName, String label) {
         this.propertyName = propertyName;
         this.label = label;
+    }
+    
+    public Field(String propertyName, String label, boolean isClickable){
+        this.propertyName = propertyName;
+        this.label = label;
+        this.isClickable = isClickable;
     }
 
     public Field(String propertyName, String label, String styleName) {
@@ -145,13 +152,14 @@ public class Field {
     
     public Field(String propertyName, String label,
 			BoundWidgetProvider cellProvider, Validator validator,
-			ValidationFeedback feedback,Converter converter) {
+			ValidationFeedback feedback,Converter converter, boolean isClickable) {
 		this.propertyName = propertyName;
 		this.label = label;
 		this.cellProvider = cellProvider;
 		this.validator = validator;
 		this.feedback = feedback;
 		this.converter=converter;
+                this.isClickable = isClickable;
 	}
     
     public BoundWidgetProvider getCellProvider() {
@@ -188,5 +196,9 @@ public class Field {
 
     public Validator getValidator() {
         return validator;
+    }
+    
+    public boolean isClickable() {
+        return isClickable;
     }
 }
