@@ -6,8 +6,8 @@
     <source path="client" />
    
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.DevNullLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.DevNullLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
     </replace-with>
 </module>

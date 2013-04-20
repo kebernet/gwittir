@@ -11,10 +11,9 @@ import com.google.gwt.user.server.rpc.RPCRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 
-import com.totsp.gwittir.client.stream.StreamServiceIterator;
+import com.totsp.gwittir.mvc.stream.StreamServiceIterator;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

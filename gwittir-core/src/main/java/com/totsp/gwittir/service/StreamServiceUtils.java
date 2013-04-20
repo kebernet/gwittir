@@ -315,7 +315,7 @@ public class StreamServiceUtils {
    * Returns a string that encodes the results of an RPC call. Private overload
    * that takes a flag signaling the preamble of the response payload.
    *
-   * @param object the object that we wish to send back to the client
+   * @param object the object that we wish to send back to the mvc
    * @param wasThrown if true, the object being returned was an exception thrown
    *          by the service method; if false, it was the result of the service
    *          method's invocation

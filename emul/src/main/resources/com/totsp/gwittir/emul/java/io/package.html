@@ -1,0 +1,23 @@
+<html>
+<body>
+<p>
+    Stub classes to allow other classes to compile.
+</p>
+<p>
+    You can import the java.io emulated classes by adding the following import to your .gwt.xml file:
+</p>
+<blockquote>
+    <code>
+        &lt;inherits name="com.googlecode.gwtx.java.Io"/&gt;
+    </code>
+</blockquote>
+<p>
+    WARNING: to use the <tt>OutputStream</tt> emulation, you must put gwtx.jar in your classpath <b>BEFORE<b>
+    gwt-user.jar that contains an empty <tt>OutputStream</tt> emulation
+</p>
+<p>
+    The <tt>File</tt> emulation maps java.io.File concepts to resources accessed through HTTP(s). Only read methods
+    are supported.
+</p>
+</body>
+</html>

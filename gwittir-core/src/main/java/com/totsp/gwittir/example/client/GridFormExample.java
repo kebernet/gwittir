@@ -1,13 +1,13 @@
 package com.totsp.gwittir.example.client;
 
-import com.totsp.gwittir.client.beans.Converter;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.table.Field;
-import com.totsp.gwittir.client.ui.table.GridForm;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
-import com.totsp.gwittir.client.validator.DoubleValidator;
-import com.totsp.gwittir.client.validator.IntegerValidator;
-import com.totsp.gwittir.client.validator.PopupValidationFeedback;
+import com.totsp.gwittir.mvc.beans.Converter;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.table.Field;
+import com.totsp.gwittir.mvc.ui.table.GridForm;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.validator.DoubleValidator;
+import com.totsp.gwittir.mvc.validator.IntegerValidator;
+import com.totsp.gwittir.mvc.validator.PopupValidationFeedback;
 
 public class GridFormExample extends BoundVerticalPanel<Object>{
 	

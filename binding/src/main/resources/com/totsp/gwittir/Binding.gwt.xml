@@ -1,0 +1,5 @@
+<module>
+   <inherit name="com.totsp.gwittir.Emul" />
+   <inherit name="com.totsp.gwittir.Introspection" />
+   <source path="binding" />
+</module>

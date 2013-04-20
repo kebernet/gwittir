@@ -1,19 +1,17 @@
 package com.totsp.gwittir.example.client;
 
-import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.totsp.gwittir.client.beans.Binding;
-import com.totsp.gwittir.client.beans.Converter;
-import com.totsp.gwittir.client.fx.ui.ReflectedImageGroup;
-import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
-import com.totsp.gwittir.client.jsni.flickr.FlickrPhoto;
-import com.totsp.gwittir.client.jsni.flickr.FlickrSearch;
-import com.totsp.gwittir.client.ui.AbstractBoundWidget;
-import com.totsp.gwittir.client.ui.Image;
-import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.Renderer;
-import com.totsp.gwittir.client.ui.TextBox;
+import com.totsp.gwittir.mvc.beans.Binding;
+import com.totsp.gwittir.mvc.beans.Converter;
+import com.totsp.gwittir.mvc.fx.ui.ReflectedImageGroup;
+import com.totsp.gwittir.mvc.fx.ui.SoftScrollArea;
+import com.totsp.gwittir.mvc.jsni.flickr.FlickrPhoto;
+import com.totsp.gwittir.mvc.jsni.flickr.FlickrSearch;
+import com.totsp.gwittir.mvc.ui.AbstractBoundWidget;
+import com.totsp.gwittir.mvc.ui.Image;
+import com.totsp.gwittir.mvc.ui.Label;
+import com.totsp.gwittir.mvc.ui.Renderer;
+import com.totsp.gwittir.mvc.ui.TextBox;
 
 
 public class FlickrExample extends AbstractBoundWidget<Object> {

@@ -4,9 +4,9 @@
  */
 package com.totsp.gwittir.serialtest.client;
 
-import com.totsp.gwittir.client.beans.annotations.Introspectable;
+import com.totsp.gwittir.introspection.Introspectable;
 
-import com.totsp.gwittir.serial.json.client.JSONField;
+import com.totsp.gwittir.json.client.JSONField;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

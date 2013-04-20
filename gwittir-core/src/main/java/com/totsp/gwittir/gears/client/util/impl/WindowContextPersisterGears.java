@@ -17,8 +17,8 @@ import com.google.gwt.gears.client.database.ResultSet;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
-import com.totsp.gwittir.client.util.WindowContext.WindowContextCallback;
-import com.totsp.gwittir.client.util.impl.AbstractWindowContextPersister;
+import com.totsp.gwittir.mvc.util.WindowContext.WindowContextCallback;
+import com.totsp.gwittir.mvc.util.impl.AbstractWindowContextPersister;
 
 /**
  * 

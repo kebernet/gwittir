@@ -1,12 +1,12 @@
 package com.totsp.gwittir.example.client;
 
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.ContextMenuPanel;
-import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.ContextMenuPanel.MenuItem;
-import com.totsp.gwittir.client.ui.ContextMenuPanel.SubMenu;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.ContextMenuPanel;
+import com.totsp.gwittir.mvc.ui.Label;
+import com.totsp.gwittir.mvc.ui.ContextMenuPanel.MenuItem;
+import com.totsp.gwittir.mvc.ui.ContextMenuPanel.SubMenu;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
 
 public class ContextMenuExample extends BoundVerticalPanel<Object>{
 

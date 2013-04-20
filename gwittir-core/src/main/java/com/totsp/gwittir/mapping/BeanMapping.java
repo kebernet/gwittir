@@ -43,7 +43,7 @@ import java.util.Set;
 
 
 /**
- * This is a class that uses reflection to map similar sets of beans to each other.
+ * This is a class that uses reflection to map similar sets of introspection to each other.
  * <p>
  *     It has a single public static method, convert, that takes in a
  *     properties object with mapping information and a bean to

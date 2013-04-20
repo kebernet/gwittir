@@ -44,34 +44,34 @@
     </property-provider>
     
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.ErrorLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.ErrorLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
         <when-property-is name="log.level" value="error"/>
     </replace-with>
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.WarnLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.WarnLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
         <when-property-is name="log.level" value="warn"/>
     </replace-with>
     
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.InfoLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.InfoLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
         <when-property-is name="log.level" value="info"/>
     </replace-with>
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.DebugLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.DebugLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
         <when-property-is name="log.level" value="debug"/>
     </replace-with>
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.SpamLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.SpamLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
         <when-property-is name="log.level" value="spam"/>
     </replace-with>
 </module>

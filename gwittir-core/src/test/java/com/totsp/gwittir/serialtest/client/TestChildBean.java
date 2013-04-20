@@ -5,7 +5,7 @@
 
 package com.totsp.gwittir.serialtest.client;
 
-import com.totsp.gwittir.client.beans.annotations.Introspectable;
+import com.totsp.gwittir.introspection.Introspectable;
 
 /**
  *

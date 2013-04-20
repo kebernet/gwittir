@@ -3,9 +3,8 @@ package com.totsp.gwittir.service.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.totsp.gwittir.client.util.impl.WindowContextPersisterMacShell.MacShellService;
+import com.totsp.gwittir.mvc.util.impl.WindowContextPersisterMacShell.MacShellService;
 
 public class MacShellPersisterServlet extends RemoteServiceServlet implements MacShellService {
 

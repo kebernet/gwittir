@@ -6,17 +6,17 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.keyboard.KeyBinding;
-import com.totsp.gwittir.client.keyboard.SuggestedKeyBinding;
-import com.totsp.gwittir.client.keyboard.Task;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.table.BoundTable;
-import com.totsp.gwittir.client.ui.table.Field;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
-import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
-import com.totsp.gwittir.client.validator.IntegerValidator;
-import com.totsp.gwittir.client.validator.PopupValidationFeedback;
+import com.totsp.gwittir.mvc.keyboard.KeyBinding;
+import com.totsp.gwittir.mvc.keyboard.SuggestedKeyBinding;
+import com.totsp.gwittir.mvc.keyboard.Task;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.table.BoundTable;
+import com.totsp.gwittir.mvc.ui.table.Field;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.mvc.validator.IntegerValidator;
+import com.totsp.gwittir.mvc.validator.PopupValidationFeedback;
 
 public class TableExample extends BoundVerticalPanel<Object> {
 	

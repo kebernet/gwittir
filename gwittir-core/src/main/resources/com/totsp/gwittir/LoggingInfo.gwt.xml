@@ -13,9 +13,9 @@
     </property-provider>
     
     <replace-with 
-        class="com.totsp.gwittir.client.log.rebind.InfoLogger">
+        class="com.totsp.gwittir.mvc.log.rebind.InfoLogger">
         <when-type-is 
-            class="com.totsp.gwittir.client.log.Logger" />
+            class="com.totsp.gwittir.mvc.log.Logger" />
         <when-property-is name="log.level" value="info"/>
     </replace-with>
 </module>

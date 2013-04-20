@@ -3,11 +3,11 @@ package com.totsp.gwittir.example.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.totsp.gwittir.client.flow.FlowContext;
-import com.totsp.gwittir.client.flow.FlowController;
-import com.totsp.gwittir.client.flow.SimpleSessionHistoryManager;
-import com.totsp.gwittir.client.ui.FlowTabPanel;
-import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.mvc.flow.FlowContext;
+import com.totsp.gwittir.mvc.flow.FlowController;
+import com.totsp.gwittir.mvc.flow.SimpleSessionHistoryManager;
+import com.totsp.gwittir.mvc.ui.FlowTabPanel;
+import com.totsp.gwittir.mvc.ui.Label;
 
 public class TestEntryPoint implements EntryPoint {
 

@@ -23,7 +23,7 @@ package com.totsp.gwittir.example.client;
 import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.totsp.gwittir.client.beans.AbstractModelBean;
+import com.totsp.gwittir.mvc.beans.AbstractModelBean;
 
 /**
  * 

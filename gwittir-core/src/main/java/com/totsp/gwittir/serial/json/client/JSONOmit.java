@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.totsp.gwittir.serial.json.client;
+package com.totsp.gwittir.json.client;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

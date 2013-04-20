@@ -25,15 +25,14 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.beans.AbstractModelBean;
-import com.totsp.gwittir.client.beans.Binding;
-import com.totsp.gwittir.client.flow.FlowContext;
-import com.totsp.gwittir.client.flow.FlowController;
-import com.totsp.gwittir.client.flow.SimpleSessionHistoryManager;
-import com.totsp.gwittir.client.fx.DragAndDropContext;
-import com.totsp.gwittir.client.fx.DropListener;
-import com.totsp.gwittir.client.ui.FlowTabPanel;
+import com.totsp.gwittir.mvc.beans.AbstractModelBean;
+import com.totsp.gwittir.mvc.beans.Binding;
+import com.totsp.gwittir.mvc.flow.FlowContext;
+import com.totsp.gwittir.mvc.flow.FlowController;
+import com.totsp.gwittir.mvc.flow.SimpleSessionHistoryManager;
+import com.totsp.gwittir.mvc.fx.DragAndDropContext;
+import com.totsp.gwittir.mvc.fx.DropListener;
+import com.totsp.gwittir.mvc.ui.FlowTabPanel;
 
 
 

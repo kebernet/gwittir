@@ -3,14 +3,14 @@ package com.totsp.gwittir.example.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.fx.AnimationFinishedCallback;
-import com.totsp.gwittir.client.fx.MutationStrategy;
-import com.totsp.gwittir.client.fx.OpacityWrapper;
-import com.totsp.gwittir.client.fx.PropertyAnimator;
-import com.totsp.gwittir.client.fx.ui.ReflectedImage;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.fx.AnimationFinishedCallback;
+import com.totsp.gwittir.mvc.fx.MutationStrategy;
+import com.totsp.gwittir.mvc.fx.OpacityWrapper;
+import com.totsp.gwittir.mvc.fx.PropertyAnimator;
+import com.totsp.gwittir.mvc.fx.ui.ReflectedImage;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
 
 public class AnimationExample extends BoundVerticalPanel<Object>{
 

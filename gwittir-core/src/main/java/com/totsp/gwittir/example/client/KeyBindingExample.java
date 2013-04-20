@@ -1,15 +1,15 @@
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.Window;
-import com.totsp.gwittir.client.action.Action;
-import com.totsp.gwittir.client.action.BindingAction;
-import com.totsp.gwittir.client.keyboard.KeyBinding;
-import com.totsp.gwittir.client.keyboard.KeyBindingEventListener;
-import com.totsp.gwittir.client.keyboard.KeyboardController;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.action.Action;
+import com.totsp.gwittir.mvc.action.BindingAction;
+import com.totsp.gwittir.mvc.keyboard.KeyBinding;
+import com.totsp.gwittir.mvc.keyboard.KeyBindingEventListener;
+import com.totsp.gwittir.mvc.keyboard.KeyboardController;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.BoundWidget;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
 
 public class KeyBindingExample extends BoundVerticalPanel<Object> {
 	

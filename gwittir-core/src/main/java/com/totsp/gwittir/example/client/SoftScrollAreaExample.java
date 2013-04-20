@@ -7,15 +7,15 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.fx.ui.SoftAnimatedHorizontalScrollbar;
-import com.totsp.gwittir.client.fx.ui.SoftAnimatedScrollbar;
-import com.totsp.gwittir.client.fx.ui.SoftHorizontalScrollbar;
-import com.totsp.gwittir.client.fx.ui.SoftScrollArea;
-import com.totsp.gwittir.client.fx.ui.SoftScrollbar;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.Image;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.fx.ui.SoftAnimatedHorizontalScrollbar;
+import com.totsp.gwittir.mvc.fx.ui.SoftAnimatedScrollbar;
+import com.totsp.gwittir.mvc.fx.ui.SoftHorizontalScrollbar;
+import com.totsp.gwittir.mvc.fx.ui.SoftScrollArea;
+import com.totsp.gwittir.mvc.fx.ui.SoftScrollbar;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.Image;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
 
 public class SoftScrollAreaExample extends BoundVerticalPanel<Object>{
 

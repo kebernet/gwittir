@@ -5,7 +5,7 @@
 
 package com.totsp.gwittir.serialtest.client;
 
-import com.totsp.gwittir.serial.json.client.JSONCodec;
+import com.totsp.gwittir.json.client.JSONCodec;
 
 /**
  *

@@ -10,7 +10,7 @@
 package com.totsp.gwittir.service;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.totsp.gwittir.client.log.remote.LogService;
+import com.totsp.gwittir.mvc.log.remote.LogService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

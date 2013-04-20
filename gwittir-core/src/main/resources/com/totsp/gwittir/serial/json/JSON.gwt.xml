@@ -4,8 +4,8 @@
     <inherits name="com.totsp.gwittir.serial.Serialization" />
     <inherits name="com.google.gwt.json.JSON" />
     <generate-with
-        class="com.totsp.gwittir.serial.json.rebind.JSONCodecGenerator" >
+        class="com.totsp.gwittir.rebind.JSONCodecGenerator" >
         <when-type-assignable
-            class="com.totsp.gwittir.serial.json.client.JSONCodec" />
+            class="com.totsp.gwittir.json.JSONCodec" />
     </generate-with>
 </module>

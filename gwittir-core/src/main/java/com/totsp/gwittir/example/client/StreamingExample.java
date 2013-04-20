@@ -4,12 +4,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.stream.StreamServiceCallback;
-import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.stream.StreamServiceCallback;
+import com.totsp.gwittir.mvc.stream.impl.StreamingServiceStub;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.Label;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
 
 public class StreamingExample extends BoundVerticalPanel<Object> {
 

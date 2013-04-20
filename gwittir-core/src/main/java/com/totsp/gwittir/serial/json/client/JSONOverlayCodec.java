@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.totsp.gwittir.serial.json.client;
+package com.totsp.gwittir.json.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.totsp.gwittir.serial.client.Codec;

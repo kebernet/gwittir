@@ -8,14 +8,14 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.flow.FlowContext;
-import com.totsp.gwittir.client.flow.FlowController;
-import com.totsp.gwittir.client.flow.FlowEvent;
-import com.totsp.gwittir.client.flow.FlowEventListener;
-import com.totsp.gwittir.client.ui.AbstractBoundWidget;
-import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.TextArea;
+import com.totsp.gwittir.mvc.flow.FlowContext;
+import com.totsp.gwittir.mvc.flow.FlowController;
+import com.totsp.gwittir.mvc.flow.FlowEvent;
+import com.totsp.gwittir.mvc.flow.FlowEventListener;
+import com.totsp.gwittir.mvc.ui.AbstractBoundWidget;
+import com.totsp.gwittir.mvc.ui.BoundWidget;
+import com.totsp.gwittir.mvc.ui.Label;
+import com.totsp.gwittir.mvc.ui.TextArea;
 
 public class ViewSourcePanel extends AbstractBoundWidget<Object> {
 

@@ -10,7 +10,6 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JGenericType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -22,10 +21,10 @@ import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamWriter;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
-import com.totsp.gwittir.client.stream.StreamControl;
-import com.totsp.gwittir.client.stream.StreamServiceCallback;
-import com.totsp.gwittir.client.stream.impl.StreamingServiceStub;
-import com.totsp.gwittir.client.stream.StreamServiceIterator;
+import com.totsp.gwittir.mvc.stream.StreamControl;
+import com.totsp.gwittir.mvc.stream.StreamServiceCallback;
+import com.totsp.gwittir.mvc.stream.impl.StreamingServiceStub;
+import com.totsp.gwittir.mvc.stream.StreamServiceIterator;
 
 import java.io.PrintWriter;
 
@@ -244,7 +243,7 @@ public class StreamClientGenerator extends Generator {
                 className);
         mcf.makeInterface();
         mcf.addImplementedInterface(
-            "com.google.gwt.user.client.rpc.RemoteService");
+            "com.google.gwt.user.mvc.rpc.RemoteService");
 
         PrintWriter pw = context.tryCreate(logger, packageName, className);
         if( pw == null ){

@@ -14,7 +14,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package com.totsp.gwittir.serial.json.rebind;
+package com.totsp.gwittir.rebind;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -37,13 +37,13 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
-import com.totsp.gwittir.rebind.beans.BeanResolver;
-import com.totsp.gwittir.rebind.beans.IntrospectorGenerator;
-import com.totsp.gwittir.rebind.beans.RProperty;
+import com.totsp.gwittir.rebind.introspection.BeanResolver;
+import com.totsp.gwittir.rebind.introspection.IntrospectorGenerator;
+import com.totsp.gwittir.rebind.introspection.RProperty;
 import com.totsp.gwittir.serial.client.SerializationException;
-import com.totsp.gwittir.serial.json.client.JSONCodec;
-import com.totsp.gwittir.serial.json.client.JSONField;
-import com.totsp.gwittir.serial.json.client.JSONOmit;
+import com.totsp.gwittir.json.client.JSONCodec;
+import com.totsp.gwittir.json.client.JSONField;
+import com.totsp.gwittir.json.client.JSONOmit;
 
 import java.io.PrintWriter;
 

@@ -6,8 +6,8 @@
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.Window;
-import com.totsp.gwittir.client.util.UnavailableException;
-import com.totsp.gwittir.client.util.userdata.UserData;
+import com.totsp.gwittir.mvc.util.UnavailableException;
+import com.totsp.gwittir.mvc.util.userdata.UserData;
 
 /**
  *

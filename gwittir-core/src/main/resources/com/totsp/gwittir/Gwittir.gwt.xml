@@ -2,34 +2,17 @@
 
 <module>
     <!-- Inherit the core Web Toolkit stuff.                  -->
-    <inherits name='com.google.gwt.user.User'/>
-    <inherits name='com.google.gwt.i18n.I18N'/>
-    <inherits name='com.googlecode.gwtx.Java'/>
-    <inherits name='com.totsp.gwittir.Introspector' />
+
     <source path="client" />
     <generate-with
         class="com.totsp.gwittir.rebind.stream.StreamClientGenerator" >
         <when-type-assignable
-            class="com.totsp.gwittir.client.stream.StreamingService" />
+            class="com.totsp.gwittir.mvc.stream.StreamingService" />
     </generate-with>
-    <replace-with
-        class="com.totsp.gwittir.client.fx.rebind.OpacitySetterIE6">
-        <when-type-is 
-            class="com.totsp.gwittir.client.fx.rebind.OpacitySetter" />
-        <when-property-is name="user.agent" value="ie6"/>
-    </replace-with>
-    <replace-with
-        class="com.totsp.gwittir.client.fx.rebind.ReflectionIE6">
-        <when-type-is 
-            class="com.totsp.gwittir.client.fx.rebind.Reflection" />
-        <when-property-is name="user.agent" value="ie6"/>
-    </replace-with>
-    <replace-with
-        class="com.totsp.gwittir.client.fx.rebind.DimensionsIE6">
-        <when-type-is 
-            class="com.totsp.gwittir.client.fx.rebind.Dimensions" />
-        <when-property-is name="user.agent" value="ie6"/>
-    </replace-with>
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.i18n.I18N'/>
+    <inherits name='com.totsp.gwittir.Emul'/>
+    <inherits name='com.totsp.gwittir.Introspector' />
     <define-property name="gwittir.windowcontext" values="domstorage,userdata,html5,flash,name" />
     <property-provider name="gwittir.windowcontext">
         <![CDATA[
@@ -81,54 +64,54 @@
         ]]>
     </property-provider>
     <replace-with
-        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterFlash">
+        class="com.totsp.gwittir.mvc.util.impl.WindowContextPersisterFlash">
         <when-type-is
-            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+            class="com.totsp.gwittir.mvc.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="flash"/>
     </replace-with>
     <replace-with
-        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterFirefox">
+        class="com.totsp.gwittir.mvc.util.impl.WindowContextPersisterFirefox">
         <when-type-is
-            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+            class="com.totsp.gwittir.mvc.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="domstorage"/>
     </replace-with>
     <replace-with
-        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterMSIE">
+        class="com.totsp.gwittir.mvc.util.impl.WindowContextPersisterMSIE">
         <when-type-is
-            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+            class="com.totsp.gwittir.mvc.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="userdata"/>
     </replace-with>
     <replace-with
-        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterHTML5">
+        class="com.totsp.gwittir.mvc.util.impl.WindowContextPersisterHTML5">
         <when-type-is
-            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+            class="com.totsp.gwittir.mvc.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="html5"/>
     </replace-with>
     
     <replace-with
-        class="com.totsp.gwittir.client.util.impl.WindowContextPersisterName">
+        class="com.totsp.gwittir.mvc.util.impl.WindowContextPersisterName">
         <when-type-is
-            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+            class="com.totsp.gwittir.mvc.util.impl.WindowContextPersister" />
         <when-property-is name="gwittir.windowcontext" value="name"/>
     </replace-with>
 	
 	
 	<replace-with
-        class="com.totsp.gwittir.client.ui.rebind.FlashElementFactoryEmbed">
+        class="com.totsp.gwittir.mvc.ui.rebind.FlashElementFactoryEmbed">
         <when-type-is
-            class="com.totsp.gwittir.client.ui.rebind.FlashElementFactory" />
+            class="com.totsp.gwittir.mvc.ui.rebind.FlashElementFactory" />
         <when-property-is name="user.agent" value="gecko"/>
     </replace-with>
     <replace-with
-        class="com.totsp.gwittir.client.ui.rebind.FlashElementFactoryEmbed">
+        class="com.totsp.gwittir.mvc.ui.rebind.FlashElementFactoryEmbed">
         <when-type-is
-            class="com.totsp.gwittir.client.ui.rebind.FlashElementFactory" />
+            class="com.totsp.gwittir.mvc.ui.rebind.FlashElementFactory" />
         <when-property-is name="user.agent" value="gecko1_8"/>
     </replace-with>
     <replace-with
-        class="com.totsp.gwittir.client.ui.rebind.FlashElementFactoryEmbed">
+        class="com.totsp.gwittir.mvc.ui.rebind.FlashElementFactoryEmbed">
         <when-type-is
-            class="com.totsp.gwittir.client.ui.rebind.FlashElementFactory" />
+            class="com.totsp.gwittir.mvc.ui.rebind.FlashElementFactory" />
         <when-property-is name="user.agent" value="ie6"/>
     </replace-with>
     

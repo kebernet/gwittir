@@ -5,8 +5,8 @@
 
 package com.totsp.gwittir.example.client;
 
-import com.totsp.gwittir.client.stream.StreamingService;
-import com.totsp.gwittir.client.stream.StreamServiceIterator;
+import com.totsp.gwittir.mvc.stream.StreamingService;
+import com.totsp.gwittir.mvc.stream.StreamServiceIterator;
 
 /**
  *

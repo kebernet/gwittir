@@ -15,7 +15,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.totsp.gwittir.serial.json.client;
+package com.totsp.gwittir.json.client;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

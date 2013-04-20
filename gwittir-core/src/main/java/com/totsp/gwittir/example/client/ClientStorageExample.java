@@ -7,19 +7,19 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.beans.AbstractModelBean;
-import com.totsp.gwittir.client.ui.BoundVerticalPanel;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.table.BoundTable;
-import com.totsp.gwittir.client.ui.table.Field;
-import com.totsp.gwittir.client.ui.util.BoundWidgetTypeFactory;
-import com.totsp.gwittir.client.ui.util.ChangeMarkedTypeFactory;
-import com.totsp.gwittir.client.util.WindowContext;
-import com.totsp.gwittir.client.validator.CompositeValidator;
-import com.totsp.gwittir.client.validator.NotNullValidator;
-import com.totsp.gwittir.client.validator.PopupValidationFeedback;
-import com.totsp.gwittir.client.validator.ValidationException;
-import com.totsp.gwittir.client.validator.Validator;
+import com.totsp.gwittir.mvc.beans.AbstractModelBean;
+import com.totsp.gwittir.mvc.ui.BoundVerticalPanel;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.table.BoundTable;
+import com.totsp.gwittir.mvc.ui.table.Field;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
+import com.totsp.gwittir.mvc.ui.util.ChangeMarkedTypeFactory;
+import com.totsp.gwittir.mvc.util.WindowContext;
+import com.totsp.gwittir.mvc.validator.CompositeValidator;
+import com.totsp.gwittir.mvc.validator.NotNullValidator;
+import com.totsp.gwittir.mvc.validator.PopupValidationFeedback;
+import com.totsp.gwittir.mvc.validator.ValidationException;
+import com.totsp.gwittir.mvc.validator.Validator;
 
 public class ClientStorageExample extends BoundVerticalPanel<Object>{
 	

@@ -6,16 +6,16 @@ import java.util.List;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.action.Action;
-import com.totsp.gwittir.client.action.BindingAction;
-import com.totsp.gwittir.client.beans.Binding;
-import com.totsp.gwittir.client.flow.FlowContext;
-import com.totsp.gwittir.client.flow.FlowController;
-import com.totsp.gwittir.client.flow.SimpleSessionHistoryManager;
-import com.totsp.gwittir.client.ui.AbstractBoundWidget;
-import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.client.ui.Button;
-import com.totsp.gwittir.client.ui.Label;
+import com.totsp.gwittir.mvc.action.Action;
+import com.totsp.gwittir.mvc.action.BindingAction;
+import com.totsp.gwittir.mvc.beans.Binding;
+import com.totsp.gwittir.mvc.flow.FlowContext;
+import com.totsp.gwittir.mvc.flow.FlowController;
+import com.totsp.gwittir.mvc.flow.SimpleSessionHistoryManager;
+import com.totsp.gwittir.mvc.ui.AbstractBoundWidget;
+import com.totsp.gwittir.mvc.ui.BoundWidget;
+import com.totsp.gwittir.mvc.ui.Button;
+import com.totsp.gwittir.mvc.ui.Label;
 
 public class FlowExamplePanel extends SimplePanel {
 	

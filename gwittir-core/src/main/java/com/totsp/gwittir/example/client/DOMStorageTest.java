@@ -6,9 +6,9 @@
 package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.Window;
-import com.totsp.gwittir.client.util.domstorage.DOMStorage;
-import com.totsp.gwittir.client.util.domstorage.Storage;
-import com.totsp.gwittir.client.util.UnavailableException;
+import com.totsp.gwittir.mvc.util.domstorage.DOMStorage;
+import com.totsp.gwittir.mvc.util.domstorage.Storage;
+import com.totsp.gwittir.mvc.util.UnavailableException;
 
 /**
  *

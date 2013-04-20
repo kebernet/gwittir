@@ -6,7 +6,7 @@
     <replace-with
         class="com.totsp.gwittir.gears.client.util.impl.WindowContextPersisterGears">
         <when-type-is
-            class="com.totsp.gwittir.client.util.impl.WindowContextPersister" />
+            class="com.totsp.gwittir.mvc.util.impl.WindowContextPersister" />
         <when-property-is name="gears.installed" value="true"/>
     </replace-with>
 </module>
