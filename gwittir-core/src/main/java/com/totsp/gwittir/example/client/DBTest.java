@@ -6,7 +6,7 @@ package com.totsp.gwittir.example.client;
 
 import com.google.gwt.user.client.Window;
 
-import com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator;
+import com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator;
 import com.totsp.gwittir.mvc.util.html5db.Database;
 import com.totsp.gwittir.mvc.util.html5db.Databases;
 import com.totsp.gwittir.mvc.util.html5db.ResultSet;

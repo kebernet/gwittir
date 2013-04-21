@@ -4,7 +4,7 @@
  * Created on November 9, 2007, 9:29 PM
  */
 
-package com.totsp.gwittir.mvc.jsni.flickr;
+package com.totsp.gwittir.util.jsni.flickr;
 
 import com.totsp.gwittir.mvc.beans.AbstractModelBean;
 

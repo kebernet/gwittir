@@ -1,7 +1,8 @@
 
 <module>
     <inherits name="com.google.gwt.core.Core" />
-    <source path="client/beans" />
+    <inherits name="com.google.gwt.logging.Logging" />
+    <source path="introspection" />
     <generate-with
             class="com.totsp.gwittir.rebind.introspection.IntrospectorGenerator" >
         <when-type-assignable

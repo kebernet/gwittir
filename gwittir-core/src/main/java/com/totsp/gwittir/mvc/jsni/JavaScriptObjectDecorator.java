@@ -5,7 +5,7 @@
  *
 
  */
-package com.totsp.gwittir.mvc.jsni;
+package com.totsp.gwittir.util.jsni;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -237,7 +237,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
-    return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newBoolean(Z)( object[ name ] );
+    return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newBoolean(Z)( object[ name ] );
     }
     }-*/;
 
@@ -270,7 +270,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
-    return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newFloat(F)( object[ name ] );
+    return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newFloat(F)( object[ name ] );
     }
     }-*/;
 
@@ -295,7 +295,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
-    return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newInteger(I)( object[ name ] );
+    return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newInteger(I)( object[ name ] );
     }
     }-*/;
 
@@ -349,7 +349,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
-    return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newByte(B)( object[ name ] );
+    return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newByte(B)( object[ name ] );
     }
     }-*/;
 
@@ -358,7 +358,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
-    return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newDouble(D)( object[ name ] );
+    return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newDouble(D)( object[ name ] );
     }
     }-*/;
 
@@ -371,7 +371,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
     return null;
     } else {
-    return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newCharacter(C)( object[ name ] );
+    return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newCharacter(C)( object[ name ] );
     }
     }-*/;
 
@@ -383,7 +383,7 @@ public class JavaScriptObjectDecorator {
     if( object[name] == null || object[name] == undefined ){
         return null;
     } else {
-        return @com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator::newShort(S)( object[ name ] );
+        return @com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator::newShort(S)( object[ name ] );
     }
     }-*/;
 

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gwt.user.client.Window;
-import com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator;
+import com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator;
 import com.totsp.gwittir.mvc.log.Level;
 import com.totsp.gwittir.mvc.log.Logger;
 import com.totsp.gwittir.mvc.util.WindowContext.WindowContextCallback;

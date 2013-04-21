@@ -9,7 +9,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator;
+import com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator;
 import com.totsp.gwittir.mvc.ui.FlashWidget;
 
 public class FlashStorage extends JavaScriptObject {

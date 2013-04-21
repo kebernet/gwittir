@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.totsp.gwittir.mvc.util.compress;
+package com.totsp.gwittir.util.compress;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.totsp.gwittir.mvc.util.StringUtil;

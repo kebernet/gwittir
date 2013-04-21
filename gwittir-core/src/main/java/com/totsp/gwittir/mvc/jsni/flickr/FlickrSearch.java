@@ -5,12 +5,12 @@
  *
  */
 
-package com.totsp.gwittir.mvc.jsni.flickr;
+package com.totsp.gwittir.util.jsni.flickr;
 
 import com.totsp.gwittir.mvc.beans.AbstractModelBean;
-import com.totsp.gwittir.mvc.jsni.JSONCallback;
-import com.totsp.gwittir.mvc.jsni.JSONServiceInvoker;
-import com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator;
+import com.totsp.gwittir.util.jsni.JSONCallback;
+import com.totsp.gwittir.util.jsni.JSONServiceInvoker;
+import com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;

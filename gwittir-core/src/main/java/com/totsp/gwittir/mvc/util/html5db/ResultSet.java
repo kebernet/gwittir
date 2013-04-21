@@ -19,7 +19,7 @@
 package com.totsp.gwittir.mvc.util.html5db;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.totsp.gwittir.mvc.jsni.JavaScriptObjectDecorator;
+import com.totsp.gwittir.util.jsni.JavaScriptObjectDecorator;
 
 /**
  *

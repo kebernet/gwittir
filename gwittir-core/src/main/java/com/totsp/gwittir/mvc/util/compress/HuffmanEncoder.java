@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.totsp.gwittir.mvc.util.compress;
+package com.totsp.gwittir.util.compress;
 
 import java.util.ArrayList;
 import java.util.HashMap;

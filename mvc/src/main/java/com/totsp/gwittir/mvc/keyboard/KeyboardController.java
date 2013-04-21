@@ -23,8 +23,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 
 import com.totsp.gwittir.mvc.action.Action;
-import com.totsp.gwittir.mvc.log.Level;
-import com.totsp.gwittir.mvc.log.Logger;
 import com.totsp.gwittir.mvc.ui.BoundWidget;
 
 import java.util.ArrayList;
