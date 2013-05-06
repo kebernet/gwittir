@@ -23,7 +23,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventPreview;
 
-import com.totsp.gwittir.mvc.log.Level;
+import java.util.logging.Level;
 
 
 /**
@@ -41,11 +41,11 @@ class EventPreviewListener implements EventPreview {
         }
 
         KeyboardController.LOG.log(
-            Level.SPAM,
+            Level.FINEST,
             "Got preview event EventType: " + DOM.eventGetType(event) + " "
-            + Event.ONKEYDOWN, null);
+            + Event.ONKEYDOWN);
         KeyboardController.LOG.log(
-            Level.SPAM, "KeyCode: " + DOM.eventGetKeyCode(event), null);
+            Level.FINEST, "KeyCode: " + DOM.eventGetKeyCode(event));
 
         boolean bubble = KeyboardController.INSTANCE.handleEvent(
                 (char) DOM.eventGetKeyCode(event), DOM.eventGetCtrlKey(event),

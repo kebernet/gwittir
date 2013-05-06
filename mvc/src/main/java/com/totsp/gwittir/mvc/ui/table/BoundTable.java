@@ -38,39 +38,39 @@ import com.google.gwt.user.client.ui.SourcesTableEvents;
 import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.Widget;
 
+import com.totsp.gwittir.binding.Binding;
+import com.totsp.gwittir.binding.SourcesPropertyChangeEvents;
+import com.totsp.gwittir.introspection.Property;
+import com.totsp.gwittir.introspection.util.PropertyComparator;
 import com.totsp.gwittir.mvc.action.Action;
-import com.totsp.gwittir.mvc.beans.Binding;
 import com.totsp.gwittir.introspection.Introspector;
-import com.totsp.gwittir.mvc.beans.Property;
-import com.totsp.gwittir.mvc.beans.SourcesPropertyChangeEvents;
 import com.totsp.gwittir.mvc.keyboard.KeyBinding;
 import com.totsp.gwittir.mvc.keyboard.KeyBindingException;
 import com.totsp.gwittir.mvc.keyboard.KeyboardController;
 import com.totsp.gwittir.mvc.keyboard.SuggestedKeyBinding;
 import com.totsp.gwittir.mvc.keyboard.Task;
-import com.totsp.gwittir.mvc.log.Level;
 import com.totsp.gwittir.mvc.ui.BoundWidget;
 import com.totsp.gwittir.mvc.ui.Button;
 import com.totsp.gwittir.mvc.ui.Label;
 import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;
-import com.totsp.gwittir.mvc.util.ListSorter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 /**
  * This is an option-rich table for use with objects implementing the Bindable interfaces.
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
- * @see com.totsp.gwittir.mvc.beans.Bindable
  */
 public class BoundTable extends AbstractTableWidget implements HasChunks {
 
@@ -480,7 +480,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 try {
                     KeyboardController.INSTANCE.register(kb, task);
                 } catch (KeyBindingException kbe) {
-                    BoundTable.LOG.log(Level.DEBUG, "Unable to register" + kb,
+                    BoundTable.LOG.log(Level.FINE, "Unable to register" + kb,
                             kbe);
                 }
             }
@@ -507,7 +507,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                             this.columns[col].getStyleName());
                 }
             } catch (RuntimeException e) {
-                BoundTable.LOG.log(Level.ERROR, widget + "", e);
+                BoundTable.LOG.log(Level.SEVERE, widget + "", e);
             }
         }
 
@@ -736,9 +736,9 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
 
             if (rowWidgets[colIndex] != null) {
                 widget = rowWidgets[colIndex];
-                BoundTable.LOG.log(Level.SPAM,
+                BoundTable.LOG.log(Level.FINEST,
                         "Using cache widget for " + target + "."
-                        + col.getPropertyName(), null);
+                        + col.getPropertyName());
             } else {
                 if (col.getCellProvider() != null) {
                     widget = col.getCellProvider().get();
@@ -751,9 +751,8 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                 }
                 assert widget != null : target + "." + col.getPropertyName() + " did not get a widget.";
                 rowWidgets[colIndex] = widget;
-                BoundTable.LOG.log(Level.SPAM,
-                        "Creating widget for " + target + "." + col.getPropertyName(),
-                        null);
+                BoundTable.LOG.log(Level.FINEST,
+                        "Creating widget for " + target + "." + col.getPropertyName());
             }
 
             Binding[] bindings = (Binding[]) this.bindingCache.get(target);
@@ -768,8 +767,8 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                     bindings[colIndex] = new Binding(widget, "value",
                             col.getValidator(), col.getFeedback(), target,
                             col.getPropertyName(), null, null);
-                    BoundTable.LOG.log(Level.SPAM,
-                            "Created binding " + bindings[colIndex], null);
+                    BoundTable.LOG.log(Level.FINEST,
+                            "Created binding " + bindings[colIndex]);
                 } catch (Throwable e) {
                     throw new RuntimeException("Error creating " + col.getPropertyName(), e);
                 }
@@ -1206,7 +1205,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                         Object execute = entry.getValue();
 
                         if (newActive) {
-                            BoundTable.LOG.log(Level.SPAM, "Registering " + kb, null);
+                            BoundTable.LOG.log(Level.FINEST, "Registering " + kb);
 
                             try {
                                 if (execute instanceof Task) {
@@ -1220,13 +1219,13 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
                                             (BoundWidget) execute);
                                 }
                             } catch (KeyBindingException kbe) {
-                                BoundTable.LOG.log(Level.DEBUG,
+                                BoundTable.LOG.log(Level.FINE,
                                         "Unable to register" + kb, kbe);
                             }
                         } else {
                             boolean result = KeyboardController.INSTANCE.unregister(kb);
-                            BoundTable.LOG.log(Level.SPAM,
-                                    "Unregistering " + kb + " " + result, null);
+                            BoundTable.LOG.log(Level.FINEST,
+                                    "Unregistering " + kb + " " + result);
                         }
                     }
                 });
@@ -1707,8 +1706,7 @@ public class BoundTable extends AbstractTableWidget implements HasChunks {
             sort.addAll(value);
 
             try {
-                ListSorter.sortOnProperty(sort,
-                        columns[index].getPropertyName(), ascending[index]);
+                Collections.sort(sort, new PropertyComparator(columns[index].getPropertyName(), ascending[index]));
             } catch (Exception e) {
                 LOG.log(Level.INFO, "Exception during sort", e);
             }

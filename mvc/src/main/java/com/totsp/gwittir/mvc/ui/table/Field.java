@@ -19,10 +19,10 @@
  */
 package com.totsp.gwittir.mvc.ui.table;
 
-import com.totsp.gwittir.mvc.beans.Converter;
+import com.totsp.gwittir.binding.Converter;
+import com.totsp.gwittir.binding.validator.ValidationFeedback;
+import com.totsp.gwittir.binding.validator.Validator;
 import com.totsp.gwittir.mvc.ui.util.BoundWidgetProvider;
-import com.totsp.gwittir.mvc.validator.ValidationFeedback;
-import com.totsp.gwittir.mvc.validator.Validator;
 
 import java.util.Comparator;
 

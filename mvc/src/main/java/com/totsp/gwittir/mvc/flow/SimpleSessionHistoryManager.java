@@ -9,10 +9,10 @@
 package com.totsp.gwittir.mvc.flow;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.totsp.gwittir.mvc.log.Level;
-import com.totsp.gwittir.mvc.log.Logger;
-import com.totsp.gwittir.mvc.util.HistoryTokenizer;
+import com.totsp.gwittir.util.HistoryTokenizer;
 
 /**
  * A simple history manager that creates an inline List for each state change
@@ -34,7 +34,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 	}
 
 	public void apply(String historyToken) {
-		LOGGER.log(Level.DEBUG, "Apply "+historyToken, null);
+		LOGGER.log(Level.FINE, "Apply "+historyToken);
 		HistoryTokenizer tok = new HistoryTokenizer(historyToken);
 
 		if ((tok.getToken("s") == null)
@@ -44,9 +44,9 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 
 		int targetState = Integer.parseInt(tok.getToken("s").toString());
 		LOGGER.log(
-				Level.SPAM,
+				Level.FINEST,
 				"Repositioning to state: " + targetState + " of "
-						+ states.size() + "from " + currentState, null);
+						+ states.size() + "from " + currentState);
 		if(targetState >= states.size() ){
 			tok.setToken("s", ""+(states.size() -1));
 			return;
@@ -60,7 +60,7 @@ public class SimpleSessionHistoryManager implements HistoryManager {
 		if(currentState > index ){
 			for(int i = currentState; i > index;	i--){
 				FlowEvent state = states.get(i);
-				LOGGER.log(Level.DEBUG, "calling "+state.getFromName(), null);
+				LOGGER.log(Level.FINE, "calling "+state.getFromName());
 				FlowController.call( state.getManagedWidget(), 
 						state.getFromName(), 
 						state.getFromModel() );

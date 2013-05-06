@@ -1,6 +1,6 @@
 package com.totsp.gwittir.mvc.testmodel;
 
-import com.totsp.gwittir.mvc.util.ToStringBean;
+import com.totsp.gwittir.introspection.util.ToStringBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;

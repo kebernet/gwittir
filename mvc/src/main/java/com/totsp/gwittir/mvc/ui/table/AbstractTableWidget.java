@@ -19,10 +19,10 @@
  */
 package com.totsp.gwittir.mvc.ui.table;
 
-import com.totsp.gwittir.mvc.beans.Binding;
+import com.totsp.gwittir.binding.Binding;
+import com.totsp.gwittir.binding.SourcesPropertyChangeEvents;
+import com.totsp.gwittir.introspection.Property;
 import com.totsp.gwittir.introspection.Introspector;
-import com.totsp.gwittir.mvc.beans.Property;
-import com.totsp.gwittir.mvc.beans.SourcesPropertyChangeEvents;
 import com.totsp.gwittir.mvc.ui.AbstractBoundWidget;
 import com.totsp.gwittir.mvc.ui.BoundWidget;
 import com.totsp.gwittir.mvc.ui.util.BoundWidgetTypeFactory;

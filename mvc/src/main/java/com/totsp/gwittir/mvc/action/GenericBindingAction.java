@@ -4,11 +4,11 @@
  */
 package com.totsp.gwittir.mvc.action;
 
-import com.totsp.gwittir.mvc.beans.Binding;
-import com.totsp.gwittir.mvc.beans.BindingBuilder;
-import com.totsp.gwittir.mvc.beans.SourcesPropertyChangeEvents;
+import com.totsp.gwittir.binding.Binding;
+import com.totsp.gwittir.binding.BindingBuilder;
+import com.totsp.gwittir.binding.SourcesPropertyChangeEvents;
+import com.totsp.gwittir.binding.StringConverter;
 import com.totsp.gwittir.mvc.ui.BoundWidget;
-import com.totsp.gwittir.mvc.util.StringConverter;
 
 
 /**

@@ -31,6 +31,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -51,7 +53,7 @@ public class KeyboardController {
         super();
         DOM.addEventPreview(epl);
         KeyboardController.LOG.log(
-            Level.SPAM, "Creating keyboard controller.", null);
+            Level.FINEST, "Creating keyboard controller.");
     }
 
     public void register(final KeyBinding binding, final BoundWidget widget)
@@ -77,7 +79,7 @@ public class KeyboardController {
                     binding.isShift());
 
             if(bindings.containsKey(actual) || bindings.containsKey(binding)) {
-                KeyboardController.LOG.log( Level.SPAM, "Contains suggested. Failing silently", null);
+                KeyboardController.LOG.log( Level.FINEST, "Contains suggested. Failing silently");
                 return;
             }
         } else {
@@ -108,13 +110,13 @@ public class KeyboardController {
 
     public boolean unregister(final KeyBinding binding) {
         if(this.bindings.containsKey(binding)) {
-            KeyboardController.LOG.log( Level.SPAM, "Unegistering from controller"+binding, null);
+            KeyboardController.LOG.log( Level.FINEST, "Unegistering from controller"+binding);
             for(Iterator it = this.bindings.entrySet().iterator(); it.hasNext();) {
                 Entry e = (Entry) it.next();
 
                 if(e.getValue().equals(binding)) {
                     KeyBinding b = (KeyBinding) e.getValue();
-                    KeyboardController.LOG.log( Level.SPAM, "Found identity instance"+binding, null);
+                    KeyboardController.LOG.log( Level.FINEST, "Found identity instance"+binding);
                     for(int i = 0; i < b.getKeyBindingEventListeners().length;
                             i++) {
                         b.getKeyBindingEventListeners()[i].onUnbind(b);
@@ -135,8 +137,8 @@ public class KeyboardController {
 
     boolean handleEvent(char keyCode, boolean ctrl, boolean alt, boolean shift) {
         KeyboardController.LOG.log(
-            Level.SPAM, "key event:" + keyCode + " ctrl:" + ctrl + " alt:"
-            + alt, null);
+            Level.FINEST, "key event:" + keyCode + " ctrl:" + ctrl + " alt:"
+            + alt);
 
         //TODO: Do this without so much object creation.
         KeyBinding check = new KeyBinding(keyCode, ctrl, alt, shift);
@@ -144,9 +146,9 @@ public class KeyboardController {
 
         if(execute == null) {
             check = new SuggestedKeyBinding(keyCode, ctrl, alt, shift);
-            KeyboardController.LOG.log( Level.SPAM, "Bindings registered: "+ this.bindings.size(), null );
+            KeyboardController.LOG.log( Level.FINEST, "Bindings registered: "+ this.bindings.size() );
             execute = this.bindings.get(check);
-            KeyboardController.LOG.log( Level.SPAM, "Found Suggested binding "+ check+ " "+(execute != null), null);
+            KeyboardController.LOG.log( Level.FINEST, "Found Suggested binding "+ check+ " "+(execute != null));
         }
 
         if(execute != null) {

@@ -1,7 +1,7 @@
 package com.totsp.gwittir.mvc.testmodel;
 
-import com.totsp.gwittir.mvc.beans.AbstractModelBean;
 
+import com.totsp.gwittir.binding.AbstractModelBean;
 
 public class Person extends AbstractModelBean {
     private String firstName;

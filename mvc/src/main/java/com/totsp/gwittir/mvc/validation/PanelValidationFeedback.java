@@ -18,13 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.totsp.gwittir.binding.validator;
+package com.totsp.gwittir.mvc.validation;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.ui.BoundWidget;
-import com.totsp.gwittir.client.ui.Label;
-import com.totsp.gwittir.client.ui.util.BoundWidgetProvider;
+import com.totsp.gwittir.binding.validator.AbstractValidationFeedback;
+import com.totsp.gwittir.binding.validator.ValidationException;
+import com.totsp.gwittir.mvc.ui.BoundWidget;
+import com.totsp.gwittir.mvc.ui.Label;
+import com.totsp.gwittir.mvc.ui.util.BoundWidgetProvider;
 
 import java.util.HashMap;
 

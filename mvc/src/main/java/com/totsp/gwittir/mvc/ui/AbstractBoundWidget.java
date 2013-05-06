@@ -29,13 +29,13 @@ import com.totsp.gwittir.mvc.keyboard.KeyBinding;
 import com.totsp.gwittir.mvc.keyboard.KeyBindingException;
 import com.totsp.gwittir.mvc.keyboard.KeyBoundWidget;
 import com.totsp.gwittir.mvc.keyboard.KeyboardController;
-import com.totsp.gwittir.mvc.log.Level;
-import com.totsp.gwittir.mvc.log.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -107,7 +107,7 @@ public abstract class AbstractBoundWidget<T> extends Composite implements BoundW
                 this.bindingRegistered = true;
             } catch (KeyBindingException kbe) {
                 this.bindingRegistered = false;
-                AbstractBoundWidget.LOG.log(Level.SPAM, "Exception adding default binding", kbe);
+                AbstractBoundWidget.LOG.log(Level.FINEST, "Exception adding default binding", kbe);
             }
         }
     }
@@ -206,7 +206,7 @@ public abstract class AbstractBoundWidget<T> extends Composite implements BoundW
                 this.bindingRegistered = true;
             } catch (KeyBindingException kbe) {
                 this.bindingRegistered = false;
-                AbstractBoundWidget.LOG.log(Level.SPAM, "Exception adding default binding", kbe);
+                AbstractBoundWidget.LOG.log(Level.FINEST, "Exception adding default binding", kbe);
             }
         }
         state = STATE_BOUND;

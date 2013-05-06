@@ -26,14 +26,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.mvc.beans.Converter;
-import com.totsp.gwittir.mvc.log.Level;
+import com.totsp.gwittir.binding.Converter;
 import com.totsp.gwittir.mvc.ui.AbstractBoundWidget;
 import com.totsp.gwittir.mvc.ui.Label;
 import com.totsp.gwittir.mvc.ui.ListBox;
@@ -61,11 +61,11 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
                 if( current.getMonth() -1 >= 0 ){
                     current = new Date( current.getYear(), current.getMonth() - 1 , 1);
                 } else {
-                    LOG.log( Level.SPAM, "current Year"+ current.getYear(), null );
+                    LOG.log( Level.FINE, "current Year"+ current.getYear() );
                     current = new Date(current.getYear() - 1, 12 , 0 );
-                    LOG.log( Level.SPAM, "new date"+ current.getYear(), null );
+                    LOG.log( Level.FINE, "new date"+ current.getYear() );
                 }
-                LOG.log(Level.SPAM, current.toString(), null);
+                LOG.log(Level.FINE, current.toString());
                 calendar.setRenderDate( current );
             }
         });
@@ -100,7 +100,7 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
                 }
                 Date current = calendar.getRenderDate();
                 current = new Date( Integer.parseInt( ((Collection)propertyChangeEvent.getNewValue()).iterator().next().toString() ) -1900, current.getMonth(), 1 );
-                LOG.log(Level.SPAM, current.toString(), null );
+                LOG.log(Level.FINE, current.toString() );
                 calendar.setRenderDate( current );
             }
             
@@ -112,11 +112,11 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
                 if( current.getMonth() + 1 < 12 ){
                     current = new Date( current.getYear(), current.getMonth() + 1 , 1);
                 } else {
-                    LOG.log( Level.SPAM, "current Year"+ current.getYear(), null );
+                    LOG.log( Level.FINE, "current Year"+ current.getYear() );
                     current = new Date(current.getYear() + 1, 1, 0 );
-                    LOG.log( Level.SPAM, "new date"+ current.getYear(), null );
+                    LOG.log( Level.FINE, "new date"+ current.getYear() );
                 }
-                LOG.log(Level.SPAM, current.toString(), null);
+                LOG.log(Level.FINE, current.toString());
                 calendar.setRenderDate( current );
             }
         });
@@ -213,7 +213,7 @@ public class DatePicker extends AbstractBoundWidget<Date> implements
         }
         this.year.setOptions(this.years);
         this.year.setValue( this.year.single(Integer.toString( this.calendar.getRenderDate().getYear() + 1900 )) );
-        LOG.log( Level.SPAM, Integer.toString( this.calendar.getRenderDate().getYear() + 1900 ), null );
+        LOG.log( Level.FINE, Integer.toString( this.calendar.getRenderDate().getYear() + 1900 ) );
         
     }
     private void updateMonth(){

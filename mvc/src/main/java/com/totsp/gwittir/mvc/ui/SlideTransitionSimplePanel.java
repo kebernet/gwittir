@@ -24,11 +24,15 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
+import com.totsp.gwittir.fx.AnimationFinishedCallback;
+import com.totsp.gwittir.fx.MutationStrategy;
+import com.totsp.gwittir.fx.PositionWrapper;
 import com.totsp.gwittir.fx.PropertyAnimator;
 import com.totsp.gwittir.fx.rebind.Dimensions;
-import com.totsp.gwittir.fx.ui.*;
 
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -149,19 +153,19 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
     }
 
     public void setWidget(final Widget w) {
-        LOG.log(Level.SPAM, "Set widget: "+ w, null );
+        LOG.log(Level.FINE, "Set widget: "+ w );
         if ((this.currentWidget != null) &&
                 ( (this.currentAnimator == null && this.currentWidget.getUIObject() == w) ||
                   (this.currentAnimator != null && this.toWidget.getUIObject() == w )) ) {
-            LOG.log(Level.SPAM, "Attempted to set the same object twice.", null );
+            LOG.log(Level.FINE, "Attempted to set the same object twice." );
             return;
         }
 
         if (this.currentAnimator != null) {
-            LOG.log(Level.SPAM, "Cancelling animation.", null);
+            LOG.log(Level.FINE, "Cancelling animation.");
             this.currentAnimator.cancel();
             this.clear();
-            LOG.log(Level.SPAM, "Setting new widget:" + this.toWidget.getUIObject(), null);
+            LOG.log(Level.FINE, "Setting new widget:" + this.toWidget.getUIObject());
             this.add((Widget) this.toWidget.getUIObject());
         }
 
@@ -203,7 +207,7 @@ public class SlideTransitionSimplePanel extends AbstractBoundWidget
             int totalOffset = this.currentWidget.getUIObject().getOffsetHeight() +
                 Dimensions.INSTANCE.getTotalVerticalMargin(this.currentWidget.getUIObject()
                                                                              .getElement());
-            Logger.getAnonymousLogger().log( Level.SPAM, "Total offset " + totalOffset, null);
+            Logger.getAnonymousLogger().log( Level.FINE, "Total offset " + totalOffset);
 
             if (this.getDirection().equals(SlideTransitionSimplePanel.HORIZONTAL)) {
                 nextWidget.setTop("-" + totalOffset + "px");

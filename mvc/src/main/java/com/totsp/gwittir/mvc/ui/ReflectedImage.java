@@ -28,8 +28,7 @@ import com.google.gwt.user.client.ui.LoadListener;
 import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.SourcesMouseEvents;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.client.fx.rebind.Reflection;
-import com.totsp.gwittir.client.ui.AbstractBoundWidget;
+import com.totsp.gwittir.fx.rebind.Reflection;
 
 
 /**

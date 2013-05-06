@@ -28,8 +28,6 @@ import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.google.gwt.user.client.ui.SourcesFocusEvents;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.totsp.gwittir.mvc.log.Level;
-import com.totsp.gwittir.mvc.log.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +42,6 @@ import java.util.Vector;
 public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> implements HasFocus, SourcesFocusEvents,
     SourcesChangeEvents {
     public static final String VALUE_PROPERTY_NAME = "value";
-    private static final Logger LOGGER = Logger.getLogger(ListBox.class.toString());
     private com.google.gwt.user.client.ui.ListBox base;
     private ArrayList<T> selected = new ArrayList<T>();
     private Collection<T> options = new ArrayList<T>();
@@ -289,8 +286,6 @@ public class ListBox<T> extends AbstractBoundCollectionWidget<T, String> impleme
     }
 
     public Collection<T> getValue() {
-        ListBox.LOGGER.log(Level.SPAM, "IsMultipleSelect. Returning collection", null);
-
         return this.selected;
     }
 

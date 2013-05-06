@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 /**
  *
@@ -150,7 +151,7 @@ public class ReflectedImageGroup<T> extends AbstractBoundCollectionWidget<T,Stri
     }
     
     public void setSelected(Object selected) {
-        LOG.log( Level.SPAM, selected + " :: " + selected.getClass(), null);
+        LOG.log( Level.FINE, selected + " :: " + selected.getClass());
         if( selected == this.selected ){
             return;
         }

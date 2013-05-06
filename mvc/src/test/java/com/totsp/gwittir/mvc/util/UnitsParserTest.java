@@ -7,7 +7,7 @@
 
 package com.totsp.gwittir.mvc.util;
 
-import com.totsp.gwittir.mvc.util.UnitsParser.UnitValue;
+import com.totsp.gwittir.fx.UnitsParser;
 import junit.framework.*;
 
 /**
@@ -32,7 +32,7 @@ public class UnitsParserTest extends TestCase {
      * Test of parse method, of class com.totsp.gwittir.mvc.util.UnitsParser.
      */
     public void testParse() {
-        UnitValue v = UnitsParser.parse( "100px" );
+        UnitsParser.UnitValue v = UnitsParser.parse("100px");
         this.assertEquals( 100, v.value );
         this.assertEquals( "px", v.units );
     }

@@ -27,10 +27,10 @@ import com.google.gwt.user.client.ui.HasFocus;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.totsp.gwittir.mvc.fx.MutationStrategy;
-import com.totsp.gwittir.mvc.fx.OpacityWrapper;
-import com.totsp.gwittir.mvc.fx.PositionWrapper;
-import com.totsp.gwittir.mvc.fx.PropertyAnimator;
+import com.totsp.gwittir.fx.MutationStrategy;
+import com.totsp.gwittir.fx.OpacityWrapper;
+import com.totsp.gwittir.fx.PositionWrapper;
+import com.totsp.gwittir.fx.PropertyAnimator;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 

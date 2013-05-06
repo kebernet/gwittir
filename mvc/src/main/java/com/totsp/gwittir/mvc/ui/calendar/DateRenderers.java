@@ -9,8 +9,7 @@
 package com.totsp.gwittir.mvc.ui.calendar;
 
 import com.google.gwt.core.client.GWT;
-
-import com.totsp.gwittir.mvc.beans.Converter;
+import com.totsp.gwittir.binding.Converter;
 
 import java.util.Date;
 
