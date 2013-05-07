@@ -13,7 +13,7 @@ This is the core API that started the project. This allows limited Java Beans ty
 within GWT code.
 
 Usage:
-<inherits name="com.totsp.gwittir.Introspection" />
+    <inherits name="com.totsp.gwittir.Introspection" />
 
 Binding
 -------
@@ -21,7 +21,7 @@ Binding
 This is built on the introspection code and allows two way data binding between objects.
 
 Usage:
-<inherits name="com.totsp.gwittir.Binding" />
+    <inherits name="com.totsp.gwittir.Binding" />
 
 FX
 --
@@ -29,7 +29,7 @@ FX
 Is built on the introspection framework and has support property animation and other "pretty" effects.
 
 Usage:
-<inherits name='com.totsp.gwittir.FX' />
+    <inherits name='com.totsp.gwittir.FX' />
 
 Serialization
 -------------
@@ -37,7 +37,7 @@ Serialization
 Uses the introspector to support two way serialization of Java Beans to JSON.
 
 Usage:
-<inherits name="com.totsp.gwittir.JSON" />
+    <inherits name="com.totsp.gwittir.JSON" />
 
 Util
 ----
@@ -45,7 +45,7 @@ Util
 Utility classes that are independent of the rest of the project.
 
 Usage:
-<inherits name="com.totsp.gwittir.Util" />
+    <inherits name="com.totsp.gwittir.Util" />
 
 
 Emulation
@@ -54,7 +54,7 @@ Emulation
 GWT compatible implementations of core Java classes culled from a number of other sources.
 
 Usage:
-<inherits name="com.totsp.gwittir.Emul"/>
+    <inherits name="com.totsp.gwittir.Emul"/>
 
 License
 -------
