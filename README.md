@@ -62,6 +62,16 @@ Usage:
 
     <inherits name="com.totsp.gwittir.Emul"/>
 
+MVC
+---------
+
+A set of widget patterns, binding, application flow, etc built from all the other modules.
+
+Usage:
+
+    <inherits name="com.totsp.gwittir.MVC"/>
+
+
 License
 -------
 
