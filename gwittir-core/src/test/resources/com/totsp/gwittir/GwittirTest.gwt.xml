@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<module>
-    <inherits name='com.totsp.gwittir.Gwittir'/>
-    <inherits name='com.totsp.gwittir.LoggingDisabled'/>
-    <set-property name="gwittir.windowcontext" value="name" />
-</module>
