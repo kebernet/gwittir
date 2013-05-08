@@ -3,5 +3,4 @@
     <inherits name="com.google.gwt.storage.Storage"/>
     <source path="compat" />
     <super-source path="emul"/>
-
 </module>

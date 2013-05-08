@@ -22,9 +22,9 @@ import java.beans.PropertyChangeListener;
  *
  * @author rcooper
  */
-public class GwtTestBinding extends GWTTestCase {
+public class BindingGwtTest extends GWTTestCase {
     public String getModuleName() {
-        return "com.totsp.gwittir.GwittirTestBinding";
+        return "com.totsp.gwittir.Binding";
     }
 
     public void testBasicDotted() throws Exception {
