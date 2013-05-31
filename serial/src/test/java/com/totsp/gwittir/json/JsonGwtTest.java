@@ -14,7 +14,7 @@ import java.util.HashSet;
  *
  * @author kebernet
  */
-public class GwtTestJson extends GWTTestCase {
+public class JsonGwtTest extends GWTTestCase {
     public String getModuleName() {
         return "com.totsp.gwittir.JSON";
     }

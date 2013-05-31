@@ -11,7 +11,6 @@ import java.io.RandomAccessFile;
  * C
  */
 public class FileGwtTest extends GWTTestCase {
-    @Override
     public String getModuleName() {
         return "com.totsp.gwittir.Emul";
     }
