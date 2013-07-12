@@ -34,8 +34,7 @@ public class OpacityWrapper {
     public static final Double TRANSPARENT = new Double(0.0);
     public static final Double OPAQUE = new Double(1.0);
     
-    private static final OpacitySetter SETTER = (OpacitySetter) GWT
-        .create(OpacitySetter.class);
+    private static final OpacitySetter SETTER = (OpacitySetter) GWT.create(OpacitySetter.class);
     UIObject o;
 
     /** Creates a new instance of OpacityWrapper */

@@ -5,7 +5,7 @@ Introspection
 Gwittir's introspection module allows you to access Java Beans style properties from GWT code. This is a subset of the
 Beans and Java Reflection APIs and is named so as to avoid confusion -- it doesn't pretend to be an emulation layer.
 However, you can use the Gwittir introspection from your regular Java SE/EE code as well, as it will fall down to using
-the native beans and relection APIs to continue to work.
+the native beans and reflection APIs to continue to work.
 
 Usage
 -----
