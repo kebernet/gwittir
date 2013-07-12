@@ -29,7 +29,9 @@ method so that each instance can provide its own metadata to the introspector.
 To access the metadata about a class you might do something like:
 
    BeanDescriptor db = Instrospector.INSTANCE.getDescriptor(myObjectInstance);
-   String firstName = (String) db.getProperty("firstName").getAccessorMethod().invoke(myObjectInstance, null);
+   String firstName = (String) db.getProperty("firstName")
+                                 .getAccessorMethod()
+                                 .invoke(myObjectInstance, null);
 
 Pro Tip
 -------
