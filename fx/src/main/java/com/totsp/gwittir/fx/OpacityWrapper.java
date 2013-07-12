@@ -22,11 +22,13 @@ package com.totsp.gwittir.fx;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.UIObject;
 import com.totsp.gwittir.fx.rebind.OpacitySetter;
+import com.totsp.gwittir.introspection.Introspectable;
 
 /**
  *
  * @author <a href="mailto:cooper@screaming-penguin.com">Robert "kebernet" Cooper</a>
  */
+@Introspectable
 public class OpacityWrapper {
     
     public static final Double TRANSPARENT = new Double(0.0);

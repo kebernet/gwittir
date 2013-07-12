@@ -25,3 +25,20 @@ Finally you can also have your class implement the SelfDescribed interface. This
     BeanDescriptor __descriptor();
 
 method so that each instance can provide its own metadata to the introspector.
+
+To access the metadata about a class you might do something like:
+
+   BeanDescriptor db = Instrospector.INSTANCE.getDescriptor(myObjectInstance);
+   String firstName = (String) db.getProperty("firstName").getAccessorMethod().invoke(myObjectInstance, null);
+
+Pro Tip
+-------
+
+When generating the metadata, Gwittir is pretty intelligent about polymorphism. If you can, it is best to make sure
+you have some common interfaces around your classes with common property sets. That is, HasName with firstName and
+lastName if you have multiple classes (User, Contact, etc) or a common base class like Person, will can save you
+a lot of space in your final output size. Even if HasName is not, itself, introspectable, Gwittir will find it as the
+common base class for your introspectable classes. Also, classes that are not reachabe will be successfully pruned from the
+metadata, so don't worry about introspectable classes in library code you are not directly using. It will not affect your
+application.
+
