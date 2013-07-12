@@ -16,7 +16,7 @@ annotate with the @Omit annotation.
 
 The another way you can make a class introspectable is to include it in the /gwittir-introspection.properties file. This
 is useful for classes where you can't alter the source code. This is a properties file in the format of {FQN}={comma
-separated list of properties} for exmaple:
+separated list of properties} for example:
 
     com.totsp.gwittir.client.testmodel.TestFileDeclaredIntrospection=stringProperty,intProperty
 
