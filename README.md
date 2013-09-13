@@ -53,8 +53,9 @@ Usage:
 
     <inherits name="com.totsp.gwittir.Binding" />
 
-FX
---
+FX (effects)
+------------
+
 
 Is built on the introspection framework and has support property animation and other "pretty" effects.
 
