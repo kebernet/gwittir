@@ -6,6 +6,15 @@ of the original code into a set of isolated modules that are interdependent. The
 project is Gwittir MVC, which is an MVC-style application framework for your applications
 but it is built up from several, now independent, projects that can also be used in isolation.
 
+Maven
+-----
+
+    <repository>
+        <id>gwittir</id>
+        <name>gwittir</name>
+        <url>http://dl.bintray.com/kebernet/maven</url>
+    </repository>
+
 Introspection
 -------------
 

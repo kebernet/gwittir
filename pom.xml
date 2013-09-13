@@ -5,20 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.totsp</groupId>
     <artifactId>gwittir</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <distributionManagement>
         <repository>
-            <id>bettercloud-releases</id>
-            <name>BC Releases</name>
-            <url>http://dev.bettercloud.com/nexus/content/repositories/releases</url>
+            <id>bintray-kebernet-maven-gwittir</id>
+            <name>kebernet-maven-gwittir</name>
+            <url>https://api.bintray.com/maven/kebernet/maven/gwittir</url>
         </repository>
-        <snapshotRepository>
-            <id>bettercloud-snapshots</id>
-            <name>BC Snapshots</name>
-            <url>http://dev.bettercloud.com/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <properties>
