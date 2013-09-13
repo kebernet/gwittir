@@ -38,8 +38,6 @@ public class InetAddress {
 				parsed[i] = (byte)Integer.parseInt(parts[i]);
 			}
 		} catch(Exception e) {
-			System.out.println("InetAddress parsing issue: " + e);
-			System.out.println("nnn.nnn.nnn.nnn expected; actual: '" + name + "' -- assuming 127.0.0.1");
 			parsed = new byte[]{127, 0,0,1};
 		}
 		return new InetAddress(parsed);
