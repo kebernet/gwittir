@@ -120,6 +120,7 @@
         <module>util</module>
         <module>fx</module>
         <module>mvc</module>
+        <module>stack</module>
         <!--<module>demo</module>-->
     </modules>
 </project>

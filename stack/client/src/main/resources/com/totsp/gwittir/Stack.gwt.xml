@@ -1,0 +1,5 @@
+<module>
+    <inherits name="com.totsp.gwittir.Util" />
+    <inherits name="com.google.gwt.logging.Logging" />
+
+</module>
