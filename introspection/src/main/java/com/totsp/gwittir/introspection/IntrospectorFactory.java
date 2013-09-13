@@ -21,8 +21,9 @@ public class IntrospectorFactory {
 
     public static Introspector create(){
         if(GWT.isClient()){
+            GWT.log("Using generated introspector.", null);
             return GWT.create(Introspector.class);
-        } else {
+      } else {
             return null;
         }
     }
