@@ -13,6 +13,8 @@ import com.totsp.gwittir.introspection.SelfDescribed;
 
 import java.beans.BeanInfo;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 /**
@@ -42,6 +44,29 @@ public class JVMIntrospector implements Introspector {
 
     public Class resolveClass(Object instance) {
         return instance.getClass();
+    }
+
+    @Override
+    public <T> T createInstance(Class<T> clazz) {
+        for(Constructor c : clazz.getConstructors()){
+            if( (c.getModifiers() & Modifier.PUBLIC) > 0){
+                try {
+                    return (T) c.newInstance(null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        throw new IllegalArgumentException("No public constructor for "+clazz);
+    }
+
+    @Override
+    public Class forName(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     private static class ReflectionBeanDescriptor implements BeanDescriptor {

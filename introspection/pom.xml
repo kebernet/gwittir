@@ -5,7 +5,7 @@
     <parent>
         <artifactId>gwittir</artifactId>
         <groupId>com.totsp</groupId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.totsp.gwittir</groupId>
@@ -43,6 +43,26 @@
                 </excludes>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/java</directory>
+                <excludes>
+                    <exclude>com/totsp/gwittir/rebind/**.*</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>src/main/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/main/java</directory>
+                <excludes>
+                    <exclude>com/totsp/gwittir/rebind/**.*</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
     </build>
 
 

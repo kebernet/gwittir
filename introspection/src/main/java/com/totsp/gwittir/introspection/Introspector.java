@@ -45,4 +45,16 @@ public interface Introspector {
      * @return Class literal for the most specific Introspectable type.
      */
     public Class resolveClass(Object instance);
+
+    /**
+     * Creates an instance of a class via its no-args constructor.
+     * @param clazz The class to create.
+     * @return An instance of the class.
+     */
+    public <T> T createInstance(Class<T> clazz);
+
+    /**
+     * Returns a class references for a qualified name.
+     */
+    public Class forName(String className);
 }

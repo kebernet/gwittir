@@ -35,7 +35,15 @@ public class GwtTestIntrospection extends GWTTestCase {
         catch(RuntimeException e) {
             assertTrue( e != null );
         }
+    }
 
+    public void testCreate() throws Exception {
+        TestFileDeclaredIntrospection bean = Introspector.INSTANCE.createInstance(TestFileDeclaredIntrospection.class);
+        bean.setStringProperty("c");
+    }
 
+    public void testForName() throws Exception {
+        Class clazz = Introspector.INSTANCE.forName("com.totsp.gwittir.introspection.testmodel.TestFileDeclaredIntrospection");
+        assertEquals(TestFileDeclaredIntrospection.class, clazz);
     }
 }

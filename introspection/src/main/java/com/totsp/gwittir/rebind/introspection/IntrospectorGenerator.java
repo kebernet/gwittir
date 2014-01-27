@@ -24,6 +24,7 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -157,6 +158,52 @@ public class IntrospectorGenerator extends Generator {
         }
 
         writer.println(" throw new IllegalArgumentException(\"Unknown type\" + object.getClass() ); ");
+        writer.outdent();
+        writer.println("}");
+        writer.println("public Object createInstance(Class clazz) {");
+        writer.indent();
+        for(BeanResolver resolver : introspectables){
+            boolean hasPNA = false;
+            for(JConstructor constructor : resolver.getType().getConstructors()){
+                if(constructor.getParameters() == null || constructor.getParameters().length == 0
+                        && constructor.isPublic()){
+                    hasPNA = true;
+                    break;
+                }
+                if(hasPNA){
+                    break;
+                }
+            }
+
+            writer.println("if(clazz.equals("+resolver.getType().getQualifiedSourceName()+".class)){");
+            writer.indent();
+            if(hasPNA){
+                writer.println("return new "+resolver.getType().getQualifiedSourceName()+"();");
+            } else {
+                writer.println("throw new IllegalArgumentException(clazz+\" has no public no args constructor\");");
+            }
+            writer.outdent();
+            writer.println("}");
+        }
+        writer.println(" throw new IllegalArgumentException(\"Unknown type\" +clazz ); ");
+        writer.outdent();
+        writer.println("}");
+
+        writer.println("HashMap<String, Class> classes = new HashMap<String, Class>();");
+        writer.println("public Class forName(String className){");
+        writer.indent();
+        writer.println("Class clazz = classes.get(className);");
+        writer.println("if(clazz != null) return clazz;");
+        for(BeanResolver resolver : introspectables){
+            writer.println("if(className.equals(\""+resolver.getType().getQualifiedSourceName()+"\")){");
+            writer.indent();
+            writer.println("clazz = "+resolver.getType().getQualifiedSourceName()+".class;");
+            writer.println("classes.put(className, clazz);");
+            writer.println("return clazz;");
+            writer.outdent();
+            writer.println("}");
+        }
+        writer.println("throw new IllegalArgumentException(className+\" is not introspecable.\");");
         writer.outdent();
         writer.println("}");
         writer.outdent();
