@@ -89,7 +89,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     private List<BeanResolver> subtypes = new LinkedList<BeanResolver>();
 
     public String fromType(JType type, String innerExpression) {
-        if (type.getQualifiedSourceName().equals(String.class.getCanonicalName())) {
+        if(type.isEnum() != null) {
+           return type.getQualifiedSourceName()+".valueOf("+innerExpression+".isString().stringValue())";
+        } else if (type.getQualifiedSourceName().equals(String.class.getCanonicalName())) {
             return innerExpression + ".isString().stringValue()";
         } else if (type.getQualifiedSourceName()
                            .equals(Double.class.getCanonicalName()) ||
@@ -283,7 +285,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     }
 
     private boolean isCoreType(JType type) {
-        return CORE_TYPES.contains(type.getQualifiedSourceName());
+        return type.isEnum() != null || CORE_TYPES.contains(type.getQualifiedSourceName());
     }
 
     private BeanResolver findType(JType type) {
@@ -327,8 +329,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
         StringBuilder sb = new StringBuilder(innerExpression +
                 " == null ? JSONNull.getInstance() : ");
-
-        if (type.getQualifiedSourceName().equals("java.lang.String")) {
+        if(type.isEnum() != null){
+            sb = sb.append(" new JSONString(( (Enum) "+innerExpression+").name()) ");
+        } else if (type.getQualifiedSourceName().equals("java.lang.String")) {
             sb = sb.append(" new JSONString( " + innerExpression + " ) ");
         } else if(type.getQualifiedSourceName().equals("java.lang.Character")){
             sb = sb.append(" new JSONString( Character.toString(" + innerExpression + ") ) ");

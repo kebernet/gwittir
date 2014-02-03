@@ -13,6 +13,7 @@ import com.totsp.gwittir.json.JSONDiscriminatorValue;
 public class OtherSubSub extends TestSubclass {
 
     private boolean other = false;
+    private TestEnum enumField = TestEnum.A;
 
     public boolean isOther() {
         return other;
@@ -22,6 +23,13 @@ public class OtherSubSub extends TestSubclass {
         this.other = other;
     }
 
+    public TestEnum getEnumField() {
+        return enumField;
+    }
+
+    public void setEnumField(TestEnum enumField) {
+        this.enumField = enumField;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -32,6 +40,7 @@ public class OtherSubSub extends TestSubclass {
         OtherSubSub that = (OtherSubSub) o;
 
         if (other != that.other) return false;
+        if (enumField != that.enumField) return false;
 
         return true;
     }
@@ -40,6 +49,7 @@ public class OtherSubSub extends TestSubclass {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (other ? 1 : 0);
+        result = 31 * result + (enumField != null ? enumField.hashCode() : 0);
         return result;
     }
 }

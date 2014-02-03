@@ -9,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.totsp.gwittir.json.test.OtherSubSub;
 import com.totsp.gwittir.json.test.SubSubclass;
+import com.totsp.gwittir.json.test.TestEnum;
 import com.totsp.gwittir.json.test.TestParent;
 import com.totsp.gwittir.json.test.TestParentCodec;
 import com.totsp.gwittir.json.test.TestSubclass;
@@ -92,9 +93,11 @@ public class JsonGwtTest extends GWTTestCase {
 
 
         OtherSubSub other = new OtherSubSub();
+        other.setEnumField(TestEnum.B);
         String otherString = codec.serialize(other);
         System.out.println(otherString);
         assertEquals(other, codec.deserialize(otherString));
+        System.out.println( ((OtherSubSub)codec.deserialize(otherString)).getEnumField());
 
     }
 
