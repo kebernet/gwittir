@@ -8,8 +8,8 @@ Gwittir introspection. Right now it just includes JSON.
 Howto
 -----
 
-1.  Make your bean @Intrspectable
-2.  Define a MyCodec interface that extends JSONCodect<MyClass>
+1.  Make your bean @Introspectable
+2.  Define a MyCodec interface that extends JSONCodec<MyClass>
 3.  GWT.create(MyCodec.class)
 4.  Call serialize/deserialize on the codec class.
 
