@@ -36,19 +36,21 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-
+import com.totsp.gwittir.json.JSONCodec;
+import com.totsp.gwittir.json.JSONDiscriminatorValue;
+import com.totsp.gwittir.json.JSONField;
+import com.totsp.gwittir.json.JSONOmit;
+import com.totsp.gwittir.json.JSONSubclassed;
 import com.totsp.gwittir.rebind.introspection.BeanResolver;
 import com.totsp.gwittir.rebind.introspection.IntrospectorGenerator;
 import com.totsp.gwittir.rebind.introspection.RProperty;
 import com.totsp.gwittir.serial.SerializationException;
-import com.totsp.gwittir.json.JSONCodec;
-import com.totsp.gwittir.json.JSONField;
-import com.totsp.gwittir.json.JSONOmit;
 
 import java.io.PrintWriter;
-
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -84,6 +86,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     private JType listType;
     private JType setType;
     private List<BeanResolver> types;
+    private List<BeanResolver> subtypes = new LinkedList<BeanResolver>();
 
     public String fromType(JType type, String innerExpression) {
         if (type.getQualifiedSourceName().equals(String.class.getCanonicalName())) {
@@ -209,7 +212,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                               .getAnnotation(JSONField.class);
         JSONOmit omit = prop.getReadMethod() == null ? null : prop.getReadMethod().getBaseMethod()
                             .getAnnotation(JSONOmit.class);
-        System.out.println( prop.getName() + " omit "+omit + " field "+field );
+        //System.out.println( prop.getName() + " omit "+omit + " field "+field );
         if (omit != null) {
             return;
         }
@@ -355,6 +358,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
         String classTypeName = type.getType().getSimpleSourceName() +
             "_JSONCodec";
+        logger.log(Type.INFO, "Creating JSON Serializer" + classTypeName);
         ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(type.getType()
                                                                                     .getPackage()
                                                                                     .getName(),
@@ -366,7 +370,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         mcf.addImport(JSONNumber.class.getCanonicalName());
         mcf.addImport(JSONString.class.getCanonicalName());
         mcf.addImport(JSONNull.class.getCanonicalName());
+        mcf.addImport(JSONCodec.class.getCanonicalName());
         mcf.addImport(GWT.class.getCanonicalName());
+        mcf.addImport(HashMap.class.getCanonicalName());
         mcf.addImport(SerializationException.class.getCanonicalName());
         mcf.addImplementedInterface(JSONCodec.class.getCanonicalName() + "<" +
             type.getType().getQualifiedSourceName() + ">");
@@ -382,29 +388,87 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
         SourceWriter writer = mcf.createSourceWriter(context, printWriter);
 
-        writeDeserializer(writer, type);
-        writeSerializer(writer, type);
+        HashSet<JClassType> includedCodecs = new HashSet<JClassType>();
+
+
+        if(type.getType().getAnnotation(JSONSubclassed.class) != null || type.getType().getAnnotation(JSONDiscriminatorValue.class) != null){
+            logger.log(Type.INFO, type.getType().getQualifiedSourceName()+" is subclassed");
+            writer.println("static final HashMap<String, JSONCodec> subclasses = new HashMap<String, JSONCodec>();");
+            for(JClassType subtype : type.getType().getSubtypes()){
+                while(!subtype.getSuperclass().equals(type.getType())){
+                    subtype = subtype.getSuperclass();
+                }
+                if(includedCodecs.contains(subtype)){
+                    continue;
+                }
+                includedCodecs.add(subtype);
+
+                logger.log(Type.INFO, subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName());
+                String instanceName = "CODEC_" + subtype.getQualifiedSourceName().replaceAll("\\.", "_");
+                writer.println(" private static final " +
+                        JSONCodec.class.getCanonicalName() + "<" +
+                        subtype.getQualifiedSourceName() + "> "+ instanceName +
+                        " = GWT.create(" + subtype.getQualifiedSourceName() +
+                        "_JSONCodec.class);");
+                JSONDiscriminatorValue discriminatorValue = subtype.getAnnotation(JSONDiscriminatorValue.class);
+                if(discriminatorValue == null){
+                    throw new RuntimeException("Class "+subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName()+" but doesn't have a JSONDisciminiatorValue.");
+                }
+                writeSubdescriminators(logger, writer, subtype, instanceName, type);
+                BeanResolver sub = findType(subtype);
+                subtypes.add(sub);
+                writeClassSerializer(logger.branch(Type.INFO, "Writing child serializer "+sub.getType().getQualifiedSourceName()), context,sub);
+
+            }
+        } else {
+            logger.log(Type.INFO, type.getType().getQualifiedSourceName()+" is not subclassed");
+        }
+
+        writeSerializer(logger, writer, type);
+        writeDeserializer(logger, writer, type);
+
 
         HashSet<BeanResolver> childrenCopy = new HashSet<BeanResolver>(this.children);
         this.children.clear();
 
         for (BeanResolver child : childrenCopy) {
+            if(includedCodecs.contains(child.getType())){
+                continue;
+            }
             writer.println(" private static final " +
-                JSONCodec.class.getCanonicalName() + "<" +
-                child.getType().getQualifiedSourceName() + "> CODEC_" +
-                child.getType().getQualifiedSourceName().replaceAll("\\.", "_") +
-                " = GWT.create(" + child.getType().getQualifiedSourceName() +
-                "_JSONCodec.class);");
-            writeClassSerializer(logger, context, child);
+                    JSONCodec.class.getCanonicalName() + "<" +
+                    child.getType().getQualifiedSourceName() + "> CODEC_" +
+                    child.getType().getQualifiedSourceName().replaceAll("\\.", "_") +
+                    " = GWT.create(" + child.getType().getQualifiedSourceName() +
+                    "_JSONCodec.class);");
+            writeClassSerializer(logger.branch(Type.INFO, "Writing included property serializer"), context, child);
+            includedCodecs.add(child.getType());
+
         }
 
         writer.println(" public String getMimeType() { return MIME_TYPE; }");
         writer.println("}"); // close the class
 
+        logger.log(Type.INFO, "Finishing "+classTypeName);
         context.commit(logger, printWriter);
     }
 
-    private void writeDeserializer(SourceWriter writer, BeanResolver r) {
+    private void writeSubdescriminators(TreeLogger logger, SourceWriter writer, JClassType subtype, String instanceName, BeanResolver type){
+        JSONDiscriminatorValue discriminatorValue = subtype.getAnnotation(JSONDiscriminatorValue.class);
+        if(discriminatorValue == null){
+            throw new RuntimeException("Class "+subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName()+" but doesn't have a JSONDisciminiatorValue.");
+        }
+        logger.log(Type.INFO, (" Writing descriminiator for subtype "+subtype.getQualifiedSourceName()+" "+discriminatorValue.value() +" to instancename "+instanceName));
+        writer.print("static { subclasses.put(\""+discriminatorValue.value()+"\", "+instanceName+"); }");
+        for(JClassType child : subtype.getSubtypes()){
+            if(child.getSuperclass().equals(subtype)){
+                writeSubdescriminators(logger, writer, child, instanceName, type);
+            }
+        }
+    }
+
+    private void writeDeserializer(TreeLogger logger, SourceWriter writer, BeanResolver r) {
+
         writer.println("public " + r.toString() +
             " deserialize(String data) throws SerializationException { ");
         writer.indent();
@@ -426,6 +490,20 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         writer.println("try {");
         writer.indent();
 
+        String subclassed = findDiscriminatorField(r.getType());
+        JSONDiscriminatorValue thisTypeDiscriminator = r.getType().getAnnotation(JSONDiscriminatorValue.class);
+        String thisTDString = null;
+        if(thisTypeDiscriminator != null){
+            thisTDString = thisTypeDiscriminator.value();
+        }
+        if(subclassed != null){
+            logger.log(Type.INFO, "Subclassed "+subclassed);
+            writer.println("{");
+            writer.println("JSONString discriminator = (JSONString) root.get(\""+subclassed+"\");");
+            //writer.println("System.out.println(\"disc: \"+discriminator);");
+            writer.println("if(discriminator != null && !discriminator.stringValue().equals(\""+thisTDString+"\")) return ( "+r.getType().getQualifiedSourceName()+") subclasses.get(discriminator.stringValue()).deserializeFromJSONObject(root);");
+            writer.println("}");
+        }
         writer.println(r.getType().getQualifiedSourceName() +
             " destination = new " + r.getType().getQualifiedSourceName() +
             "();");
@@ -447,13 +525,39 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         writer.println("}");
     }
 
-    private void writeSerializer(SourceWriter writer, BeanResolver r) {
+    private String findDiscriminatorField(JClassType type){
+        JSONSubclassed subclassed = type.getAnnotation(JSONSubclassed.class);
+        if(subclassed != null){
+            return subclassed.discriminator();
+        }
+
+        return type.getSuperclass() == null ? null : findDiscriminatorField(type.getSuperclass());
+    }
+
+    private void writeSerializer(TreeLogger logger, SourceWriter writer, BeanResolver r) {
         writer.println("public JSONObject serializeToJSONObject( " +
             r.getType().getQualifiedSourceName() +
             " source ) throws SerializationException { ");
         writer.indent();
+        //writer.println("System.out.println(\"serializing \"+source.getClass()+\" in \"+this.getClass());");
+        if(r.getType().getAnnotation(JSONSubclassed.class) != null || r.getType().getAnnotation(JSONDiscriminatorValue.class) != null){
+            logger.log(Type.INFO, " Checking subtypes "+r.getType().getQualifiedSourceName()+" "+this.subtypes.size());
+            for(BeanResolver subtype : this.subtypes){
+                if(!subtype.getType().getSuperclass().equals(r.getType())){
+                    continue;
+                }
+                writer.print("if(source instanceof "+subtype.getType().getQualifiedSourceName()+") ");
+                String instanceName = "CODEC_" + subtype.getType().getQualifiedSourceName().replaceAll("\\.", "_");
+                writer.println(" return "+instanceName+".serializeToJSONObject( ("+subtype.getType().getQualifiedSourceName()+") source);");
+            }
+        }
+
         writer.println(" JSONObject destination = new JSONObject();");
 
+        JSONDiscriminatorValue discriminatorValue = r.getType().getAnnotation(JSONDiscriminatorValue.class);
+        if(discriminatorValue != null){
+            writer.println("destination.put(\""+findDiscriminatorField(r.getType())+"\", new JSONString(\""+discriminatorValue.value()+"\"));");
+        }
         for (RProperty prop : r.getProperties().values()) {
             if (prop.getName().equals("class") || prop.getReadMethod() == null) {
                 continue;
@@ -463,7 +567,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                                   .getAnnotation(JSONField.class);
             JSONOmit omit = prop.getReadMethod().getBaseMethod()
                                 .getAnnotation(JSONOmit.class);
-            System.out.println(" ws \t "+prop.getName() +" "+ prop.getReadMethod().getBaseMethod().getEnclosingType()+ prop.getReadMethod().getBaseMethod().getReadableDeclaration()  + " "+ omit +" "+field );
+            //System.out.println(" ws \t "+prop.getName() +" "+ prop.getReadMethod().getBaseMethod().getEnclosingType()+ prop.getReadMethod().getBaseMethod().getReadableDeclaration()  + " "+ omit +" "+field );
             if (omit != null) {
                 continue;
             }
@@ -473,7 +577,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             if (prop.getReadMethod() != null) {
                 JClassType classType = prop.getType().isClassOrInterface();
                 JArrayType arrayType = prop.getType().isArray();
-                System.out.println(prop.getName()+ "  ArrayType "+arrayType +" :: "+((arrayType == null ? "" : ""+arrayType.getComponentType())));
+                //System.out.println(prop.getName()+ "  ArrayType "+arrayType +" :: "+((arrayType == null ? "" : ""+arrayType.getComponentType())));
                 if ((classType != null) &&
                         (classType.isAssignableTo(this.collectionType)) ||
                         arrayType != null) {

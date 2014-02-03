@@ -20,13 +20,6 @@ public class UnitsParserTest extends TestCase {
         super(testName);
     }
 
-    public static class UnitValueTest extends TestCase {
-
-        public UnitValueTest(String testName) {
-            super(testName);
-        }
-    }
-
 
     /**
      * Test of parse method, of class com.totsp.gwittir.mvc.util.UnitsParser.

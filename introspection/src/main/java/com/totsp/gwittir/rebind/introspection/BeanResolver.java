@@ -65,6 +65,7 @@ public class BeanResolver {
             MethodWrapper w = (MethodWrapper) it.next();
             logger.log(TreeLogger.DEBUG, w.getDeclaringType().getQualifiedSourceName() + " " + w.toString(), null);
         }
+
     }
 
     private void buildMethods(JClassType type) {

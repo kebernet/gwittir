@@ -17,8 +17,10 @@
 
 package com.totsp.gwittir.json;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * An annotation that can be placed on the getter method for a property to customize
@@ -26,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author kebernet
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface JSONField {
     String value();
 }

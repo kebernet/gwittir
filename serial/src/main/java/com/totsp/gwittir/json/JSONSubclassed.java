@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.totsp.gwittir.json;
 
 import java.lang.annotation.ElementType;
@@ -11,10 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Omits a property from a JSON object
- * @author rcooper
+ * Indicates that the JSONCodec should read the value of "discriminator" from
+ * the incoming JSON to select a subclass of this for desierialization.
  */
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface JSONOmit {
+public @interface JSONSubclassed {
+    String discriminator();
 }

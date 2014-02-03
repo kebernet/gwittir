@@ -7,6 +7,12 @@ package com.totsp.gwittir.json;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
+import com.totsp.gwittir.json.test.OtherSubSub;
+import com.totsp.gwittir.json.test.SubSubclass;
+import com.totsp.gwittir.json.test.TestParent;
+import com.totsp.gwittir.json.test.TestParentCodec;
+import com.totsp.gwittir.json.test.TestSubclass;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -53,6 +59,43 @@ public class JsonGwtTest extends GWTTestCase {
             }
             e.printStackTrace();
         }
+    }
+
+    public void testSubclass() throws Exception {
+        TestParent test = new TestParent();
+        test.setParentProp("BAZ");
+        TestParentCodec codec = GWT.create(TestParentCodec.class);
+        String testString = codec.serialize(test);
+
+        System.out.println(testString);
+        assertEquals(test, codec.deserialize(testString));
+
+        TestSubclass subclass = new TestSubclass();
+        subclass.setChildProperty("Foo");
+        String subclassString = codec.serialize(subclass);
+        System.out.println(subclassString);
+
+        assertEquals(subclass, codec.deserialize(subclassString));
+
+        SubSubclass subsub = new SubSubclass();
+        subsub.setSubsub(55);
+
+        String subsubString = codec.serialize(subsub);
+        System.out.println("------------------------------");
+        System.out.println("SubSubclass: ");
+        System.out.println(subsubString);
+
+        System.out.println("------------------------------");
+
+        SubSubclass subsub2 = (SubSubclass) codec.deserialize(subsubString);
+        assertEquals(subsub, subsub2);
+
+
+        OtherSubSub other = new OtherSubSub();
+        String otherString = codec.serialize(other);
+        System.out.println(otherString);
+        assertEquals(other, codec.deserialize(otherString));
+
     }
 
 }
