@@ -5,7 +5,7 @@
     <parent>
         <artifactId>gwittir</artifactId>
         <groupId>com.totsp</groupId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,44 +28,44 @@
 
     <build>
         <plugins>
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>gwt-maven-plugin</artifactId>-->
-                <!--<version>2.5.1</version>-->
-                <!--&lt;!&ndash; JS is only needed in the package phase, this speeds up testing &ndash;&gt;-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>prepare-package</phase>-->
-                        <!--<configuration>-->
-                            <!--<extraJvmArgs>-Xmx2048M -Xss1024k -XX:MaxPermSize=2048m</extraJvmArgs>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>compile</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.5.1</version>
+                <!-- JS is only needed in the package phase, this speeds up testing -->
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <extraJvmArgs>-Xmx2048M -Xss1024k -XX:MaxPermSize=2048m</extraJvmArgs>
+                        </configuration>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
 
-                <!--&lt;!&ndash; Plugin configuration. There are many available options, see gwt-maven-plugin-->
-                    <!--documentation at codehaus.org &ndash;&gt;-->
-                <!--<configuration>-->
-                    <!--&lt;!&ndash; URL that should be automatically opened in the GWT shell (gwt:run). &ndash;&gt;-->
-                    <!--<runTarget>test.html</runTarget>-->
-                    <!--&lt;!&ndash; Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) &ndash;&gt;-->
-                    <!--<compileReport>true</compileReport>-->
-                    <!--<module>com.totsp.gwittir.JSONTest</module>-->
-                    <!--<logLevel>INFO</logLevel>-->
-                    <!--<style>PRETTY</style>-->
-                    <!--<extraJvmArgs>-Xmx2048M -Xss1024k -XX:MaxPermSize=2048m</extraJvmArgs>-->
-                    <!--&lt;!&ndash;<extraJvmArgs>-Xmx256M -Xss512k -XX:MaxPermSize=2048m</extraJvmArgs>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>&ndash;&gt;-->
-                    <!--<copyWebapp>true</copyWebapp>-->
-                    <!--<deploy>${project.build.directory}/gwt-deploy</deploy>-->
-                    <!--<draftCompile>false</draftCompile>-->
-                    <!--<optimizationLevel>9</optimizationLevel>-->
-                    <!--<workDir>target/.gwtWork</workDir>-->
-                    <!--<genParam>true</genParam>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+                <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
+                    documentation at codehaus.org -->
+                <configuration>
+                    <!-- URL that should be automatically opened in the GWT shell (gwt:run). -->
+                    <runTarget>test.html</runTarget>
+                    <!-- Ask GWT to create the Story of Your Compile (SOYC) (gwt:compile) -->
+                    <compileReport>true</compileReport>
+                    <module>com.totsp.gwittir.JSONTest</module>
+                    <logLevel>INFO</logLevel>
+                    <style>PRETTY</style>
+                    <extraJvmArgs>-Xmx2048M -Xss1024k -XX:MaxPermSize=2048m</extraJvmArgs>
+                    <!--<extraJvmArgs>-Xmx256M -Xss512k -XX:MaxPermSize=2048m</extraJvmArgs>-->
+                    <!--<server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>-->
+                    <copyWebapp>true</copyWebapp>
+                    <deploy>${project.build.directory}/gwt-deploy</deploy>
+                    <draftCompile>false</draftCompile>
+                    <optimizationLevel>9</optimizationLevel>
+                    <workDir>target/.gwtWork</workDir>
+                    <genParam>true</genParam>
+                </configuration>
+            </plugin>
 
 
             <plugin>

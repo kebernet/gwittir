@@ -4,9 +4,12 @@
  */
 package com.totsp.gwittir.util.compress;
 
+import com.totsp.gwittir.util.Base64;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 
 
@@ -279,6 +282,23 @@ public class HuffmanEncoder {
             byte realBits = encodingBitMap.get(strBits);
             binaryEncodedData.add(realBits);
         }
+    }
+
+    public String encodeToStringRep(String data){
+        HashMap<Character, String> table = new HashMap<Character, String>();
+        byte[] payload = this.encode(data, table);
+        StringBuilder sb = new StringBuilder();
+        sb.append(data.length())
+          .append("|");
+        for(Map.Entry<Character, String> entry : table.entrySet()){
+            sb.append(entry.getKey())
+              .append(entry.getValue().length())
+              .append(Integer.toHexString(Integer.parseInt(entry.getValue(), 2)));
+            sb.append("&");
+        }
+        sb.append("|")
+          .append(Base64.encode(payload));
+        return sb.toString().replace("\r\n", "");
     }
 
     void encodeToString() {

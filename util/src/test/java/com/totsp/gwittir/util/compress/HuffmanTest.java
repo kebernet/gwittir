@@ -13,6 +13,23 @@ public class HuffmanTest extends TestCase{
         super(testName);
     }
 
+
+    public void testSymmetry() throws Exception{
+
+        HuffmanEncoder enc = new HuffmanEncoder();
+        HuffmanDecoder dec = new HuffmanDecoder();
+        String value = "{\"datastoreFilters\":[{\"@class\":\"OperatorFilter\", \"propertyName\":\"testProperty\", \"op\":\"EQUALS\", \"value\":\"SomeString\"},{\"@class\":\"OrderBy\", \"propertyName\":\"testProperty\", \"ascending\":true},{\"@class\":\"RangeFilter\", \"propertyName\":\"dateProperty\", \"to\":{\"t\":\"T\", \"v\":\"1391715338421\"}, \"from\":{\"t\":\"T\", \"v\":\"1391542538421\"}}], \"postProcessor\":null, \"className\":null, \"memoryFilters\":[], \"logicalAnd\":true}";
+        String encoded = enc.encodeToStringRep(value);
+        System.out.println("--");
+        System.out.println("Encoded : "+encoded);
+        System.out.println(value.length()+" :: "+encoded.length());
+        String read =  dec.decodeFromStringRep(encoded);
+        assertEquals(enc.huffEncodeTable, dec.huffEncodeTable);
+        assertEquals(value, read);
+        System.out.println(read);
+        System.out.println(new HuffmanEncoder().encodeToStringRep(value+value).length());
+    }
+
   public void testGeneral() throws Exception{
 
     //The following data structure is used to

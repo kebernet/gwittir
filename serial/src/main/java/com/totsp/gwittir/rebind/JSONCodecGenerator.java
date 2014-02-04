@@ -34,6 +34,7 @@ import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.totsp.gwittir.json.JSONCodec;
@@ -47,6 +48,7 @@ import com.totsp.gwittir.rebind.introspection.RProperty;
 import com.totsp.gwittir.serial.SerializationException;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -88,7 +90,11 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
     private List<BeanResolver> types;
     private List<BeanResolver> subtypes = new LinkedList<BeanResolver>();
 
+
+
     public String fromType(JType type, String innerExpression) {
+
+
         if(type.isEnum() != null) {
            return type.getQualifiedSourceName()+".valueOf("+innerExpression+".isString().stringValue())";
         } else if (type.getQualifiedSourceName().equals(String.class.getCanonicalName())) {
@@ -147,6 +153,63 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         throw new RuntimeException(""+type);
     }
 
+    public void emitDynamicReadMethod(SourceWriter writer){
+        writer.println("public <T extends java.io.Serializable> T dynamicValue(JSONValue value){\n" +
+                "        if(value instanceof JSONNull){\n" +
+                "            return null;\n" +
+                "        } else if(value instanceof JSONString){\n" +
+                "            return  (T) ((JSONString) value).stringValue();\n" +
+                "        } else if(value instanceof JSONBoolean ){\n" +
+                "            return  (T) Boolean.valueOf(((JSONBoolean) value).booleanValue());\n" +
+                "        }else if(value instanceof JSONObject){\n" +
+                "            JSONObject object = ((JSONObject) value);\n" +
+                "            JSONString qualifier = (JSONString) object.get(\"t\");\n" +
+                "            JSONValue read = object.get(\"v\");\n" +
+                "            if(qualifier.stringValue().equals(\"I\")){\n" +
+                "                return (T) (Integer) Double.valueOf(((JSONNumber) read).doubleValue()).intValue();\n" +
+                "            } else if(qualifier.stringValue().equals(\"L\")){\n" +
+                "                return  (T) (Long) Double.valueOf(((JSONNumber) read).doubleValue()).longValue();\n" +
+                "            } else if(qualifier.stringValue().equals(\"D\")){\n" +
+                "                return  (T) (Double) Double.valueOf(((JSONNumber) read).doubleValue());\n" +
+                "            } else if(qualifier.stringValue().equals(\"F\")){\n" +
+                "                return  (T) (Float) Double.valueOf(((JSONNumber) read).doubleValue()).floatValue();\n" +
+                "            } else if(qualifier.stringValue().equals(\"T\")){\n" +
+                "                return  (T) new java.util.Date(Long.parseLong(((JSONString) read).stringValue()));\n" +
+                "            }\n" +
+                "        }\n" +
+                "        throw new IllegalArgumentException(\"Unknown type \"+value);\n" +
+                "    }\n");
+    }
+    private void emitDynamicTypeMethod(SourceWriter writer){
+        writer.println("public JSONValue dynamicType(Object value){\n" +
+                "            if(value instanceof String){\n" +
+                "                return new JSONString((String) value);\n" +
+                "            } else if(value instanceof Boolean ){" +
+                "                return JSONBoolean.getInstance((Boolean) value);"+
+                "            } else if(value instanceof Number){\n" +
+                "                JSONObject o = new JSONObject();\n" +
+                "                o.put(\"v\", new JSONNumber(((Number) value).doubleValue()));\n" +
+                "                if(value instanceof Integer){\n" +
+                "                    o.put(\"t\", new JSONString(\"I\"));\n" +
+                "                } else if(value instanceof Long){\n" +
+                "                    o.put(\"t\", new JSONString(\"L\"));\n" +
+                "                }  else if(value instanceof Double){\n" +
+                "                    o.put(\"t\", new JSONString(\"D\"));\n" +
+                "                }  else if(value instanceof Float){\n" +
+                "                    o.put(\"t\", new JSONString(\"F\"));\n" +
+                "                }\n" +
+                "                return o;\n" +
+                "            } else if(value instanceof java.util.Date){\n" +
+                "                JSONObject o = new JSONObject();\n" +
+                "                o.put(\"t\", new JSONString(\"T\"));\n" +
+                "                o.put(\"v\", new JSONString(\"\"+((java.util.Date) value).getTime()));\n" +
+                "                return o;\n" +
+                "            }\n" +
+                "            throw new IllegalArgumentException(value.getClass()+\" is unknown!\");\n" +
+                "        }");
+
+    }
+
     @Override
     public String generate(TreeLogger logger, GeneratorContext context,
         String typeName) throws UnableToCompleteException {
@@ -182,15 +245,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                                  .getTypeArgs()[0];
         this.types = this.getIntrospectableTypes(logger, context.getTypeOracle());
 
-        BeanResolver thisType = null;
-
-        for (BeanResolver r : this.types) {
-            if (r.getType().equals(subtype)) {
-                thisType = r;
-
-                break;
-            }
-        }
+        BeanResolver thisType = findType(subtype);
 
         if (thisType == null) {
             logger.log(Type.ERROR,
@@ -267,6 +322,10 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 writer.outdent();
                 writer.println("}"); //endfor
                 writer.println(this.setterPrefix(prop) + " col );");
+            } else if(prop.getType().getQualifiedSourceName().equals(Serializable.class.getCanonicalName())){
+                writer.println(setterPrefix(prop)+" dynamicValue( root.get(\""+fieldName+"\") ) );");
+            } else if(prop.getType().isTypeParameter() != null ){
+                writer.println(setterPrefix(prop)+" dynamicValue( root.get(\""+fieldName+"\") ) );");
             } else {
                 writer.println(setterPrefix(prop) +
                     fromType(prop.getType(), "root.get(\"" + fieldName + "\")") +
@@ -290,7 +349,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
     private BeanResolver findType(JType type) {
         for (BeanResolver r : this.types) {
-            if (r.getType().equals(type)) {
+            if (r.getType().getQualifiedSourceName().equals(type.getQualifiedSourceName())) {
                 return r;
             }
         }
@@ -340,16 +399,33 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                     ").doubleValue())");
         } else if (type.getQualifiedSourceName().equals("java.lang.Boolean")) {
             sb.append(" JSONBoolean.getInstance( " + innerExpression + " ) ");
+        } else if(type.getQualifiedSourceName().equals(Serializable.class.getCanonicalName())){
+            sb.append(" dynamicType("+innerExpression+" )");
         } else {
        
             BeanResolver child = findType(type);
             if (child == null) {
-                throw new RuntimeException(type+" is not introspectable!");
+                if(type.isTypeParameter() != null){
+                    boolean found = false;
+                    for(JClassType bound : type.isTypeParameter().getBounds()){
+                        if(bound.getQualifiedSourceName().equals(Serializable.class.getCanonicalName())){
+                            sb.append(" dynamicType("+innerExpression+" ) ");
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found){
+                        throw new RuntimeException(type+" could not be mapped to JSON.");
+                    }
+                }else {
+                    throw new RuntimeException(type+" is not introspectable!");
+                }
+            } else {
+                this.children.add(child);
+                sb = sb.append("CODEC_" +
+                        type.getQualifiedSourceName().replaceAll("\\.", "_") +
+                        ".serializeToJSONObject( " + innerExpression + " ) ");
             }
-            this.children.add(child);
-            sb = sb.append("CODEC_" +
-                    type.getQualifiedSourceName().replaceAll("\\.", "_") +
-                    ".serializeToJSONObject( " + innerExpression + " ) ");
         }
 
         return sb.toString();
@@ -357,11 +433,11 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
     private void writeClassSerializer(TreeLogger logger,
         GeneratorContext context, BeanResolver type) {
-        logger.log(Type.INFO, "Creating JSON Serializer for " + type.getType());
+        logger.log(Type.WARN, "Creating JSON Serializer for " + type.getType());
 
         String classTypeName = type.getType().getSimpleSourceName() +
             "_JSONCodec";
-        logger.log(Type.INFO, "Creating JSON Serializer" + classTypeName);
+        logger.log(Type.WARN, "Creating JSON Serializer" + classTypeName);
         ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(type.getType()
                                                                                     .getPackage()
                                                                                     .getName(),
@@ -374,6 +450,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         mcf.addImport(JSONString.class.getCanonicalName());
         mcf.addImport(JSONNull.class.getCanonicalName());
         mcf.addImport(JSONCodec.class.getCanonicalName());
+        mcf.addImport(JSONValue.class.getCanonicalName());
         mcf.addImport(GWT.class.getCanonicalName());
         mcf.addImport(HashMap.class.getCanonicalName());
         mcf.addImport(SerializationException.class.getCanonicalName());
@@ -384,29 +461,31 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 type.getType().getPackage().getName(), classTypeName);
 
         if (printWriter == null) {
-            logger.log(Type.INFO, "Already genned " + classTypeName);
+            logger.log(Type.WARN, "Already genned " + classTypeName);
 
             return;
         }
 
         SourceWriter writer = mcf.createSourceWriter(context, printWriter);
 
-        HashSet<JClassType> includedCodecs = new HashSet<JClassType>();
+        this.emitDynamicTypeMethod(writer);
+        this.emitDynamicReadMethod(writer);
+        HashSet<String> includedCodecs = new HashSet<String>();
 
 
         if(type.getType().getAnnotation(JSONSubclassed.class) != null || type.getType().getAnnotation(JSONDiscriminatorValue.class) != null){
-            logger.log(Type.INFO, type.getType().getQualifiedSourceName()+" is subclassed");
+            logger.log(Type.WARN, type.getType().getQualifiedSourceName()+" is subclassed");
             writer.println("static final HashMap<String, JSONCodec> subclasses = new HashMap<String, JSONCodec>();");
             for(JClassType subtype : type.getType().getSubtypes()){
-                while(!subtype.getSuperclass().equals(type.getType())){
+                while(!subtype.getSuperclass().getQualifiedSourceName().equals(type.getType().getQualifiedSourceName())){
                     subtype = subtype.getSuperclass();
                 }
-                if(includedCodecs.contains(subtype)){
+                if(includedCodecs.contains(subtype.getQualifiedSourceName())){
                     continue;
                 }
-                includedCodecs.add(subtype);
+                includedCodecs.add(subtype.getQualifiedSourceName());
 
-                logger.log(Type.INFO, subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName());
+                logger.log(Type.WARN, subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName());
                 String instanceName = "CODEC_" + subtype.getQualifiedSourceName().replaceAll("\\.", "_");
                 writer.println(" private static final " +
                         JSONCodec.class.getCanonicalName() + "<" +
@@ -435,7 +514,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         this.children.clear();
 
         for (BeanResolver child : childrenCopy) {
-            if(includedCodecs.contains(child.getType())){
+            if(child == null || includedCodecs.contains(child.getType().getQualifiedSourceName())){
                 continue;
             }
             writer.println(" private static final " +
@@ -445,7 +524,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                     " = GWT.create(" + child.getType().getQualifiedSourceName() +
                     "_JSONCodec.class);");
             writeClassSerializer(logger.branch(Type.INFO, "Writing included property serializer"), context, child);
-            includedCodecs.add(child.getType());
+            includedCodecs.add(child.getType().getQualifiedSourceName());
 
         }
 
@@ -464,7 +543,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
         logger.log(Type.INFO, (" Writing descriminiator for subtype "+subtype.getQualifiedSourceName()+" "+discriminatorValue.value() +" to instancename "+instanceName));
         writer.print("static { subclasses.put(\""+discriminatorValue.value()+"\", "+instanceName+"); }");
         for(JClassType child : subtype.getSubtypes()){
-            if(child.getSuperclass().equals(subtype)){
+            if(child.getSuperclass().getQualifiedSourceName().equals(subtype.getQualifiedSourceName())){
                 writeSubdescriminators(logger, writer, child, instanceName, type);
             }
         }
@@ -539,14 +618,14 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
     private void writeSerializer(TreeLogger logger, SourceWriter writer, BeanResolver r) {
         writer.println("public JSONObject serializeToJSONObject( " +
-            r.getType().getQualifiedSourceName() +
-            " source ) throws SerializationException { ");
+                r.getType().getQualifiedSourceName() +
+                " source ) throws SerializationException { ");
         writer.indent();
-        //writer.println("System.out.println(\"serializing \"+source.getClass()+\" in \"+this.getClass());");
+        logger.log(Type.WARN, "WRITE SERIALIZER " + r.getType() + " " + r.getType().getAnnotation(JSONSubclassed.class) + " " + r.getType().getAnnotation(JSONDiscriminatorValue.class));
         if(r.getType().getAnnotation(JSONSubclassed.class) != null || r.getType().getAnnotation(JSONDiscriminatorValue.class) != null){
-            logger.log(Type.INFO, " Checking subtypes "+r.getType().getQualifiedSourceName()+" "+this.subtypes.size());
+            logger.log(Type.WARN, " Checking subtypes "+r.getType().getQualifiedSourceName()+" "+this.subtypes.size());
             for(BeanResolver subtype : this.subtypes){
-                if(!subtype.getType().getSuperclass().equals(r.getType())){
+                if(!subtype.getType().getSuperclass().getQualifiedSourceName().equals(r.getType().getQualifiedSourceName())){
                     continue;
                 }
                 writer.print("if(source instanceof "+subtype.getType().getQualifiedSourceName()+") ");

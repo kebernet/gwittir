@@ -4,6 +4,8 @@
  */
 package com.totsp.gwittir.util.compress;
 
+import com.totsp.gwittir.util.Base64;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,6 +30,21 @@ public class HuffmanDecoder {
 
     //Used to eliminate the extraneous characters on the end.
     int rawDataLen;
+
+
+    public String decodeFromStringRep(String data){
+        String[] parts = data.split("\\|");
+        byte[] payload = Base64.decode(parts[2]);
+        HashMap<Character, String> map = new HashMap<Character, String>();
+        for(String kv: parts[1].split("&")){
+            if(kv.length() > 0){
+                String binary = Integer.toString(Integer.parseInt(kv.substring(2), 16), 2);
+                //System.out.println(binary);
+                map.put(kv.charAt(0), "00000000000000000000".substring(0,  Integer.parseInt(""+kv.charAt(1)) - binary.length()) + binary);
+            }
+        }
+        return this.decode(payload, map, Integer.parseInt(parts[0]));
+    }
 
     //This method populates a lookup table that relates eight
     // bits represented as a String to eight actual bits for

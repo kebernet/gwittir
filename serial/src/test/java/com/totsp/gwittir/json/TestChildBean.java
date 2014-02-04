@@ -17,6 +17,7 @@ public class TestChildBean {
 
     private boolean booleanProperty;
 
+
     /**
      * Get the value of booleanProperty
      *

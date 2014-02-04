@@ -2,6 +2,8 @@ package com.totsp.gwittir.json.test;
 
 import com.totsp.gwittir.json.JSONDiscriminatorValue;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Robert
@@ -11,7 +13,7 @@ import com.totsp.gwittir.json.JSONDiscriminatorValue;
  */
 
 @JSONDiscriminatorValue("Subclass")
-public class TestSubclass extends TestParent{
+public class TestSubclass<T extends Serializable & Comparable> extends TestParent<T>{
 
     private String childProperty = "World.";
 

@@ -73,12 +73,14 @@ public class JsonGwtTest extends GWTTestCase {
 
         TestSubclass subclass = new TestSubclass();
         subclass.setChildProperty("Foo");
+        subclass.setSerialized(Boolean.TRUE);
         String subclassString = codec.serialize(subclass);
         System.out.println(subclassString);
 
         assertEquals(subclass, codec.deserialize(subclassString));
 
         SubSubclass subsub = new SubSubclass();
+        subsub.setSerialized(459023);
         subsub.setSubsub(55);
 
         String subsubString = codec.serialize(subsub);
