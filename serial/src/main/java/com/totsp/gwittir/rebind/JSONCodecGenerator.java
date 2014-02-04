@@ -433,11 +433,11 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
     private void writeClassSerializer(TreeLogger logger,
         GeneratorContext context, BeanResolver type) {
-        logger.log(Type.WARN, "Creating JSON Serializer for " + type.getType());
+        logger.log(Type.INFO, "Creating JSON Serializer for " + type.getType());
 
         String classTypeName = type.getType().getSimpleSourceName() +
             "_JSONCodec";
-        logger.log(Type.WARN, "Creating JSON Serializer" + classTypeName);
+        logger.log(Type.INFO, "Creating JSON Serializer" + classTypeName);
         ClassSourceFileComposerFactory mcf = new ClassSourceFileComposerFactory(type.getType()
                                                                                     .getPackage()
                                                                                     .getName(),
@@ -461,7 +461,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 type.getType().getPackage().getName(), classTypeName);
 
         if (printWriter == null) {
-            logger.log(Type.WARN, "Already genned " + classTypeName);
+            logger.log(Type.INFO, "Already genned " + classTypeName);
 
             return;
         }
@@ -474,7 +474,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
 
 
         if(type.getType().getAnnotation(JSONSubclassed.class) != null || type.getType().getAnnotation(JSONDiscriminatorValue.class) != null){
-            logger.log(Type.WARN, type.getType().getQualifiedSourceName()+" is subclassed");
+            logger.log(Type.INFO, type.getType().getQualifiedSourceName()+" is subclassed");
             writer.println("static final HashMap<String, JSONCodec> subclasses = new HashMap<String, JSONCodec>();");
             for(JClassType subtype : type.getType().getSubtypes()){
                 while(!subtype.getSuperclass().getQualifiedSourceName().equals(type.getType().getQualifiedSourceName())){
@@ -485,7 +485,7 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 }
                 includedCodecs.add(subtype.getQualifiedSourceName());
 
-                logger.log(Type.WARN, subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName());
+                logger.log(Type.INFO, subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName());
                 String instanceName = "CODEC_" + subtype.getQualifiedSourceName().replaceAll("\\.", "_");
                 writer.println(" private static final " +
                         JSONCodec.class.getCanonicalName() + "<" +
@@ -621,9 +621,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 r.getType().getQualifiedSourceName() +
                 " source ) throws SerializationException { ");
         writer.indent();
-        logger.log(Type.WARN, "WRITE SERIALIZER " + r.getType() + " " + r.getType().getAnnotation(JSONSubclassed.class) + " " + r.getType().getAnnotation(JSONDiscriminatorValue.class));
+        logger.log(Type.INFO, "WRITE SERIALIZER " + r.getType() + " " + r.getType().getAnnotation(JSONSubclassed.class) + " " + r.getType().getAnnotation(JSONDiscriminatorValue.class));
         if(r.getType().getAnnotation(JSONSubclassed.class) != null || r.getType().getAnnotation(JSONDiscriminatorValue.class) != null){
-            logger.log(Type.WARN, " Checking subtypes "+r.getType().getQualifiedSourceName()+" "+this.subtypes.size());
+            logger.log(Type.INFO, " Checking subtypes "+r.getType().getQualifiedSourceName()+" "+this.subtypes.size());
             for(BeanResolver subtype : this.subtypes){
                 if(!subtype.getType().getSuperclass().getQualifiedSourceName().equals(r.getType().getQualifiedSourceName())){
                     continue;

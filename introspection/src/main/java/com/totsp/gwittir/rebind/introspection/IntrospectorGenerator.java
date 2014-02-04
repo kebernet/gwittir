@@ -272,9 +272,9 @@ public class IntrospectorGenerator extends Generator {
         //        }
         //System.out.println("Found "+results.size()+" introspectable types.");
         for(BeanResolver resolver : results){
-            logger.log(TreeLogger.Type.WARN, "Introspectable: "+resolver.getType().getQualifiedSourceName());
+            logger.log(TreeLogger.Type.INFO, "Introspectable: "+resolver.getType().getQualifiedSourceName());
         }
-        logger.log(TreeLogger.Type.WARN, "Found introspectable types: "+results.size());
+        logger.log(TreeLogger.Type.INFO, "Found introspectable types: "+results.size());
         return results;
     }
 
