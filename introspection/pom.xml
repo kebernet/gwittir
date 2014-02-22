@@ -5,12 +5,12 @@
     <parent>
         <artifactId>gwittir</artifactId>
         <groupId>com.totsp</groupId>
-        <version>1.0.7</version>
+        <version>1.0.8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.totsp.gwittir</groupId>
     <artifactId>introspection</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

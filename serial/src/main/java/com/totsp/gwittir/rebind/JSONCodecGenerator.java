@@ -483,6 +483,9 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 if(includedCodecs.contains(subtype.getQualifiedSourceName())){
                     continue;
                 }
+                if(!type.getType().isAbstract() || type.getType().isInterface() != null){
+                    continue;
+                }
                 includedCodecs.add(subtype.getQualifiedSourceName());
 
                 logger.log(Type.INFO, subtype.getQualifiedSourceName()+" is a subclass of "+type.getType().getQualifiedSourceName());

@@ -164,6 +164,9 @@ public class IntrospectorGenerator extends Generator {
         writer.indent();
         for(BeanResolver resolver : introspectables){
             boolean hasPNA = false;
+            if(resolver.getType().isAbstract() || resolver.getType().isInterface() != null ){
+                break;
+            }
             for(JConstructor constructor : resolver.getType().getConstructors()){
                 if(constructor.getParameters() == null || constructor.getParameters().length == 0
                         && constructor.isPublic()){
