@@ -30,6 +30,7 @@
                 <excludes>
                     <exclude>com/totsp/gwittir/rebind/**.*</exclude>
                     <exclude>com/totsp/gwittir/json/test/**.*</exclude>
+                    <exclude>com/totsp/gwittir/JSONTest.gwt.xml</exclude>
                 </excludes>
             </resource>
         </resources>
