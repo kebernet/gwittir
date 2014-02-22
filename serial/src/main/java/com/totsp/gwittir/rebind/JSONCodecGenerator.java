@@ -322,10 +322,12 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
                 writer.outdent();
                 writer.println("}"); //endfor
                 writer.println(this.setterPrefix(prop) + " col );");
+
             } else if(prop.getType().getQualifiedSourceName().equals(Serializable.class.getCanonicalName())){
-                writer.println(setterPrefix(prop)+" dynamicValue( root.get(\""+fieldName+"\") ) );");
+                writer.println(setterPrefix(prop)+"("+prop.getType().getQualifiedSourceName() +") dynamicValue( root.get(\""+fieldName+"\") ) );");
             } else if(prop.getType().isTypeParameter() != null ){
-                writer.println(setterPrefix(prop)+" dynamicValue( root.get(\""+fieldName+"\") ) );");
+                String castName = prop.getType().isTypeParameter().getBounds()[0].getQualifiedSourceName();
+                writer.println(setterPrefix(prop)+"("+castName +") dynamicValue( root.get(\""+fieldName+"\") ) );");
             } else {
                 writer.println(setterPrefix(prop) +
                     fromType(prop.getType(), "root.get(\"" + fieldName + "\")") +
@@ -589,18 +591,22 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             writer.println("if(discriminator != null && !discriminator.stringValue().equals(\""+thisTDString+"\")) return ( "+r.getType().getQualifiedSourceName()+") subclasses.get(discriminator.stringValue()).deserializeFromJSONObject(root);");
             writer.println("}");
         }
-        writer.println(r.getType().getQualifiedSourceName() +
-            " destination = new " + r.getType().getQualifiedSourceName() +
-            "();");
+        if(r.getType().isAbstract() || r.getType().isInterface() != null){
+            writer.println("throw new IllegalArgumentException(\"Abstract type.\");");
+        } else {
+            writer.println(r.getType().getQualifiedSourceName() +
+                " destination = new " + r.getType().getQualifiedSourceName() +
+                "();");
 
-        for (RProperty p : r.getProperties().values()) {
-            if (p.getWriteMethod() != null) {
-                writeReader(writer, p);
+            for (RProperty p : r.getProperties().values()) {
+                if (p.getWriteMethod() != null) {
+                    writeReader(writer, p);
+                }
             }
-        }
 
-        writer.println(" return destination;");
-        writer.outdent();
+            writer.println(" return destination;");
+            writer.outdent();
+        }
         writer.println("} catch (Exception e) { ");
         writer.indent();
         writer.println("throw new SerializationException(e);");

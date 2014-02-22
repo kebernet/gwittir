@@ -164,9 +164,6 @@ public class IntrospectorGenerator extends Generator {
         writer.indent();
         for(BeanResolver resolver : introspectables){
             boolean hasPNA = false;
-            if(resolver.getType().isAbstract() || resolver.getType().isInterface() != null ){
-                break;
-            }
             for(JConstructor constructor : resolver.getType().getConstructors()){
                 if(constructor.getParameters() == null || constructor.getParameters().length == 0
                         && constructor.isPublic()){
@@ -180,9 +177,12 @@ public class IntrospectorGenerator extends Generator {
 
             writer.println("if(clazz.equals("+resolver.getType().getQualifiedSourceName()+".class)){");
             writer.indent();
-            if(hasPNA){
+            logger.log(TreeLogger.Type.TRACE, resolver.getType().getQualifiedSourceName() + " abstract " + resolver.getType().isAbstract() + " intf " + (resolver.getType().isInterface() != null) + " def " + resolver.getType().isDefaultInstantiable());
+            if(resolver.getType().isAbstract() || resolver.getType().isInterface() != null) {
+                writer.println("throw new IllegalArgumentException(clazz+\" is abstract\");");
+            }else if(hasPNA){
                 writer.println("return new "+resolver.getType().getQualifiedSourceName()+"();");
-            } else {
+            } else  {
                 writer.println("throw new IllegalArgumentException(clazz+\" has no public no args constructor\");");
             }
             writer.outdent();
