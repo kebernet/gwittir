@@ -20,12 +20,9 @@
   * http://svn.apache.org/repos/asf/harmony/enhanced/classlib/trunk/modules/beans/src/main/java/java/beans/PropertyChangeListenerProxy.java 
   */
 
-import java.util.EventListenerProxy;
-
 package java.beans;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.EventListenerProxy;
 
 public class PropertyChangeListenerProxy extends EventListenerProxy implements
         PropertyChangeListener {
