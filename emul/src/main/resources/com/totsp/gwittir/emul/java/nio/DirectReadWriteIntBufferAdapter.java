@@ -16,10 +16,10 @@
 
 package java.nio;
 
-import com.googlecode.gwtquake.client.HasArrayBufferView;
+import com.totsp.gwittir.compat.HasArrayBufferView;
 
-import com.googlecode.gwtgl.array.ArrayBufferView;
-import com.googlecode.gwtgl.array.Int32Array;
+import com.totsp.gwittir.compat.ArrayBufferView;
+import com.totsp.gwittir.compat.Int32Array;
 
 /**
  * This class wraps a byte buffer to be a int buffer.

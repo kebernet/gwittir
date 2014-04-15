@@ -16,7 +16,7 @@
 
 package java.nio;
 
-import com.googlecode.gwtquake.client.ByteBufferWrapper;
+import com.totsp.gwittir.compat.ByteBufferWrapper;
 
 //import org.apache.harmony.nio.internal.DirectBuffer;
 //import org.apache.harmony.luni.platform.PlatformAddress;

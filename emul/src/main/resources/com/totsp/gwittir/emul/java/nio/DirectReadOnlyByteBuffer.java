@@ -17,7 +17,7 @@
 
 package java.nio;
 
-import com.googlecode.gwtgl.array.ArrayBuffer;
+import com.totsp.gwittir.compat.ArrayBuffer;
 
 /**
  * HeapByteBuffer, ReadWriteHeapByteBuffer and ReadOnlyHeapByteBuffer compose

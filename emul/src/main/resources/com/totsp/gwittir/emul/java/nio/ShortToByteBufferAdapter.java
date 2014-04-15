@@ -16,7 +16,7 @@
 
 package java.nio;
 
-import com.googlecode.gwtquake.client.ByteBufferWrapper;
+import com.totsp.gwittir.compat.ByteBufferWrapper;
 
 
 /**

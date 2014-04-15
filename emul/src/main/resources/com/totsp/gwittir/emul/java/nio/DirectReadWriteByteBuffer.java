@@ -17,7 +17,7 @@
 package java.nio;
 
 import com.totsp.gwittir.compat.Numbers;
-import com.googlecode.gwtgl.array.ArrayBuffer;
+import com.totsp.gwittir.compat.ArrayBuffer;
 
 /**
  * DirectByteBuffer, DirectReadWriteByteBuffer and DirectReadOnlyByteBuffer compose

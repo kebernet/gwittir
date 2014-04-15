@@ -17,12 +17,11 @@
 
 package java.nio;
 
-import com.googlecode.gwtquake.client.HasArrayBufferView;
 import com.totsp.gwittir.compat.Numbers;
-import org.apache.harmony.luni.platform.Endianness;
-import com.googlecode.gwtgl.array.ArrayBuffer;
-import com.googlecode.gwtgl.array.ArrayBufferView;
-import com.googlecode.gwtgl.array.Int8Array;
+import com.totsp.gwittir.compat.Endianness;
+import com.totsp.gwittir.compat.ArrayBuffer;
+import com.totsp.gwittir.compat.ArrayBufferView;
+import com.totsp.gwittir.compat.Int8Array;
 
 /**
  * DirectByteBuffer, DirectReadWriteByteBuffer and DirectReadOnlyHeapByteBuffer compose

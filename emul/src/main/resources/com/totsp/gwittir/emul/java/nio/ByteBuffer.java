@@ -32,7 +32,7 @@ package java.nio;
  * </ul>
  * @since Android 1.0
  */
-public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer>, com.googlecode.gwtquake.shared.util.StringToByteBuffer {
+public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer> {
 
   
     /**

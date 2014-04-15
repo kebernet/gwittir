@@ -28,7 +28,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>introspection</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
@@ -46,7 +46,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>binding</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
@@ -65,7 +65,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>fx</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
@@ -83,7 +83,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>serial</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
@@ -101,7 +101,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>util</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
@@ -120,7 +120,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>emul</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
@@ -138,7 +138,7 @@ Usage:
     <dependency>
         <groupId>com.totsp.gwittir</groupId>
         <artifactId>mvc</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.9.2</version>
     </dependency>
 
  gwt:
