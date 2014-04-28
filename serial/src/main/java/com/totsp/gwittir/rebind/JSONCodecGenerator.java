@@ -479,13 +479,12 @@ public class JSONCodecGenerator extends IntrospectorGenerator {
             logger.log(Type.INFO, type.getType().getQualifiedSourceName()+" is subclassed");
             writer.println("static final HashMap<String, JSONCodec> subclasses = new HashMap<String, JSONCodec>();");
             for(JClassType subtype : type.getType().getSubtypes()){
+                logger.log(Type.INFO, type.getType().getQualifiedSourceName()+" subtype "+subtype.getQualifiedSourceName());
                 while(!subtype.getSuperclass().getQualifiedSourceName().equals(type.getType().getQualifiedSourceName())){
+                    logger.log(Type.INFO, "\t"+subtype.getSuperclass().getQualifiedSourceName() +" isn't "+type.getType().getQualifiedSourceName());
                     subtype = subtype.getSuperclass();
                 }
                 if(includedCodecs.contains(subtype.getQualifiedSourceName())){
-                    continue;
-                }
-                if(!type.getType().isAbstract() || type.getType().isInterface() != null){
                     continue;
                 }
                 includedCodecs.add(subtype.getQualifiedSourceName());
