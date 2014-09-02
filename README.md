@@ -1,6 +1,8 @@
 Gwittir
 =======
 
+![BuildStatus](https://travis-ci.org/kebernet/gwittir.svg?branch=master)
+
 Gwittir is a set of tools for GWT applications. This project represents a refactoring
 of the original code into a set of isolated modules that are interdependent. The main
 project is Gwittir MVC, which is an MVC-style application framework for your applications
